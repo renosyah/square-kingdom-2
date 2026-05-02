@@ -4,9 +4,6 @@ class_name BaseEntity
 # this is entity that can sync in network enviroment
 # only basic mechanic to setup & prepare as network entity
 
-# owner
-var player_id :String
-
 # performace
 var _visibility_notifier :VisibilityNotifier
 

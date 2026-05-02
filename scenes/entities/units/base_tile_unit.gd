@@ -21,13 +21,12 @@ class TileUnitPath:
 		pos = b
 		
 # info
+export var player_id :String
 export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 0.4
-
-# hp
-export var hp :int = 3
-export var max_hp :int = 3
+export var hp :int = 100
+export var max_hp :int = 100
 
 export var god_mode :bool = false
 
@@ -49,7 +48,8 @@ var _spotted :bool # visible or not, but be overide by _hidden
 var _current_visible :bool # current state of visible, this dont set value to visible
 
 # for nav and targeting
-var tile_map :BaseTileMap
+var nav_layer :int
+var nav :NavTileMap
 
 # unit_position is refrence
 # change value it also change the root variable value
@@ -71,7 +71,7 @@ func move_to(tile_id :Vector2):
 	if is_dead:
 		return
 		
-	if not _is_master or not is_instance_valid(tile_map):
+	if not _is_master or not is_instance_valid(nav):
 		return
 		
 	enemy = null
@@ -89,10 +89,9 @@ func is_moving() -> bool:
 	
 func _get_tile_path(to :Vector2) -> Array:
 	var paths :Array = []
-	var p :PoolVector2Array = tile_map.get_navigation(current_tile, to, [], false)
+	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
 	for id in p:
-		var pos3 = tile_map.get_tile_instance(id).global_position
-		paths.append(TileUnitPath.new(id, pos3))
+		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
 		
 	return paths
 	

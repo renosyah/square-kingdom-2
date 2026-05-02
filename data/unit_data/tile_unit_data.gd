@@ -1,4 +1,4 @@
-extends BaseData
+extends Resource
 class_name TileUnitData
 
 export var player_network_id :int
@@ -10,7 +10,6 @@ export var speed :float
 export var position :Vector3
 export var scene_index :int
 export var color :Color
-export var unit_voice :int # 1:us, 2:viet
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -23,7 +22,6 @@ func from_dictionary(_data : Dictionary):
 	position = _data["g"]
 	scene_index = _data["h"]
 	color = _data["i"]
-	unit_voice = _data["j"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -36,8 +34,10 @@ func to_dictionary() -> Dictionary :
 	_data["g"] = position
 	_data["h"] = scene_index
 	_data["i"] = color
-	_data["j"] = unit_voice
 	return _data
 	
-func spawn(_player_data :PlayerData, _parent_path, _overlay_ui_path:NodePath, _cam_path:NodePath):
-	return null
+func to_bytes() -> PoolByteArray:
+	return var2bytes(to_dictionary())
+	
+func from_bytes(bytes :PoolByteArray):
+	from_dictionary(bytes2var(bytes))

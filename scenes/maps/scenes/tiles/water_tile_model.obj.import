@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/water_tile_model.obj-515b640e4a1cf7c8c743c3c2bb2e0bef.mesh"
+
+[deps]
+
+files=[ "res://.import/water_tile_model.obj-515b640e4a1cf7c8c743c3c2bb2e0bef.mesh" ]
+
+source_file="res://scenes/maps/scenes/tiles/water_tile_model.obj"
+dest_files=[ "res://.import/water_tile_model.obj-515b640e4a1cf7c8c743c3c2bb2e0bef.mesh", "res://.import/water_tile_model.obj-515b640e4a1cf7c8c743c3c2bb2e0bef.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

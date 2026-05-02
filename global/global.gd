@@ -44,9 +44,7 @@ func load_player_data():
 	if data == null:
 		player_data.player_id = Utils.create_unique_id()
 		player_data.player_name = OS.get_name()
-		player_data.player_rank = 0
-		player_data.player_team = 1
-		player_data.player_potrait = 0
+		player_data.team = 1
 		SaveLoad.save(player_data_filepath, player_data.to_dictionary(), true)
 		
 	else:

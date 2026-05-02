@@ -4,25 +4,18 @@ class_name PlayerData
 var player_network_id :int
 var player_id :String
 var player_name :String
-var player_potrait :int = 1 # idx of potrait resource
-var player_rank :int = 0 # 0: 2nd LT, 1: 1st LT, 2: Captain
-var player_team :int = 1 # 1: macv/us or 2:nva
-
+var team :int = 1
 
 func from_dictionary(_data : Dictionary):
-	player_network_id = _data["player_network_id"]
-	player_id = _data["player_id"]
-	player_name = _data["player_name"]
-	player_potrait = _data["player_potrait"]
-	player_rank = _data["player_rank"]
-	player_team = _data["player_team"]
+	player_network_id = _data["a"]
+	player_id = _data["b"]
+	player_name = _data["c"]
+	team = _data["d"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = {}
-	_data["player_network_id"] = player_network_id
-	_data["player_id"] = player_id
-	_data["player_name"] = player_name
-	_data["player_potrait"] = player_potrait
-	_data["player_rank"] = player_rank
-	_data["player_team"] = player_team
+	_data["a"] = player_network_id
+	_data["b"] = player_id
+	_data["c"] = player_name
+	_data["d"] = team
 	return _data
