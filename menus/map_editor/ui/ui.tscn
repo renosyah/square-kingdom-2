@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://menus/map_editor/ui/ui.gd" type="Script" id=1]
+[ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=2]
+
+[node name="ui" type="Control"]
+script = ExtResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+
+[node name="back" type="Button" parent="CanvasLayer/Control/HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+icon = ExtResource( 2 )
+expand_icon = true
+
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/back" to="." method="_on_back_pressed"]

@@ -1,0 +1,277 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Resource",
+"class": "BaseData",
+"language": "GDScript",
+"path": "res://data/base_data.gd"
+}, {
+"base": "Spatial",
+"class": "BaseEntity",
+"language": "GDScript",
+"path": "res://scenes/entities/base_entity.gd"
+}, {
+"base": "Spatial",
+"class": "BaseProjectile",
+"language": "GDScript",
+"path": "res://scenes/entities/projectiles/base_projectile.gd"
+}, {
+"base": "Spatial",
+"class": "BaseTile",
+"language": "GDScript",
+"path": "res://scenes/tiles/base_tile.gd"
+}, {
+"base": "Spatial",
+"class": "BaseTileMap",
+"language": "GDScript",
+"path": "res://scenes/maps/base_tile_map.gd"
+}, {
+"base": "Spatial",
+"class": "BaseTileObject",
+"language": "GDScript",
+"path": "res://scenes/tile_objects/base_tile_object.gd"
+}, {
+"base": "BaseEntity",
+"class": "BaseTileUnit",
+"language": "GDScript",
+"path": "res://scenes/entities/units/base_tile_unit.gd"
+}, {
+"base": "Spatial",
+"class": "ClickableFloor",
+"language": "GDScript",
+"path": "res://assets/clickable_floor/clickable_floor.gd"
+}, {
+"base": "Control",
+"class": "ClickableScreen",
+"language": "GDScript",
+"path": "res://assets/user_interface/clickable_screen/clickable_screen.gd"
+}, {
+"base": "BaseData",
+"class": "GrandMapFileManifest",
+"language": "GDScript",
+"path": "res://data/map_data/manifest/grand_map_file_manifest.gd"
+}, {
+"base": "BaseData",
+"class": "GrandMapFileMission",
+"language": "GDScript",
+"path": "res://data/map_data/mission/grand_map_file_mission.gd"
+}, {
+"base": "BaseProjectile",
+"class": "IndirectProjectile",
+"language": "GDScript",
+"path": "res://scenes/entities/projectiles/indirect/indirect.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventMultiScreenDrag",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventMultiScreenDrag.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventScreenPinch",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventScreenPinch.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventScreenTwist",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventScreenTwist.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenDrag",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenDrag.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenTap",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTap.gd"
+}, {
+"base": "InputEventAction",
+"class": "InputEventSingleScreenTouch",
+"language": "GDScript",
+"path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
+}, {
+"base": "BaseData",
+"class": "MapObjectData",
+"language": "GDScript",
+"path": "res://data/map_data/tile_map/map_object_data.gd"
+}, {
+"base": "Spatial",
+"class": "MovableCamera",
+"language": "GDScript",
+"path": "res://assets/camera/movable_camera.gd"
+}, {
+"base": "BaseData",
+"class": "NavigationData",
+"language": "GDScript",
+"path": "res://data/map_data/tile_map/navigation_data.gd"
+}, {
+"base": "NetworkConfiguration",
+"class": "NetworkClient",
+"language": "GDScript",
+"path": "res://addons/network/helper/NetworkClient.gd"
+}, {
+"base": "Node",
+"class": "NetworkConfiguration",
+"language": "GDScript",
+"path": "res://addons/network/helper/NetworkConfiguration.gd"
+}, {
+"base": "Node",
+"class": "NetworkPlayer",
+"language": "GDScript",
+"path": "res://addons/network/helper/NetworkPlayer.gd"
+}, {
+"base": "NetworkConfiguration",
+"class": "NetworkServer",
+"language": "GDScript",
+"path": "res://addons/network/helper/NetworkServer.gd"
+}, {
+"base": "Node",
+"class": "PendingTask",
+"language": "GDScript",
+"path": "res://addons/pending_task/pending_task.gd"
+}, {
+"base": "BaseData",
+"class": "PlayerData",
+"language": "GDScript",
+"path": "res://data/player_data/player_data.gd"
+}, {
+"base": "Node",
+"class": "QueueTask",
+"language": "GDScript",
+"path": "res://addons/queue_task/queue_task.gd"
+}, {
+"base": "Node",
+"class": "RandomNameGenerator",
+"language": "GDScript",
+"path": "res://addons/random-name/random_names.gd"
+}, {
+"base": "Node",
+"class": "SaveLoad",
+"language": "GDScript",
+"path": "res://addons/save_load/save_load.gd"
+}, {
+"base": "Node",
+"class": "SaveLoadImproved",
+"language": "GDScript",
+"path": "res://addons/save_load/save_load_improve.gd"
+}, {
+"base": "Node",
+"class": "ServerAdvertiser",
+"language": "GDScript",
+"path": "res://addons/LANServerBroadcast/server_advertiser/ServerAdvertiser.gd"
+}, {
+"base": "Node",
+"class": "ServerListener",
+"language": "GDScript",
+"path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
+}, {
+"base": "BaseData",
+"class": "TileMapData",
+"language": "GDScript",
+"path": "res://data/map_data/tile_map/tile_map_data.gd"
+}, {
+"base": "BaseData",
+"class": "TileMapFileData",
+"language": "GDScript",
+"path": "res://data/map_data/tile_map/tile_map_file_data.gd"
+}, {
+"base": "Node",
+"class": "TileMapUtils",
+"language": "GDScript",
+"path": "res://scenes/maps/tile_map_utils.gd"
+}, {
+"base": "BaseData",
+"class": "TileUnitData",
+"language": "GDScript",
+"path": "res://data/unit_data/tile_unit_data.gd"
+}, {
+"base": "Node",
+"class": "Utils",
+"language": "GDScript",
+"path": "res://utils/utils.gd"
+} ]
+_global_script_class_icons={
+"BaseData": "",
+"BaseEntity": "",
+"BaseProjectile": "",
+"BaseTile": "",
+"BaseTileMap": "",
+"BaseTileObject": "",
+"BaseTileUnit": "",
+"ClickableFloor": "",
+"ClickableScreen": "",
+"GrandMapFileManifest": "",
+"GrandMapFileMission": "",
+"IndirectProjectile": "",
+"InputEventMultiScreenDrag": "",
+"InputEventScreenPinch": "",
+"InputEventScreenTwist": "",
+"InputEventSingleScreenDrag": "",
+"InputEventSingleScreenTap": "",
+"InputEventSingleScreenTouch": "",
+"MapObjectData": "",
+"MovableCamera": "",
+"NavigationData": "",
+"NetworkClient": "",
+"NetworkConfiguration": "",
+"NetworkPlayer": "",
+"NetworkServer": "",
+"PendingTask": "",
+"PlayerData": "",
+"QueueTask": "",
+"RandomNameGenerator": "",
+"SaveLoad": "",
+"SaveLoadImproved": "",
+"ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
+"ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"TileMapData": "",
+"TileMapFileData": "",
+"TileMapUtils": "",
+"TileUnitData": "",
+"Utils": ""
+}
+
+[application]
+
+config/name="Square Kingdom"
+run/main_scene="res://menus/splash.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Network="*res://addons/network/Network.gd"
+NetworkLobbyManager="*res://addons/network/lobby-manager/NetworkLobbyManager.gd"
+Global="*res://global/global.gd"
+
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"
