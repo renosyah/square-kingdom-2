@@ -79,13 +79,7 @@ func _unhandled_input_mouse(event):
 		
 	# Mouse movement while dragging
 	if event is InputEventMouseMotion and dragging:
-		var delta = event.relative
-		
-		# Move along X/Z
-		target.translation.x -= delta.x * drag_sensitivity
-		target.translation.z -= delta.y * drag_sensitivity
-		target.translation.x = clamp(target.translation.x, center_pos.x - camera_limit_bound.x, center_pos.x + camera_limit_bound.x)
-		target.translation.z = clamp(target.translation.z, center_pos.z - camera_limit_bound.z, center_pos.z + camera_limit_bound.z)
+		_move_target(event.relative)
 		
 func _unhandled_input_touch(event):
 	if event is InputEventScreenTouch:
@@ -102,15 +96,7 @@ func _unhandled_input_touch(event):
 	elif event is InputEventScreenDrag:
 		touches[event.index] = event.position
 		if touches.size() == 1:
-			var delta = event.relative
-			var zoom_factor = (target.translation.y / max_zoom)
-			var adjusted_move_speed = move_speed * zoom_factor
-			target.translate(Vector3(-delta.x * adjusted_move_speed, 0, -delta.y * adjusted_move_speed))
-			
-			var pos = target.translation
-			pos.x = clamp(pos.x, center_pos.x - camera_limit_bound.x, center_pos.x + camera_limit_bound.x)
-			pos.z = clamp(pos.z, center_pos.z - camera_limit_bound.z, center_pos.z + camera_limit_bound.z)
-			target.translation = pos
+			_move_target(event.relative)
 	
 		elif touches.size() == 2:
 			# Pinch zoom
@@ -132,6 +118,19 @@ func _unhandled_input_touch(event):
 				last_pinch_distance = current_distance
 				
 	_label.text = "Cam pos : %s" % target.translation
+
+func _move_target(relative):
+		var delta = relative
+		var zoom_factor = (target.translation.y / max_zoom)
+		var adjusted_move_speed = move_speed * zoom_factor
+		
+		target.translate(Vector3(-delta.x * adjusted_move_speed, 0, -delta.y * adjusted_move_speed))
+		
+		var pos = target.translation
+		pos.x = clamp(pos.x, center_pos.x - camera_limit_bound.x, center_pos.x + camera_limit_bound.x)
+		pos.z = clamp(pos.z, center_pos.z - camera_limit_bound.z, center_pos.z + camera_limit_bound.z)
+		
+		target.translation = pos
 
 func _is_point_inside_area(point: Vector2) -> bool:
 	var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)

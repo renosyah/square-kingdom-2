@@ -9,7 +9,6 @@ signal on_tile_updated(id, data, node)
 export (Array, PackedScene) var tile_scenes :Array
 export (NodePath) var nav_tile_map :NodePath
 
-var _click_position :Vector3
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
