@@ -7,11 +7,13 @@ signal on_tile_updated(id, data, node)
 # must be set with BaseTile scenes
 # and make sure index were set accordingly
 export (Array, PackedScene) var tile_scenes :Array
+export (NodePath) var nav_tile_map :NodePath
 
 var _click_position :Vector3
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
+var _nav_tile_map :NavTileMap = get_node_or_null(nav_tile_map)
 
 func _ready():
 	set_process(false)
@@ -30,6 +32,9 @@ func load_data_map(data: TileMapFileData, is_editor:bool = false):
 	
 func export_data() -> TileMapFileData:
 	return _tile_map_data
+	
+func get_nav_tile_map() -> NavTileMap:
+	return _nav_tile_map
 	
 func get_tiles_instances() -> Array:
 	return _spawned_tiles.values() # [ BaseTile ]
@@ -112,7 +117,12 @@ func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
 	tile.name = 'tile_%s' % data.id
 	add_child(tile)
-	tile.translation = data.pos
+	tile.translation = global_position + data.pos
+	
+	if _is_editor:
+		tile.translation.x = tile.translation.x * 1.02
+		tile.translation.z = tile.translation.z * 1.02
+		
 	return tile
 
 func _ids_to_tile_nodes(ids :Array) -> Array:

@@ -19,7 +19,7 @@ const DIAGONAL_DIRECTIONS = [
 # 4 → 9 × 9
 # 6 → 13 × 13
 # 8 → 17 × 17
-static func generate_empty_tile_map(size :int, is_grand_map :bool = true) -> TileMapFileData:
+static func generate_empty_tile_map(size :int) -> TileMapFileData:
 	var tiles = get_adjacent_tiles(get_directions(), Vector2.ZERO, size)
 	tiles.push_front(Vector2.ZERO)
 	
@@ -30,22 +30,24 @@ static func generate_empty_tile_map(size :int, is_grand_map :bool = true) -> Til
 	
 	for id in tiles:
 		var data :TileMapData = TileMapData.new()
-		data.tile_type = 1
 		data.id = id
-		data.pos = Vector3(id.x, 0, id.y) * (1.02 if is_grand_map else 1.0)
+		data.pos = Vector3(id.x, 0, id.y)
+		data.scene_idx = 0
+		data.rotation_idx = 0
 		tile_datas.append(data)
 		
 		var nav_id = tile_datas.size()
 		tile_ids[id] = nav_id
 		
-	for id in tiles:
+	for tile_data in tile_datas:
 		var nav_data :NavigationData = NavigationData.new()
-		nav_data.id = id
-		nav_data.navigation_id = tile_ids[id]
-		nav_data.enable = not Vector2.ZERO
+		nav_data.id = tile_data.id
+		nav_data.pos = tile_data.pos
+		nav_data.navigation_id = tile_ids[tile_data.id]
+		nav_data.enable = true
 		nav_data.neighbors = []
 		
-		var _tiles = get_adjacent_tiles(ARROW_DIRECTIONS if is_grand_map else get_directions(), id)
+		var _tiles = get_adjacent_tiles(get_directions(), tile_data.id)
 		for i in _tiles:
 			if tile_ids.has(i):
 				nav_data.neighbors.append(tile_ids[i])
@@ -55,11 +57,48 @@ static func generate_empty_tile_map(size :int, is_grand_map :bool = true) -> Til
 	var map_data :TileMapFileData = TileMapFileData.new()
 	map_data.tiles = tile_datas
 	map_data.tile_ids = tile_ids
-	map_data.objects = objects
-	map_data.navigations = navigations
+	map_data.navigations[0] = navigations
 	
 	return map_data
 	
+static func randomize_map_data(map_data :TileMapFileData, untouch :Array = [], _seed :int = rand_range(-100, 100)):
+	var blocked = []
+	var noise = OpenSimplexNoise.new()
+	var rng = RandomNumberGenerator.new()
+	rng.seed = _seed
+	
+	noise.seed = _seed
+	noise.octaves = 3
+	noise.period = 12.0
+	noise.persistence = 0.856
+	noise.lacunarity = 1.745
+	
+	for i in map_data.tiles:
+		var x :TileMapData = i
+		
+		if x.id in untouch:
+			x.scene_idx = 0
+			continue
+		
+		var value = 2 * abs(noise.get_noise_2dv(x.id))
+		
+		if value > 0.2:
+			x.scene_idx = 0
+			
+		elif value > 0.1:
+			x.scene_idx = 1
+			
+		elif value <= 0.1:
+			x.scene_idx = 2
+			blocked.append(x.id)
+			
+		elif value < 0.0:
+			x.tile_type = 2
+			blocked.append(x.id)
+			
+	for i in map_data.navigations[0]:
+		i.enable = not (i.id in blocked)
+		
 # return all adjacent tiles
 # with range and type of direction
 # only returned tile that registered in Astar navigation
