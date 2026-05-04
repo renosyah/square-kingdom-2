@@ -23,6 +23,9 @@ tile_scenes = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 7 ) ]
 
 [node name="clickable_floor" parent="." instance=ExtResource( 6 )]
 
+[node name="highlights" type="Spatial" parent="."]
+visible = false
+
 [node name="enviroment" parent="." instance=ExtResource( 5 )]
 
 [connection signal="on_map_ready" from="editable_tile_map" to="." method="_on_editable_tile_map_on_map_ready"]

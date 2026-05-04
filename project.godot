@@ -49,11 +49,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/custom_tile_map/scripts/editable_tile_map.gd"
 }, {
-"base": "BaseData",
-"class": "GrandMapFileManifest",
-"language": "GDScript",
-"path": "res://addons/custom_tile_map/resources/manifest/map_file_manifest.gd"
-}, {
 "base": "BaseProjectile",
 "class": "IndirectProjectile",
 "language": "GDScript",
@@ -88,6 +83,11 @@ _global_script_classes=[ {
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
+}, {
+"base": "MarginContainer",
+"class": "MiniMap",
+"language": "GDScript",
+"path": "res://assets/minimap/minimap.gd"
 }, {
 "base": "Spatial",
 "class": "MovableCamera",
@@ -164,6 +164,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "Node2D",
+"class": "Tile2D",
+"language": "GDScript",
+"path": "res://assets/minimap/tile_2d/tile_2d.gd"
+}, {
 "base": "Resource",
 "class": "TileMapData",
 "language": "GDScript",
@@ -173,6 +178,11 @@ _global_script_classes=[ {
 "class": "TileMapFileData",
 "language": "GDScript",
 "path": "res://addons/custom_tile_map/resources/tile_map/tile_map_file_data.gd"
+}, {
+"base": "BaseData",
+"class": "TileMapFileManifest",
+"language": "GDScript",
+"path": "res://addons/custom_tile_map/resources/manifest/map_file_manifest.gd"
 }, {
 "base": "Node",
 "class": "TileMapUtils",
@@ -203,7 +213,6 @@ _global_script_class_icons={
 "ClickableFloor": "",
 "ClickableScreen": "",
 "EditableTileMap": "",
-"GrandMapFileManifest": "",
 "IndirectProjectile": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
@@ -211,6 +220,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"MiniMap": "",
 "MovableCamera": "",
 "NavTileMap": "",
 "NavigationData": "",
@@ -226,8 +236,10 @@ _global_script_class_icons={
 "SaveLoadImproved": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"Tile2D": "",
 "TileMapData": "",
 "TileMapFileData": "",
+"TileMapFileManifest": "",
 "TileMapUtils": "",
 "TilePositionManager": "",
 "TileUnitData": "",

@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/minimap/minimap.gd" type="Script" id=1]
+[ext_resource path="res://assets/minimap/tile_2d/ground.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/minimap/tile_2d/sea.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/minimap/tile_2d/sand.tscn" type="PackedScene" id=4]
+
+[node name="minimap" type="MarginContainer"]
+margin_right = 250.0
+margin_bottom = 250.0
+script = ExtResource( 1 )
+tile_scenes = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 3 ) ]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_right = 250.0
+margin_bottom = 250.0
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 250, 250 )
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
+
+[node name="map" type="Node2D" parent="ViewportContainer/Viewport"]

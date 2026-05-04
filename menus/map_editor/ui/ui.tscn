@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.gd" type="Script" id=1]
-[ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=2]
+[ext_resource path="res://assets/user_interface/icons/exit.png" type="Texture" id=2]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/fps_ping_displayer/fps_ping_displayer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/minimap/minimap.tscn" type="PackedScene" id=6]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -22,16 +25,53 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
 margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 
-[node name="back" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer"]
-margin_right = 60.0
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_right = 24.0
 margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
+rect_min_size = Vector2( 24, 0 )
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 28.0
+margin_top = 12.0
+margin_right = 192.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 5 )
+text = "Map Editor"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 196.0
+margin_right = 736.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+
+[node name="fps_ping_displayer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
+margin_left = 740.0
+margin_right = 900.0
+margin_bottom = 60.0
+
+[node name="back" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 904.0
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
 icon = ExtResource( 2 )
+icon_align = 1
 expand_icon = true
 
 [node name="movable_camera_ui" parent="CanvasLayer/Control/VBoxContainer" instance=ExtResource( 3 )]
@@ -39,10 +79,50 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 64.0
 margin_right = 1024.0
-margin_bottom = 600.0
+margin_bottom = 372.0
 size_flags_vertical = 3
 min_zoom = 4.0
 max_zoom = 8.0
 camera_limit_bound = Vector3( 8, 0, 8 )
 
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_top = 376.0
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
+margin_right = 224.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 224, 224 )
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer"]
+margin_right = 224.0
+margin_bottom = 224.0
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="minimap" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer" instance=ExtResource( 6 )]
+margin_right = 224.0
+margin_bottom = 224.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
+margin_left = 228.0
+margin_top = 124.0
+margin_right = 1024.0
+margin_bottom = 224.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2"]
+margin_right = 796.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2"]
+margin_right = 796.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]

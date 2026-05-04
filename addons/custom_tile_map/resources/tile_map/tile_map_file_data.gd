@@ -3,7 +3,7 @@ class_name TileMapFileData
 
 var tile_ids :Dictionary # { Vector2: int }
 var tiles : Array # [ TileMapData ]
-var navigations : Dictionary # {int:[ NavigationData ]}
+var navigations : Dictionary # {int (LAYER_ID):[ NavigationData ]}
 
 func from_dictionary(_data : Dictionary):
 	tile_ids = _data["a"].duplicate() # { Vector2: int }
