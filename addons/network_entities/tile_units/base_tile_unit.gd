@@ -48,13 +48,14 @@ var _spotted :bool # visible or not, but be overide by _hidden
 var _current_visible :bool # current state of visible, this dont set value to visible
 
 # for nav and targeting
-var nav_layer :int
-var nav :NavTileMap
-
 # unit_position is refrence
 # change value it also change the root variable value
 # for tracking purposes
+var nav_layer :int
+var nav :NavTileMap
 var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
+
+var chase_enemy = null # cycle warning set to null
 var enemy = null # cycle warning set to null
 var attack_move :bool
 var spotting_area :Array
@@ -67,6 +68,13 @@ func _ready():
 	update_spotting()
 	Global.connect("on_global_tick", self, "_on_global_tick")
 
+# set chase_enemy = UNIT
+# chase_target()
+# move_to will set chase_enemy to NULL
+func chase_target():
+	if is_instance_valid(chase_enemy):
+		move_to(chase_enemy.current_tile)
+
 func move_to(tile_id :Vector2):
 	if is_dead:
 		return
@@ -74,6 +82,7 @@ func move_to(tile_id :Vector2):
 	if not _is_master or not is_instance_valid(nav):
 		return
 		
+	chase_enemy = null
 	enemy = null
 	
 	var v :Array = _get_tile_path(tile_id)
@@ -150,7 +159,7 @@ func master_moving(delta :float) -> void:
 		
 	var pos :Vector3 = global_position
 	if is_instance_valid(enemy):
-		if not _is_enemy_in_range():
+		if not _is_in_range(enemy):
 			enemy = null
 			_on_no_enemy()
 			return
@@ -228,6 +237,14 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 		
 	update_spotting()
 	
+	if is_instance_valid(chase_enemy):
+		if chase_enemy.is_dead:
+			chase_enemy = null
+			
+		if _is_in_range(chase_enemy):
+			enemy = chase_enemy
+			return
+		
 	if attack_move:
 		_scan_area()
 	
@@ -238,27 +255,21 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 		return
 		
 	update_spotting()
+	
+	if is_instance_valid(chase_enemy):
+		if chase_enemy.is_dead:
+			chase_enemy = null
+			
+		if not _is_in_range(chase_enemy):
+			chase_target()
+			return
+			
 	_scan_area()
 	
 func update_spotting():
 	spotting_area = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.get_directions(), current_tile, spotting_range
 	)
-	
-# check wheter enemy stil in spotting range or not
-func _is_enemy_in_range() -> bool:
-	if enemy.is_dead or unit_position.empty():
-		return false
-		
-	for pos in spotting_area:
-		if not unit_position.has(pos):
-			continue
-			
-		var unit_positions :Array = unit_position[pos]
-		if unit_positions.has(enemy):
-			return true
-		
-	return false
 	
 func _scan_area():
 	if unit_position.empty():
@@ -268,7 +279,6 @@ func _scan_area():
 		if not enemy.is_dead:
 			return
 		
-	var enemies :Array = []
 	for pos in spotting_area:
 		if not unit_position.has(pos):
 			continue
@@ -283,6 +293,12 @@ func _scan_area():
 					enemy = unit
 					return
 				
+func _is_in_range(_unit) -> bool:
+	if _unit.is_dead:
+		return false
+		
+	return _unit.current_tile in spotting_area
+	
 func take_damage(damage :int):
 	if is_dead:
 		return

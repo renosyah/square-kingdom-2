@@ -7,12 +7,11 @@ signal on_tile_updated(id, data, node)
 # must be set with BaseTile scenes
 # and make sure index were set accordingly
 export (Array, PackedScene) var tile_scenes :Array
-export (NodePath) var nav_tile_map :NodePath
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
-var _nav_tile_map :NavTileMap = get_node_or_null(nav_tile_map)
+onready var _nav_tile_map :NavTileMap = $nav_tile_map
 
 func _ready():
 	set_process(false)

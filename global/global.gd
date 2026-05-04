@@ -53,6 +53,7 @@ func load_player_data():
 ##########################################  map editor  ############################################
 # for load and save maps
 const map_dir = "map"
+var current_tile_map_file_data :TileMapFileData = null
 
 ##########################################  transisiion  ############################################
 var transition :CanvasLayer

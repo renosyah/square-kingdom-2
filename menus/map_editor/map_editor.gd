@@ -7,15 +7,12 @@ onready var clickable_floor = $clickable_floor
 
 var nav :NavTileMap
 var tile_highlights :Array = []
-var map_data :TileMapFileData
 
 func _ready():
 	ui.movable_camera_ui.target = movable_camera
-	
-	map_data = TileMapUtils.generate_empty_tile_map(6)
-	#TileMapUtils.randomize_map_data(map_data)
-	
-	editable_tile_map.load_data_map(map_data, true)
+	Global.current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(8)
+	#TileMapUtils.randomize_map_data(Global.current_tile_map_file_data)
+	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 
 func _process(delta):
 	clickable_floor.translation = movable_camera.translation * Vector3(1,0,1)
