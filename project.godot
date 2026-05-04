@@ -84,10 +84,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
-"base": "MarginContainer",
+"base": "Control",
 "class": "MiniMap",
 "language": "GDScript",
-"path": "res://assets/minimap/minimap.gd"
+"path": "res://scenes/minimap/minimap.gd"
 }, {
 "base": "Spatial",
 "class": "MovableCamera",
@@ -167,7 +167,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Tile2D",
 "language": "GDScript",
-"path": "res://assets/minimap/tile_2d/tile_2d.gd"
+"path": "res://scenes/minimap/tile_2d/tile_2d.gd"
 }, {
 "base": "Resource",
 "class": "TileMapData",

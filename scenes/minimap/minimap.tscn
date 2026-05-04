@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/minimap/minimap.gd" type="Script" id=1]
+[ext_resource path="res://scenes/minimap/tile_2d/ground.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/minimap/tile_2d/sea.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/minimap/tile_2d/sand.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/user_interface/background/frame.png" type="Texture" id=5]
+[ext_resource path="res://addons/Godot-Touch-Input-Manager/input_detection.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/minimap/tile_2d/rock.tscn" type="PackedScene" id=8]
+
+[node name="minimap" type="Control"]
+margin_right = 125.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 125, 125 )
+mouse_filter = 2
+script = ExtResource( 1 )
+tile_scenes = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 8 ) ]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
+
+[node name="map" type="Node2D" parent="ViewportContainer/Viewport"]
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+
+[node name="input_detection" parent="." instance=ExtResource( 6 )]
+
+[connection signal="any_gesture" from="input_detection" to="." method="_on_input_detection_any_gesture"]

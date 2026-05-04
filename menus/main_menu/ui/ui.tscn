@@ -31,7 +31,7 @@ margin_left = -512.0
 margin_top = -147.0
 margin_right = 512.0
 rect_min_size = Vector2( 0, 150 )
-color = Color( 0, 0, 0, 0.564706 )
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
 anchor_left = 0.5

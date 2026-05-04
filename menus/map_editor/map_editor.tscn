@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://menus/map_editor/map_editor.gd" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://scenes/tiles/water.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/tiles/sand.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/tiles/ground.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/tiles/rock.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/tiles/tree.tscn" type="PackedScene" id=11]
 
 [node name="map_editor" type="Node"]
 script = ExtResource( 2 )
@@ -19,7 +21,7 @@ script = ExtResource( 2 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 5, 0 )
 
 [node name="editable_tile_map" parent="." instance=ExtResource( 3 )]
-tile_scenes = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 7 ) ]
+tile_scenes = [ ExtResource( 9 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 11 ), ExtResource( 10 ) ]
 
 [node name="clickable_floor" parent="." instance=ExtResource( 6 )]
 

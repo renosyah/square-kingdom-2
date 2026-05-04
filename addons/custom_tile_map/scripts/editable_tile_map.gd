@@ -117,9 +117,9 @@ func _spawn_tile(data :TileMapData) -> BaseTile:
 	add_child(tile)
 	tile.translation = global_position + data.pos
 	
-	if _is_editor:
-		tile.translation.x = tile.translation.x * 1.02
-		tile.translation.z = tile.translation.z * 1.02
+#	if _is_editor:
+#		tile.translation.x = tile.translation.x * 1.02
+#		tile.translation.z = tile.translation.z * 1.02
 		
 	return tile
 

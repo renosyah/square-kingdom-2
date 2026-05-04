@@ -61,44 +61,6 @@ static func generate_empty_tile_map(size :int) -> TileMapFileData:
 	
 	return map_data
 	
-static func randomize_map_data(map_data :TileMapFileData, untouch :Array = [], _seed :int = rand_range(-100, 100)):
-	var blocked = []
-	var noise = OpenSimplexNoise.new()
-	var rng = RandomNumberGenerator.new()
-	rng.seed = _seed
-	
-	noise.seed = _seed
-	noise.octaves = 3
-	noise.period = 12.0
-	noise.persistence = 0.856
-	noise.lacunarity = 1.745
-	
-	for i in map_data.tiles:
-		var x :TileMapData = i
-		
-		if x.id in untouch:
-			x.scene_idx = 0
-			continue
-		
-		var value = 2 * abs(noise.get_noise_2dv(x.id))
-		
-		if value > 0.2:
-			x.scene_idx = 0
-			
-		elif value > 0.1:
-			x.scene_idx = 1
-			
-		elif value <= 0.1:
-			x.scene_idx = 2
-			blocked.append(x.id)
-			
-		elif value < 0.0:
-			x.tile_type = 2
-			blocked.append(x.id)
-			
-	for i in map_data.navigations[0]:
-		i.enable = not (i.id in blocked)
-		
 # return all adjacent tiles
 # with range and type of direction
 # only returned tile that registered in Astar navigation
