@@ -7,7 +7,7 @@ var _navigation_pos :Dictionary = {} # {Vector2:Vector3}
 
 # int as key is LAYER of naviagtion
 # for ex 0:ground, 1:wall, 2:sea
-onready var _navigations :Dictionary = {} # {int:AStar2D}
+onready var _navigations :Array = [] # [(index as LAYER_ID) [ AStar2D ]]
 
 func _ready():
 	set_process(false)
@@ -34,7 +34,7 @@ func enable_nav_tile(layer_id :int, id :Vector2, enable :bool):
 # seting temporary blocked tile
 # like ally unit in the way
 func get_navigation(layer_id :int, start_id :Vector2, end_id :Vector2, blocked_ids :Array = []) -> PoolVector2Array:
-	if not _navigations.has(layer_id):
+	if not _has_layer(layer_id):
 		return PoolVector2Array([])
 		
 	var start :int = _get_navigation_id(layer_id, start_id)
@@ -51,8 +51,8 @@ func get_pos_v3(id :Vector2) -> Vector3:
 	return _navigation_pos[id]
 	
 func _load_data_nav(layer_id :int, navigation_map :Array):
-	if not _navigations.has(layer_id):
-		_navigations[layer_id] = AStar2D.new()
+	if not _has_layer(layer_id):
+		_navigations.append(AStar2D.new())
 		_navigation_ids[layer_id] = {}
 		
 	var _navigation :AStar2D = _navigations[layer_id]
@@ -127,8 +127,8 @@ func _enable_nav_tile(nav :AStar2D, navigation_id :int, enable :bool = true):
 		nav.set_point_disabled(navigation_id, not enable)
 		
 func _clean():
-	for layer_id in _navigations.keys():
-		_navigations[layer_id].clear()
+	for _navigation in _navigations:
+		_navigation.clear()
 		
 	for layer_id in _navigation_ids.keys():
 		_navigation_ids[layer_id].clear()
@@ -137,8 +137,8 @@ func _clean():
 	_navigation_ids.clear()
 	_navigation_pos.clear()
 	
-	
-	
+func _has_layer(id) -> bool:
+	return id >= 0 and id < _navigations.size()
 
 
 

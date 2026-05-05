@@ -22,29 +22,29 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 7
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -512.0
-margin_top = -147.0
-margin_right = 512.0
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
+margin_top = 450.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -512.0
-margin_top = -150.0
-margin_right = 512.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 alignment = 1
 
-[node name="unit_editor" type="Button" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 298.0
 margin_top = 45.0
 margin_right = 438.0
@@ -55,7 +55,7 @@ custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Unit Editor"
 
-[node name="play" type="Button" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="play" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 442.0
 margin_top = 45.0
 margin_right = 582.0
@@ -66,7 +66,7 @@ custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Play"
 
-[node name="map_editor" type="Button" parent="CanvasLayer/Control/HBoxContainer"]
+[node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 586.0
 margin_top = 45.0
 margin_right = 726.0
@@ -76,4 +76,4 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 text = "Map Editor"
 
-[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]

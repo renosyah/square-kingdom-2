@@ -15,7 +15,6 @@ func change_scene(scene :String, use :bool = false, bg_idx :int = 0):
 		_animation_player.play("show")
 		
 		yield(_animation_player,"animation_finished")
-		yield(get_tree().create_timer(1), "timeout")
 		_has_session = true
 	
 	get_tree().change_scene(scene)

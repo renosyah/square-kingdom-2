@@ -15,7 +15,7 @@ export var center_pos :Vector3 = Vector3(0, 0, 2)
 export var camera_limit_bound :Vector3  = Vector3(3, 0, 2)
 export var detect_in_out :bool
 
-var move_speed := 0.018
+export var move_speed :float = 0.018
 var zoom_speed := 0.02
 
 # touchscreen
@@ -54,7 +54,7 @@ func _is_camera_enter_down_up():
 	
 	_enable_check = true
 	
-func _unhandled_input(event):
+func _on_movable_camera_ui_gui_input(event):
 	if _use_mouse:
 		_unhandled_input_mouse(event)
 	else:
@@ -133,6 +133,10 @@ func _move_target(relative):
 		target.translation = pos
 
 func _is_point_inside_area(point: Vector2) -> bool:
-	var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
-	var y: bool = point.y >= rect_global_position.y and point.y <= rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)
-	return x and y
+	return true
+#	var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
+#	var y: bool = point.y >= rect_global_position.y and point.y <= rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)
+#	return x and y
+
+
+

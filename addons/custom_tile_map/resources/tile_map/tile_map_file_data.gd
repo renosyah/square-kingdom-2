@@ -3,7 +3,7 @@ class_name TileMapFileData
 
 var tile_ids :Dictionary # { Vector2: int }
 var tiles : Array # [ TileMapData ]
-var navigations : Dictionary # {int (LAYER_ID):[ NavigationData ]}
+var navigations : Array # [(index as LAYER_ID) [ NavigationData ]]
 
 func from_dictionary(_data : Dictionary):
 	tile_ids = _data["a"].duplicate() # { Vector2: int }
@@ -14,14 +14,15 @@ func from_dictionary(_data : Dictionary):
 		x.from_dictionary(i)
 		tiles.append(x)
 		
-	navigations = {} # {int:[ NavigationData ]}
-	for key in _data["c"].keys():
-		navigations[key] = []
-		
-		for i in _data["c"][key]:
+	navigations = [] # [(index as LAYER_ID) [ NavigationData ]]
+	for i in _data["c"]:
+		var datas :Array = []
+		for nav in i:
 			var x :NavigationData = NavigationData.new()
-			x.from_dictionary(i)
-			navigations[key].append(x)
+			x.from_dictionary(nav)
+			datas.append(x)
+			
+		navigations.append(datas)
 		
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = {}
@@ -32,13 +33,15 @@ func to_dictionary() -> Dictionary :
 		var x :TileMapData = i
 		_data["b"].append(x.to_dictionary())
 		
-	_data["c"] = {} # {int:[ NavigationData ]}
-	for key in navigations.keys():
-		_data["c"] = []
+	_data["c"] = [] # [(index as LAYER_ID) [ NavigationData ]]
+	for i in navigations:
+		var datas :Array = []
 		
-		for i in navigations[key]:
-			var x :NavigationData = i
-			_data["c"].append(x.to_dictionary())
+		for nav in i:
+			var x :NavigationData = nav
+			datas.append(x.to_dictionary())
+			
+		_data["c"].append(datas)
 		
 	return _data
 	
