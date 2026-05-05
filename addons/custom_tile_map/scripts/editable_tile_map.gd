@@ -23,6 +23,7 @@ func load_data_map(data: TileMapFileData, is_editor:bool = false):
 	_is_editor = is_editor
 	_tile_map_data = data
 	
+	_nav_tile_map.load_data_nav(_tile_map_data.navigations)
 	_spawn_tiles()
 	
 	yield(get_tree(),"idle_frame")
@@ -115,6 +116,7 @@ func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
 	tile.name = 'tile_%s' % data.id
 	add_child(tile)
+	tile.rotation_degrees.y = _get_rotation_idx_value(data.rotation_idx)
 	tile.translation = global_position + data.pos
 	
 #	if _is_editor:
@@ -122,6 +124,15 @@ func _spawn_tile(data :TileMapData) -> BaseTile:
 #		tile.translation.z = tile.translation.z * 1.02
 		
 	return tile
+
+func _get_rotation_idx_value(v :int) -> float:
+	if v == 1:
+		return 90.0
+	if v == 2:
+		return 180.0
+	if v == 3:
+		return 270.0
+	return 0.0
 
 func _ids_to_tile_nodes(ids :Array) -> Array:
 	var datas = []

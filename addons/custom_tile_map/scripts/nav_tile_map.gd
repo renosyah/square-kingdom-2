@@ -1,6 +1,8 @@
 extends Node
 class_name NavTileMap
 
+var _navigation_datas :Array # as refrences
+
 # faster way to get id
 var _navigation_ids :Dictionary = {} # {int:[ Vector2:int ]}
 var _navigation_pos :Dictionary = {} # {Vector2:Vector3}
@@ -13,11 +15,14 @@ func _ready():
 	set_process(false)
 	set_physics_process(false)
 	
-func load_data_nav(navigation_datas :Dictionary):
+func load_data_nav(navigation_datas :Array):
+	_navigation_datas = navigation_datas
 	_clean()
 	
-	for layer in navigation_datas.keys():
-		_load_data_nav(layer, navigation_datas[layer])
+	var layer = 0
+	for data in navigation_datas:
+		_load_data_nav(layer, data)
+		layer += 1
 		
 func is_nav_enable(layer_id :int, id :Vector2) -> bool:
 	if _get_navigation_id(layer_id, id) == -1:
@@ -29,7 +34,20 @@ func enable_nav_tile(layer_id :int, id :Vector2, enable :bool):
 	var navigation_id :int = _get_navigation_id(layer_id, id)
 	if navigation_id != -1:
 		_enable_nav_tile(_navigations[layer_id], navigation_id, enable)
-	
+		_navigation_datas[layer_id]
+		
+		# update to _navigation_datas refrences
+		var nav_data :NavigationData
+		for i in _navigation_datas[layer_id]:
+			if i.id == id:
+				nav_data = i
+				break
+		
+		if not nav_data:
+			return
+			
+		nav_data.enable = enable
+			
 # param blocked_ids is usefull for 
 # seting temporary blocked tile
 # like ally unit in the way

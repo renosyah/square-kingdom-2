@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scenes/tiles/plane.tres" type="PlaneMesh" id=1]
+[ext_resource path="res://scenes/tiles/models/plane.tres" type="PlaneMesh" id=1]
 [ext_resource path="res://addons/custom_tile_map/scripts/base_tile.gd" type="Script" id=2]
-[ext_resource path="res://scenes/tiles/ground_material.tres" type="Material" id=3]
+[ext_resource path="res://scenes/tiles/materials/ground_material.tres" type="Material" id=3]
 
 [node name="ground" type="Spatial"]
 script = ExtResource( 2 )

@@ -6,6 +6,8 @@ onready var editable_tile_map = $editable_tile_map
 onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
 
+var nav :NavTileMap
+
 func _ready():
 	ui.random.connect("pressed", self, "_on_random_button_press")
 	ui.nav_toggle.connect("pressed", self, "_on_nav_toggle_button_press")
@@ -32,21 +34,30 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 	noise.persistence = 0.856
 	noise.lacunarity = 1.745
 	
+	var trees = [4,5,6,7]
+	var rocks = [8,9,10]
+	var rotate = [0,1,2]
+	
 	for i in map_data.tiles:
 		var x :TileMapData = i
-		
 		x.scene_idx = 0
+		
 		if x.id in untouch:
 			continue
+			
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		if value > 0.4 and value < 0.5:
 			if rng.randf() < 0.2:
-				x.scene_idx = 4
+				x.rotation_idx = Utils.get_random(rng, rotate)
+				x.scene_idx = Utils.get_random(rng, rocks)
 				blocked.append(x.id)
+				
 		elif value > 0.3 and value < 0.4:
 			if rng.randf() < 0.4:
-				x.scene_idx = 5
+				x.rotation_idx = Utils.get_random(rng, rotate)
+				x.scene_idx = Utils.get_random(rng, trees)
 				blocked.append(x.id)
+				
 		elif value > 0.2 and value < 0.3:
 			x.scene_idx = 1
 		elif value > 0.1 and value < 0.2:
@@ -79,7 +90,48 @@ func _on_nav_toggle_button_press():
 	highlights.visible = not highlights.visible
 	
 func _on_editable_tile_map_on_map_ready():
+	nav = editable_tile_map.get_nav_tile_map()
 	display_selected_nav(0)
 	
 func _on_clickable_floor_on_floor_clicked(pos):
 	var tile :TileMapData = editable_tile_map.get_closes_tile(pos)
+
+func _on_ui_on_tile_card_dropped(posv2 :Vector2, tile_data :TileMapData):
+	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
+	
+	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
+	tile_data.id = tile.id
+	tile_data.pos = tile.pos
+	
+	editable_tile_map.update_spawned_tile(tile_data)
+	
+func _on_editable_tile_map_on_tile_updated(id, data, node):
+	ui.minimap.update_spawned_tile(data)
+	nav.enable_nav_tile(0, id, data.scene_idx in [0,1,2])
+	display_selected_nav(0)
+
+func _on_ui_on_nav_card_dropped(posv2, enable):
+	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
+	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
+	nav.enable_nav_tile(0, tile.id, enable)
+	display_selected_nav(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

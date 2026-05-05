@@ -97,6 +97,10 @@ static func shuffle_array(rng :RandomNumberGenerator, array: Array) -> void:
 		array[i] = array[j]
 		array[j] = temp
 		
+static func get_random(rng :RandomNumberGenerator, array: Array):
+	var j = rng.randi_range(0, array.size() - 1)
+	return array[j]
+	
 static func format_number(n: int):
 	if n >= 1000000000:
 		return "%.1fB" % (n / 1000000000.0)

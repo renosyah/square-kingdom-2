@@ -5,6 +5,7 @@ export (Array, PackedScene) var tile_scenes :Array
 export var rotation_rad :float
 export var offset :Vector2
 
+var _spawned_tiles :Dictionary = {} # { Vector2 : Tile2D }
 var _tile_map_data :TileMapFileData
 var _click_position :Vector2
 
@@ -26,9 +27,20 @@ func load_data_map(data: TileMapFileData):
 	_clean()
 	_spawn_tiles()
 	
+func update_spawned_tile(data :TileMapData):
+	var _spawned_tile :Tile2D = _spawned_tiles[data.id]
+	
+	# remove old
+	_spawned_tile.queue_free()
+	_spawned_tiles.erase(data.id)
+	
+	# spawn new
+	var tile :Tile2D = _spawn_tile(data)
+	_spawned_tiles[data.id] = tile
+	
 func _spawn_tiles():
 	for i in _tile_map_data.tiles:
-		_spawn_tile(i)
+		_spawned_tiles[i.id] = _spawn_tile(i)
 	
 func _spawn_tile(data :TileMapData) -> Tile2D:
 	var tile :Tile2D = tile_scenes[data.scene_idx].instance()
@@ -41,7 +53,8 @@ func _clean():
 	for child in _map.get_children():
 		_map.remove_child(child)
 		child.queue_free()
-
+		
+	_spawned_tiles.clear()
 
 
 
