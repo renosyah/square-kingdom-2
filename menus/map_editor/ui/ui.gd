@@ -7,6 +7,8 @@ onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Margin
 onready var random = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/random
 onready var nav_toggle = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/nav_toggle
 
+onready var minimap_size = minimap.rect_size
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Global.hide_transition()

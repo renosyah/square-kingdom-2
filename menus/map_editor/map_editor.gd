@@ -37,38 +37,31 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 	
 	for i in map_data.tiles:
 		var x :TileMapData = i
+		x.scene_idx = 0
 		
 		if x.id in untouch:
-			x.scene_idx = 0
 			continue
 		
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
-		if value > 0.4:
-			x.scene_idx = 0
-			
+		
+		if value > 0.4 and value < 0.5:
 			if rng.randf() < 0.2:
 				x.scene_idx = 4
 				blocked.append(x.id)
 				
-		elif value > 0.3:
-			x.scene_idx = 0
-			
+		elif value > 0.3 and value < 0.4:
 			if rng.randf() < 0.4:
-				x.scene_idx = 3
+				x.scene_idx = 5
 				blocked.append(x.id)
 				
-		elif value > 0.2:
-			x.scene_idx = 0
-			
-		elif value > 0.1:
+		elif value > 0.2 and value < 0.3:
 			x.scene_idx = 1
 			
-		elif value <= 0.1:
+		elif value > 0.1 and value < 0.2:
 			x.scene_idx = 2
-			blocked.append(x.id)
 			
-		elif value < 0.0:
-			x.tile_type = 2
+		elif value < 0.1:
+			x.scene_idx = 3
 			blocked.append(x.id)
 			
 	for i in map_data.navigations[0]:
