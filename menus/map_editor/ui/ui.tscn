@@ -608,8 +608,14 @@ anchor_right = 0.5
 margin_left = -50.0
 margin_right = 50.0
 
-[node name="list_map" parent="CanvasLayer/Control" instance=ExtResource( 26 )]
+[node name="list_map_bg" type="ColorRect" parent="CanvasLayer/Control"]
 visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+color = Color( 0, 0, 0, 0.909804 )
+
+[node name="list_map" parent="CanvasLayer/Control/list_map_bg" instance=ExtResource( 26 )]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -623,3 +629,4 @@ margin_bottom = 232.0
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
+[connection signal="close" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_close"]

@@ -8,3 +8,6 @@ func _ready():
 
 func _on_map_editor_pressed():
 	list_map.visible = not list_map.visible
+
+func _on_list_map_close():
+	list_map.visible = false

@@ -71,7 +71,7 @@ custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Unit Editor"
 
-[node name="play" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 442.0
 margin_top = 45.0
 margin_right = 582.0
@@ -80,7 +80,7 @@ rect_min_size = Vector2( 140, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 disabled = true
-text = "Play"
+text = "Play Battle"
 
 [node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 586.0
@@ -92,4 +92,5 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 text = "Map Editor"
 
+[connection signal="close" from="CanvasLayer/Control/list_map" to="." method="_on_list_map_close"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
