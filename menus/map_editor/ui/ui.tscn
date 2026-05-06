@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/icons/exit.png" type="Texture" id=2]
@@ -24,6 +24,8 @@
 [ext_resource path="res://scenes/minimap/tile_2d/rock.tscn" type="PackedScene" id=22]
 [ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/minimap/tile_2d/sand.tscn" type="PackedScene" id=24]
+[ext_resource path="res://assets/snack_bar/snack_bar.tscn" type="PackedScene" id=25]
+[ext_resource path="res://menus/list_maps/list_map.tscn" type="PackedScene" id=26]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -600,6 +602,24 @@ rect_min_size = Vector2( 80, 80 )
 rect_pivot_offset = Vector2( 40, 40 )
 mouse_filter = 2
 
+[node name="snack_bar" parent="CanvasLayer/Control" instance=ExtResource( 25 )]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -50.0
+margin_right = 50.0
+
+[node name="list_map" parent="CanvasLayer/Control" instance=ExtResource( 26 )]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -415.5
+margin_top = -232.0
+margin_right = 415.5
+margin_bottom = 232.0
+
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]

@@ -2,7 +2,7 @@ extends MarginContainer
 
 const edit_map_button = preload("res://menus/list_maps/item/edit_map_button.tscn")
 
-onready var grid_container = $HBoxContainer/ScrollContainer/GridContainer
+onready var grid_container = $VBoxContainer/HBoxContainer/ScrollContainer/GridContainer
 onready var loaded_maps_edit_buttons = []
 
 func _ready():

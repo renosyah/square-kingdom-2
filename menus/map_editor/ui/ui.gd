@@ -11,6 +11,9 @@ onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Margin
 onready var random = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/random
 onready var nav_toggle = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/nav_toggle
 onready var dragable_item = $CanvasLayer/Control/dragable_item
+onready var snack_bar = $CanvasLayer/Control/snack_bar
+onready var list_map = $CanvasLayer/Control/list_map
+
 onready var minimap_size = minimap.rect_size
 
 onready var tile_cards = [
@@ -36,6 +39,7 @@ onready var tile_cards_contents = [
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	list_map.visible = false
 	Global.hide_transition()
 	minimap.load_data_map(Global.current_tile_map_file_data)
 	
@@ -104,6 +108,12 @@ func _on_cam_rot_reset_pressed():
 
 func _on_save_pressed():
 	Global.save_edited_map(minimap.get_viewport())
+	snack_bar.text = "Map Saved!"
+	snack_bar.show()
+
+func _on_load_pressed():
+	list_map.visible = not list_map.visible
+
 
 
 

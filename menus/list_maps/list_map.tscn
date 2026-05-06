@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://menus/list_maps/list_map.gd" type="Script" id=1]
 [ext_resource path="res://menus/list_maps/item/add_map_button.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=3]
 
 [node name="list_map" type="MarginContainer"]
 margin_right = 831.0
@@ -17,34 +18,49 @@ rect_min_size = Vector2( 0, 150 )
 mouse_filter = 2
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 831.0
 margin_bottom = 464.0
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
-margin_right = 24.0
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 831.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+custom_fonts/font = ExtResource( 3 )
+text = "List Map"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 64.0
+margin_right = 831.0
 margin_bottom = 464.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 24.0
+margin_bottom = 400.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 28.0
 margin_right = 228.0
-margin_bottom = 464.0
+margin_bottom = 400.0
 mouse_filter = 2
 scroll_horizontal_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="HBoxContainer/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/ScrollContainer"]
 margin_right = 200.0
 margin_bottom = 200.0
 mouse_filter = 2
 columns = 4
 
-[node name="add_map_button" parent="HBoxContainer/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
+[node name="add_map_button" parent="VBoxContainer/HBoxContainer/ScrollContainer/GridContainer" instance=ExtResource( 2 )]
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 232.0
 margin_right = 256.0
-margin_bottom = 464.0
+margin_bottom = 400.0
 rect_min_size = Vector2( 24, 0 )
 
-[connection signal="pressed" from="HBoxContainer/ScrollContainer/GridContainer/add_map_button" to="." method="_on_add_map_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ScrollContainer/GridContainer/add_map_button" to="." method="_on_add_map_button_pressed"]
