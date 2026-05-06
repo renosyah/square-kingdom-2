@@ -7,7 +7,6 @@ export var offset :Vector2
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : Tile2D }
 var _tile_map_data :TileMapFileData
-var _click_position :Vector2
 
 onready var _viewport :Viewport = $ViewportContainer/Viewport
 onready var _map :Node2D = $ViewportContainer/Viewport/map
@@ -26,6 +25,9 @@ func load_data_map(data: TileMapFileData):
 	
 	_clean()
 	_spawn_tiles()
+	
+func get_viewport() -> Viewport:
+	return _viewport
 	
 func update_spawned_tile(data :TileMapData):
 	var _spawned_tile :Tile2D = _spawned_tiles[data.id]

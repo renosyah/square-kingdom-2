@@ -78,7 +78,7 @@ func _load_data_nav(layer_id :int, navigation_map :Array):
 	
 	_maping_ids(_navigation_id, navigation_map)
 	_add_point(_navigation, navigation_map)
-	_connect_point(_navigation, navigation_map)
+	_connect_point(_navigation, navigation_map, layer_id)
 	_set_obstacle(_navigation, navigation_map)
 	
 # if return were -1 = not found
@@ -129,11 +129,18 @@ func _maping_ids(_navigation_id :Dictionary, data :Array):
 		_navigation_id[x.id] = x.navigation_id
 		_navigation_pos[x.id] = x.pos
 		
-func _connect_point(nav :AStar2D, data :Array):
+func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 	for i in data:
 		var x :NavigationData = i
-		for next_id in x.neighbors:
-			nav.connect_points(x.navigation_id, next_id, false)
+		var neighbors :Array = TileMapUtils.get_directions() if x.neighbor_mode == 0 else TileMapUtils.ARROW_DIRECTIONS
+		for id in neighbors:
+			var next_id :Vector2 = id + x.id
+			if not _navigation_ids[layer_id].has(next_id):
+				continue
+				
+			var nex_nav_id :int = _navigation_ids[layer_id][next_id]
+			if nav.has_point(nex_nav_id):
+				nav.connect_points(x.navigation_id, nex_nav_id, false)
 		
 func _set_obstacle(nav :AStar2D, data :Array):
 	for i in data:

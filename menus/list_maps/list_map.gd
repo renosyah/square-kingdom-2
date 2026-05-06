@@ -1,0 +1,33 @@
+extends MarginContainer
+
+const edit_map_button = preload("res://menus/list_maps/item/edit_map_button.tscn")
+
+onready var grid_container = $HBoxContainer/ScrollContainer/GridContainer
+onready var loaded_maps_edit_buttons = []
+
+func _ready():
+	Global.load_maps()
+	_show_maps()
+
+func _show_maps():
+	for i in loaded_maps_edit_buttons:
+		grid_container.remove_child(i)
+		
+	loaded_maps_edit_buttons.clear()
+	
+	for i in Global.current_tile_map_manifest_datas:
+		var data :TileMapFileManifest = i
+		var loaded_maps_edit_button = edit_map_button.instance()
+		loaded_maps_edit_button.data = data
+		loaded_maps_edit_button.connect("pressed", self, "_loaded_maps_edit_button_pressed")
+		grid_container.add_child(loaded_maps_edit_button)
+		grid_container.move_child(loaded_maps_edit_button, 0)
+		loaded_maps_edit_buttons.append(loaded_maps_edit_button)
+	
+func _loaded_maps_edit_button_pressed(manif :TileMapFileManifest):
+	yield(Global.set_active_map(manif),"completed")
+	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+	
+func _on_add_map_button_pressed():
+	Global.empty_map_data()
+	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)

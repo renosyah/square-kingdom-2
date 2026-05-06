@@ -101,3 +101,17 @@ func _on_back_pressed():
 func _on_cam_rot_reset_pressed():
 	var cam :Spatial = movable_camera_ui.target
 	cam.rotation_degrees.y = 45
+
+func _on_save_pressed():
+	Global.save_edited_map(minimap.get_viewport())
+
+
+
+
+
+
+
+
+
+
+

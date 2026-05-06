@@ -78,6 +78,7 @@ func display_selected_nav(layer_id :int):
 		var n :NavigationData = i
 		var h = preload("res://assets/tile_highlight/tile_highlight.tscn").instance()
 		highlights.add_child(h)
+		h.set_text("%s\n%s" % [n.id, n.navigation_id])
 		h.enable(n.enable)
 		h.translation = n.pos
 		

@@ -91,9 +91,17 @@ func null_map_data():
 	current_tile_map_manifest_data = null
 	current_tile_map_file_data = null
 	
-func save_edited_map():
+func set_active_map(manif :TileMapFileManifest):
+	current_tile_map_manifest_data = manif
+	
+	save_load_map.load_data_async(manif.map_file_path,false)
+	var results = yield(save_load_map,"load_done")
+	current_tile_map_file_data = TileMapFileData.new()
+	current_tile_map_file_data.from_dictionary(results[1])
+	
+func save_edited_map(vp :Viewport):
 	var map_file = yield(_save_map(),"completed")
-	yield(_save_manifest(map_file),"completed")
+	yield(_save_manifest(map_file,vp),"completed")
 	
 func _save_map() -> String:
 	var map_name = current_tile_map_manifest_data.map_name
@@ -102,18 +110,18 @@ func _save_map() -> String:
 	yield(save_load_map,"save_done")
 	return file_path
 	
-func _save_manifest(map_file:String):
+func _save_manifest(map_file:String,vp :Viewport):
 	var map_name = current_tile_map_manifest_data.map_name
 	var file_path = "user://%s/%s.manifest" % [map_dir, map_name]
-	var img_path = yield(save_ss(map_name), "completed")
+	var img_path = yield(save_ss(map_name,vp), "completed")
 	current_tile_map_manifest_data.map_image_file_path = img_path
 	current_tile_map_manifest_data.map_file_path = map_file
 	
 	# uses save load, cause data not that many LOL
 	SaveLoad.save(file_path, current_tile_map_manifest_data.to_dictionary(), false)
 	
-func save_ss(map_name:String) -> String:
-	var img: Image = get_viewport().get_texture().get_data()
+func save_ss(map_name:String, vp :Viewport) -> String:
+	var img: Image = vp.get_texture().get_data()
 	img.flip_y()
 	
 	var w = img.get_width()

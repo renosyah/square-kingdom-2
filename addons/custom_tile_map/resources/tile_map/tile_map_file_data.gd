@@ -15,7 +15,7 @@ func from_dictionary(_data : Dictionary):
 		tiles.append(x)
 		
 	navigations = [] # [(index as LAYER_ID) [ NavigationData ]]
-	for i in _data["c"]:
+	for i in _data["d"]:
 		var datas :Array = []
 		for nav in i:
 			var x :NavigationData = NavigationData.new()
@@ -33,7 +33,7 @@ func to_dictionary() -> Dictionary :
 		var x :TileMapData = i
 		_data["b"].append(x.to_dictionary())
 		
-	_data["c"] = [] # [(index as LAYER_ID) [ NavigationData ]]
+	_data["d"] = [] # [(index as LAYER_ID) [ NavigationData ]]
 	for i in navigations:
 		var datas :Array = []
 		
@@ -41,7 +41,7 @@ func to_dictionary() -> Dictionary :
 			var x :NavigationData = nav
 			datas.append(x.to_dictionary())
 			
-		_data["c"].append(datas)
+		_data["d"].append(datas)
 		
 	return _data
 	

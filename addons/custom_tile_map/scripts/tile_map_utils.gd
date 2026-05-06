@@ -19,7 +19,7 @@ const DIAGONAL_DIRECTIONS = [
 # 4 → 9 × 9
 # 6 → 13 × 13
 # 8 → 17 × 17
-static func generate_empty_tile_map(size :int, dirs :Array = get_directions(), nav_dirs :Array = ARROW_DIRECTIONS) -> TileMapFileData:
+static func generate_empty_tile_map(size :int, dirs :Array = get_directions(),neighbor_mode :int= 0, nav_dirs :Array = ARROW_DIRECTIONS) -> TileMapFileData:
 	var tiles = get_adjacent_tiles(dirs, Vector2.ZERO, size)
 	tiles.push_front(Vector2.ZERO)
 	
@@ -43,15 +43,9 @@ static func generate_empty_tile_map(size :int, dirs :Array = get_directions(), n
 		var nav_data :NavigationData = NavigationData.new()
 		nav_data.id = tile_data.id
 		nav_data.pos = tile_data.pos
+		nav_data.neighbor_mode = neighbor_mode
 		nav_data.navigation_id = tile_ids[tile_data.id]
 		nav_data.enable = true
-		nav_data.neighbors = []
-		
-		var _tiles = get_adjacent_tiles(nav_dirs, tile_data.id)
-		for i in _tiles:
-			if tile_ids.has(i):
-				nav_data.neighbors.append(tile_ids[i])
-				
 		navigations.append(nav_data)
 		
 	var map_data :TileMapFileData = TileMapFileData.new()
