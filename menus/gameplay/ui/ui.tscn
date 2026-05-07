@@ -1,17 +1,18 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://menus/gameplay/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fps_ping_displayer/fps_ping_displayer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=4]
 [ext_resource path="res://scenes/minimap/tile_2d/sea.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/minimap/tile_2d/sand.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/minimap/minimap.tscn" type="PackedScene" id=8]
+[ext_resource path="res://menus/gameplay/ui/dialog_menu/dialog_menu.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/minimap/tile_2d/ground.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/minimap/tile_2d/mud.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/minimap/tile_2d/rock.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=14]
-[ext_resource path="res://assets/user_interface/icons/exit.png" type="Texture" id=19]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -63,7 +64,7 @@ margin_left = 904.0
 margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 120, 60 )
-icon = ExtResource( 19 )
+icon = ExtResource( 4 )
 icon_align = 1
 expand_icon = true
 
@@ -198,5 +199,9 @@ center_pos = Vector3( 0, 0, 0 )
 camera_limit_bound = Vector3( 10, 0, 10 )
 move_speed = 0.074
 
+[node name="dialog_menu" parent="CanvasLayer/Control" instance=ExtResource( 9 )]
+visible = false
+
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
+[connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]

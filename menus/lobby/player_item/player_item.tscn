@@ -45,7 +45,7 @@ script = ExtResource( 2 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 319.0
 margin_bottom = 80.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.137255, 0.137255, 0.137255, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 319.0
@@ -56,12 +56,26 @@ margin_right = 24.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
 margin_left = 28.0
 margin_top = 10.0
 margin_right = 88.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 60, 60 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+color = Color( 0.309804, 0.309804, 0.309804, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -27.5
+margin_top = -27.5
+margin_right = 27.5
+margin_bottom = 27.5
+rect_min_size = Vector2( 55, 55 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource( 3 )

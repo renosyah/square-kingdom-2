@@ -2,8 +2,12 @@ extends Control
 
 const player_item_scene = preload("res://menus/lobby/player_item/player_item.tscn")
 
-onready var player_holder = $CanvasLayer/Control/Control/VBoxContainer/ScrollContainer/VBoxContainer
+onready var player_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer
 onready var battle = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/battle
+onready var minimap = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap
+onready var map_name = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/map_name
+onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/map_size
+
 var player_map_data_received :Array = []
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +23,12 @@ func _ready():
 	
 	if NetworkLobbyManager.is_server():
 		battle.visible = true
+		var manif = Global.current_tile_map_manifest_data
+		map_name.text = "Map Name : %s" % manif.map_name
+		map_size.text = "Size : %s" % manif.map_size
+		
 		_on_lobby_player_update(NetworkLobbyManager.get_players())
+		minimap.load_data_map(Global.current_tile_map_file_data)
 		
 	else:
 		battle.visible = false
@@ -48,6 +57,7 @@ remote func _request_map_data(from_id :int):
 		var2bytes(_manifest.to_dictionary()),
 		var2bytes(_map_data.to_dictionary())
 	)
+	
 # for join player
 remote func _receive_map_data(manifest: PoolByteArray, map_data: PoolByteArray):
 	var _manifest :TileMapFileManifest = TileMapFileManifest.new()
@@ -59,6 +69,10 @@ remote func _receive_map_data(manifest: PoolByteArray, map_data: PoolByteArray):
 	Global.current_tile_map_file_data = _map_data
 	
 	# tell host that you have receive map data
+	minimap.load_data_map(Global.current_tile_map_file_data)
+	map_name.text = "Map Name : %s" % _manifest.map_name
+	map_size.text = "Size : %s" % _manifest.map_size
+	
 	rpc_id(NetworkLobbyManager.host_id ,"_map_data_received" ,NetworkLobbyManager.get_id())
 		
 remote func _map_data_received(player_network_unique_id :int):

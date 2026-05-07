@@ -1,6 +1,7 @@
 extends Control
 class_name MiniMap
 
+export var cam_pos :bool = true
 export (Array, PackedScene) var tile_scenes :Array
 export var rotation_rad :float
 export var offset :Vector2
@@ -10,11 +11,13 @@ var _tile_map_data :TileMapFileData
 
 onready var _viewport :Viewport = $ViewportContainer/Viewport
 onready var _map :Node2D = $ViewportContainer/Viewport/map
+onready var _nine_patch_rect_2 = $NinePatchRect2
 
 func _ready():
 	set_process(true)
 	set_physics_process(false)
 	_viewport.size = rect_size
+	_nine_patch_rect_2.visible = cam_pos
 	
 func _process(delta):
 	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, -30)
