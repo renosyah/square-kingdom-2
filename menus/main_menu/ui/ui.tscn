@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://menus/main_menu/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/background/splash.png" type="Texture" id=3]
 [ext_resource path="res://menus/list_maps/list_map.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=5]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -26,41 +27,80 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 7
 
-[node name="list_map" parent="CanvasLayer/Control" instance=ExtResource( 4 )]
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -400.0
-margin_top = -200.0
-margin_right = 400.0
-margin_bottom = 126.0
-
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 alignment = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
+[node name="list_map" parent="CanvasLayer/Control/VBoxContainer" instance=ExtResource( 4 )]
+visible = false
+margin_right = 1024.0
+margin_bottom = 446.0
+size_flags_vertical = 3
+
+[node name="play" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
+visible = false
+margin_right = 1024.0
+margin_bottom = 446.0
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/play"]
+margin_right = 1024.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 0, 150 )
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/play"]
+margin_right = 1024.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 0, 150 )
+alignment = 1
+
+[node name="host" type="Button" parent="CanvasLayer/Control/VBoxContainer/play/HBoxContainer"]
+margin_left = 342.0
+margin_top = 163.0
+margin_right = 502.0
+margin_bottom = 283.0
+rect_min_size = Vector2( 160, 120 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+text = "Host"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/play/HBoxContainer"]
+margin_left = 506.0
+margin_right = 518.0
+margin_bottom = 446.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="join" type="Button" parent="CanvasLayer/Control/VBoxContainer/play/HBoxContainer"]
+margin_left = 522.0
+margin_top = 163.0
+margin_right = 682.0
+margin_bottom = 283.0
+rect_min_size = Vector2( 160, 120 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+text = "Join"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
 margin_top = 450.0
 margin_right = 1024.0
 margin_bottom = 600.0
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2"]
 margin_right = 1024.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2"]
 margin_right = 1024.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 alignment = 1
 
-[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 298.0
 margin_top = 45.0
 margin_right = 438.0
@@ -71,7 +111,7 @@ custom_fonts/font = ExtResource( 2 )
 disabled = true
 text = "Unit Editor"
 
-[node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 442.0
 margin_top = 45.0
 margin_right = 582.0
@@ -79,10 +119,9 @@ margin_bottom = 105.0
 rect_min_size = Vector2( 140, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-disabled = true
 text = "Play Battle"
 
-[node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 586.0
 margin_top = 45.0
 margin_right = 726.0
@@ -92,5 +131,9 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 text = "Map Editor"
 
-[connection signal="close" from="CanvasLayer/Control/list_map" to="." method="_on_list_map_close"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
+[connection signal="close" from="CanvasLayer/Control/VBoxContainer/list_map" to="." method="_on_list_map_close"]
+[connection signal="selected_map" from="CanvasLayer/Control/VBoxContainer/list_map" to="." method="_on_list_map_selected_map"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/play/HBoxContainer/host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/play/HBoxContainer/join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/play_battle" to="." method="_on_play_battle_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]

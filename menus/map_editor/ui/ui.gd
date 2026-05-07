@@ -40,9 +40,12 @@ onready var tile_cards_contents = [
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	list_map_bg.visible = false
+	get_tree().set_quit_on_go_back(false)
+	get_tree().set_auto_accept_quit(false)
 	
 	Global.hide_transition()
+	
+	list_map_bg.visible = false
 	minimap.load_data_map(Global.current_tile_map_file_data)
 	
 	var idx = 0
@@ -52,7 +55,20 @@ func _ready():
 		card.connect("on_release", self, "_on_card_on_release", [idx])
 		card.connect("on_cancel", self, "_on_card_on_cancel")
 		idx += 1
-
+		
+func _notification(what):
+	match what:
+		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+			on_back_pressed()
+			return
+			
+		MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST: 
+			on_back_pressed()
+			return
+			
+func on_back_pressed():
+	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
+	
 func _process(delta):
 	var cam :Spatial = movable_camera_ui.target
 	if cam_rot_l.pressed:
@@ -102,12 +118,16 @@ func _on_card_on_cancel(card):
 	_child.queue_free()
 	
 func _on_back_pressed():
-	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
-
+	on_back_pressed()
+	
 func _on_cam_rot_reset_pressed():
 	var cam :Spatial = movable_camera_ui.target
 	cam.rotation_degrees.y = 45
 
+func _on_list_map_selected_map(manif :TileMapFileManifest):
+	yield(Global.set_active_map(manif),"completed")
+	get_tree().reload_current_scene()
+	
 func _on_save_pressed():
 	yield(Global.save_edited_map(minimap.get_viewport()), "completed")
 	
@@ -121,6 +141,8 @@ func _on_load_pressed():
 
 func _on_list_map_close():
 	list_map_bg.visible = false
+
+
 
 
 

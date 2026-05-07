@@ -1,5 +1,6 @@
 extends MarginContainer
 
+signal selected_map(data)
 signal close
 
 const edit_map_button = preload("res://menus/list_maps/item/edit_map_button.tscn")
@@ -30,13 +31,11 @@ func _show_maps():
 		loaded_maps_edit_buttons.append(loaded_maps_edit_button)
 	
 func _loaded_maps_edit_button_pressed(manif :TileMapFileManifest):
-	yield(Global.set_active_map(manif),"completed")
-	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+	emit_signal("selected_map", manif)
 	
 func _on_add_map_button_pressed():
 	Global.empty_map_data()
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
-
 
 func _on_back_pressed():
 	emit_signal("close")

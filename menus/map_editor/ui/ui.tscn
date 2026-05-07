@@ -176,6 +176,7 @@ margin_left = 380.0
 margin_right = 440.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 0 )
+disabled = true
 icon = ExtResource( 11 )
 flat = true
 icon_align = 1
@@ -199,6 +200,7 @@ margin_left = 840.0
 margin_right = 900.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 0 )
+disabled = true
 icon = ExtResource( 10 )
 icon_align = 1
 expand_icon = true
@@ -630,3 +632,4 @@ margin_bottom = 232.0
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="close" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_close"]
+[connection signal="selected_map" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_selected_map"]
