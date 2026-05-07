@@ -73,9 +73,15 @@ margin_bottom = 600.0
 expand = true
 stretch_mode = 7
 
+[node name="ColorRect" type="ColorRect" parent="transision_screen"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.670588 )
+
 [node name="Control" type="Control" parent="transision_screen"]
 margin_right = 1024.0
 margin_bottom = 600.0
+rect_min_size = Vector2( 80, 80 )
 
 [node name="loading" parent="transision_screen/Control" instance=ExtResource( 2 )]
 anchor_left = 0.5

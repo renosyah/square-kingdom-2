@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://menus/gameplay/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/fps_ping_displayer/fps_ping_displayer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/minimap/tile_2d/sea.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/minimap/tile_2d/sand.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=7]
@@ -46,7 +47,12 @@ margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 
+[node name="fps_ping_displayer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_right = 160.0
+margin_bottom = 60.0
+
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 164.0
 margin_right = 900.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
