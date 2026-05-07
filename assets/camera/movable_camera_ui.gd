@@ -14,6 +14,7 @@ export var max_zoom :float = 6
 export var center_pos :Vector3 = Vector3(0, 0, 2)
 export var camera_limit_bound :Vector3  = Vector3(3, 0, 2)
 export var detect_in_out :bool
+export var use_unhandle :bool
 
 export var move_speed :float = 0.018
 var zoom_speed := 0.02
@@ -33,7 +34,15 @@ var _enable_check :bool = true
 onready var _use_mouse :bool = OS.get_name() in is_dekstop
 
 func _ready():
-	connect("gui_input", self, "_on_movable_camera_ui_gui_input")
+	if not use_unhandle:
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		connect("gui_input", self, "_on_movable_camera_ui_gui_input")
+	else:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _unhandled_input(event):
+	if use_unhandle:
+		_input_control(event)
 
 func _is_camera_enter_down_up():
 	if not detect_in_out:
@@ -58,12 +67,15 @@ func _is_camera_enter_down_up():
 	_enable_check = true
 	
 func _on_movable_camera_ui_gui_input(event):
+	_input_control(event)
+	
+func _input_control(event):
 	if _use_mouse:
-		_unhandled_input_mouse(event)
+		_input_mouse(event)
 	else:
-		_unhandled_input_touch(event)
+		_input_touch(event)
 		
-func _unhandled_input_mouse(event):
+func _input_mouse(event):
 	# Right mouse press
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_RIGHT:
@@ -84,7 +96,7 @@ func _unhandled_input_mouse(event):
 	if event is InputEventMouseMotion and dragging:
 		_move_target(event.relative)
 		
-func _unhandled_input_touch(event):
+func _input_touch(event):
 	if event is InputEventScreenTouch:
 		if not _is_point_inside_area(event.position):
 			return

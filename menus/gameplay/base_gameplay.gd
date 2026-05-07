@@ -80,6 +80,7 @@ onready var current_tile_map_manifest_data :TileMapFileManifest = Global.current
 onready var current_tile_map_file_data :TileMapFileData = Global.current_tile_map_file_data
 
 var tile_map :EditableTileMap
+var nav :NavTileMap
 
 func spawn_tile_map():
 	tile_map = preload("res://addons/custom_tile_map/scenes/editable_tile_map/editable_tile_map.tscn").instance()
@@ -105,6 +106,7 @@ func spawn_tile_map():
 	tile_position_manager.init_position(current_tile_map_manifest_data.map_size)
 	
 func _on_grand_map_ready():
+	nav = tile_map.get_nav_tile_map()
 	NetworkLobbyManager.set_ready()
 	
 ########################################## camera  ############################################

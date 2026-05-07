@@ -15,7 +15,7 @@ func from_dictionary(_data : Dictionary):
 	id = _data["b"]
 	enable = _data["c"]
 	pos = _data["d"]
-	_data["e"] = neighbor_mode
+	neighbor_mode = _data["e"]
 	
 func to_dictionary() -> Dictionary :
 	var data :Dictionary = {}

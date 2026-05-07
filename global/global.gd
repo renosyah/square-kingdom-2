@@ -85,7 +85,9 @@ func empty_map_data():
 	current_tile_map_manifest_data.map_name = RandomNameGenerator.generate_name()
 	current_tile_map_manifest_data.map_size = 8
 	
-	current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(current_tile_map_manifest_data.map_size)
+	current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(
+		current_tile_map_manifest_data.map_size, 1
+	)
 	
 func null_map_data():
 	current_tile_map_manifest_data = null

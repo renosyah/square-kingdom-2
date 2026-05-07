@@ -19,7 +19,7 @@ const DIAGONAL_DIRECTIONS = [
 # 4 → 9 × 9
 # 6 → 13 × 13
 # 8 → 17 × 17
-static func generate_empty_tile_map(size :int, dirs :Array = get_directions(),neighbor_mode :int= 0, nav_dirs :Array = ARROW_DIRECTIONS) -> TileMapFileData:
+static func generate_empty_tile_map(size :int, neighbor_mode :int = 0, dirs :Array = get_directions()) -> TileMapFileData:
 	var tiles = get_adjacent_tiles(dirs, Vector2.ZERO, size)
 	tiles.push_front(Vector2.ZERO)
 	
