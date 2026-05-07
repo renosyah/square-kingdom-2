@@ -59,6 +59,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/custom_tile_map/scripts/editable_tile_map.gd"
 }, {
+"base": "Control",
+"class": "GameplayUi",
+"language": "GDScript",
+"path": "res://menus/gameplay/ui/ui.gd"
+}, {
 "base": "BaseProjectile",
 "class": "IndirectProjectile",
 "language": "GDScript",
@@ -235,6 +240,7 @@ _global_script_class_icons={
 "ClickableScreen": "",
 "DragableCard": "",
 "EditableTileMap": "",
+"GameplayUi": "",
 "IndirectProjectile": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",

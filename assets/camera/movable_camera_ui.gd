@@ -32,6 +32,9 @@ onready var _label = $Label
 var _enable_check :bool = true
 onready var _use_mouse :bool = OS.get_name() in is_dekstop
 
+func _ready():
+	connect("gui_input", self, "_on_movable_camera_ui_gui_input")
+
 func _is_camera_enter_down_up():
 	if not detect_in_out:
 		return
