@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/tile_units/squad_member/squad_member.gd" type="Script" id=1]
+
+[node name="squad_member" type="Spatial"]
+script = ExtResource( 1 )

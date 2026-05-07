@@ -238,8 +238,12 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	update_spotting()
 	
 	if is_instance_valid(chase_enemy):
+		# stop the chase
+		# if chase_enemy is dead
 		if chase_enemy.is_dead:
 			chase_enemy = null
+			stop(false) 
+			return
 			
 		if _is_in_range(chase_enemy):
 			enemy = chase_enemy
@@ -257,8 +261,12 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	update_spotting()
 	
 	if is_instance_valid(chase_enemy):
+		# stop the chase
+		# continue scan area
 		if chase_enemy.is_dead:
 			chase_enemy = null
+			_scan_area()
+			return
 			
 		if not _is_in_range(chase_enemy):
 			chase_target()

@@ -37,7 +37,7 @@ _global_script_classes=[ {
 "base": "BaseEntity",
 "class": "BaseTileUnit",
 "language": "GDScript",
-"path": "res://addons/network_entities/tile_units/base_tile_unit.gd"
+"path": "res://scenes/tile_units/base_tile_unit.gd"
 }, {
 "base": "Spatial",
 "class": "ClickableFloor",
@@ -174,6 +174,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "BaseTileUnit",
+"class": "Squad",
+"language": "GDScript",
+"path": "res://scenes/tile_units/squad/squad.gd"
+}, {
+"base": "Spatial",
+"class": "SquadMember",
+"language": "GDScript",
+"path": "res://scenes/tile_units/squad_member/squad_member.gd"
+}, {
 "base": "Node2D",
 "class": "Tile2D",
 "language": "GDScript",
@@ -248,6 +258,8 @@ _global_script_class_icons={
 "SaveLoadImproved": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"Squad": "",
+"SquadMember": "",
 "Tile2D": "",
 "TileMapData": "",
 "TileMapFileData": "",
