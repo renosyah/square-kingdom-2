@@ -2,7 +2,7 @@ extends Control
 
 export var text :String
 
-onready var label = $MarginContainer/CenterContainer/Label
+onready var label = $MarginContainer/MarginContainer/CenterContainer/Label
 onready var animation_player = $AnimationPlayer
 
 func show():

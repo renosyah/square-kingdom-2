@@ -14,6 +14,8 @@ onready var dragable_item = $CanvasLayer/Control/dragable_item
 onready var snack_bar = $CanvasLayer/Control/snack_bar
 onready var list_map_bg = $CanvasLayer/Control/list_map_bg
 onready var list_map = $CanvasLayer/Control/list_map_bg/list_map
+onready var confirm_popup = $CanvasLayer/Control/confirm_popup
+onready var map_name = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/map_name
 
 onready var minimap_size = minimap.rect_size
 
@@ -38,6 +40,8 @@ onready var tile_cards_contents = [
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/nav_off_card/nav_off
 ]
 
+var nav_show :bool
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_tree().set_quit_on_go_back(false)
@@ -46,7 +50,9 @@ func _ready():
 	Global.hide_transition()
 	
 	list_map_bg.visible = false
+	confirm_popup.visible = false
 	minimap.load_data_map(Global.current_tile_map_file_data)
+	map_name.text = Global.current_tile_map_manifest_data.map_name
 	
 	var idx = 0
 	for card in tile_cards:
@@ -127,6 +133,16 @@ func _on_cam_rot_reset_pressed():
 func _on_list_map_selected_map(manif :TileMapFileManifest):
 	yield(Global.set_active_map(manif),"completed")
 	get_tree().reload_current_scene()
+
+func _on_random_pressed():
+	snack_bar.text = "Map Randomized!"
+	snack_bar.show()
+	
+func _on_nav_toggle_pressed():
+	nav_show = not nav_show
+	if nav_show:
+		snack_bar.text = "Navigation show!"
+		snack_bar.show()
 	
 func _on_save_pressed():
 	yield(Global.save_edited_map(minimap.get_viewport()), "completed")
@@ -141,6 +157,22 @@ func _on_load_pressed():
 
 func _on_list_map_close():
 	list_map_bg.visible = false
+
+func _on_delete_pressed():
+	confirm_popup.show_popup("Delete Map", "Delete this map?")
+	confirm_popup.visible = true
+	
+	var result = yield(confirm_popup, "confirmed")
+	if result:
+		Global.delete_map()
+		Global.empty_map_data()
+		get_tree().reload_current_scene()
+		return
+		
+	confirm_popup.visible = false
+
+
+
 
 
 

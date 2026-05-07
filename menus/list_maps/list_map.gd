@@ -5,15 +5,23 @@ signal close
 
 const edit_map_button = preload("res://menus/list_maps/item/edit_map_button.tscn")
 
+onready var new_map_name_popup = $new_map_name_popup
+onready var label = $VBoxContainer/MarginContainer/HBoxContainer2/Label
 onready var grid_container = $VBoxContainer/HBoxContainer/ScrollContainer/GridContainer
+onready var map_name = $new_map_name_popup/MarginContainer/VBoxContainer/map_name
+
 onready var loaded_maps_edit_buttons = []
 
 func _ready():
+	new_map_name_popup.visible = false
 	load_map()
 	
 func load_map():
 	Global.load_maps()
 	_show_maps()
+	
+func set_title(v:String):
+	label.text = v
 	
 func _show_maps():
 	for i in loaded_maps_edit_buttons:
@@ -35,7 +43,18 @@ func _loaded_maps_edit_button_pressed(manif :TileMapFileManifest):
 	
 func _on_add_map_button_pressed():
 	Global.empty_map_data()
+	map_name.text = Global.current_tile_map_manifest_data.map_name
+	new_map_name_popup.visible = true
+	
+func _on_continue_pressed():
+	if map_name.text.empty():
+		return
+	
+	Global.current_tile_map_manifest_data.map_name = map_name.text
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
-
+	
 func _on_back_pressed():
 	emit_signal("close")
+
+func _on_close_popup_pressed():
+	new_map_name_popup.visible = false

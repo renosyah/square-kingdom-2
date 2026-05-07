@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_32.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/background/splash.png" type="Texture" id=4]
-[ext_resource path="res://assets/user_interface/icons/exit.png" type="Texture" id=5]
+[ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=5]
 [ext_resource path="res://assets/user_interface/loading/loading.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=8]
 [ext_resource path="res://addons/LANServerBroadcast/server_listener/ServerListener.gd" type="Script" id=9]
@@ -91,40 +91,29 @@ margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_right = 24.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 24, 0 )
-
-[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 28.0
-margin_top = 12.0
-margin_right = 172.0
-margin_bottom = 48.0
-custom_fonts/font = ExtResource( 8 )
-text = "Find Host"
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 176.0
-margin_right = 200.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 24, 0 )
-
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 204.0
-margin_right = 900.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 24, 0 )
-size_flags_horizontal = 3
-
 [node name="back" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 904.0
-margin_right = 1024.0
+margin_right = 120.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 120, 60 )
 icon = ExtResource( 5 )
 icon_align = 1
 expand_icon = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 124.0
+margin_top = 12.0
+margin_right = 900.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 8 )
+text = "Find Host"
+align = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 904.0
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 0 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
 visible = false

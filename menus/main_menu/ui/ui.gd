@@ -34,7 +34,8 @@ func _on_map_editor_pressed():
 	play.visible = false
 	list_map.visible = not list_map.visible
 	map_selected_type = "EDITOR"
-
+	list_map.set_title("Map to Edit")
+	
 func _on_list_map_close():
 	list_map.visible = false
 
@@ -67,6 +68,7 @@ func _on_host_pressed():
 	list_map.visible = true
 	play.visible = false
 	map_selected_type = "PLAY"
+	list_map.set_title("Map to Play")
 
 func _on_join_pressed():
 	# test

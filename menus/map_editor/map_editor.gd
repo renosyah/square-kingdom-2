@@ -85,6 +85,7 @@ func display_selected_nav(layer_id :int):
 func _on_random_button_press():
 	randomize_map_data()
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
+	ui.minimap.rotation_rad = -45
 	ui.minimap.load_data_map(Global.current_tile_map_file_data)
 	
 func _on_nav_toggle_button_press():

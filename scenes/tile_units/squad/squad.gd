@@ -14,7 +14,17 @@ func _ready():
 	_attack_timer.autostart = false
 	_attack_timer.wait_time = 0.5
 	add_child(_attack_timer)
-
+	
+func _move_to_path(delta :float, pos :Vector3, to :Vector3):
+	._move_to_path(delta, pos, to)
+	
+	# align Y
+	var look :Vector3 = to
+	look.y = pos.y
+	
+	var t:Transform = transform.looking_at(look, Vector3.UP)
+	transform = transform.interpolate_with(t, 25 * delta)
+	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -54,7 +64,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	
 func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:
-		return _members.pick_random()
+		return null if _members.empty() else _members.pick_random()
 		
 	var iddles = []
 	for i in _members:

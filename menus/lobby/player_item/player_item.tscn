@@ -37,31 +37,31 @@ tracks/0/keys = {
 }
 
 [node name="player_item" type="MarginContainer"]
-margin_right = 319.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 0, 80 )
+margin_right = 449.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 0, 125 )
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 319.0
-margin_bottom = 80.0
+margin_right = 449.0
+margin_bottom = 125.0
 color = Color( 0.137255, 0.137255, 0.137255, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 319.0
-margin_bottom = 80.0
+margin_right = 449.0
+margin_bottom = 125.0
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 margin_right = 24.0
-margin_bottom = 80.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
 margin_left = 28.0
-margin_top = 10.0
-margin_right = 88.0
-margin_bottom = 70.0
-rect_min_size = Vector2( 60, 60 )
+margin_top = 22.0
+margin_right = 108.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 80, 80 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
 color = Color( 0.309804, 0.309804, 0.309804, 1 )
@@ -71,11 +71,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -27.5
-margin_top = -27.5
-margin_right = 27.5
-margin_bottom = 27.5
-rect_min_size = Vector2( 55, 55 )
+margin_left = -30.0
+margin_top = -30.0
+margin_right = 30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 60, 60 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource( 3 )
@@ -83,31 +83,31 @@ expand = true
 stretch_mode = 6
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 92.0
-margin_right = 100.0
-margin_bottom = 80.0
+margin_left = 112.0
+margin_right = 120.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-margin_left = 104.0
-margin_top = 22.0
-margin_right = 251.0
-margin_bottom = 58.0
+margin_left = 124.0
+margin_top = 44.0
+margin_right = 381.0
+margin_bottom = 80.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Player"
 valign = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 255.0
-margin_right = 263.0
-margin_bottom = 80.0
+margin_left = 385.0
+margin_right = 393.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="loading" type="Control" parent="HBoxContainer"]
-margin_left = 267.0
-margin_right = 307.0
-margin_bottom = 80.0
+margin_left = 397.0
+margin_right = 437.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 40, 40 )
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/loading"]
@@ -130,7 +130,7 @@ anims/RESET = SubResource( 1 )
 anims/loading = SubResource( 2 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 311.0
-margin_right = 319.0
-margin_bottom = 80.0
+margin_left = 441.0
+margin_right = 449.0
+margin_bottom = 125.0
 rect_min_size = Vector2( 8, 0 )

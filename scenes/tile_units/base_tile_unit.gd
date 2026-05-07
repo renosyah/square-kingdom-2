@@ -73,16 +73,28 @@ func _ready():
 # move_to will set chase_enemy to NULL
 func chase_target():
 	if is_instance_valid(chase_enemy):
-		move_to(chase_enemy.current_tile)
-
+		# give up the chase if
+		# diffrent nav layer
+		# no path to it
+		if chase_enemy.nav_layer != nav_layer:
+			chase_enemy = null
+			return
+			
+		_move_to(chase_enemy.current_tile)
+		if _paths.empty():
+			chase_enemy = null
+			
 func move_to(tile_id :Vector2):
+	chase_enemy = null
+	_move_to(tile_id)
+	
+func _move_to(tile_id :Vector2):
 	if is_dead:
 		return
 		
 	if not _is_master or not is_instance_valid(nav):
 		return
 		
-	chase_enemy = null
 	enemy = null
 	
 	var v :Array = _get_tile_path(tile_id)
@@ -227,8 +239,11 @@ func puppet_moving(delta :float) -> void:
 # for active enemy spotting
 func _on_global_tick():
 	if _is_master and not _is_moving:
+		if _chase_on_iddle():
+			return
+			
 		_scan_area()
-
+	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_current_tile_updated", self, from_id, to_id)
 	
@@ -242,7 +257,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 		# if chase_enemy is dead
 		if chase_enemy.is_dead:
 			chase_enemy = null
-			stop(false) 
+			stop(false)
 			return
 			
 		if _is_in_range(chase_enemy):
@@ -260,19 +275,24 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 		
 	update_spotting()
 	
+	if _chase_on_iddle():
+		return
+		
+	_scan_area()
+	
+func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
 		# stop the chase
 		# continue scan area
 		if chase_enemy.is_dead:
 			chase_enemy = null
-			_scan_area()
-			return
+			return false
 			
 		if not _is_in_range(chase_enemy):
 			chase_target()
-			return
+			return true
 			
-	_scan_area()
+	return false
 	
 func update_spotting():
 	spotting_area = TileMapUtils.get_adjacent_tiles(

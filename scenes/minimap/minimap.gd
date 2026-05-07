@@ -49,6 +49,7 @@ func _spawn_tiles():
 	
 func _spawn_tile(data :TileMapData) -> Tile2D:
 	var tile :Tile2D = tile_scenes[data.scene_idx].instance()
+	tile.rotation_rad = rotation_rad
 	tile.name = 'tile_2d_%s' % data.id
 	tile.position = data.id * 10 # <- tile size
 	_map.add_child(tile)

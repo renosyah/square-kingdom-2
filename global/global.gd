@@ -122,6 +122,11 @@ func _save_manifest(map_file:String,vp :Viewport):
 	# uses save load, cause data not that many LOL
 	SaveLoad.save(file_path, current_tile_map_manifest_data.to_dictionary(), false)
 	
+func delete_map():
+	var map_name = current_tile_map_manifest_data.map_name
+	SaveLoad.delete_save("user://%s/%s.manifest" % [map_dir, map_name], false)
+	SaveLoad.delete_save("user://%s/%s.map" % [map_dir, map_name], false)
+	
 func save_ss(map_name:String, vp :Viewport) -> String:
 	var img: Image = vp.get_texture().get_data()
 	img.flip_y()
