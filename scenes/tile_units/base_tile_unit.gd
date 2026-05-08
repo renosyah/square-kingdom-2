@@ -166,19 +166,22 @@ func last_sync_update() -> void:
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	
-	if is_dead:
+	if not is_dead:
+		_attack_enemy_proccess(delta, global_position)
+		_follow_path_proccess(delta, global_position)
+	
+func _attack_enemy_proccess(delta :float, pos :Vector3):
+	if not is_instance_valid(enemy):
 		return
 		
-	var pos :Vector3 = global_position
-	if is_instance_valid(enemy):
-		if not _is_in_range(enemy):
-			enemy = null
-			_on_no_enemy()
-			return
-			
+	if _is_in_range(enemy):
 		_on_enemy_in_range(delta, pos, enemy.global_position)
 		return
+		
+	enemy = null
+	_on_no_enemy()
 	
+func _follow_path_proccess(delta :float, pos :Vector3):
 	if _paths.empty():
 		return
 	
@@ -205,10 +208,10 @@ func master_moving(delta :float) -> void:
 		_last_tile = current_tile
 		current_tile = new_tile
 		
-	_move_to_path(delta, pos, new_to)
+	_move_to_next_path(delta, pos, new_to)
 	_is_moving = true
 	
-func _move_to_path(delta :float, pos :Vector3, to :Vector3):
+func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	translation += pos.direction_to(to) * speed * delta
 	
 func _on_enemy_in_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
@@ -262,6 +265,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			
 		if _is_in_range(chase_enemy):
 			enemy = chase_enemy
+			_on_enemy_set()
 			return
 		
 	if attack_move:
@@ -319,6 +323,7 @@ func _scan_area():
 			if is_instance_valid(unit):
 				if not unit.is_dead and unit.team != team:
 					enemy = unit
+					_on_enemy_set()
 					return
 				
 func _is_in_range(_unit) -> bool:
@@ -326,6 +331,9 @@ func _is_in_range(_unit) -> bool:
 		return false
 		
 	return _unit.current_tile in spotting_area
+	
+func _on_enemy_set():
+	pass
 	
 func take_damage(damage :int):
 	if is_dead:

@@ -1,7 +1,9 @@
 extends BaseTileUnit
-class_name Squad
+class_name BaseSquad
 
 export var has_range_weapon :bool
+
+puppet var _puppet_rotation_y :float
 
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
@@ -15,6 +17,12 @@ func _ready():
 	_attack_timer.wait_time = 0.5
 	add_child(_attack_timer)
 	
+func sync_update() -> void:
+	.sync_update()
+	
+	if not is_dead and _is_master and _is_online:
+		rset_unreliable("_puppet_rotation_y", global_rotation.y)
+		
 func _move_to_path(delta :float, pos :Vector3, to :Vector3):
 	._move_to_path(delta, pos, to)
 	
@@ -88,3 +96,9 @@ func update_spotting():
 	
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
+	
+func puppet_moving(delta :float) -> void:
+	.puppet_moving(delta)
+	
+	if not is_dead:	
+		rotation.y = lerp_angle(rotation.y, _puppet_rotation_y, 25 * delta)

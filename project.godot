@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/base_projectiles/base_projectile.gd"
 }, {
+"base": "BaseTileUnit",
+"class": "BaseSquad",
+"language": "GDScript",
+"path": "res://scenes/tile_units/squad/base_squad.gd"
+}, {
 "base": "Spatial",
 "class": "BaseTile",
 "language": "GDScript",
@@ -179,11 +184,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
-"base": "BaseTileUnit",
-"class": "Squad",
-"language": "GDScript",
-"path": "res://scenes/tile_units/squad/squad.gd"
-}, {
 "base": "Spatial",
 "class": "SquadMember",
 "language": "GDScript",
@@ -234,6 +234,7 @@ _global_script_class_icons={
 "BaseEntity": "",
 "BaseGameplay": "",
 "BaseProjectile": "",
+"BaseSquad": "",
 "BaseTile": "",
 "BaseTileUnit": "",
 "ClickableFloor": "",
@@ -264,7 +265,6 @@ _global_script_class_icons={
 "SaveLoadImproved": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
-"Squad": "",
 "SquadMember": "",
 "Tile2D": "",
 "TileMapData": "",
