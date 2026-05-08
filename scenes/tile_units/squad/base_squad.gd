@@ -87,13 +87,7 @@ func _on_no_enemy():
 	if not _attack_timer.is_stopped():
 		_attack_timer.stop()
 		
-func update_spotting():
-	.update_spotting()
-	
-	_melee_ranges = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), current_tile, 1
-	)
-	
+
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
 	

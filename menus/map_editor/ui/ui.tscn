@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/icons/exit.png" type="Texture" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://assets/snack_bar/snack_bar.tscn" type="PackedScene" id=25]
 [ext_resource path="res://menus/list_maps/list_map.tscn" type="PackedScene" id=26]
 [ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=27]
+[ext_resource path="res://assets/fps_ping_displayer/fps_ping_displayer.tscn" type="PackedScene" id=28]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -43,7 +44,7 @@ mouse_filter = 2
 
 [node name="movable_camera_ui" parent="CanvasLayer/Control" instance=ExtResource( 3 )]
 size_flags_vertical = 3
-max_zoom = 4.0
+max_zoom = 3.0
 center_pos = Vector3( 0, 0, 0 )
 camera_limit_bound = Vector3( 10, 0, 10 )
 use_unhandle = true
@@ -234,6 +235,10 @@ margin_right = 1024.0
 margin_bottom = 332.0
 mouse_filter = 2
 size_flags_vertical = 3
+
+[node name="fps_ping_displayer" parent="CanvasLayer/Control/VBoxContainer/Control" instance=ExtResource( 28 )]
+margin_right = 160.0
+extend = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
 margin_top = 336.0
@@ -652,4 +657,5 @@ visible = false
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="close" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_close"]
+[connection signal="new_map" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_new_map"]
 [connection signal="selected_map" from="CanvasLayer/Control/list_map_bg/list_map" to="." method="_on_list_map_selected_map"]

@@ -1,7 +1,9 @@
 extends Control
 
-onready var list_map = $CanvasLayer/Control/VBoxContainer/list_map
-onready var play = $CanvasLayer/Control/VBoxContainer/play
+onready var list_map = $CanvasLayer/Control/VBoxContainer/Control/list_map
+onready var play = $CanvasLayer/Control/VBoxContainer/Control/play
+onready var text_input_popup = $CanvasLayer/Control/VBoxContainer/Control/text_input_popup
+onready var player_new_name = text_input_popup.map_name_editor
 
 var map_selected_type :String = "PLAY" # PLAY or EDITOR
 
@@ -14,8 +16,7 @@ func _ready():
 	
 	Global.hide_transition()
 	
-	play.visible = false
-	list_map.visible = false
+	hide_all()
 	
 func _notification(what):
 	match what:
@@ -30,9 +31,14 @@ func _notification(what):
 func on_back_pressed():
 	get_tree().quit()
 	
-func _on_map_editor_pressed():
+func hide_all():
+	text_input_popup.visible = false
 	play.visible = false
-	list_map.visible = not list_map.visible
+	list_map.visible = false
+	
+func _on_map_editor_pressed():
+	hide_all()
+	list_map.visible = true
 	map_selected_type = "EDITOR"
 	list_map.set_title("Map to Edit")
 	
@@ -58,15 +64,15 @@ func _on_list_map_selected_map(manif :TileMapFileManifest):
 		NetworkLobbyManager.init_lobby()
 		
 func _on_play_battle_pressed():
-	list_map.visible = false
-	play.visible = not play.visible
+	hide_all()
+	play.visible = true
 	
 func _on_host_player_connected():
 	Global.change_scene("res://menus/lobby/lobby.tscn", true)
 	
 func _on_host_pressed():
+	hide_all()
 	list_map.visible = true
-	play.visible = false
 	map_selected_type = "PLAY"
 	list_map.set_title("Map to Play")
 
@@ -78,3 +84,22 @@ func _on_join_pressed():
 	
 	Global.null_map_data()
 	Global.change_scene("res://menus/join/join.tscn", false)
+
+func _on_setting_pressed():
+	hide_all()
+	text_input_popup.title = "Player Name"
+	text_input_popup.place_holder = Global.player_data.player_name
+	text_input_popup.show()
+	text_input_popup.visible = true
+
+func _on_text_input_popup_close():
+	text_input_popup.visible = false
+
+func _on_text_input_popup_on_continue():
+	text_input_popup.visible = false
+	Global.player_data.player_name = player_new_name.text
+	Global.save_player_data()
+
+func _on_list_map_new_map(nm):
+	Global.current_tile_map_manifest_data.map_name = nm
+	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)

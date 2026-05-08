@@ -28,6 +28,68 @@ func _on_tick():
 	
 ##########################################  player data  ############################################
 
+const player_potraits = [
+	preload("res://assets/user_interface/potrait/1.png"),
+	preload("res://assets/user_interface/potrait/2.png"),
+	preload("res://assets/user_interface/potrait/3.png"),
+	preload("res://assets/user_interface/potrait/4.png"),
+	preload("res://assets/user_interface/potrait/5.png"),
+	preload("res://assets/user_interface/potrait/6.png"),
+	preload("res://assets/user_interface/potrait/7.png"),
+	preload("res://assets/user_interface/potrait/8.png"),
+	preload("res://assets/user_interface/potrait/9.png")
+]
+
+const player_colors = [
+	"#800000",
+	"#8B0000",
+	"#B22222",
+	"#FF0000",
+	"#FA8072",
+	"#FF6347",
+	"#FF7F50",
+	"#FF4500",
+	"#D2691E",
+	"#F4A460",
+	"#FF8C00",
+	"#FFA500",
+	"#B8860B",
+	"#DAA520",
+	"#FFD700",
+	"#808000",
+	"#FFFF00",
+	"#9ACD32",
+	"#ADFF2F",
+	"#7FFF00",
+	"#7CFC00",
+	"#008000",
+	"#00FF00",
+	"#32CD32",
+	"#00FF7F",
+	"#00FA9A",
+	"#40E0D0",
+	"#20B2AA",
+	"#48D1CC",
+	"#008B8B",
+	"#00FFFF",
+	"#00CED1",
+	"#00BFFF",
+	"#1E90FF",
+	"#4169E1",
+	"#00BFFF",
+	"#1E90FF",
+	"#4169E1",
+	"#000080",
+	"#00008B",
+	"#0000CD",
+	"#0000FF",
+	"#8A2BE2",
+	"#9932CC",
+	"#9400D3",
+	"#800080",
+	"#8B008B",
+]
+
 const player_data_filepath :String = "player_data.dat"
 var player_data :PlayerData
 
@@ -39,18 +101,22 @@ func _on_player_connected(player_network_unique_id :int):
 	player_data.player_network_id = player_network_unique_id
 
 func load_player_data():
-
 	player_data = PlayerData.new()
 	var data = SaveLoad.load_save(player_data_filepath, true)
 	if data == null:
 		player_data.player_id = Utils.create_unique_id()
 		player_data.player_name = OS.get_name()
 		player_data.team = 1
-		SaveLoad.save(player_data_filepath, player_data.to_dictionary(), true)
+		player_data.color_idx = randi() % player_colors.size()
+		player_data.potrait_idx = randi() % player_potraits.size()
+		save_player_data()
 		
 	else:
 		player_data.from_dictionary(data)
 		
+func save_player_data():
+	SaveLoad.save(player_data_filepath, player_data.to_dictionary(), true)
+	
 ##########################################  maps  ############################################
 # for load and save maps
 const map_dir = "map"
@@ -83,7 +149,7 @@ var current_tile_map_file_data :TileMapFileData
 func empty_map_data():
 	current_tile_map_manifest_data = TileMapFileManifest.new()
 	current_tile_map_manifest_data.map_name = RandomNameGenerator.generate_name()
-	current_tile_map_manifest_data.map_size = 8
+	current_tile_map_manifest_data.map_size = 30
 	
 	current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(
 		current_tile_map_manifest_data.map_size, 1

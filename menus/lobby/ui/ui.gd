@@ -3,10 +3,11 @@ extends Control
 const player_item_scene = preload("res://menus/lobby/player_item/player_item.tscn")
 
 onready var player_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer
-onready var battle = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/battle
+onready var battle = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/battle
 onready var minimap = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap
-onready var map_name = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/map_name
-onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/map_size
+onready var margin_container_4 = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4
+onready var map_name = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/map_name
+onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/map_size
 
 var player_map_data_received :Array = []
 
@@ -22,15 +23,18 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	
 	if NetworkLobbyManager.is_server():
+		margin_container_4.visible = false
 		battle.visible = true
 		var manif = Global.current_tile_map_manifest_data
-		map_name.text = "Map Name : %s" % manif.map_name
-		map_size.text = "Size : %s" % manif.map_size
+		var size = manif.map_size * 2 + 1
+		map_name.text = "%s" % manif.map_name
+		map_size.text = "(%s x %s)" % [size, size]
 		
 		_on_lobby_player_update(NetworkLobbyManager.get_players())
 		minimap.load_data_map(Global.current_tile_map_file_data)
 		
 	else:
+		margin_container_4.visible = true
 		battle.visible = false
 		rpc_id(NetworkLobbyManager.host_id, "_request_map_data", NetworkLobbyManager.get_id())
 		
@@ -93,14 +97,20 @@ func _on_lobby_player_update(players :Array):
 		player_holder.remove_child(child)
 		child.queue_free()
 		
+	var idx = 1
 	for i in players:
 		var player :NetworkPlayer = i
+		
+		var player_data :PlayerData = PlayerData.new()
+		player_data.from_dictionary(player.extra)
+		
 		var is_host :bool = player.player_network_unique_id == NetworkLobbyManager.host_id
 		var has_map :bool = player_map_data_received.has(player.player_network_unique_id)
 		
 		var item = player_item_scene.instance()
 		item.player_network_unique_id = player.player_network_unique_id
-		item.player_name = player.player_name
+		item.no = idx
+		item.player = player_data
 		player_holder.add_child(item)
 		
 		if NetworkLobbyManager.is_server():
@@ -108,6 +118,8 @@ func _on_lobby_player_update(players :Array):
 		
 		if is_host:
 			item.set_loading(false)
+			
+		idx += 1
 		
 	# make sure host dont initiate play
 	# if player is more than 1 and not all ready

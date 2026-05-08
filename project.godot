@@ -44,6 +44,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/tile_units/base_tile_unit.gd"
 }, {
+"base": "Node",
+"class": "ChunkManagement",
+"language": "GDScript",
+"path": "res://addons/chunk_manajement/chunk_management.gd"
+}, {
+"base": "Node",
+"class": "ChunkManagement3D",
+"language": "GDScript",
+"path": "res://addons/chunk_manajement/chunk_management_3d.gd"
+}, {
 "base": "Spatial",
 "class": "ClickableFloor",
 "language": "GDScript",
@@ -237,6 +247,8 @@ _global_script_class_icons={
 "BaseSquad": "",
 "BaseTile": "",
 "BaseTileUnit": "",
+"ChunkManagement": "",
+"ChunkManagement3D": "",
 "ClickableFloor": "",
 "ClickableScreen": "",
 "DragableCard": "",

@@ -45,13 +45,15 @@ func _on_all_player_ready():
 	Global.hide_transition()
 	
 func _process(delta):
+	var pos = movable_camera.translation * Vector3(1,0,1)
+	tile_map.update_camera_location(Vector2(pos.x, pos.z))
+	
 	if is_instance_valid(ui):
 		if ui.cam_rot_l.pressed:
 			movable_camera.rotation_degrees.y -= 45 * delta
 		elif ui.cam_rot_r.pressed:
 			movable_camera.rotation_degrees.y += 45 * delta
 			
-		var pos = movable_camera.translation * Vector3(1,0,1)
 		clickable_floor.translation = pos
 		ui.minimap.rotation_rad = movable_camera.rotation.y
 		ui.minimap.offset = Vector2(pos.x, pos.z) * 10
@@ -152,9 +154,7 @@ func setup_ui():
 	
 	var map_size :int = current_tile_map_manifest_data.map_size
 	ui.movable_camera_ui.target = movable_camera
-	ui.movable_camera_ui.min_zoom = 2
-	ui.movable_camera_ui.max_zoom = 4
-	ui.movable_camera_ui.camera_limit_bound = Vector3( map_size + 1, 0, map_size + 3)
+	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_ui.center_pos = tile_map.global_position
 	ui.movable_camera_ui.detect_in_out = false
 	

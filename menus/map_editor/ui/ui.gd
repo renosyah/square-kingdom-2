@@ -171,6 +171,11 @@ func _on_delete_pressed():
 		
 	confirm_popup.visible = false
 
+func _on_list_map_new_map(nm):
+	Global.current_tile_map_manifest_data.map_name = nm
+	get_tree().reload_current_scene()
+
+
 
 
 

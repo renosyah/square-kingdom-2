@@ -9,14 +9,17 @@ onready var highlights = $highlights
 var nav :NavTileMap
 
 func _ready():
+	var map_size :int = Global.current_tile_map_manifest_data.map_size
 	ui.random.connect("pressed", self, "_on_random_button_press")
 	ui.nav_toggle.connect("pressed", self, "_on_nav_toggle_button_press")
 	ui.movable_camera_ui.target = movable_camera
 	ui.movable_camera_minimap.target = movable_camera
+	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size )
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 
 func _process(delta):
 	var pos = movable_camera.translation * Vector3(1,0,1)
+	editable_tile_map.update_camera_location(Vector2(pos.x, pos.z))
 	clickable_floor.translation = pos
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10

@@ -1,14 +1,15 @@
 extends MarginContainer
 
+signal new_map(nm)
 signal selected_map(data)
 signal close
 
 const edit_map_button = preload("res://menus/list_maps/item/edit_map_button.tscn")
 
-onready var new_map_name_popup = $new_map_name_popup
 onready var label = $VBoxContainer/MarginContainer/HBoxContainer2/Label
+onready var new_map_name_popup = $new_map_name_popup
 onready var grid_container = $VBoxContainer/HBoxContainer/ScrollContainer/GridContainer
-onready var map_name = $new_map_name_popup/MarginContainer/VBoxContainer/map_name
+onready var map_name = new_map_name_popup.map_name_editor
 
 onready var loaded_maps_edit_buttons = []
 
@@ -43,18 +44,20 @@ func _loaded_maps_edit_button_pressed(manif :TileMapFileManifest):
 	
 func _on_add_map_button_pressed():
 	Global.empty_map_data()
-	map_name.text = Global.current_tile_map_manifest_data.map_name
+	new_map_name_popup.title = "Map Name"
+	new_map_name_popup.place_holder = Global.current_tile_map_manifest_data.map_name
+	new_map_name_popup.show()
 	new_map_name_popup.visible = true
-	
-func _on_continue_pressed():
-	if map_name.text.empty():
-		return
-	
-	Global.current_tile_map_manifest_data.map_name = map_name.text
-	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+	map_name.text = Global.current_tile_map_manifest_data.map_name
 	
 func _on_back_pressed():
 	emit_signal("close")
 
-func _on_close_popup_pressed():
+func _on_new_map_name_popup_close():
 	new_map_name_popup.visible = false
+
+func _on_new_map_name_popup_on_continue():
+	if map_name.text.empty():
+		return
+		
+	emit_signal("new_map", map_name.text)

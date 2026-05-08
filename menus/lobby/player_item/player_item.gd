@@ -1,13 +1,20 @@
 extends MarginContainer
 
-export var player_network_unique_id :int
-export var player_name :String
+var player_network_unique_id :int
+var no :int
+var player :PlayerData
 
-onready var label = $HBoxContainer/Label
+onready var player_name = $HBoxContainer/player_name
 onready var loading = $HBoxContainer/loading
+onready var bg = $HBoxContainer/bg
+onready var no_label = $HBoxContainer/bg/no_label
+onready var potrait = $HBoxContainer/ColorRect/potrait
 
 func _ready():
-	label.text = player_name
+	no_label.text = "%s" % no
+	player_name.text = player.player_name
+	potrait.texture = Global.player_potraits[player.potrait_idx]
+	bg.self_modulate = Global.player_colors[player.color_idx]
 	set_loading(false)
 
 func set_loading(v :bool):

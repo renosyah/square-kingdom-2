@@ -11,13 +11,18 @@ export (Array, PackedScene) var tile_scenes :Array
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
+var _loading :bool = true
+var _last_cam :Vector2
+
 onready var _nav_tile_map :NavTileMap = $nav_tile_map
+onready var _chunk_management = $chunk_management
 
 func _ready():
 	set_process(false)
 	set_physics_process(false)
 
 func load_data_map(data: TileMapFileData, is_editor:bool = false):
+	_loading = true
 	_clean()
 	
 	_is_editor = is_editor
@@ -26,8 +31,18 @@ func load_data_map(data: TileMapFileData, is_editor:bool = false):
 	_nav_tile_map.load_data_nav(_tile_map_data.navigations)
 	_spawn_tiles()
 	
+	_chunk_management.start_position = _last_cam
+	_chunk_management.init_starter_chunk()
+	
 	yield(get_tree(),"idle_frame")
+	_loading = false
+	
 	emit_signal("on_map_ready")
+	
+func update_camera_location(to :Vector2):
+	if not _loading:
+		_last_cam = to
+		_chunk_management.update_camera_location(to)
 	
 func export_data() -> TileMapFileData:
 	return _tile_map_data
@@ -115,13 +130,14 @@ func _spawn_tiles():
 func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
 	tile.name = 'tile_%s' % data.id
+	tile.visible = false
 	add_child(tile)
 	tile.rotation_degrees.y = _get_rotation_idx_value(data.rotation_idx)
 	tile.translation = global_position + data.pos
 	
-#	if _is_editor:
-#		tile.translation.x = tile.translation.x * 1.02
-#		tile.translation.z = tile.translation.z * 1.02
+	if _is_editor:
+		tile.translation.x = tile.translation.x * 1.02
+		tile.translation.z = tile.translation.z * 1.02
 		
 	return tile
 
@@ -146,4 +162,39 @@ func _clean():
 		tile.queue_free()
 		
 	_spawned_tiles.clear()
+	
+func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add :Array):
+	for i in _chunks_to_remove:
+		_despawn_chunk(i)
+		
+	for i in _chunks_to_add:
+		_spawn_chunk(i)
+
+func _despawn_chunk(data :ChunkManagement.ChunkData):
+	var adjs = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 3)
+	var dirs = adjs + [Vector2.ZERO]
+	for dir in dirs:
+		var id = data.id * _chunk_management.chunk_size + dir
+		if _spawned_tiles.has(id):
+			_spawned_tiles[id].visible = false
+
+func _spawn_chunk(data :ChunkManagement.ChunkData):
+	var adjs = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 3)
+	var dirs = adjs + [Vector2.ZERO]
+	for dir in dirs:
+		var id = data.id * _chunk_management.chunk_size + dir
+		if _spawned_tiles.has(id):
+			_spawned_tiles[id].visible = true
+
+
+
+
+
+
+
+
+
+
+
+
 

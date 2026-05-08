@@ -34,7 +34,7 @@ mouse_filter = 2
 
 [node name="movable_camera_ui" parent="CanvasLayer/Control" instance=ExtResource( 2 )]
 size_flags_vertical = 3
-max_zoom = 4.0
+max_zoom = 3.0
 center_pos = Vector3( 0, 0, 0 )
 camera_limit_bound = Vector3( 10, 0, 10 )
 use_unhandle = true
