@@ -44,8 +44,8 @@ func _loaded_maps_edit_button_pressed(manif :TileMapFileManifest):
 	
 func _on_add_map_button_pressed():
 	Global.empty_map_data()
-	new_map_name_popup.title = "Map Name"
-	new_map_name_popup.place_holder = Global.current_tile_map_manifest_data.map_name
+	new_map_name_popup.title = "New Map"
+	new_map_name_popup.place_holder = "Name"
 	new_map_name_popup.show()
 	new_map_name_popup.visible = true
 	map_name.text = Global.current_tile_map_manifest_data.map_name

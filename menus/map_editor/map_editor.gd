@@ -5,16 +5,25 @@ onready var movable_camera = $movable_camera
 onready var editable_tile_map = $editable_tile_map
 onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
+onready var batch_spawner = $batch_spawner
+onready var batch_despawner = $batch_despawner
 
+var nav_tiles :Dictionary
 var nav :NavTileMap
 
 func _ready():
 	var map_size :int = Global.current_tile_map_manifest_data.map_size
 	ui.random.connect("pressed", self, "_on_random_button_press")
 	ui.nav_toggle.connect("pressed", self, "_on_nav_toggle_button_press")
+	
 	ui.movable_camera_ui.target = movable_camera
-	ui.movable_camera_minimap.target = movable_camera
 	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size )
+	ui.movable_camera_ui.detect_in_out = false
+	
+	ui.movable_camera_minimap.target = movable_camera
+	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
+	ui.movable_camera_minimap.detect_in_out = false
+	
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 
 func _process(delta):
@@ -73,22 +82,27 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 		i.enable = not (i.id in blocked)
 		
 func display_selected_nav(layer_id :int):
+	nav_tiles.clear()
+	
+	var items = []
 	for i in highlights.get_children():
 		highlights.remove_child(i)
-		i.queue_free()
+		items.append(i)
 		
-	for i in Global.current_tile_map_file_data.navigations[layer_id]:
-		var n :NavigationData = i
-		var h = preload("res://assets/tile_highlight/tile_highlight.tscn").instance()
-		highlights.add_child(h)
-		h.set_text("%s\n%s" % [n.id, n.navigation_id])
-		h.enable(n.enable)
-		h.translation = n.pos
-		
+	batch_despawner.start(items, 16)
+	batch_spawner.start(Global.current_tile_map_file_data.navigations[layer_id], 16)
+	
+func _on_batch_spawner_on_spawn(n :NavigationData):
+	var h = preload("res://assets/tile_highlight/tile_highlight.tscn").instance()
+	highlights.add_child(h)
+	h.set_text("%s\n%s" % [n.id, n.navigation_id])
+	h.enable(n.enable)
+	h.translation = n.pos
+	nav_tiles[n.id] = h
+	
 func _on_random_button_press():
 	randomize_map_data()
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
-	ui.minimap.rotation_rad = -45
 	ui.minimap.load_data_map(Global.current_tile_map_file_data)
 	
 func _on_nav_toggle_button_press():
@@ -97,10 +111,11 @@ func _on_nav_toggle_button_press():
 func _on_editable_tile_map_on_map_ready():
 	nav = editable_tile_map.get_nav_tile_map()
 	display_selected_nav(0)
+	ui.on_map_ready()
 	
 func _on_clickable_floor_on_floor_clicked(pos):
 	var tile :TileMapData = editable_tile_map.get_closes_tile(pos)
-
+	
 func _on_ui_on_tile_card_dropped(posv2 :Vector2, tile_data :TileMapData):
 	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
 	
@@ -111,15 +126,19 @@ func _on_ui_on_tile_card_dropped(posv2 :Vector2, tile_data :TileMapData):
 	editable_tile_map.update_spawned_tile(tile_data)
 	
 func _on_editable_tile_map_on_tile_updated(id, data, node):
+	var enable_nav = data.scene_idx in [0,1,2]
 	ui.minimap.update_spawned_tile(data)
-	nav.enable_nav_tile(0, id, data.scene_idx in [0,1,2])
-	display_selected_nav(0)
-
+	nav.enable_nav_tile(0, id, enable_nav)
+	nav_tiles[id].enable(enable_nav)
+	
 func _on_ui_on_nav_card_dropped(posv2, enable):
 	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
 	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
 	nav.enable_nav_tile(0, tile.id, enable)
-	display_selected_nav(0)
+	nav_tiles[tile.id].enable(enable)
+
+
+
 
 
 

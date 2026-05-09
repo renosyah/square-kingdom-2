@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/custom_tile_map/scripts/editable_tile_map.gd" type="Script" id=1]
 [ext_resource path="res://addons/chunk_manajement/chunk_management.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/batch_spawner/batch_spawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/custom_tile_map/scripts/nav_tile_map.gd" type="Script" id=5]
 
 [node name="editable_tile_map" type="Spatial"]
@@ -13,4 +14,8 @@ chunk_size = Vector2( 7, 7 )
 [node name="nav_tile_map" type="Node" parent="."]
 script = ExtResource( 5 )
 
+[node name="batch_spawner" parent="." instance=ExtResource( 3 )]
+
 [connection signal="update_map" from="chunk_management" to="." method="_on_chunk_management_update_map"]
+[connection signal="on_finish" from="batch_spawner" to="." method="_on_batch_spawner_on_finish"]
+[connection signal="on_spawn" from="batch_spawner" to="." method="_on_batch_spawner_on_spawn"]

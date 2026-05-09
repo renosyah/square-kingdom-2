@@ -38,7 +38,7 @@ func _ready():
 		battle.visible = false
 		rpc_id(NetworkLobbyManager.host_id, "_request_map_data", NetworkLobbyManager.get_id())
 		
-		
+func _on_minimap_on_minimap_ready():
 	Global.hide_transition()
 	
 func _notification(what):
@@ -77,8 +77,9 @@ remote func _receive_map_data(manifest: PoolByteArray, map_data: PoolByteArray):
 	map_name.text = "Map Name : %s" % _manifest.map_name
 	map_size.text = "Size : %s" % _manifest.map_size
 	
-	rpc_id(NetworkLobbyManager.host_id ,"_map_data_received" ,NetworkLobbyManager.get_id())
-		
+	rpc_id(NetworkLobbyManager.host_id ,"_map_data_received", NetworkLobbyManager.get_id())
+	
+# back to host
 remote func _map_data_received(player_network_unique_id :int):
 	var player_loading = false
 	for i in player_holder.get_children():
@@ -140,6 +141,9 @@ func _on_back_pressed():
 
 func _on_battle_pressed():
 	Global.change_scene("res://menus/gameplay/host/host.tscn", true)
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://menus/map_editor/map_editor.gd" type="Script" id=2]
@@ -15,8 +15,10 @@
 [ext_resource path="res://scenes/tiles/tree_2.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/tiles/tree_3.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/tiles/rock_2.tscn" type="PackedScene" id=15]
+[ext_resource path="res://addons/batch_spawner/batch_spawner.tscn" type="PackedScene" id=16]
 [ext_resource path="res://scenes/tiles/tree_4.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/tiles/rock_3.tscn" type="PackedScene" id=18]
+[ext_resource path="res://addons/batch_spawner/batch_despawner.tscn" type="PackedScene" id=19]
 
 [node name="map_editor" type="Node"]
 script = ExtResource( 2 )
@@ -34,6 +36,10 @@ tile_scenes = [ ExtResource( 9 ), ExtResource( 12 ), ExtResource( 8 ), ExtResour
 [node name="highlights" type="Spatial" parent="."]
 visible = false
 
+[node name="batch_spawner" parent="." instance=ExtResource( 16 )]
+
+[node name="batch_despawner" parent="." instance=ExtResource( 19 )]
+
 [node name="enviroment" parent="." instance=ExtResource( 5 )]
 
 [connection signal="on_nav_card_dropped" from="ui" to="." method="_on_ui_on_nav_card_dropped"]
@@ -41,3 +47,4 @@ visible = false
 [connection signal="on_map_ready" from="editable_tile_map" to="." method="_on_editable_tile_map_on_map_ready"]
 [connection signal="on_tile_updated" from="editable_tile_map" to="." method="_on_editable_tile_map_on_tile_updated"]
 [connection signal="on_floor_clicked" from="clickable_floor" to="." method="_on_clickable_floor_on_floor_clicked"]
+[connection signal="on_spawn" from="batch_spawner" to="." method="_on_batch_spawner_on_spawn"]

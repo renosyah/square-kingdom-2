@@ -45,6 +45,16 @@ _global_script_classes=[ {
 "path": "res://scenes/tile_units/base_tile_unit.gd"
 }, {
 "base": "Node",
+"class": "BatchDespawner",
+"language": "GDScript",
+"path": "res://addons/batch_spawner/batch_despawner.gd"
+}, {
+"base": "Node",
+"class": "BatchSpawner",
+"language": "GDScript",
+"path": "res://addons/batch_spawner/batch_spawner.gd"
+}, {
+"base": "Node",
 "class": "ChunkManagement",
 "language": "GDScript",
 "path": "res://addons/chunk_manajement/chunk_management.gd"
@@ -247,6 +257,8 @@ _global_script_class_icons={
 "BaseSquad": "",
 "BaseTile": "",
 "BaseTileUnit": "",
+"BatchDespawner": "",
+"BatchSpawner": "",
 "ChunkManagement": "",
 "ChunkManagement3D": "",
 "ClickableFloor": "",

@@ -57,12 +57,11 @@ rect_min_size = Vector2( 60, 60 )
 mouse_filter = 2
 
 [node name="fps_ping_displayer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource( 3 )]
-margin_right = 160.0
 margin_bottom = 60.0
 mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 164.0
+margin_left = 102.0
 margin_right = 900.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
@@ -145,7 +144,6 @@ margin_bottom = 264.0
 rect_min_size = Vector2( 220, 220 )
 size_flags_vertical = 3
 tile_scenes = [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 7 ), ExtResource( 13 ), ExtResource( 13 ), ExtResource( 13 ) ]
-rotation_rad = -45.0
 
 [node name="movable_camera_minimap" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap" instance=ExtResource( 2 )]
 size_flags_vertical = 3

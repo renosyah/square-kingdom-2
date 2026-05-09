@@ -149,7 +149,7 @@ var current_tile_map_file_data :TileMapFileData
 func empty_map_data():
 	current_tile_map_manifest_data = TileMapFileManifest.new()
 	current_tile_map_manifest_data.map_name = RandomNameGenerator.generate_name()
-	current_tile_map_manifest_data.map_size = 30
+	current_tile_map_manifest_data.map_size = 18
 	
 	current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(
 		current_tile_map_manifest_data.map_size, 1

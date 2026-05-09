@@ -9,38 +9,42 @@ signal on_tile_updated(id, data, node)
 export (Array, PackedScene) var tile_scenes :Array
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
+var _tile_datas :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
-var _loading :bool = true
 var _last_cam :Vector2
+
+var _visible_tiles :Array = [] # [ BaseTile ]
 
 onready var _nav_tile_map :NavTileMap = $nav_tile_map
 onready var _chunk_management = $chunk_management
+onready var _batch_spawner = $batch_spawner
 
 func _ready():
 	set_process(false)
 	set_physics_process(false)
-
+	
 func load_data_map(data: TileMapFileData, is_editor:bool = false):
-	_loading = true
 	_clean()
 	
 	_is_editor = is_editor
 	_tile_map_data = data
 	
 	_nav_tile_map.load_data_nav(_tile_map_data.navigations)
-	_spawn_tiles()
+	_batch_spawner.start(_tile_map_data.tiles, 16)
+	set_process(true)
 	
+func _on_batch_spawner_on_spawn(data :TileMapData):
+	_spawned_tiles[data.id] = _spawn_tile(data)
+	_tile_datas[data.id] = data
+
+func _on_batch_spawner_on_finish():
 	_chunk_management.start_position = _last_cam
 	_chunk_management.init_starter_chunk()
-	
-	yield(get_tree(),"idle_frame")
-	_loading = false
-	
 	emit_signal("on_map_ready")
-	
+
 func update_camera_location(to :Vector2):
-	if not _loading:
+	if not _batch_spawner.is_running():
 		_last_cam = to
 		_chunk_management.update_camera_location(to)
 	
@@ -67,7 +71,7 @@ func update_spawned_tile(data :TileMapData):
 	
 	# remove old
 	_spawned_tile.queue_free()
-	_spawned_tiles.erase(data.id)
+	#_spawned_tiles.erase(data.id)
 	
 	# spawn new
 	var tile :BaseTile = _spawn_tile(data)
@@ -105,7 +109,8 @@ func get_closes_tile_instance(from :Vector3) -> BaseTile:
 	return current # BaseTile
 	
 func get_closes_tile(from :Vector3) -> TileMapData:
-	var tiles :Array = _tile_map_data.tiles
+	var tiles :Array = _visible_tiles
+	
 	if tiles.empty():
 		return null
 		
@@ -121,11 +126,6 @@ func get_closes_tile(from :Vector3) -> TileMapData:
 			current = i
 			
 	return current # TileMapData
-	
-func _spawn_tiles():
-	for i in _tile_map_data.tiles:
-		var data :TileMapData = i
-		_spawned_tiles[data.id] = _spawn_tile(data)
 	
 func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
@@ -161,6 +161,7 @@ func _clean():
 		var tile :BaseTile = _spawned_tiles[key]
 		tile.queue_free()
 		
+	_tile_datas.clear()
 	_spawned_tiles.clear()
 	
 func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add :Array):
@@ -177,7 +178,10 @@ func _despawn_chunk(data :ChunkManagement.ChunkData):
 		var id = data.id * _chunk_management.chunk_size + dir
 		if _spawned_tiles.has(id):
 			_spawned_tiles[id].visible = false
-
+			
+			if _visible_tiles.has(id):
+				_visible_tiles.erase(_tile_datas[id])
+			
 func _spawn_chunk(data :ChunkManagement.ChunkData):
 	var adjs = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 3)
 	var dirs = adjs + [Vector2.ZERO]
@@ -185,6 +189,14 @@ func _spawn_chunk(data :ChunkManagement.ChunkData):
 		var id = data.id * _chunk_management.chunk_size + dir
 		if _spawned_tiles.has(id):
 			_spawned_tiles[id].visible = true
+			
+			if not _visible_tiles.has(id):
+				_visible_tiles.append(_tile_datas[id])
+
+
+
+
+
 
 
 

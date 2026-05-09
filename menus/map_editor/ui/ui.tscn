@@ -300,7 +300,6 @@ margin_bottom = 264.0
 rect_min_size = Vector2( 220, 220 )
 size_flags_vertical = 3
 tile_scenes = [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 24 ), ExtResource( 21 ), ExtResource( 23 ), ExtResource( 23 ), ExtResource( 23 ), ExtResource( 23 ), ExtResource( 22 ), ExtResource( 22 ), ExtResource( 22 ) ]
-rotation_rad = -45.0
 
 [node name="movable_camera_minimap" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap" instance=ExtResource( 3 )]
 size_flags_vertical = 3

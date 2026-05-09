@@ -159,6 +159,9 @@ func setup_ui():
 	ui.movable_camera_ui.detect_in_out = false
 	
 	ui.movable_camera_minimap.target = movable_camera
+	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
+	ui.movable_camera_minimap.center_pos = tile_map.global_position
+	ui.movable_camera_minimap.detect_in_out = false
 	
 func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45

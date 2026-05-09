@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/minimap/minimap.gd" type="Script" id=1]
 [ext_resource path="res://scenes/minimap/tile_2d/ground.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/minimap/tile_2d/mud.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/minimap/tile_2d/rock.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/batch_spawner/batch_spawner.tscn" type="PackedScene" id=9]
 
 [node name="minimap" type="Control"]
 margin_right = 125.0
@@ -16,6 +17,8 @@ rect_min_size = Vector2( 125, 125 )
 mouse_filter = 2
 script = ExtResource( 1 )
 tile_scenes = [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 8 ) ]
+
+[node name="batch_spawner" parent="." instance=ExtResource( 9 )]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 anchor_right = 1.0
@@ -50,3 +53,6 @@ texture = ExtResource( 5 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 5 )
+
+[connection signal="on_finish" from="batch_spawner" to="." method="_on_batch_spawner_on_finish"]
+[connection signal="on_spawn" from="batch_spawner" to="." method="_on_batch_spawner_on_spawn"]

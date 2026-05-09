@@ -164,6 +164,7 @@ __meta__ = {
 cam_pos = false
 tile_scenes = [ ExtResource( 13 ), ExtResource( 12 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 14 ), ExtResource( 9 ), ExtResource( 9 ), ExtResource( 9 ) ]
 offset = Vector2( 0, -25 )
+tile_rotation_degree = 0.0
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 margin_top = 290.0
@@ -388,4 +389,5 @@ margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
+[connection signal="on_minimap_ready" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap" to="." method="_on_minimap_on_minimap_ready"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/battle" to="." method="_on_battle_pressed"]
