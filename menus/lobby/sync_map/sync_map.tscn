@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://menus/lobby/sync_map/sync_map.gd" type="Script" id=1]
+
+[node name="sync_map" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.08
+one_shot = true

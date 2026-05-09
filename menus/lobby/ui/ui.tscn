@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -14,11 +14,14 @@
 [ext_resource path="res://scenes/minimap/tile_2d/mud.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/minimap/tile_2d/ground.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/minimap/tile_2d/tree.tscn" type="PackedScene" id=14]
+[ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+
+[node name="sync_map" parent="." instance=ExtResource( 15 )]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -338,24 +341,30 @@ margin_bottom = 100.0
 rect_min_size = Vector2( 60, 60 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
-margin_right = 360.0
+margin_right = 24.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
-size_flags_horizontal = 3
+
+[node name="MarginContainer6" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_left = 28.0
+margin_right = 268.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 240, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
-margin_left = 364.0
+margin_left = 272.0
 margin_right = 724.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4"]
+[node name="Label_loading_host" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4"]
 margin_top = 39.0
-margin_right = 360.0
+margin_right = 452.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 7 )
 text = "Wait for host to start..."
+align = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
 margin_left = 728.0
@@ -363,10 +372,15 @@ margin_right = 752.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="battle" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
 margin_left = 756.0
-margin_top = 15.0
 margin_right = 996.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 240, 0 )
+
+[node name="battle" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer5"]
+margin_top = 15.0
+margin_right = 240.0
 margin_bottom = 85.0
 rect_min_size = Vector2( 240, 60 )
 size_flags_vertical = 4
@@ -375,7 +389,7 @@ text = "Start Game"
 icon = ExtResource( 6 )
 flat = true
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/battle"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer5/battle"]
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -388,6 +402,7 @@ margin_right = 1024.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 
+[connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="on_minimap_ready" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap" to="." method="_on_minimap_on_minimap_ready"]
-[connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/battle" to="." method="_on_battle_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer5/battle" to="." method="_on_battle_pressed"]

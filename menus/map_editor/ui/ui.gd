@@ -16,6 +16,7 @@ onready var list_map_bg = $CanvasLayer/Control/list_map_bg
 onready var list_map = $CanvasLayer/Control/list_map_bg/list_map
 onready var confirm_popup = $CanvasLayer/Control/confirm_popup
 onready var map_name = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/map_name
+onready var loading_screen = $CanvasLayer/loading_screen
 onready var minimap_size = minimap.rect_size
 
 onready var tile_cards = [
@@ -62,7 +63,14 @@ func _ready():
 		idx += 1
 		
 func on_map_ready():
+	loading_screen.visible = false
 	Global.hide_transition()
+
+func on_nav_toggle_pressed():
+	nav_show = not nav_show
+	if nav_show:
+		snack_bar.text = "Navigation show!"
+		snack_bar.show()
 	
 func _notification(what):
 	match what:
@@ -136,16 +144,6 @@ func _on_list_map_selected_map(manif :TileMapFileManifest):
 	yield(Global.set_active_map(manif),"completed")
 	get_tree().reload_current_scene()
 
-func _on_random_pressed():
-	snack_bar.text = "Map Randomized!"
-	snack_bar.show()
-	
-func _on_nav_toggle_pressed():
-	nav_show = not nav_show
-	if nav_show:
-		snack_bar.text = "Navigation show!"
-		snack_bar.show()
-	
 func _on_save_pressed():
 	yield(Global.save_edited_map(minimap.get_viewport()), "completed")
 	

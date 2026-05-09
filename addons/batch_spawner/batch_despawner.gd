@@ -1,6 +1,8 @@
 extends Node
 class_name BatchDespawner
 
+signal on_finish
+
 var _nodes := []
 var _batch_size := 20
 var _index := 0
@@ -24,6 +26,7 @@ func _process(delta):
 		if _index >= _nodes.size():
 			_running = false
 			set_process(false)
+			emit_signal("on_finish")
 			return
 			
 		var _node = _nodes[_index]

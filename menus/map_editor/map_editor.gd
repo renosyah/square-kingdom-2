@@ -104,9 +104,11 @@ func _on_random_button_press():
 	randomize_map_data()
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 	ui.minimap.load_data_map(Global.current_tile_map_file_data)
+	ui.loading_screen.visible = true
 	
 func _on_nav_toggle_button_press():
 	highlights.visible = not highlights.visible
+	ui.on_nav_toggle_pressed()
 	
 func _on_editable_tile_map_on_map_ready():
 	nav = editable_tile_map.get_nav_tile_map()

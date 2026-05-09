@@ -87,5 +87,5 @@ func _join(info):
 	NetworkLobbyManager.init_lobby()
 	
 func _on_client_player_connected():
-	Global.change_scene("res://menus/lobby/lobby.tscn")
+	Global.change_scene("res://menus/lobby/lobby.tscn", true)
 	

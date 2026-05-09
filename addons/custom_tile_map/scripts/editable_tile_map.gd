@@ -19,17 +19,27 @@ var _visible_tiles :Array = [] # [ BaseTile ]
 onready var _nav_tile_map :NavTileMap = $nav_tile_map
 onready var _chunk_management = $chunk_management
 onready var _batch_spawner = $batch_spawner
+onready var _batch_despawner = $batch_despawner
 
 func _ready():
 	set_process(false)
 	set_physics_process(false)
 	
 func load_data_map(data: TileMapFileData, is_editor:bool = false):
-	_clean()
-	
 	_is_editor = is_editor
 	_tile_map_data = data
 	
+	# despawn prev tiles
+	_batch_despawner.start(_spawned_tiles.values(), 16)
+	
+func _on_batch_despawner_on_finish():
+	_tile_datas.clear()
+	_spawned_tiles.clear()
+	
+	# then load new one
+	_load_data_map()
+	
+func _load_data_map():
 	_nav_tile_map.load_data_nav(_tile_map_data.navigations)
 	_batch_spawner.start(_tile_map_data.tiles, 16)
 	set_process(true)
@@ -91,23 +101,6 @@ func update_spawned_tile(data :TileMapData):
 			
 	emit_signal("on_tile_updated", data.id, data, tile)
 	
-func get_closes_tile_instance(from :Vector3) -> BaseTile:
-	var tiles :Array = get_tiles_instances()
-	if tiles.empty():
-		return null
-		
-	var current :BaseTile = tiles[0]
-	for i in tiles:
-		if i == current:
-			continue
-
-		var dist_1 = current.global_position.distance_squared_to(from)
-		var dist_2 = i.global_position.distance_squared_to(from)
-		if dist_2 < dist_1:
-			current = i
-			
-	return current # BaseTile
-	
 func get_closes_tile(from :Vector3) -> TileMapData:
 	var tiles :Array = _visible_tiles
 	
@@ -156,14 +149,7 @@ func _ids_to_tile_nodes(ids :Array) -> Array:
 		datas.append(get_tile_instance(i))
 	return datas
 	
-func _clean():
-	for key in _spawned_tiles.keys():
-		var tile :BaseTile = _spawned_tiles[key]
-		tile.queue_free()
-		
-	_tile_datas.clear()
-	_spawned_tiles.clear()
-	
+
 func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add :Array):
 	for i in _chunks_to_remove:
 		_despawn_chunk(i)
@@ -192,6 +178,8 @@ func _spawn_chunk(data :ChunkManagement.ChunkData):
 			
 			if not _visible_tiles.has(id):
 				_visible_tiles.append(_tile_datas[id])
+
+
 
 
 

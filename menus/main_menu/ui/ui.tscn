@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://menus/main_menu/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -9,6 +9,10 @@
 [ext_resource path="res://assets/background/join.png" type="Texture" id=7]
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
 [ext_resource path="res://assets/new_map_name_popup/text_input_popup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
+[ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
+[ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=12]
+[ext_resource path="res://assets/user_interface/icons/base.png" type="Texture" id=13]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -36,53 +40,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 0, 60 )
-
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
-margin_right = 1024.0
-margin_bottom = 60.0
-size_flags_horizontal = 3
-color = Color( 0.207843, 0.207843, 0.207843, 1 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer"]
-margin_right = 1024.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 60, 60 )
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_right = 120.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 0 )
-
-[node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 124.0
-margin_top = 12.0
-margin_right = 900.0
-margin_bottom = 48.0
-size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 5 )
-text = "Square Kingdom"
-align = 1
-
-[node name="setting" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 904.0
-margin_right = 1024.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 120, 60 )
-icon = ExtResource( 8 )
-icon_align = 1
-expand_icon = true
-
 [node name="Control" type="Control" parent="CanvasLayer/Control/VBoxContainer"]
-margin_top = 64.0
 margin_right = 1024.0
 margin_bottom = 446.0
 size_flags_vertical = 3
 
 [node name="text_input_popup" parent="CanvasLayer/Control/VBoxContainer/Control" instance=ExtResource( 9 )]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 0.0
@@ -98,19 +62,19 @@ size_flags_vertical = 3
 
 [node name="play" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
 visible = false
-margin_right = 1024.0
-margin_bottom = 382.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/Control/play"]
 margin_right = 1024.0
-margin_bottom = 382.0
+margin_bottom = 446.0
 rect_min_size = Vector2( 0, 150 )
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/play"]
 margin_right = 1024.0
-margin_bottom = 382.0
+margin_bottom = 446.0
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer"]
 margin_right = 1024.0
@@ -125,16 +89,16 @@ valign = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer"]
 margin_top = 64.0
 margin_right = 1024.0
-margin_bottom = 382.0
+margin_bottom = 446.0
 rect_min_size = Vector2( 0, 150 )
 size_flags_vertical = 3
 alignment = 1
 
 [node name="host" type="Button" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer"]
 margin_left = 302.0
-margin_top = 19.0
+margin_top = 51.0
 margin_right = 502.0
-margin_bottom = 299.0
+margin_bottom = 331.0
 rect_min_size = Vector2( 200, 280 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 5 )
@@ -171,14 +135,14 @@ valign = 1
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer"]
 margin_left = 506.0
 margin_right = 518.0
-margin_bottom = 318.0
+margin_bottom = 382.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="join" type="Button" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer"]
 margin_left = 522.0
-margin_top = 19.0
+margin_top = 51.0
 margin_right = 722.0
-margin_bottom = 299.0
+margin_bottom = 331.0
 rect_min_size = Vector2( 200, 280 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 5 )
@@ -229,38 +193,78 @@ margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 alignment = 1
 
-[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
-margin_left = 298.0
+[node name="shop" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 136.0
 margin_top = 45.0
-margin_right = 438.0
+margin_right = 196.0
 margin_bottom = 105.0
-rect_min_size = Vector2( 140, 60 )
+rect_min_size = Vector2( 60, 60 )
+size_flags_vertical = 4
+disabled = true
+icon = ExtResource( 10 )
+icon_align = 1
+expand_icon = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 200.0
+margin_right = 204.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 208.0
+margin_top = 45.0
+margin_right = 388.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 180, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 disabled = true
-text = "Unit Editor"
+text = "Army"
+icon = ExtResource( 13 )
+expand_icon = true
 
 [node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
-margin_left = 442.0
+margin_left = 392.0
 margin_top = 45.0
-margin_right = 582.0
+margin_right = 632.0
 margin_bottom = 105.0
-rect_min_size = Vector2( 140, 60 )
+rect_min_size = Vector2( 240, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-text = "Play Battle"
+text = "New Game"
+icon = ExtResource( 12 )
+expand_icon = true
 
 [node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
-margin_left = 586.0
+margin_left = 636.0
 margin_top = 45.0
-margin_right = 726.0
+margin_right = 816.0
 margin_bottom = 105.0
-rect_min_size = Vector2( 140, 60 )
+rect_min_size = Vector2( 180, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-text = "Map Editor"
+text = "Editor "
+icon = ExtResource( 11 )
+expand_icon = true
 
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/setting" to="." method="_on_setting_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 820.0
+margin_right = 824.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 4, 0 )
+
+[node name="setting" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 828.0
+margin_top = 45.0
+margin_right = 888.0
+margin_bottom = 105.0
+rect_min_size = Vector2( 60, 60 )
+size_flags_vertical = 4
+icon = ExtResource( 8 )
+icon_align = 1
+expand_icon = true
+
 [connection signal="close" from="CanvasLayer/Control/VBoxContainer/Control/text_input_popup" to="." method="_on_text_input_popup_close"]
 [connection signal="on_continue" from="CanvasLayer/Control/VBoxContainer/Control/text_input_popup" to="." method="_on_text_input_popup_on_continue"]
 [connection signal="close" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_close"]
@@ -270,3 +274,4 @@ text = "Map Editor"
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/play_battle" to="." method="_on_play_battle_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/setting" to="." method="_on_setting_pressed"]
