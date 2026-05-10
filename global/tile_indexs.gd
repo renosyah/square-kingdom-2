@@ -1,7 +1,7 @@
 extends Node
 class_name TileIndex
 
-enum {ground,mud,road,sand,water}
+enum {ground,mud,road,sand,water,trees,rocks,rotates}
 
 const tile_names = {
 	ground :0,
@@ -9,6 +9,9 @@ const tile_names = {
 	road :2,
 	sand :3,
 	water :4,
+	trees :[5,6,7,8],
+	rocks :[9,10,11],
+	rotates :[0,1,2]
 }
 
 const tiles = [

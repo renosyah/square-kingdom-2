@@ -96,6 +96,9 @@ func _on_text_input_popup_close():
 	text_input_popup.visible = false
 
 func _on_text_input_popup_on_continue():
+	if player_new_name.text.empty():
+		return
+		
 	text_input_popup.visible = false
 	Global.player_data.player_name = player_new_name.text
 	Global.save_player_data()

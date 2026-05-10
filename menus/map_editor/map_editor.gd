@@ -37,17 +37,16 @@ func _process(delta):
 	
 func generate_spawn_points() -> Array:
 	var datas :Array = []
-	var spawn_points_offset :Array = [
-		Vector2.ZERO + Vector2.UP * (Global.current_tile_map_manifest_data.map_size - 3),
-		Vector2.ZERO + Vector2.LEFT * (Global.current_tile_map_manifest_data.map_size - 3),
-		Vector2.ZERO + Vector2.RIGHT * (Global.current_tile_map_manifest_data.map_size - 3),
-		Vector2.ZERO + Vector2.DOWN * (Global.current_tile_map_manifest_data.map_size - 3),
-	]
+	var spawn_points_offset :Array = ReserveTile.get_spawn_points(
+		Global.current_tile_map_manifest_data.map_size, 3
+	)
 	
 	for offset in spawn_points_offset:
 		var spawn_points :Array = TileMapUtils.get_adjacent_tiles(
 			TileMapUtils.get_directions(), Vector2.ZERO, 2
-		) + [Vector2.ZERO]
+		)
+		spawn_points.append(Vector2.ZERO)
+		
 		for idx in spawn_points.size():
 			spawn_points[idx] += offset
 			
@@ -68,9 +67,9 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 	noise.persistence = 0.856
 	noise.lacunarity = 1.745
 	
-	var trees = [4,5,6,7]
-	var rocks = [8,9,10]
-	var rotate = [0,1,2]
+	var trees = TileIndex.tile_names[TileIndex.trees]
+	var rocks = TileIndex.tile_names[TileIndex.rocks]
+	var rotates =TileIndex.tile_names[TileIndex.rotates]
 	
 	for i in map_data.tiles:
 		var x :TileMapData = i
@@ -83,13 +82,13 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		if value > 0.4 and value < 0.5:
 			if rng.randf() < 0.2:
-				x.rotation_idx = Utils.get_random(rng, rotate)
+				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, rocks)
 				blocked.append(x.id)
 				
 		elif value > 0.3 and value < 0.4:
 			if rng.randf() < 0.4:
-				x.rotation_idx = Utils.get_random(rng, rotate)
+				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, trees)
 				blocked.append(x.id)
 				

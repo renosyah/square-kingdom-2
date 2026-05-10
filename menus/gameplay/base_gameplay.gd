@@ -3,6 +3,7 @@ class_name BaseGameplay
 
 onready var is_server = NetworkLobbyManager.is_server()
 onready var player :PlayerData = Global.player_data
+onready var players :Array = Global.players # [PlayerData]
 
 func _ready():
 	self.name = "gameplay"
@@ -99,6 +100,10 @@ func _on_grand_map_ready():
 	nav = tile_map.get_nav_tile_map()
 	NetworkLobbyManager.set_ready()
 	
+	# this function only be called
+	# if tile map is ready and setup properly
+	setup_players_spawn_points()
+	
 ########################################## camera  ############################################
 var movable_camera :Spatial
 
@@ -153,5 +158,34 @@ func setup_ui():
 	
 func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45
+	
+########################################## SPLAYER SPAWNS  ############################################
+var player_spawn_points = []
+var player_spawn_point :Vector2
+
+func setup_players_spawn_points():
+	var map_size :int = current_tile_map_manifest_data.map_size
+	player_spawn_points = ReserveTile.get_spawn_points(map_size, 3)
+	
+	for index in players.size():
+		var p :PlayerData = players[index]
+		if p.player_id == player.player_id:
+			player_spawn_point = player_spawn_points[index]
+			break
+	
+	var tile :TileMapData = tile_map.get_tile(player_spawn_point)
+	if tile == null:
+		return
+	
+	movable_camera.translation.x = tile.pos.x - 2
+	movable_camera.translation.z = tile.pos.z - 2
+
+
+
+
+
+
+
+
 
 

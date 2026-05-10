@@ -222,3 +222,30 @@ func change_scene(scene :String, use :bool = false, bg_idx :int = 0):
 	
 func hide_transition():
 	transition.hide_transition()
+	
+##########################################  lobby  ############################################
+
+var players :Array = []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

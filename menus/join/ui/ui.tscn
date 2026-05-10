@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://menus/join/ui/ui.gd" type="Script" id=1]
-[ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_32.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/background/splash.png" type="Texture" id=4]
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=5]
@@ -69,7 +68,6 @@ color = Color( 0, 0, 0, 0.705882 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-script = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control"]
 margin_right = 1024.0

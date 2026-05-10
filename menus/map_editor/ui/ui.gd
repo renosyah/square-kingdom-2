@@ -118,15 +118,19 @@ func _on_card_on_release(card, pos, idx :int):
 		emit_signal("on_nav_card_dropped", pos, false)
 		return
 		
+	var trees = TileIndex.tile_names[TileIndex.trees]
+	var rocks = TileIndex.tile_names[TileIndex.rocks]
+	var rotates =TileIndex.tile_names[TileIndex.rotates]
+	
 	var tile_data :TileMapData = TileMapData.new()
 	tile_data.scene_idx = idx
-	tile_data.rotation_idx = [0,1,2].pick_random()
+	tile_data.rotation_idx = rotates.pick_random()
 	
-	if idx == 4:
-		tile_data.scene_idx = [4,5,6,7].pick_random()
+	if idx == 5:
+		tile_data.scene_idx = trees.pick_random()
 		
-	elif idx == 5:
-		tile_data.scene_idx = [8,9,10].pick_random()
+	elif idx == 6:
+		tile_data.scene_idx = rocks.pick_random()
 		
 	emit_signal("on_tile_card_dropped", pos, tile_data)
 	

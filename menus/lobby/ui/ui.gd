@@ -24,6 +24,8 @@ func _ready():
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
 	
+	minimap.tile_scenes = TileIndex.tiles2d
+	
 	if is_server:
 		label_loading_host.visible = false
 		battle.visible = true
@@ -86,12 +88,15 @@ func _on_lobby_player_update(players :Array):
 		player_holder.remove_child(child)
 		child.queue_free()
 		
+	Global.players.clear()
+		
 	var idx = 1
 	for i in players:
 		var player :NetworkPlayer = i
 		
 		var player_data :PlayerData = PlayerData.new()
 		player_data.from_dictionary(player.extra)
+		Global.players.append(player_data)
 		
 		var is_host :bool = player.player_network_unique_id == NetworkLobbyManager.host_id
 		var has_map :bool = player_map_data_received.has(player.player_network_unique_id)
@@ -118,15 +123,15 @@ func _on_lobby_player_update(players :Array):
 func on_back_pressed():
 	NetworkLobbyManager.leave()
 	
-func _on_host_ready():
-	Global.change_scene("res://menus/gameplay/client/client.tscn", true)
-	
 func _on_leave():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 	
 func _on_back_pressed():
 	on_back_pressed()
-
+	
+func _on_host_ready():
+	Global.change_scene("res://menus/gameplay/client/client.tscn", true)
+	
 func _on_battle_pressed():
 	Global.change_scene("res://menus/gameplay/host/host.tscn", true)
 

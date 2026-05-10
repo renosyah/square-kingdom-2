@@ -10,7 +10,7 @@ export (Array, PackedScene) var tile_scenes :Array
 export var chunk_system :bool = true
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
-var _tile_datas :Dictionary = {} # { Vector2 : BaseTile }
+var _tile_datas :Dictionary = {} # { Vector2 : TileMapData }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
 var _last_cam :Vector2
@@ -73,6 +73,12 @@ func get_nav_tile_map() -> NavTileMap:
 func get_tiles_instances() -> Array:
 	return _spawned_tiles.values() # [ BaseTile ]
 	
+func get_tile(id :Vector2) -> TileMapData:
+	if not _tile_datas.has(id):
+		return null
+		
+	return _tile_datas[id]
+	
 func has_tile(id :Vector2) -> bool:
 	return _spawned_tiles.has(id)
 	
@@ -87,7 +93,6 @@ func update_spawned_tile(data :TileMapData):
 	
 	# remove old
 	_spawned_tile.queue_free()
-	#_spawned_tiles.erase(data.id)
 	
 	# spawn new
 	var tile :BaseTile = _spawn_tile(data)
