@@ -7,6 +7,7 @@ onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
 onready var batch_spawner = $batch_spawner
 onready var batch_despawner = $batch_despawner
+onready var untouch_tiles = generate_spawn_points()
 
 var nav_tiles :Dictionary
 var nav :NavTileMap
@@ -24,14 +25,35 @@ func _ready():
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.detect_in_out = false
 	
+	editable_tile_map.tile_scenes = TileIndex.tiles
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
-
+	
 func _process(delta):
 	var pos = movable_camera.translation * Vector3(1,0,1)
 	editable_tile_map.update_camera_location(Vector2(pos.x, pos.z))
 	clickable_floor.translation = pos
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10
+	
+func generate_spawn_points() -> Array:
+	var datas :Array = []
+	var spawn_points_offset :Array = [
+		Vector2.ZERO + Vector2.UP * (Global.current_tile_map_manifest_data.map_size - 3),
+		Vector2.ZERO + Vector2.LEFT * (Global.current_tile_map_manifest_data.map_size - 3),
+		Vector2.ZERO + Vector2.RIGHT * (Global.current_tile_map_manifest_data.map_size - 3),
+		Vector2.ZERO + Vector2.DOWN * (Global.current_tile_map_manifest_data.map_size - 3),
+	]
+	
+	for offset in spawn_points_offset:
+		var spawn_points :Array = TileMapUtils.get_adjacent_tiles(
+			TileMapUtils.get_directions(), Vector2.ZERO, 2
+		) + [Vector2.ZERO]
+		for idx in spawn_points.size():
+			spawn_points[idx] += offset
+			
+		datas.append_array(spawn_points)
+		
+	return datas
 	
 func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100)):
 	var map_data :TileMapFileData = Global.current_tile_map_file_data
@@ -52,9 +74,10 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 	
 	for i in map_data.tiles:
 		var x :TileMapData = i
-		x.scene_idx = 0
+		x.scene_idx = TileIndex.tile_names[TileIndex.ground]
 		
 		if x.id in untouch:
+			x.scene_idx = TileIndex.tile_names[TileIndex.road]
 			continue
 			
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
@@ -71,11 +94,11 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 				blocked.append(x.id)
 				
 		elif value > 0.2 and value < 0.3:
-			x.scene_idx = 1
+			x.scene_idx = TileIndex.tile_names[TileIndex.mud]
 		elif value > 0.1 and value < 0.2:
-			x.scene_idx = 2
+			x.scene_idx = TileIndex.tile_names[TileIndex.sand]
 		elif value < 0.1:
-			x.scene_idx = 3
+			x.scene_idx = TileIndex.tile_names[TileIndex.water]
 			blocked.append(x.id)
 			
 	for i in map_data.navigations[0]:
@@ -97,11 +120,11 @@ func _on_batch_spawner_on_spawn(n :NavigationData):
 	highlights.add_child(h)
 	h.set_text("%s\n%s" % [n.id, n.navigation_id])
 	h.enable(n.enable)
-	h.translation = n.pos
+	h.translation = n.pos * 1.02
 	nav_tiles[n.id] = h
 	
 func _on_random_button_press():
-	randomize_map_data()
+	randomize_map_data(untouch_tiles)
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 	ui.minimap.load_data_map(Global.current_tile_map_file_data)
 	ui.loading_screen.visible = true
@@ -122,13 +145,16 @@ func _on_ui_on_tile_card_dropped(posv2 :Vector2, tile_data :TileMapData):
 	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
 	
 	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
+	if tile.id in untouch_tiles:
+		return
+	
 	tile_data.id = tile.id
 	tile_data.pos = tile.pos
 	
 	editable_tile_map.update_spawned_tile(tile_data)
 	
 func _on_editable_tile_map_on_tile_updated(id, data, node):
-	var enable_nav = data.scene_idx in [0,1,2]
+	var enable_nav = data.scene_idx in [0,1,2,3]
 	ui.minimap.update_spawned_tile(data)
 	nav.enable_nav_tile(0, id, enable_nav)
 	nav_tiles[id].enable(enable_nav)
@@ -136,6 +162,9 @@ func _on_editable_tile_map_on_tile_updated(id, data, node):
 func _on_ui_on_nav_card_dropped(posv2, enable):
 	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
 	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
+	if tile.id in untouch_tiles:
+		return
+		
 	nav.enable_nav_tile(0, tile.id, enable)
 	nav_tiles[tile.id].enable(enable)
 

@@ -214,6 +214,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/minimap/tile_2d/tile_2d.gd"
 }, {
+"base": "Node",
+"class": "TileIndex",
+"language": "GDScript",
+"path": "res://scenes/tiles/tile_indexs.gd"
+}, {
 "base": "Resource",
 "class": "TileMapData",
 "language": "GDScript",
@@ -291,6 +296,7 @@ _global_script_class_icons={
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
 "SquadMember": "",
 "Tile2D": "",
+"TileIndex": "",
 "TileMapData": "",
 "TileMapFileData": "",
 "TileMapFileManifest": "",

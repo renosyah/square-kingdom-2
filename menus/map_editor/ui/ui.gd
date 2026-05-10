@@ -22,6 +22,7 @@ onready var minimap_size = minimap.rect_size
 onready var tile_cards = [
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/ground_card,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/mud_card,
+	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/road_card, # for road, but no deployable road
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/sand_card,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/sea_card,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/tree_card,
@@ -32,6 +33,7 @@ onready var tile_cards = [
 onready var tile_cards_contents = [
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/ground_card/ground,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/mud_card/mud,
+	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/road_card, # for road, but no deployable road
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/sand_card/sand,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/sea_card/sea,
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/tree_card/tree,
@@ -50,6 +52,7 @@ func _ready():
 	list_map_bg.visible = false
 	confirm_popup.visible = false
 	
+	minimap.tile_scenes = TileIndex.tiles2d
 	minimap.load_data_map(Global.current_tile_map_file_data)
 	
 	map_name.text = Global.current_tile_map_manifest_data.map_name
@@ -107,11 +110,11 @@ func _on_card_on_release(card, pos, idx :int):
 	dragable_item.remove_child(_child)
 	_child.queue_free()
 	
-	if idx == 6:
+	if idx == 7:
 		emit_signal("on_nav_card_dropped", pos, true)
 		return
 		
-	if idx == 7:
+	if idx == 8:
 		emit_signal("on_nav_card_dropped", pos, false)
 		return
 		
@@ -142,7 +145,7 @@ func _on_cam_rot_reset_pressed():
 
 func _on_list_map_selected_map(manif :TileMapFileManifest):
 	yield(Global.set_active_map(manif),"completed")
-	get_tree().reload_current_scene()
+	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 
 func _on_save_pressed():
 	yield(Global.save_edited_map(minimap.get_viewport()), "completed")
@@ -166,14 +169,14 @@ func _on_delete_pressed():
 	if result:
 		Global.delete_map()
 		Global.empty_map_data()
-		get_tree().reload_current_scene()
+		Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 		return
 		
 	confirm_popup.visible = false
 
 func _on_list_map_new_map(nm):
 	Global.current_tile_map_manifest_data.map_name = nm
-	get_tree().reload_current_scene()
+	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://menus/map_editor/ui/ui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://menus/map_editor/map_editor.gd" type="Script" id=2]
@@ -6,18 +6,7 @@
 [ext_resource path="res://assets/camera/movable_camera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/enviroment/outside_enviroment.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/clickable_floor/clickable_floor.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/tiles/water.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/tiles/sand.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/tiles/ground.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/tiles/rock_1.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/tiles/tree_1.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/tiles/mud.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/tiles/tree_2.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/tiles/tree_3.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/tiles/rock_2.tscn" type="PackedScene" id=15]
 [ext_resource path="res://addons/batch_spawner/batch_spawner.tscn" type="PackedScene" id=16]
-[ext_resource path="res://scenes/tiles/tree_4.tscn" type="PackedScene" id=17]
-[ext_resource path="res://scenes/tiles/rock_3.tscn" type="PackedScene" id=18]
 [ext_resource path="res://addons/batch_spawner/batch_despawner.tscn" type="PackedScene" id=19]
 
 [node name="map_editor" type="Node"]
@@ -29,7 +18,6 @@ script = ExtResource( 2 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 3, 0 )
 
 [node name="editable_tile_map" parent="." instance=ExtResource( 3 )]
-tile_scenes = [ ExtResource( 9 ), ExtResource( 12 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 17 ), ExtResource( 10 ), ExtResource( 15 ), ExtResource( 18 ) ]
 
 [node name="clickable_floor" parent="." instance=ExtResource( 6 )]
 

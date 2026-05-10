@@ -87,7 +87,7 @@ func _on_join_pressed():
 
 func _on_setting_pressed():
 	hide_all()
-	text_input_popup.title = "Player Name"
+	text_input_popup.title = "Player"
 	text_input_popup.place_holder = Global.player_data.player_name
 	text_input_popup.show()
 	text_input_popup.visible = true

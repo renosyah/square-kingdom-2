@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=2]
-[ext_resource path="res://assets/new_map_name_popup/text_input_popup.gd" type="Script" id=3]
+[ext_resource path="res://assets/text_input_popup/text_input_popup.gd" type="Script" id=3]
 [ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=4]
 
 [node name="text_input_popup" type="Control"]

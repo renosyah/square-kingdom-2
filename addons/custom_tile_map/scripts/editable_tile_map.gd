@@ -7,6 +7,7 @@ signal on_tile_updated(id, data, node)
 # must be set with BaseTile scenes
 # and make sure index were set accordingly
 export (Array, PackedScene) var tile_scenes :Array
+export var chunk_system :bool = true
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : BaseTile }
 var _tile_datas :Dictionary = {} # { Vector2 : BaseTile }
@@ -15,7 +16,7 @@ var _is_editor :bool = false
 var _last_cam :Vector2
 
 var _visible_tiles :Array = [] # [ BaseTile ]
-
+onready var _chunk_system :bool = chunk_system
 onready var _nav_tile_map :NavTileMap = $nav_tile_map
 onready var _chunk_management = $chunk_management
 onready var _batch_spawner = $batch_spawner
@@ -49,11 +50,16 @@ func _on_batch_spawner_on_spawn(data :TileMapData):
 	_tile_datas[data.id] = data
 
 func _on_batch_spawner_on_finish():
-	_chunk_management.start_position = _last_cam
-	_chunk_management.init_starter_chunk()
+	if _chunk_system:
+		_chunk_management.start_position = _last_cam
+		_chunk_management.init_starter_chunk()
+		
 	emit_signal("on_map_ready")
 
 func update_camera_location(to :Vector2):
+	if not _chunk_system:
+		return
+		
 	if not _batch_spawner.is_running():
 		_last_cam = to
 		_chunk_management.update_camera_location(to)
@@ -123,7 +129,7 @@ func get_closes_tile(from :Vector3) -> TileMapData:
 func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
 	tile.name = 'tile_%s' % data.id
-	tile.visible = false
+	tile.visible = not _chunk_system
 	add_child(tile)
 	tile.rotation_degrees.y = _get_rotation_idx_value(data.rotation_idx)
 	tile.translation = global_position + data.pos

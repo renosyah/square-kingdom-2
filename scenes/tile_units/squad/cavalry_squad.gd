@@ -1,5 +1,10 @@
 extends BaseSquad
 
+export var charge_damage :int
+export var charge_required :int = 3
+
+var _charges :int
+
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -37,13 +42,25 @@ func update_spotting():
 	.update_spotting()
 	
 	_melee_ranges = [current_tile]
-
-
-
-
-
-
-
+	
+func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
+	._on_current_tile_updated(from_id, to_id)
+	
+	if is_instance_valid(chase_enemy):
+		_charges = int(clamp(_charges + 1, 0, charge_required))
+		
+func _on_finish_travel(from_id :Vector2, to_id :Vector2):
+	._on_finish_travel(from_id, to_id)
+	
+	if not is_instance_valid(chase_enemy):
+		return
+		
+	var is_impact :bool = (chase_enemy.current_tile == current_tile) and (_charges >= charge_required)
+	if not is_impact:
+		return
+		
+	chase_enemy.take_damage(charge_damage)
+	
 
 
 

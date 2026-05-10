@@ -12,6 +12,7 @@ onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginCo
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 
 func _ready():
+	minimap.tile_scenes = TileIndex.tiles2d
 	dialog_menu.visible = false
 
 func setup_minimap(tile_map_data :TileMapFileData):
