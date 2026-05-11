@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/square_forest_waterStraight_noSides.obj-4fbc07f55a8a962d89c3f6e75d50c46e.mesh"
+
+[deps]
+
+files=[ "res://.import/square_forest_waterStraight_noSides.obj-4fbc07f55a8a962d89c3f6e75d50c46e.mesh" ]
+
+source_file="res://scenes/tiles/kay_tile_models/square_forest_waterStraight_noSides.obj"
+dest_files=[ "res://.import/square_forest_waterStraight_noSides.obj-4fbc07f55a8a962d89c3f6e75d50c46e.mesh", "res://.import/square_forest_waterStraight_noSides.obj-4fbc07f55a8a962d89c3f6e75d50c46e.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

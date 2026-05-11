@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/watermill.obj-83239d12fe5fd6aef20494cd470be520.mesh"
+
+[deps]
+
+files=[ "res://.import/watermill.obj-83239d12fe5fd6aef20494cd470be520.mesh" ]
+
+source_file="res://scenes/tiles/kay_object_models/watermill.obj"
+dest_files=[ "res://.import/watermill.obj-83239d12fe5fd6aef20494cd470be520.mesh", "res://.import/watermill.obj-83239d12fe5fd6aef20494cd470be520.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

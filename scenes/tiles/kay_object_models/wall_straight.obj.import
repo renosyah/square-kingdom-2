@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/wall_straight.obj-8b80ef26c6b3cbbad30eb1ad3f60e2db.mesh"
+
+[deps]
+
+files=[ "res://.import/wall_straight.obj-8b80ef26c6b3cbbad30eb1ad3f60e2db.mesh" ]
+
+source_file="res://scenes/tiles/kay_object_models/wall_straight.obj"
+dest_files=[ "res://.import/wall_straight.obj-8b80ef26c6b3cbbad30eb1ad3f60e2db.mesh", "res://.import/wall_straight.obj-8b80ef26c6b3cbbad30eb1ad3f60e2db.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

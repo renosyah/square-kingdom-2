@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/square_rock_waterInnerCorner_noSides.obj-ac0ca991f76ce51db9e69174cd7ba121.mesh"
+
+[deps]
+
+files=[ "res://.import/square_rock_waterInnerCorner_noSides.obj-ac0ca991f76ce51db9e69174cd7ba121.mesh" ]
+
+source_file="res://scenes/tiles/kay_tile_models/square_rock_waterInnerCorner_noSides.obj"
+dest_files=[ "res://.import/square_rock_waterInnerCorner_noSides.obj-ac0ca991f76ce51db9e69174cd7ba121.mesh", "res://.import/square_rock_waterInnerCorner_noSides.obj-ac0ca991f76ce51db9e69174cd7ba121.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

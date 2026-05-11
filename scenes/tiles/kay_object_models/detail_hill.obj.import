@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/detail_hill.obj-50c39d0132cc5da407d1bc019c9e0f2c.mesh"
+
+[deps]
+
+files=[ "res://.import/detail_hill.obj-50c39d0132cc5da407d1bc019c9e0f2c.mesh" ]
+
+source_file="res://scenes/tiles/kay_object_models/detail_hill.obj"
+dest_files=[ "res://.import/detail_hill.obj-50c39d0132cc5da407d1bc019c9e0f2c.mesh", "res://.import/detail_hill.obj-50c39d0132cc5da407d1bc019c9e0f2c.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

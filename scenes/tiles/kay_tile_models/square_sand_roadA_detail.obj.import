@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/square_sand_roadA_detail.obj-db44c7236719794e2c621dd52ef3566a.mesh"
+
+[deps]
+
+files=[ "res://.import/square_sand_roadA_detail.obj-db44c7236719794e2c621dd52ef3566a.mesh" ]
+
+source_file="res://scenes/tiles/kay_tile_models/square_sand_roadA_detail.obj"
+dest_files=[ "res://.import/square_sand_roadA_detail.obj-db44c7236719794e2c621dd52ef3566a.mesh", "res://.import/square_sand_roadA_detail.obj-db44c7236719794e2c621dd52ef3566a.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

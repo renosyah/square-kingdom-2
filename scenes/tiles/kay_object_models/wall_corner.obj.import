@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/wall_corner.obj-89d9503ec29f3515575dacd7b714d73a.mesh"
+
+[deps]
+
+files=[ "res://.import/wall_corner.obj-89d9503ec29f3515575dacd7b714d73a.mesh" ]
+
+source_file="res://scenes/tiles/kay_object_models/wall_corner.obj"
+dest_files=[ "res://.import/wall_corner.obj-89d9503ec29f3515575dacd7b714d73a.mesh", "res://.import/wall_corner.obj-89d9503ec29f3515575dacd7b714d73a.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

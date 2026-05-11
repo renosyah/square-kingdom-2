@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/square_forest_roadE_detail.obj-9f7d670851b7e6eeeb633a47db594ddf.mesh"
+
+[deps]
+
+files=[ "res://.import/square_forest_roadE_detail.obj-9f7d670851b7e6eeeb633a47db594ddf.mesh" ]
+
+source_file="res://scenes/tiles/kay_tile_models/square_forest_roadE_detail.obj"
+dest_files=[ "res://.import/square_forest_roadE_detail.obj-9f7d670851b7e6eeeb633a47db594ddf.mesh", "res://.import/square_forest_roadE_detail.obj-9f7d670851b7e6eeeb633a47db594ddf.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

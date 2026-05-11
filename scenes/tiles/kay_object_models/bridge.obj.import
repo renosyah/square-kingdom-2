@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/bridge.obj-6ab3d9803fac5f81e8027ea8cdb2b7e1.mesh"
+
+[deps]
+
+files=[ "res://.import/bridge.obj-6ab3d9803fac5f81e8027ea8cdb2b7e1.mesh" ]
+
+source_file="res://scenes/tiles/kay_object_models/bridge.obj"
+dest_files=[ "res://.import/bridge.obj-6ab3d9803fac5f81e8027ea8cdb2b7e1.mesh", "res://.import/bridge.obj-6ab3d9803fac5f81e8027ea8cdb2b7e1.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
