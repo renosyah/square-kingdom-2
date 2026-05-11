@@ -1,21 +1,75 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+enum squadFormationType { FOUR, NINE }
+
+export var member_scene :PackedScene
 export var has_range_weapon :bool
+export(squadFormationType) var formation_type = squadFormationType.NINE
+export var attack_damage :int
+export var can_attack :bool
 
 puppet var _puppet_rotation_y :float
+puppet var _puppet_enemy :NodePath
 
+var _formation_offsets :Array = [] # [Vector3]
+var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
 
 var _attack_timer :Timer
 
 func _ready():
+	connect("tree_exiting", self, "_tree_exiting")
+	
 	_attack_timer = Timer.new()
 	_attack_timer.one_shot = true
 	_attack_timer.autostart = false
 	_attack_timer.wait_time = 0.5
 	add_child(_attack_timer)
+	
+	match (formation_type):
+		squadFormationType.FOUR:
+			_formation_offsets = [
+				Vector3.FORWARD, Vector3.BACK,
+				Vector3.LEFT, Vector3.RIGHT
+			]
+			_formation_positions = _formation_offsets.duplicate()
+			
+		squadFormationType.NINE:
+			_formation_offsets = [
+				Vector3.FORWARD, Vector3.BACK,
+				Vector3.LEFT, Vector3.RIGHT,
+				Vector3.FORWARD + Vector3.LEFT,
+				Vector3.FORWARD + Vector3.RIGHT,
+				Vector3.BACK + Vector3.LEFT,
+				Vector3.BACK + Vector3.RIGHT,
+				Vector3.ZERO
+			]
+			_formation_positions = _formation_offsets.duplicate()
+			
+	var idx = 0
+	for pos in _formation_positions:
+		var member :SquadMember = member_scene.instance()
+		member.index = idx
+		member.squad = self
+		member.name = "%s_member_%s" % [name, idx]
+		member.connect("attack_performed", self, "_on_member_attack_performed")
+		get_parent().call_deferred("add_child", member)
+		member.translation = pos
+		_members.append(member)
+		idx += 1
+		
+func get_formation_position(index :int) -> Vector3:
+	return _formation_positions[index]
+	
+func _on_member_attack_performed(member :SquadMember, enemy):
+	if _is_master:
+		enemy.take_damage(attack_damage)
+		
+func _tree_exiting():
+	for i in _members:
+		i.queue_free()
 	
 func sync_update() -> void:
 	.sync_update()
@@ -23,15 +77,37 @@ func sync_update() -> void:
 	if not is_dead and _is_master and _is_online:
 		rset_unreliable("_puppet_rotation_y", global_rotation.y)
 		
-func _move_to_path(delta :float, pos :Vector3, to :Vector3):
-	._move_to_path(delta, pos, to)
+		if _has_enemy:
+			rset_unreliable("_puppet_enemy", enemy.get_path())
+			
+		else:
+			rset_unreliable("_puppet_enemy", NodePath(""))
+		
+func moving(_delta :float) -> void:
+	.moving(_delta)
+	
+	var pos :Vector3 = global_position
+	var basis :Basis = global_transform.basis
+	
+	for i in _formation_offsets.size():
+		var offset :Vector3 = _formation_offsets[i] * 0.25
+		_formation_positions[i] = (pos + basis.xform(offset))
+		
+func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	
 	# align Y
 	var look :Vector3 = to
 	look.y = pos.y
 	
 	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, 25 * delta)
+	transform = transform.interpolate_with(t, 1.5 * delta)
+	
+	var dir_to :Vector3 = pos.direction_to(look)
+	var foward_dir :Vector3 = (-global_transform.basis.z)
+	var is_align :bool = foward_dir.dot(dir_to) > 0.95
+	
+	if is_align:
+		._move_to_next_path(delta, pos, to)
 	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
@@ -42,12 +118,15 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	
 	# look at enemy position
 	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, 25 * delta)
+	transform = transform.interpolate_with(t, 1.5 * delta)
 	
 	var dir_to :Vector3 = pos.direction_to(look)
 	var foward_dir :Vector3 = (-global_transform.basis.z)
 	var is_align :bool = foward_dir.dot(dir_to) > 0.85
 	
+	if not can_attack:
+		return
+		
 	if is_align and _attack_timer.is_stopped():
 		_attack_timer.start()
 		
@@ -94,5 +173,6 @@ func _is_in_melee_range(target):
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	
-	if not is_dead:	
+	if not is_dead:
 		rotation.y = lerp_angle(rotation.y, _puppet_rotation_y, 25 * delta)
+		enemy = get_node_or_null(_puppet_enemy)

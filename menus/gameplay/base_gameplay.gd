@@ -87,7 +87,7 @@ var nav :NavTileMap
 
 func spawn_tile_map():
 	tile_map = preload("res://addons/custom_tile_map/scenes/editable_tile_map/editable_tile_map.tscn").instance()
-	tile_map.connect("on_map_ready", self, "_on_grand_map_ready")
+	tile_map.connect("on_map_ready", self, "_on_tile_map_ready")
 	tile_map.name = "tile_map"
 	tile_map.tile_scenes = TileIndex.tiles
 	add_child(tile_map)
@@ -96,7 +96,7 @@ func spawn_tile_map():
 	# init grandmap unit position
 	tile_position_manager.init_position(current_tile_map_manifest_data.map_size)
 	
-func _on_grand_map_ready():
+func _on_tile_map_ready():
 	nav = tile_map.get_nav_tile_map()
 	NetworkLobbyManager.set_ready()
 	

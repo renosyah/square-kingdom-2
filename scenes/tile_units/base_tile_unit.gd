@@ -24,7 +24,7 @@ class TileUnitPath:
 export var player_id :String
 export var team :int = 0
 export var color :Color = Color.white
-export var speed :float = 0.4
+export var speed :float = 1.4
 export var hp :int = 100
 export var max_hp :int = 100
 
@@ -59,6 +59,8 @@ var chase_enemy = null # cycle warning set to null
 var enemy = null # cycle warning set to null
 var attack_move :bool
 var spotting_area :Array
+
+var _has_enemy :bool # for easier
 
 # multiplayer data to sync
 puppet var _puppet_current_tile :Vector2
@@ -96,6 +98,7 @@ func _move_to(tile_id :Vector2):
 		return
 		
 	enemy = null
+	_has_enemy = false
 	
 	var v :Array = _get_tile_path(tile_id)
 	if v.empty():
@@ -163,11 +166,16 @@ func last_sync_update() -> void:
 		rset("_puppet_translation", global_position)
 		rset("_puppet_current_tile", current_tile)
 		
+func moving(delta :float) -> void:
+	.moving(delta)
+	
+	if not is_dead:
+		_attack_enemy_proccess(delta, global_position)
+		
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	
 	if not is_dead:
-		_attack_enemy_proccess(delta, global_position)
 		_follow_path_proccess(delta, global_position)
 	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
@@ -179,6 +187,7 @@ func _attack_enemy_proccess(delta :float, pos :Vector3):
 		return
 		
 	enemy = null
+	_has_enemy = false
 	_on_no_enemy()
 	
 func _follow_path_proccess(delta :float, pos :Vector3):
@@ -265,6 +274,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			
 		if _is_in_range(chase_enemy):
 			enemy = chase_enemy
+			_has_enemy = true
 			_on_enemy_set()
 			return
 		
@@ -323,6 +333,7 @@ func _scan_area():
 			if is_instance_valid(unit):
 				if not unit.is_dead and unit.team != team:
 					enemy = unit
+					_has_enemy = true
 					_on_enemy_set()
 					return
 				
