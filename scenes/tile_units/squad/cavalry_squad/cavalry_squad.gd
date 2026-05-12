@@ -4,7 +4,22 @@ export var charge_damage :int
 export var charge_required :int = 3
 
 var _charges :int
+var _ready_charge :bool
 
+func _init_formations():
+	#._init_formations()
+	
+	_formation_offsets = [
+		Vector3.FORWARD, Vector3.BACK,
+		Vector3.LEFT, Vector3.RIGHT
+	]
+	_formation_positions = _formation_offsets.duplicate()
+	
+func _move_to(tile_id :Vector2):
+	._move_to(tile_id)
+	
+	_ready_charge = false
+	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -46,8 +61,17 @@ func update_spotting():
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
+	# if there are chases enemy
+	# and cav travel more than enough
 	if is_instance_valid(chase_enemy):
 		_charges = int(clamp(_charges + 1, 0, charge_required))
+		
+	if (_charges >= charge_required) and not _ready_charge:
+		# make ready lances
+		# this _ready_charge is here 
+		# to not trigger multiple time
+		_ready_charge = true
+		
 		
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	._on_finish_travel(from_id, to_id)
@@ -60,6 +84,7 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 		return
 		
 	chase_enemy.take_damage(charge_damage + attack_damage)
+	_ready_charge = false
 	
 
 

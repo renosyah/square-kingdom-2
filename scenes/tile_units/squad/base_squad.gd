@@ -1,11 +1,8 @@
 extends BaseTileUnit
 class_name BaseSquad
 
-enum squadFormationType { FOUR, NINE }
-
 export var member_scene :PackedScene
 export var has_range_weapon :bool
-export(squadFormationType) var formation_type = squadFormationType.NINE
 export var attack_damage :int
 export var can_attack :bool
 
@@ -28,37 +25,32 @@ func _ready():
 	_attack_timer.wait_time = 0.5
 	add_child(_attack_timer)
 	
-	match (formation_type):
-		squadFormationType.FOUR:
-			_formation_offsets = [
-				Vector3.FORWARD, Vector3.BACK,
-				Vector3.LEFT, Vector3.RIGHT
-			]
-			_formation_positions = _formation_offsets.duplicate()
-			
-		squadFormationType.NINE:
-			_formation_offsets = [
-				Vector3.FORWARD, Vector3.BACK,
-				Vector3.LEFT, Vector3.RIGHT,
-				Vector3.FORWARD + Vector3.LEFT,
-				Vector3.FORWARD + Vector3.RIGHT,
-				Vector3.BACK + Vector3.LEFT,
-				Vector3.BACK + Vector3.RIGHT,
-				Vector3.ZERO
-			]
-			_formation_positions = _formation_offsets.duplicate()
-			
-	var idx = 0
-	for pos in _formation_positions:
+	_init_formations()
+	_spawn_members()
+	
+func _init_formations():
+	_formation_offsets = [
+		Vector3.FORWARD, Vector3.BACK,
+		Vector3.LEFT, Vector3.RIGHT,
+		Vector3.FORWARD + Vector3.LEFT,
+		Vector3.FORWARD + Vector3.RIGHT,
+		Vector3.BACK + Vector3.LEFT,
+		Vector3.BACK + Vector3.RIGHT,
+		Vector3.ZERO
+	]
+	_formation_positions = _formation_offsets.duplicate()
+	
+func _spawn_members():
+	for idx in _formation_positions.size():
 		var member :SquadMember = member_scene.instance()
 		member.index = idx
 		member.squad = self
 		member.name = "%s_member_%s" % [name, idx]
 		member.connect("attack_performed", self, "_on_member_attack_performed")
-		get_parent().call_deferred("add_child", member)
-		member.translation = pos
+		add_child(member)
+		member.set_as_toplevel(true)
+		member.translation = _formation_positions[idx]
 		_members.append(member)
-		idx += 1
 		
 func get_formation_position(index :int) -> Vector3:
 	return _formation_positions[index]

@@ -7,5 +7,6 @@
 script = ExtResource( 1 )
 
 [node name="test_squad" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 
 [node name="test_squad2" parent="." instance=ExtResource( 2 )]

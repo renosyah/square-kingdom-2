@@ -82,6 +82,12 @@ func chase_target():
 			chase_enemy = null
 			return
 			
+		if _is_in_range(chase_enemy):
+			enemy = chase_enemy
+			_has_enemy = true
+			_on_enemy_set()
+			return
+			
 		_move_to(chase_enemy.current_tile)
 		if _paths.empty():
 			chase_enemy = null

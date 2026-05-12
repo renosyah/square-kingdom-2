@@ -17,9 +17,6 @@ func melee_attack():
 	# perform melee animation
 	emit_signal("attack_performed", self, enemy)
 	
-	# backed back to line
-	# back to ready animation
-	emit_signal("back_in_formation", self)
 	iddle = true
 	enemy = null
 	
@@ -35,7 +32,7 @@ func range_attack():
 	enemy = null
 	
 func _process(delta):
-	if iddle:
+	if iddle: # make this unit in formation
 		translation = squad.get_formation_position(index)
 		rotation.y = squad.rotation.y
 

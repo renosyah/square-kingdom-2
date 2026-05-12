@@ -5,4 +5,3 @@
 [node name="cavalry_squad" type="Spatial"]
 script = ExtResource( 1 )
 spotting_range = 1
-formation_type = 0

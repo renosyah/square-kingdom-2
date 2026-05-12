@@ -6,6 +6,8 @@ onready var test_squad_2 = $test_squad2
 func _on_tile_map_ready():
 	._on_tile_map_ready()
 	
+	test_squad.current_tile = Vector2(0, -1)
+	
 	test_squad.nav = nav
 	test_squad.unit_position = tile_position_manager.get_positions()
 	
