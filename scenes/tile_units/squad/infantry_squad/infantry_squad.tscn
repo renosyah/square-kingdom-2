@@ -1,7 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad/infantry_squad/infantry_squad.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tile_units/squad_member/squad_member.tscn" type="PackedScene" id=2]
 
 [node name="infantry_squad" type="Spatial"]
 script = ExtResource( 1 )
 spotting_range = 4
+member_scene = ExtResource( 2 )

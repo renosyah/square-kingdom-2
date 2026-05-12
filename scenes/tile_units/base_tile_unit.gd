@@ -219,9 +219,9 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	var new_tile = _paths.front().tile_id
 	
 	if dist_from > dist_to and current_tile != new_tile:
-		_on_current_tile_updated(current_tile, new_tile)
 		_last_tile = current_tile
 		current_tile = new_tile
+		_on_current_tile_updated(current_tile, new_tile)
 		
 	_move_to_next_path(delta, pos, new_to)
 	_is_moving = true
@@ -282,6 +282,14 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
+			
+			# for better chase
+			var v :Array = _get_tile_path(chase_enemy.current_tile)
+			if not v.empty():
+				_is_moving = true
+				_paths.clear()
+				_paths.append_array(v)
+				
 			return
 		
 	if attack_move:

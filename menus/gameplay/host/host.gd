@@ -1,24 +1,24 @@
 extends BaseGameplay
 
-onready var test_squad = $test_squad
-onready var test_squad_2 = $test_squad2
+onready var cavalry_squad = $cavalry_squad
+onready var infantry_squad = $infantry_squad
 
 func _on_tile_map_ready():
 	._on_tile_map_ready()
 	
-	test_squad.current_tile = Vector2(0, -1)
+	cavalry_squad.current_tile = Vector2(0, -1)
 	
-	test_squad.nav = nav
-	test_squad.unit_position = tile_position_manager.get_positions()
+	cavalry_squad.nav = nav
+	cavalry_squad.unit_position = tile_position_manager.get_positions()
 	
-	test_squad_2.nav = nav
-	test_squad_2.unit_position = tile_position_manager.get_positions()
+	infantry_squad.nav = nav
+	infantry_squad.unit_position = tile_position_manager.get_positions()
 	
-	test_squad_2.chase_enemy = test_squad
-	test_squad_2.chase_target()
+	infantry_squad.chase_enemy = cavalry_squad
+	infantry_squad.chase_target()
 	
 func _on_floor_clicked(pos :Vector3):
 	._on_floor_clicked(pos)
 	
 	var tile = tile_map.get_closes_tile(pos)
-	test_squad.move_to(tile.id)
+	cavalry_squad.move_to(tile.id)

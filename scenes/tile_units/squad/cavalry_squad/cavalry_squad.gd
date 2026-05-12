@@ -7,11 +7,13 @@ var _charges :int
 var _ready_charge :bool
 
 func _init_formations():
-	#._init_formations()
+	._init_formations()
 	
+	# flag carrier were back
 	_formation_offsets = [
-		Vector3.FORWARD, Vector3.BACK,
-		Vector3.LEFT, Vector3.RIGHT
+		Vector3.FORWARD, 
+		Vector3.LEFT, Vector3.RIGHT, 
+		Vector3.BACK
 	]
 	_formation_positions = _formation_offsets.duplicate()
 	
@@ -19,6 +21,17 @@ func _move_to(tile_id :Vector2):
 	._move_to(tile_id)
 	
 	_ready_charge = false
+	
+func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
+	#._move_to_next_path(delta, pos, to)
+	
+	# align Y
+	var look :Vector3 = to
+	look.y = pos.y
+	
+	var t:Transform = transform.looking_at(look, Vector3.UP)
+	transform = transform.interpolate_with(t, turning_speed * delta)
+	translation += -transform.basis.z * speed * delta
 	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)

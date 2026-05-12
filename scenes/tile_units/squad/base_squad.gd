@@ -5,6 +5,7 @@ export var member_scene :PackedScene
 export var has_range_weapon :bool
 export var attack_damage :int
 export var can_attack :bool
+export var turning_speed :float = 8
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -29,16 +30,7 @@ func _ready():
 	_spawn_members()
 	
 func _init_formations():
-	_formation_offsets = [
-		Vector3.FORWARD, Vector3.BACK,
-		Vector3.LEFT, Vector3.RIGHT,
-		Vector3.FORWARD + Vector3.LEFT,
-		Vector3.FORWARD + Vector3.RIGHT,
-		Vector3.BACK + Vector3.LEFT,
-		Vector3.BACK + Vector3.RIGHT,
-		Vector3.ZERO
-	]
-	_formation_positions = _formation_offsets.duplicate()
+	pass
 	
 func _spawn_members():
 	for idx in _formation_positions.size():
@@ -85,22 +77,6 @@ func moving(_delta :float) -> void:
 		var offset :Vector3 = _formation_offsets[i] * 0.25
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
-func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
-	
-	# align Y
-	var look :Vector3 = to
-	look.y = pos.y
-	
-	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, 1.5 * delta)
-	
-	var dir_to :Vector3 = pos.direction_to(look)
-	var foward_dir :Vector3 = (-global_transform.basis.z)
-	var is_align :bool = foward_dir.dot(dir_to) > 0.95
-	
-	if is_align:
-		._move_to_next_path(delta, pos, to)
-	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -110,7 +86,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	
 	# look at enemy position
 	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, 1.5 * delta)
+	transform = transform.interpolate_with(t, turning_speed * delta)
 	
 	var dir_to :Vector3 = pos.direction_to(look)
 	var foward_dir :Vector3 = (-global_transform.basis.z)
