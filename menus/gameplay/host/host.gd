@@ -17,6 +17,9 @@ func _on_tile_map_ready():
 	infantry_squad.chase_enemy = cavalry_squad
 	infantry_squad.chase_target()
 	
+	ui.minimap.add_object(cavalry_squad)
+	ui.minimap.add_object(infantry_squad)
+	
 func _on_floor_clicked(pos :Vector3):
 	._on_floor_clicked(pos)
 	

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/minimap/object_2d/dot.png" type="Texture" id=1]
+
+[node name="object_2d" type="Sprite"]
+modulate = Color( 1, 0, 0, 1 )
+texture = ExtResource( 1 )

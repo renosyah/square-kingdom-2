@@ -239,6 +239,14 @@ func _on_no_enemy():
 	update_spotting()
 	_scan_area()
 	
+	if is_instance_valid(chase_enemy):
+		# for better chase
+		var v :Array = _get_tile_path(chase_enemy.current_tile)
+		if not v.empty():
+			_is_moving = true
+			_paths.clear()
+			_paths.append_array(v)
+	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	
@@ -282,14 +290,6 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
-			
-			# for better chase
-			var v :Array = _get_tile_path(chase_enemy.current_tile)
-			if not v.empty():
-				_is_moving = true
-				_paths.clear()
-				_paths.append_array(v)
-				
 			return
 		
 	if attack_move:
@@ -325,7 +325,7 @@ func _chase_on_iddle() -> bool:
 func update_spotting():
 	spotting_area = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.get_directions(), current_tile, spotting_range
-	)
+	) + [current_tile]
 	
 func _scan_area():
 	if unit_position.empty():

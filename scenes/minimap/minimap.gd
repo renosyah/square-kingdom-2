@@ -12,6 +12,8 @@ export var tile_rotation_degree :float = -45
 var _spawned_tiles :Dictionary = {} # { Vector2 : Tile2D }
 var _tile_map_data :TileMapFileData
 
+var _spawned_object :Dictionary = {} # {Spatial:Node2D}
+
 onready var _viewport :Viewport = $ViewportContainer/Viewport
 onready var _map :Node2D = $ViewportContainer/Viewport/map
 onready var _nine_patch_rect_2 = $NinePatchRect2
@@ -26,12 +28,22 @@ func _process(delta):
 	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, -30)
 	_map.rotation = rotation_rad
 	
+	for obj in _spawned_object.keys():
+		var pos = Vector2(obj.global_position.x, obj.global_position.z) * 10
+		var tile = _spawned_object[obj]
+		tile.position = pos
+	
 func load_data_map(data: TileMapFileData):
 	_tile_map_data = data
 	set_process(false)
 	
 	_clean()
 	_batch_spawner.start(_tile_map_data.tiles, 16)
+	
+func add_object(obj :Spatial):
+	var tile = preload("res://scenes/minimap/object_2d/object_2d.tscn").instance()
+	_map.add_child(tile)
+	_spawned_object[obj] = tile
 	
 func _on_batch_spawner_on_spawn(data :TileMapData):
 	_spawned_tiles[data.id] = _spawn_tile(data)
