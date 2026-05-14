@@ -25,7 +25,7 @@ func _ready():
 	_nine_patch_rect_2.visible = cam_pos
 	
 func _process(delta):
-	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, -30)
+	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, 5)
 	_map.rotation = rotation_rad
 	
 	for obj in _spawned_object.keys():

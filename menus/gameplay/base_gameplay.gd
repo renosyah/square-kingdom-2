@@ -105,7 +105,7 @@ func _on_tile_map_ready():
 	setup_players_spawn_points()
 	
 ########################################## camera  ############################################
-var movable_camera :Spatial
+var movable_camera :MovableCamera
 
 func spawn_movable_camera():
 	movable_camera = preload("res://assets/camera/movable_camera.tscn").instance()

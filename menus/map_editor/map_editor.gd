@@ -29,8 +29,8 @@ func _ready():
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 	
 func _process(delta):
-	var pos = movable_camera.translation * Vector3(1,0,1)
-	editable_tile_map.update_camera_location(Vector2(pos.x, pos.z))
+	var pos = movable_camera.global_transform.origin * Vector3(1,0,1)
+	editable_tile_map.update_camera_location(Vector2(pos.x, pos.z).round())
 	clickable_floor.translation = pos
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10

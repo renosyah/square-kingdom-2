@@ -59,11 +59,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/chunk_manajement/chunk_management.gd"
 }, {
-"base": "Node",
-"class": "ChunkManagement3D",
-"language": "GDScript",
-"path": "res://addons/chunk_manajement/chunk_management_3d.gd"
-}, {
 "base": "Spatial",
 "class": "ClickableFloor",
 "language": "GDScript",
@@ -270,7 +265,6 @@ _global_script_class_icons={
 "BatchDespawner": "",
 "BatchSpawner": "",
 "ChunkManagement": "",
-"ChunkManagement3D": "",
 "ClickableFloor": "",
 "ClickableScreen": "",
 "DragableCard": "",

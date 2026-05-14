@@ -120,14 +120,15 @@ func get_closes_tile(from :Vector3) -> TileMapData:
 		
 	var current :TileMapData = tiles[0]
 	var modifier :Vector3 = global_position
+	var dist :float = (current.pos + modifier).distance_squared_to(from)
 	for i in tiles:
 		if i == current:
 			continue
 			
-		var dist_1 = (current.pos + modifier).distance_squared_to(from)
 		var dist_2 = (i.pos + modifier).distance_squared_to(from)
-		if dist_2 < dist_1:
+		if dist_2 < dist:
 			current = i
+			dist = dist_2
 			
 	return current # TileMapData
 	
@@ -137,7 +138,7 @@ func _spawn_tile(data :TileMapData) -> BaseTile:
 	tile.visible = not _chunk_system
 	add_child(tile)
 	tile.rotation_degrees.y = _get_rotation_idx_value(data.rotation_idx)
-	tile.translation = global_position + data.pos
+	tile.translation = global_transform.origin + data.pos
 	
 	if _is_editor:
 		tile.translation.x = tile.translation.x * 1.02
@@ -160,7 +161,6 @@ func _ids_to_tile_nodes(ids :Array) -> Array:
 		datas.append(get_tile_instance(i))
 	return datas
 	
-
 func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add :Array):
 	for i in _chunks_to_remove:
 		_despawn_chunk(i)
@@ -169,26 +169,20 @@ func _on_chunk_management_update_map(_chunks_to_remove :Array, _chunks_to_add :A
 		_spawn_chunk(i)
 
 func _despawn_chunk(data :ChunkManagement.ChunkData):
-	var adjs = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 3)
-	var dirs = adjs + [Vector2.ZERO]
-	for dir in dirs:
-		var id = data.id * _chunk_management.chunk_size + dir
-		if _spawned_tiles.has(id):
-			_spawned_tiles[id].visible = false
-			
-			if _visible_tiles.has(id):
-				_visible_tiles.erase(_tile_datas[id])
+	var id = data.id
+	if _spawned_tiles.has(id):
+		_spawned_tiles[id].visible = false
+		
+		if _visible_tiles.has(id):
+			_visible_tiles.erase(_tile_datas[id])
 			
 func _spawn_chunk(data :ChunkManagement.ChunkData):
-	var adjs = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 3)
-	var dirs = adjs + [Vector2.ZERO]
-	for dir in dirs:
-		var id = data.id * _chunk_management.chunk_size + dir
-		if _spawned_tiles.has(id):
-			_spawned_tiles[id].visible = true
-			
-			if not _visible_tiles.has(id):
-				_visible_tiles.append(_tile_datas[id])
+	var id = data.id
+	if _spawned_tiles.has(id):
+		_spawned_tiles[id].visible = true
+		
+		if not _visible_tiles.has(id):
+			_visible_tiles.append(_tile_datas[id])
 
 
 
