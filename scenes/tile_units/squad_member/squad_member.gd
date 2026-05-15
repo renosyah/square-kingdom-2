@@ -33,7 +33,8 @@ func range_attack():
 	
 func _process(delta):
 	if iddle: # make this unit in formation
-		translation = squad.get_formation_position(index)
+		var pos = squad.get_formation_position(index)
+		translation = translation.linear_interpolate(pos, 5 * delta)
 		rotation.y = squad.rotation.y
 
 

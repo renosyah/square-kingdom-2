@@ -26,7 +26,7 @@ func range_attack():
 	var arrow = preload("res://scenes/projectiles/arrow.tscn").instance()
 	add_child(arrow)
 	arrow.translation = global_position
-	arrow.to = enemy.global_position
+	arrow.to = enemy.global_position + Vector3.ONE * rand_range(-0.5,0.5)
 	arrow.launch()
 	
 	yield(arrow,"on_reach")

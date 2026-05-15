@@ -154,7 +154,7 @@ move_speed = 0.074
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
 margin_left = 224.0
-margin_right = 810.0
+margin_right = 1024.0
 margin_bottom = 264.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -166,7 +166,7 @@ mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/MarginContainer"]
 margin_top = 164.0
-margin_right = 586.0
+margin_right = 800.0
 margin_bottom = 264.0
 rect_min_size = Vector2( 0, 100 )
 rect_pivot_offset = Vector2( 0, 100 )
@@ -174,7 +174,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 8
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/MarginContainer/MarginContainer2"]
-margin_right = 586.0
+margin_right = 800.0
 margin_bottom = 100.0
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
@@ -187,14 +187,14 @@ alignment = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 102.0
-margin_right = 586.0
+margin_right = 800.0
 margin_bottom = 126.0
 rect_min_size = Vector2( 0, 24 )
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 130.0
-margin_right = 586.0
+margin_right = 800.0
 margin_bottom = 210.0
 rect_min_size = Vector2( 0, 80 )
 mouse_filter = 2
@@ -206,11 +206,12 @@ rect_min_size = Vector2( 40, 0 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 214.0
-margin_right = 586.0
+margin_right = 800.0
 margin_bottom = 264.0
 rect_min_size = Vector2( 0, 50 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
+[node name="squad_command" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
+visible = false
 margin_left = 814.0
 margin_top = 92.0
 margin_right = 1024.0
@@ -219,29 +220,29 @@ rect_min_size = Vector2( 210, 150 )
 mouse_filter = 2
 size_flags_vertical = 8
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
 margin_right = 210.0
 margin_bottom = 172.0
 mouse_filter = 2
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
 margin_right = 210.0
 margin_bottom = 172.0
 alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
 margin_right = 210.0
 margin_bottom = 12.0
 rect_min_size = Vector2( 0, 12 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
 margin_top = 16.0
 margin_right = 210.0
 margin_bottom = 76.0
 alignment = 1
 
-[node name="ColorRect" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer"]
 margin_left = 11.0
 margin_right = 71.0
 margin_bottom = 60.0
@@ -249,7 +250,7 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 12 )
 expand = true
 
-[node name="ColorRect2" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="ColorRect2" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer"]
 margin_left = 75.0
 margin_right = 135.0
 margin_bottom = 60.0
@@ -257,7 +258,7 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 15 )
 expand = true
 
-[node name="ColorRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="ColorRect3" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer"]
 margin_left = 139.0
 margin_right = 199.0
 margin_bottom = 60.0
@@ -265,19 +266,19 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 18 )
 expand = true
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
 margin_top = 80.0
 margin_right = 210.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 0, 12 )
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
 margin_top = 96.0
 margin_right = 210.0
 margin_bottom = 156.0
 alignment = 1
 
-[node name="ColorRect7" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer2"]
+[node name="ColorRect7" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2"]
 margin_left = 11.0
 margin_right = 71.0
 margin_bottom = 60.0
@@ -285,7 +286,7 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 17 )
 expand = true
 
-[node name="ColorRect8" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer2"]
+[node name="ColorRect8" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2"]
 margin_left = 75.0
 margin_right = 135.0
 margin_bottom = 60.0
@@ -293,7 +294,7 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 17 )
 expand = true
 
-[node name="ColorRect9" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer/HBoxContainer2"]
+[node name="ColorRect9" type="TextureRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2"]
 margin_left = 139.0
 margin_right = 199.0
 margin_bottom = 60.0
@@ -301,13 +302,13 @@ rect_min_size = Vector2( 60, 60 )
 texture = ExtResource( 16 )
 expand = true
 
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
 margin_top = 160.0
 margin_right = 210.0
 margin_bottom = 172.0
 rect_min_size = Vector2( 0, 12 )
 
-[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2"]
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
 margin_right = 210.0
 margin_bottom = 172.0
 texture = ExtResource( 17 )

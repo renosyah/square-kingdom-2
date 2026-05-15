@@ -197,34 +197,37 @@ func _attack_enemy_proccess(delta :float, pos :Vector3):
 	_on_no_enemy()
 	
 func _follow_path_proccess(delta :float, pos :Vector3):
-	if _paths.empty():
+	_is_moving = not _paths.empty()
+	
+	# if no more path
+	if not _is_moving:
+		_on_finish_travel(_last_tile, current_tile)
 		return
 	
-	var new_to :Vector3 = _paths.front().pos
-	new_to.y = pos.y
+	var p :TileUnitPath = _paths.front()
 	
-	if  pos.distance_to(new_to) < margin:
+	# validate if reach destination path
+	# if pos.distance_to(p.pos) < margin:
+	if pos.distance_squared_to(p.pos) < (margin * margin):
 		_paths.pop_front()
-		
-		if _paths.empty():
-			_is_moving = false
-			_on_finish_travel(_last_tile, current_tile)
-			return
-			
-		_last_to = new_to
+		_last_to = p.pos
 		return
 		
+	# validating of tile were changing
+	# by checking which position were closer
 	var dist_from = _last_to.distance_squared_to(pos)
-	var dist_to = new_to.distance_squared_to(pos)
-	var new_tile = _paths.front().tile_id
+	var dist_to = p.pos.distance_squared_to(pos)
 	
-	if dist_from > dist_to and current_tile != new_tile:
+	# check if new tile pos closer
+	# to make sure also check if id is not same
+	if dist_from > dist_to and current_tile != p.tile_id:
 		_last_tile = current_tile
-		current_tile = new_tile
-		_on_current_tile_updated(current_tile, new_tile)
+		current_tile = p.tile_id
+		_on_current_tile_updated(current_tile, p.tile_id)
 		
-	_move_to_next_path(delta, pos, new_to)
-	_is_moving = true
+	# procced to movement function
+	# like move_and_slide or something
+	_move_to_next_path(delta, pos, p.pos)
 	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	translation += pos.direction_to(to) * speed * delta
@@ -260,6 +263,7 @@ func puppet_moving(delta :float) -> void:
 	if current_tile != _puppet_current_tile:
 		var old = current_tile
 		current_tile = _puppet_current_tile
+		update_spotting()
 		emit_signal("on_current_tile_updated", self, old, current_tile)
 	
 # for active enemy spotting
