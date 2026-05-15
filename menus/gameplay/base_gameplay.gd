@@ -177,8 +177,8 @@ func setup_players_spawn_points():
 	if tile == null:
 		return
 	
-	movable_camera.translation.x = tile.pos.x - 2
-	movable_camera.translation.z = tile.pos.z - 2
+	movable_camera.translation.x = tile.pos.x + 1
+	movable_camera.translation.z = tile.pos.z + 1
 
 
 

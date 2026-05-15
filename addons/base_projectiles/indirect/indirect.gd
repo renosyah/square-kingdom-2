@@ -32,5 +32,8 @@ func on_travel(delta):
 	
 	_dir = global_position.direction_to(_top_down_point)
 	translation += _dir * vel
-	look_at(_top_down_point, Vector3.UP)
 	
+	if _dir.length() > 0.001:
+		var dot = abs(_dir.dot(Vector3.UP))
+		if dot < 0.999:
+			look_at(_top_down_point, Vector3.UP)

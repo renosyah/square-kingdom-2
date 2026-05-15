@@ -1,11 +1,12 @@
 extends Spatial
 class_name BaseProjectile
 
+signal on_reach
+
 export var to :Vector3
 export var speed :float = 12.0
 export var max_range :float = 5.0
 export var is_master :bool
-export var damage :int = 6
 
 var _dir :Vector3
 var _travel_distance :float = 0
@@ -40,6 +41,7 @@ func on_stop():
 	set_process(false)
 	_is_ready = true
 	visible = false
+	emit_signal("on_reach")
 	
 
 

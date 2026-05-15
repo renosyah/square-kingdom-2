@@ -6,6 +6,7 @@ export var has_range_weapon :bool
 export var attack_damage :int
 export var can_attack :bool
 export var turning_speed :float = 8
+export var formation_density :float = 0.25
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -23,7 +24,7 @@ func _ready():
 	_attack_timer = Timer.new()
 	_attack_timer.one_shot = true
 	_attack_timer.autostart = false
-	_attack_timer.wait_time = 0.5
+	_attack_timer.wait_time = 0.2
 	add_child(_attack_timer)
 	
 	_init_formations()
@@ -47,9 +48,9 @@ func _spawn_members():
 func get_formation_position(index :int) -> Vector3:
 	return _formation_positions[index]
 	
-func _on_member_attack_performed(member :SquadMember, enemy):
+func _on_member_attack_performed(member :SquadMember, enemy :SquadMember):
 	if _is_master:
-		enemy.take_damage(attack_damage)
+		enemy.squad.take_damage(attack_damage)
 		
 func _tree_exiting():
 	for i in _members:
@@ -74,7 +75,7 @@ func moving(_delta :float) -> void:
 	var basis :Basis = global_transform.basis
 	
 	for i in _formation_offsets.size():
-		var offset :Vector3 = _formation_offsets[i] * 0.25
+		var offset :Vector3 = _formation_offsets[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
@@ -99,23 +100,25 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		_attack_timer.start()
 		
 		# randomly pick own squad member
-		var m :SquadMember = pick_member()
-		if not is_instance_valid(m):
-			return
+		var count = randi() % _members.size()
+		for i in count:
+			var m :SquadMember = pick_member()
+			if not is_instance_valid(m):
+				return
+				
+			# assign the target of enemy squad member
+			m.enemy = enemy.pick_member(false)
 			
-		# assign the target of enemy squad member
-		m.enemy = enemy.pick_member(false)
-		
-		if _is_in_melee_range(enemy):
-			# tell to attack 
-			# use melee weapon
-			m.melee_attack()
-			return
-			
-		if has_range_weapon:
-			# tell to attack 
-			# use range weapon
-			m.range_attack()
+			if _is_in_melee_range(enemy):
+				# tell to attack 
+				# use melee weapon
+				m.melee_attack()
+				return
+				
+			if has_range_weapon:
+				# tell to attack 
+				# use range weapon
+				m.range_attack()
 	
 func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:

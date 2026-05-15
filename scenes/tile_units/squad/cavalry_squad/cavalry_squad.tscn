@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.gd" type="Script" id=1]
-[ext_resource path="res://scenes/tile_units/squad_member/squad_member.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/tile_units/squad_member/test_squad_member.tscn" type="PackedScene" id=2]
 
 [node name="cavalry_squad" type="Spatial"]
 script = ExtResource( 1 )

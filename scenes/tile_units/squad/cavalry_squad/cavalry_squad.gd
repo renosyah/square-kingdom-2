@@ -31,7 +31,8 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	
 	var t:Transform = transform.looking_at(look, Vector3.UP)
 	transform = transform.interpolate_with(t, turning_speed * delta)
-	translation += -transform.basis.z * speed * delta
+	
+	translation += pos.direction_to(to) * speed * delta
 	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)
