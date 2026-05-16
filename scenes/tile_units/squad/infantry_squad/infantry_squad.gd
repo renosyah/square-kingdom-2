@@ -15,6 +15,7 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	
 	# stop to attack enemy
 	if is_instance_valid(enemy):
+		_is_moving = false
 		return
 		
 	._follow_path_proccess(delta, pos)

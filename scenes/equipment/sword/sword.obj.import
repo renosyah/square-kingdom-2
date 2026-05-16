@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/sword.obj-2a25a905e0f09ea45366f5a4363c310b.mesh"
+
+[deps]
+
+files=[ "res://.import/sword.obj-2a25a905e0f09ea45366f5a4363c310b.mesh" ]
+
+source_file="res://scenes/equipment/sword/sword.obj"
+dest_files=[ "res://.import/sword.obj-2a25a905e0f09ea45366f5a4363c310b.mesh", "res://.import/sword.obj-2a25a905e0f09ea45366f5a4363c310b.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

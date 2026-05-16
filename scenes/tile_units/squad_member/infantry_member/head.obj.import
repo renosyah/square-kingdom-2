@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/head.obj-ff45c9713e51e21e73d3b6b42e4ae35c.mesh"
+
+[deps]
+
+files=[ "res://.import/head.obj-ff45c9713e51e21e73d3b6b42e4ae35c.mesh" ]
+
+source_file="res://scenes/tile_units/squad_member/infantry_member/head.obj"
+dest_files=[ "res://.import/head.obj-ff45c9713e51e21e73d3b6b42e4ae35c.mesh", "res://.import/head.obj-ff45c9713e51e21e73d3b6b42e4ae35c.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

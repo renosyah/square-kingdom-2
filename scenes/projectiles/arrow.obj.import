@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/arrow.obj-f1c32162bc33db5e31da5c8dd5a20ed3.mesh"
+
+[deps]
+
+files=[ "res://.import/arrow.obj-f1c32162bc33db5e31da5c8dd5a20ed3.mesh" ]
+
+source_file="res://scenes/projectiles/arrow.obj"
+dest_files=[ "res://.import/arrow.obj-f1c32162bc33db5e31da5c8dd5a20ed3.mesh", "res://.import/arrow.obj-f1c32162bc33db5e31da5c8dd5a20ed3.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

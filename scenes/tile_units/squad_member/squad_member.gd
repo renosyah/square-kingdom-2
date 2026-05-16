@@ -3,12 +3,26 @@ class_name SquadMember
 
 signal attack_performed(member, enemy)
 
-export var index :int
+export var headgear :PackedScene
+export var armor :PackedScene
+export var melee_weapon :PackedScene
+export var range_weapon :PackedScene
+export var speed :float = 2
+
 var squad
 
 var iddle :bool = true
 var enemy = null
-var moving :bool
+var enemy_assign :bool = false
+var is_dead :bool = false
+
+func _ready():
+	set_process(true)
+	set_physics_process(false)
+	
+func dead():
+	set_process(false)
+	is_dead = true
 
 func melee_attack():
 	iddle = false
@@ -31,11 +45,15 @@ func range_attack():
 	iddle = true
 	enemy = null
 	
-func _process(delta):
+func moving(delta :float):
+	if is_dead:
+		return
+		
 	if iddle: # make this unit in formation
-		var pos = squad.get_formation_position(index)
-		translation = translation.linear_interpolate(pos, 5 * delta)
-		rotation.y = squad.rotation.y
+		rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
+	
+func _process(delta):
+	moving(delta)
 
 
 

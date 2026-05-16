@@ -1,6 +1,6 @@
 extends BaseSquad
 
-export var charge_damage :int
+export var charge_damage :int = 2
 export var charge_required :int = 3
 
 var _charges :int

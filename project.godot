@@ -79,6 +79,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/custom_tile_map/scripts/editable_tile_map.gd"
 }, {
+"base": "Spatial",
+"class": "Equipment",
+"language": "GDScript",
+"path": "res://scenes/equipment/quipment.gd"
+}, {
 "base": "Control",
 "class": "GameplayUi",
 "language": "GDScript",
@@ -204,6 +209,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "BaseData",
+"class": "SquadData",
+"language": "GDScript",
+"path": "res://data/squad_data/squad_data.gd"
+}, {
 "base": "Spatial",
 "class": "SquadMember",
 "language": "GDScript",
@@ -244,11 +254,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/tile_position_manager/tile_position_manager.gd"
 }, {
-"base": "Resource",
-"class": "TileUnitData",
-"language": "GDScript",
-"path": "res://data/unit_data/tile_unit_data.gd"
-}, {
 "base": "Node",
 "class": "Utils",
 "language": "GDScript",
@@ -269,6 +274,7 @@ _global_script_class_icons={
 "ClickableScreen": "",
 "DragableCard": "",
 "EditableTileMap": "",
+"Equipment": "",
 "GameplayUi": "",
 "IndirectProjectile": "",
 "InputEventMultiScreenDrag": "",
@@ -294,6 +300,7 @@ _global_script_class_icons={
 "SaveLoadImproved": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"SquadData": "",
 "SquadMember": "",
 "Tile2D": "",
 "TileIndex": "",
@@ -302,7 +309,6 @@ _global_script_class_icons={
 "TileMapFileManifest": "",
 "TileMapUtils": "",
 "TilePositionManager": "",
-"TileUnitData": "",
 "Utils": ""
 }
 

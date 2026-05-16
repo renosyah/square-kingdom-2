@@ -32,8 +32,8 @@ export var god_mode :bool = false
 
 export var is_dead :bool = false
 export var is_selectable :bool = false
-export var margin :float = 0.1
-export var spotting_range :int = 2
+export var margin :float = 0.15
+export var spotting_range :int = 1
 var current_tile :Vector2
 
 var _is_moving :bool # block some function if this is true
@@ -122,7 +122,9 @@ func _get_tile_path(to :Vector2) -> Array:
 	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
-		
+	
+	#paths.pop_front()
+	
 	return paths
 	
 func stop(use_rpc :bool = true):

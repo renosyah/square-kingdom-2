@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/equipment/bow/bow_pull.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://scenes/equipment/bow/bow.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/projectiles/arrow.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/equipment/bow/bow.gd" type="Script" id=4]
+
+[node name="bow" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.000426233, 0 )
+cast_shadow = 0
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.000426233, 0 )
+cast_shadow = 0
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+
+[node name="arrow" parent="MeshInstance2" instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.07271e-08, 0, -0.122704 )

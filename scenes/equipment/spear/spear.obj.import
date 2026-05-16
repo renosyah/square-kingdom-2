@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/spear.obj-04d8d80188b34c70767dc2390f7416dc.mesh"
+
+[deps]
+
+files=[ "res://.import/spear.obj-04d8d80188b34c70767dc2390f7416dc.mesh" ]
+
+source_file="res://scenes/equipment/spear/spear.obj"
+dest_files=[ "res://.import/spear.obj-04d8d80188b34c70767dc2390f7416dc.mesh", "res://.import/spear.obj-04d8d80188b34c70767dc2390f7416dc.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
