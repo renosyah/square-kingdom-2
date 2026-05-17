@@ -5,9 +5,9 @@ signal attack_performed(member, enemy)
 
 export var headgear :PackedScene
 export var armor :PackedScene
+export var shield :PackedScene
 export var melee_weapon :PackedScene
 export var range_weapon :PackedScene
-export var speed :float = 2
 
 var squad
 

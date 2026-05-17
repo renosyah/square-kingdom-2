@@ -82,7 +82,7 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "Equipment",
 "language": "GDScript",
-"path": "res://scenes/equipment/quipment.gd"
+"path": "res://scenes/equipment/equipment.gd"
 }, {
 "base": "Control",
 "class": "GameplayUi",
@@ -123,6 +123,11 @@ _global_script_classes=[ {
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
+}, {
+"base": "Equipment",
+"class": "MeleeWeapon",
+"language": "GDScript",
+"path": "res://scenes/equipment/weapons/melee_weapon.gd"
 }, {
 "base": "Control",
 "class": "MiniMap",
@@ -183,6 +188,11 @@ _global_script_classes=[ {
 "class": "RandomNameGenerator",
 "language": "GDScript",
 "path": "res://addons/random-name/random_names.gd"
+}, {
+"base": "Equipment",
+"class": "RangeWeapon",
+"language": "GDScript",
+"path": "res://scenes/equipment/weapons/range_weapon.gd"
 }, {
 "base": "Node",
 "class": "ReserveTile",
@@ -283,6 +293,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"MeleeWeapon": "",
 "MiniMap": "",
 "MovableCamera": "",
 "NavTileMap": "",
@@ -295,6 +306,7 @@ _global_script_class_icons={
 "PlayerData": "",
 "QueueTask": "",
 "RandomNameGenerator": "",
+"RangeWeapon": "",
 "ReserveTile": "",
 "SaveLoad": "",
 "SaveLoadImproved": "",

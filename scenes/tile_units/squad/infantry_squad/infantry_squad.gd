@@ -11,15 +11,6 @@ func _init_formations():
 	]
 	_formation_positions = _formation_offsets.duplicate()
 	
-func _follow_path_proccess(delta :float, pos :Vector3):
-	
-	# stop to attack enemy
-	if is_instance_valid(enemy):
-		_is_moving = false
-		return
-		
-	._follow_path_proccess(delta, pos)
-	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	
@@ -41,5 +32,5 @@ func update_spotting():
 	.update_spotting()
 	
 	_melee_ranges = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), current_tile, 1
+		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
 	) + [current_tile]

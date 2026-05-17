@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/bow.obj-afcf7de11cacdf44cf5a8094176b6d9e.mesh"
+
+[deps]
+
+files=[ "res://.import/bow.obj-afcf7de11cacdf44cf5a8094176b6d9e.mesh" ]
+
+source_file="res://scenes/equipment/weapons/bow/bow.obj"
+dest_files=[ "res://.import/bow.obj-afcf7de11cacdf44cf5a8094176b6d9e.mesh", "res://.import/bow.obj-afcf7de11cacdf44cf5a8094176b6d9e.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

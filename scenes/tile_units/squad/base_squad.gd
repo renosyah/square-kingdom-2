@@ -9,8 +9,15 @@ export var turning_speed :float = 8
 export var attack_speed :float = 0.8
 export var formation_density :float = 0.35
 
+export var member_headgear :PackedScene
+export var member_armor :PackedScene
+export var member_shield :PackedScene
+export var member_melee_weapon :PackedScene
+export var member_range_weapon :PackedScene
+
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
+puppet var _puppet_is_moving :bool
 
 var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
@@ -39,6 +46,11 @@ func _spawn_members():
 		var member :SquadMember = member_scene.instance()
 		member.squad = self
 		member.name = "%s_member_%s" % [name, idx]
+		member.headgear = member_headgear
+		member.armor = member_armor
+		member.shield = member_shield
+		member.melee_weapon = member_melee_weapon
+		member.range_weapon = member_range_weapon
 		member.connect("attack_performed", self, "_on_member_attack_performed")
 		add_child(member)
 		member.set_as_toplevel(true)
@@ -57,6 +69,7 @@ func sync_update() -> void:
 	.sync_update()
 	
 	if not is_dead and _is_master and _is_online:
+		rset_unreliable("_puppet_is_moving", _is_moving)
 		rset_unreliable("_puppet_rotation_y", global_rotation.y)
 		
 		if _has_enemy:
@@ -113,6 +126,9 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	var iddles :Array = get_iddle_member()
 	
 	if _is_in_melee_range(enemy):
+		if iddles.empty():
+			return
+		
 		var m :SquadMember = iddles.pick_random()
 		if not is_instance_valid(m):
 			return
@@ -120,25 +136,28 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		# tell to attack 
 		# use melee weapon
 		var enemy_member = enemy.pick_closes(m.global_position)
-		if is_instance_valid(enemy_member):
-			m.enemy = enemy_member
-			m.melee_attack()
+		if not is_instance_valid(enemy_member):
+			return
+			
+		m.enemy = enemy_member
+		m.melee_attack()
 		return
 		
 	if has_range_weapon:
-		var count = randi() % iddles.size()
-		for _i in count:
-			var m :SquadMember = iddles.pick_random()
-			if not is_instance_valid(m):
+		for i in iddles:
+			if not is_instance_valid(i):
+				continue
+				
+			var enemy_member = enemy.pick_member(false)
+			if not is_instance_valid(enemy_member):
 				continue
 				
 			# tell to attack 
 			# use range weapon
-			var enemy_member = enemy.pick_member()
-			if is_instance_valid(enemy_member):
-				m.enemy = enemy_member
-				m.range_attack()
-				
+			var m :SquadMember = i
+			m.enemy = enemy_member
+			m.range_attack()
+			
 func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:
 		return null if _members.empty() else _members.pick_random()
@@ -178,7 +197,7 @@ func _on_no_enemy():
 	if not _attack_timer.is_stopped():
 		_attack_timer.stop()
 		
-
+	
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
 	
@@ -188,3 +207,4 @@ func puppet_moving(delta :float) -> void:
 	if not is_dead:
 		rotation.y = lerp_angle(rotation.y, _puppet_rotation_y, 25 * delta)
 		enemy = get_node_or_null(_puppet_enemy)
+		_is_moving = _puppet_is_moving

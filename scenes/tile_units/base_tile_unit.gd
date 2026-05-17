@@ -123,8 +123,6 @@ func _get_tile_path(to :Vector2) -> Array:
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
 	
-	#paths.pop_front()
-	
 	return paths
 	
 func stop(use_rpc :bool = true):
@@ -183,8 +181,14 @@ func moving(delta :float) -> void:
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	
-	if not is_dead:
-		_follow_path_proccess(delta, global_position)
+	if is_dead:
+		return
+		
+	if _has_enemy:
+		_is_moving = false
+		return
+		
+	_follow_path_proccess(delta, global_position)
 	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
 	if not is_instance_valid(enemy):
@@ -330,7 +334,7 @@ func _chase_on_iddle() -> bool:
 	
 func update_spotting():
 	spotting_area = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), current_tile, spotting_range
+		TileMapUtils.ARROW_DIRECTIONS, current_tile, spotting_range
 	) + [current_tile]
 	
 func _scan_area():
