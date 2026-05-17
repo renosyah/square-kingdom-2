@@ -25,12 +25,9 @@ export var player_id :String
 export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 1.4
-export var hp :int = 100
-export var max_hp :int = 100
-
-export var god_mode :bool = false
 
 export var is_dead :bool = false
+
 export var is_selectable :bool = false
 export var margin :float = 0.15
 export var spotting_range :int = 1
@@ -157,7 +154,6 @@ remote func _stop():
 	_paths.clear()
 	
 func sync_update() -> void:
-	
 	if not is_dead:
 		.sync_update()
 	
@@ -368,23 +364,6 @@ func _is_in_range(_unit) -> bool:
 	return _unit.current_tile in spotting_area
 	
 func _on_enemy_set():
-	pass
-	
-func take_damage(damage :int):
-	if is_dead:
-		return
-		
-	hp = int(clamp(hp - damage, 0, max_hp))
-	rpc_unreliable("_taking_damage", damage, hp)
-	
-	if hp <= 0 and not god_mode:
-		set_dead()
-	
-remotesync func _taking_damage(damage :int, hp_left: int):
-	hp = hp_left
-	taking_damage(damage, hp, max_hp)
-	
-func taking_damage(_damage :int, _hp: int, _max_hp :int):
 	pass
 	
 func set_dead(use_rpc :bool = true):

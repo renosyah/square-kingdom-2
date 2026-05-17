@@ -1,9 +1,10 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+signal on_squad_taking_damage(squad, amount)
+
 export var member_scene :PackedScene
 export var has_range_weapon :bool
-export var attack_damage :int
 export var can_attack :bool
 export var turning_speed :float = 8
 export var attack_speed :float = 0.8
@@ -14,6 +15,10 @@ export var member_armor :PackedScene
 export var member_shield :PackedScene
 export var member_melee_weapon :PackedScene
 export var member_range_weapon :PackedScene
+
+export var member_hp :int = 100
+export var member_max_hp :int = 100
+export var god_mode :bool = false
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -46,21 +51,44 @@ func _spawn_members():
 		var member :SquadMember = member_scene.instance()
 		member.squad = self
 		member.name = "%s_member_%s" % [name, idx]
+		
 		member.headgear = member_headgear
 		member.armor = member_armor
 		member.shield = member_shield
 		member.melee_weapon = member_melee_weapon
 		member.range_weapon = member_range_weapon
+		
+		member.hp = member_hp
+		member.max_hp = member_max_hp
+		
 		member.connect("attack_performed", self, "_on_member_attack_performed")
+		member.connect("on_member_dead", self, "_on_member_dead")
+		
 		add_child(member)
 		member.set_as_toplevel(true)
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
-func _on_member_attack_performed(member :SquadMember, enemy :SquadMember):
-	if _is_master:
-		enemy.squad.take_damage(attack_damage)
+func _on_member_attack_performed(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
+	# why use target.squad?
+	# if we were use enemy (squad)
+	# the pointer of enemy will be gone/replace
+	# this signal is called on diffrent event so...
+	if _is_master and is_instance_valid(target):
+		target.squad.take_damage(attack_damage, target_member_idx)
 		
+func _on_member_dead(member :SquadMember):
+	rpc("_on_member_dead_sync", member.get_path())
+	
+remotesync func _on_member_dead_sync(p :NodePath):
+	var member = get_node_or_null(p)
+	if not is_instance_valid(member):
+		return
+		
+	if _members.has(member):
+		_members.erase(member)
+		member.queue_free()
+	
 func _tree_exiting():
 	for i in _members:
 		i.queue_free()
@@ -98,66 +126,6 @@ func moving(delta :float) -> void:
 			
 		idx += 1
 		
-func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
-	._on_enemy_in_range(delta, pos, enemy_pos)
-	
-	# align Y
-	var look :Vector3 = enemy_pos
-	look.y = pos.y
-	
-	# look at enemy position
-	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, turning_speed * delta)
-	
-	var dir_to :Vector3 = pos.direction_to(look)
-	var foward_dir :Vector3 = (-global_transform.basis.z)
-	var is_align :bool = foward_dir.dot(dir_to) > 0.85
-	
-	if not can_attack:
-		return
-		
-	if not is_align or not _attack_timer.is_stopped():
-		return
-		
-	_attack_timer.wait_time = attack_speed
-	_attack_timer.start()
-	
-	# assign the target of enemy squad member
-	var iddles :Array = get_iddle_member()
-	
-	if _is_in_melee_range(enemy):
-		if iddles.empty():
-			return
-		
-		var m :SquadMember = iddles.pick_random()
-		if not is_instance_valid(m):
-			return
-			
-		# tell to attack 
-		# use melee weapon
-		var enemy_member = enemy.pick_closes(m.global_position)
-		if not is_instance_valid(enemy_member):
-			return
-			
-		m.enemy = enemy_member
-		m.melee_attack()
-		return
-		
-	if has_range_weapon:
-		for i in iddles:
-			if not is_instance_valid(i):
-				continue
-				
-			var enemy_member = enemy.pick_member(false)
-			if not is_instance_valid(enemy_member):
-				continue
-				
-			# tell to attack 
-			# use range weapon
-			var m :SquadMember = i
-			m.enemy = enemy_member
-			m.range_attack()
-			
 func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:
 		return null if _members.empty() else _members.pick_random()
@@ -197,9 +165,26 @@ func _on_no_enemy():
 	if not _attack_timer.is_stopped():
 		_attack_timer.stop()
 		
-	
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
+	
+func take_damage(amount :int, member_idx :int):
+	if is_dead:
+		return
+		
+	var m :SquadMember = _members[member_idx]
+	if not is_instance_valid(m):
+		return
+		
+	m.take_damage(amount)
+	
+	rpc_unreliable("_taking_damage", amount)
+	
+	if _members.empty():
+		set_dead()
+	
+remotesync func _taking_damage(amount :int):
+	emit_signal("on_squad_taking_damage", self, amount)
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

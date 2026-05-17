@@ -5,9 +5,8 @@
 
 [node name="spear" type="Spatial"]
 script = ExtResource( 2 )
-attack_damage = 6
+attack_damage = 4
 walk_animation = "walk_weapon_hold"
-ready_animation = "iddle_weapon_hold"
 attack_animation = "weapon_trust_attack"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

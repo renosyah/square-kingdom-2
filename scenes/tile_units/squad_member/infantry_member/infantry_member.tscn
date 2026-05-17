@@ -1575,7 +1575,7 @@ states/weapon_trust_attack/node = SubResource( 37 )
 states/weapon_trust_attack/position = Vector2( -46, -17.3508 )
 transitions = [ "iddle", "walk", SubResource( 17 ), "walk", "iddle", SubResource( 18 ), "iddle", "walk_weapon_hold", SubResource( 21 ), "walk_weapon_hold", "iddle", SubResource( 22 ), "iddle", "iddle_weapon_hold", SubResource( 25 ), "iddle_weapon_hold", "iddle", SubResource( 26 ), "iddle_weapon_hold", "walk_weapon_hold", SubResource( 27 ), "walk_weapon_hold", "iddle_weapon_hold", SubResource( 28 ), "iddle", "weapon_ready", SubResource( 31 ), "weapon_ready", "iddle", SubResource( 32 ), "weapon_ready", "weapon_trust_attack", SubResource( 38 ), "weapon_trust_attack", "weapon_ready", SubResource( 39 ), "weapon_slash_attack", "weapon_ready", SubResource( 42 ), "weapon_ready", "weapon_slash_attack", SubResource( 43 ), "iddle", "shot_range_weapon", SubResource( 46 ), "shot_range_weapon", "iddle", SubResource( 47 ) ]
 start_node = "iddle"
-graph_offset = Vector2( -425.559, 48.029 )
+graph_offset = Vector2( -425.559, -149.791 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=13]
 
