@@ -28,6 +28,12 @@ func _ready():
 func set_dead():
 	set_process(false)
 	is_dead = true
+	
+	rpc("_on_member_dead")
+	
+remotesync func _on_member_dead():
+	set_process(false)
+	is_dead = true
 	emit_signal("on_member_dead", self)
 	
 func prepare_melee_weapon():

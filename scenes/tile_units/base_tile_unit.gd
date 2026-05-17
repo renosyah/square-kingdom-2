@@ -187,7 +187,9 @@ func master_moving(delta :float) -> void:
 	_follow_path_proccess(delta, global_position)
 	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
-	if not _has_enemy:
+	# because this script run on both
+	# must check via is_instance_valid enemy
+	if not is_instance_valid(enemy):
 		return
 		
 	if _is_in_range(enemy):
@@ -272,8 +274,7 @@ func puppet_moving(delta :float) -> void:
 	if current_tile != _puppet_current_tile:
 		var old = current_tile
 		current_tile = _puppet_current_tile
-		update_spotting()
-		emit_signal("on_current_tile_updated", self, old, current_tile)
+		_on_current_tile_updated(old, current_tile)
 	
 # for active enemy spotting
 func _on_global_tick():
@@ -286,11 +287,11 @@ func _on_global_tick():
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_current_tile_updated", self, from_id, to_id)
 	
+	update_spotting()
+	
 	if not _is_master:
 		return
 		
-	update_spotting()
-	
 	if is_instance_valid(chase_enemy):
 		# stop the chase
 		# if chase_enemy is dead

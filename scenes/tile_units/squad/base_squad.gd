@@ -89,13 +89,6 @@ func _on_member_attack_performed(member :SquadMember, target :SquadMember, targe
 		target.squad.take_damage(attack_damage, target_member_idx)
 		
 func _on_member_dead(member :SquadMember):
-	rpc("_on_member_dead_sync", member.get_path())
-	
-remotesync func _on_member_dead_sync(p :NodePath):
-	var member = get_node_or_null(p)
-	if not is_instance_valid(member):
-		return
-		
 	if _members.has(member):
 		member.visible = false
 		_member_alive -= 1
@@ -107,7 +100,10 @@ func _tree_exiting():
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
-	_path_indicator.translation = nav.get_pos_v3(current_tile)
+	_path_indicator.visible = (nav != null)
+	
+	if _path_indicator.visible:
+		_path_indicator.translation = nav.get_pos_v3(current_tile)
 	
 func sync_update() -> void:
 	.sync_update()
@@ -173,7 +169,7 @@ func pick_closes(pos :Vector3, iddle_one :bool = true) -> SquadMember:
 func get_iddle_member() -> Array:
 	var iddles = []
 	for i in _members:
-		if i.iddle and not i.is_dead:
+		if i.iddle and (not i.is_dead):
 			iddles.append(i)
 			
 	return iddles
