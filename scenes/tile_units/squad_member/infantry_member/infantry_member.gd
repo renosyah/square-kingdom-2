@@ -83,7 +83,11 @@ func melee_attack():
 	
 	prepare_melee_weapon()
 	
-	look_at(enemy.global_position, Vector3.UP)
+	var _dir = global_position.direction_to(enemy.global_position)
+	if _dir.length() > 0.001:
+		var dot = abs(_dir.dot(Vector3.UP))
+		if dot < 0.999:
+			look_at(enemy.global_position, Vector3.UP)
 	
 	tween.interpolate_property(self, "translation", global_position, enemy.global_position, 0.8)
 	tween.start()

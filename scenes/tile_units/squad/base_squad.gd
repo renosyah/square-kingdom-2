@@ -24,12 +24,14 @@ puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
 puppet var _puppet_is_moving :bool
 
+var _member_alive :int
 var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
 
 var _attack_timer :Timer
+var _path_indicator :Spatial
 
 func _ready():
 	connect("tree_exiting", self, "_tree_exiting")
@@ -39,6 +41,10 @@ func _ready():
 	_attack_timer.autostart = false
 	_attack_timer.wait_time = 0.8
 	add_child(_attack_timer)
+	
+	_path_indicator = preload("res://scenes/tile_units/squad/squad_path_indicator/squad_path_indicator.tscn").instance()
+	add_child(_path_indicator)
+	_path_indicator.set_as_toplevel(true)
 	
 	_init_formations()
 	_spawn_members()
@@ -69,12 +75,17 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
+		_member_alive += 1
+		
 func _on_member_attack_performed(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
+	if not _is_master:
+		return
+		
 	# why use target.squad?
 	# if we were use enemy (squad)
 	# the pointer of enemy will be gone/replace
 	# this signal is called on diffrent event so...
-	if _is_master and is_instance_valid(target):
+	if is_instance_valid(target):
 		target.squad.take_damage(attack_damage, target_member_idx)
 		
 func _on_member_dead(member :SquadMember):
@@ -86,12 +97,17 @@ remotesync func _on_member_dead_sync(p :NodePath):
 		return
 		
 	if _members.has(member):
-		_members.erase(member)
-		member.queue_free()
-	
+		member.visible = false
+		_member_alive -= 1
+		
 func _tree_exiting():
 	for i in _members:
 		i.queue_free()
+		
+func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
+	._on_current_tile_updated(from_id, to_id)
+	
+	_path_indicator.translation = nav.get_pos_v3(current_tile)
 	
 func sync_update() -> void:
 	.sync_update()
@@ -126,6 +142,9 @@ func moving(delta :float) -> void:
 			
 		idx += 1
 		
+func get_member_index(m :SquadMember) -> int:
+	return _members.find(m)
+		
 func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:
 		return null if _members.empty() else _members.pick_random()
@@ -154,7 +173,7 @@ func pick_closes(pos :Vector3, iddle_one :bool = true) -> SquadMember:
 func get_iddle_member() -> Array:
 	var iddles = []
 	for i in _members:
-		if i.iddle:
+		if i.iddle and not i.is_dead:
 			iddles.append(i)
 			
 	return iddles
@@ -180,9 +199,9 @@ func take_damage(amount :int, member_idx :int):
 	
 	rpc_unreliable("_taking_damage", amount)
 	
-	if _members.empty():
+	if _member_alive <= 0:
 		set_dead()
-	
+		
 remotesync func _taking_damage(amount :int):
 	emit_signal("on_squad_taking_damage", self, amount)
 	

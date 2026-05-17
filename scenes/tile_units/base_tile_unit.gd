@@ -119,7 +119,7 @@ func _get_tile_path(to :Vector2) -> Array:
 	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
-	
+		
 	return paths
 	
 func stop(use_rpc :bool = true):
@@ -187,7 +187,7 @@ func master_moving(delta :float) -> void:
 	_follow_path_proccess(delta, global_position)
 	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
-	if not is_instance_valid(enemy):
+	if not _has_enemy:
 		return
 		
 	if _is_in_range(enemy):
@@ -208,6 +208,13 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	
 	var p :TileUnitPath = _paths.front()
 	
+	# temp solution so unit not backtrack
+	# to start from current tile pos
+#	if p.tile_id == current_tile:
+#		_paths.pop_front()
+#		_last_to = p.pos
+#		return
+		
 	# validate if reach destination path
 	# if pos.distance_to(p.pos) < margin:
 	if pos.distance_squared_to(p.pos) < (margin * margin):

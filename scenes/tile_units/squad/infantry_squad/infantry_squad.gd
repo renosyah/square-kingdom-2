@@ -52,12 +52,15 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 			
 		# tell to attack 
 		# use melee weapon
-		var enemy_member = enemy.pick_closes(m.global_position, false)
+		var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
 		if not is_instance_valid(enemy_member):
 			return
 			
-		# target_idx = 0 use first one as sacrificial lamb
-		m.target_idx = 0
+		var target_idx :int = enemy.get_member_index(enemy_member)
+		if target_idx == -1:
+			return
+		
+		m.target_idx = target_idx
 		m.enemy = enemy_member
 		m.melee_attack()
 		return
@@ -71,15 +74,16 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 			if not is_instance_valid(i):
 				continue
 				
-			var enemy_member = enemy.pick_member(false)
+			var enemy_member :SquadMember = enemy.pick_member(false)
 			if not is_instance_valid(enemy_member):
 				continue
 				
-			# tell to attack 
-			# use range weapon
-			# target_idx = 0 use first one as sacrificial lamb
+			var target_idx :int = enemy.get_member_index(enemy_member)
+			if target_idx == -1:
+				continue
+				
 			var m :SquadMember = i
-			m.target_idx = 0
+			m.target_idx = target_idx
 			m.enemy = enemy_member
 			m.range_attack()
 	

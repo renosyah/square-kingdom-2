@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/path_indicator.obj-b4fd3736efce39b029fd0150b77ab37d.mesh"
+
+[deps]
+
+files=[ "res://.import/path_indicator.obj-b4fd3736efce39b029fd0150b77ab37d.mesh" ]
+
+source_file="res://scenes/tile_units/squad/squad_path_indicator/path_indicator.obj"
+dest_files=[ "res://.import/path_indicator.obj-b4fd3736efce39b029fd0150b77ab37d.mesh", "res://.import/path_indicator.obj-b4fd3736efce39b029fd0150b77ab37d.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
