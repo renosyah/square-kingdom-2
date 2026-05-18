@@ -22,6 +22,12 @@ func _move_to(tile_id :Vector2):
 	
 	_ready_charge = false
 	
+func master_moving(delta :float) -> void:
+	.master_moving(delta)
+	
+	if not is_dead:
+		_follow_path_proccess(delta, global_position)
+	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	
@@ -37,7 +43,9 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 func update_spotting():
 	.update_spotting()
 	
-	_melee_ranges = [current_tile]
+	_melee_ranges = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
+	) + [current_tile]
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)

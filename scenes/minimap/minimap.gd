@@ -40,10 +40,15 @@ func load_data_map(data: TileMapFileData):
 	_clean()
 	_batch_spawner.start(_tile_map_data.tiles, 16)
 	
-func add_object(obj :Spatial):
+func add_object(obj :Spatial, color :Color):
 	var tile = preload("res://scenes/minimap/object_2d/object_2d.tscn").instance()
+	tile.modulate = color
 	_map.add_child(tile)
 	_spawned_object[obj] = tile
+	
+func remove_object(obj :Spatial):
+	_spawned_object[obj].queue_free()
+	_spawned_object.erase(obj)
 	
 func _on_batch_spawner_on_spawn(data :TileMapData):
 	_spawned_tiles[data.id] = _spawn_tile(data)

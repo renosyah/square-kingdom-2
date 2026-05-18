@@ -1666,7 +1666,7 @@ software_skinning_transform_normals = false
 [node name="leg_l" type="Spatial" parent="pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, -0.1, 0 )
 
-[node name="leg_r" type="MeshInstance" parent="pivot/leg_l"]
+[node name="leg_l" type="MeshInstance" parent="pivot/leg_l"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 cast_shadow = 0
 mesh = ExtResource( 3 )

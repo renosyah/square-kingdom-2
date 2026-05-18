@@ -211,8 +211,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.player_id = data.player_id
 	squad.team = data.team
 	squad.color = Global.player_colors[data.color_idx]
-	squad.speed = data.team
-	squad
+	squad.speed = data.speed
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
@@ -221,6 +220,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.turning_speed = data.turning_speed
 	squad.attack_speed = data.attack_speed
 	squad.formation_density = data.formation_density
+	squad.spotting_range = data.spotting_range
 
 	# squad member
 	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
@@ -228,6 +228,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_shield = EntityIndex.equipment[data.member_shield_idx]
 	squad.member_melee_weapon = EntityIndex.weapons[data.member_melee_weapon_idx]
 	squad.member_range_weapon = EntityIndex.weapons[data.member_range_weapon_idx]
+	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = data.member_hp
 	squad.member_max_hp = data.member_max_hp
 	
@@ -245,8 +246,11 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	_on_squad_spawned(squad)
 	
 func _on_squad_spawned(squad):
+	squad.nav = nav
+	squad.unit_position = tile_position_manager.get_positions()
 	tile_position_manager.add_to_position(squad)
-
+	ui.minimap.add_object(squad, squad.color)
+	
 func _on_squad_taking_damage(squad, amount):
 	pass
 	
@@ -263,6 +267,7 @@ func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
 func _on_unit_dead(squad):
+	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
 	

@@ -4,3 +4,4 @@
 
 [node name="infantry_squad" type="Spatial"]
 script = ExtResource( 1 )
+is_dead = null

@@ -13,6 +13,7 @@ export var player_id :String
 export var team :int
 export var color_idx :int
 export var speed :float = 2
+export var spotting_range :int = 1
 
 # squad data
 export var member_scene_idx :int
@@ -42,6 +43,7 @@ func from_dictionary(_data : Dictionary):
 	team = _data["d"]
 	color_idx = _data["e"]
 	speed = _data["f"]
+	spotting_range = _data["f1"]
 	member_scene_idx = _data["g"]
 	has_range_weapon = _data["h"]
 	can_attack = _data["i"]
@@ -67,6 +69,7 @@ func to_dictionary() -> Dictionary :
 	_data["d"] = team
 	_data["e"] = color_idx
 	_data["f"] = speed
+	_data["f1"] = spotting_range
 	_data["g"] = member_scene_idx
 	_data["h"] = has_range_weapon
 	_data["i"] = can_attack

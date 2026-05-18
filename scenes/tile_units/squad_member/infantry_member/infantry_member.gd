@@ -16,6 +16,14 @@ var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
 
+onready var uniforms = [
+	$pivot/body/body,
+	$pivot/body/hand_r/hand_r,
+	$pivot/body/hand_l/hand_l,
+	$pivot/leg_r/leg_r,
+	$pivot/leg_l/leg_l
+]
+
 var _last_pos :Vector3
 
 var range_mode :bool
@@ -42,6 +50,10 @@ func _ready():
 		
 	else:
 		prepare_melee_weapon()
+	
+	for i in uniforms:
+		var m :MeshInstance = i
+		m.set_surface_material(0, material)
 	
 func prepare_melee_weapon():
 	.prepare_melee_weapon()

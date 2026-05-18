@@ -41,54 +41,13 @@ const player_potraits = [
 ]
 
 const player_colors = [
-	"#800000",
-	"#8B0000",
-	"#B22222",
-	"#FF0000",
-	"#FA8072",
-	"#FF6347",
-	"#FF7F50",
-	"#FF4500",
-	"#D2691E",
-	"#F4A460",
-	"#FF8C00",
-	"#FFA500",
-	"#B8860B",
-	"#DAA520",
-	"#FFD700",
-	"#808000",
-	"#FFFF00",
-	"#9ACD32",
-	"#ADFF2F",
-	"#7FFF00",
-	"#7CFC00",
-	"#008000",
-	"#00FF00",
-	"#32CD32",
-	"#00FF7F",
-	"#00FA9A",
-	"#40E0D0",
-	"#20B2AA",
-	"#48D1CC",
-	"#008B8B",
-	"#00FFFF",
-	"#00CED1",
-	"#00BFFF",
-	"#1E90FF",
-	"#4169E1",
-	"#00BFFF",
-	"#1E90FF",
-	"#4169E1",
-	"#000080",
-	"#00008B",
-	"#0000CD",
-	"#0000FF",
-	"#8A2BE2",
-	"#9932CC",
-	"#9400D3",
-	"#800080",
-	"#8B008B",
+	Color.red,
+	Color.blue,
+	Color.green,
+	Color.yellow,
+	Color.purple
 ]
+var player_materials = []
 
 const player_data_filepath :String = "player_data.dat"
 var player_data :PlayerData
@@ -113,6 +72,12 @@ func load_player_data():
 		
 	else:
 		player_data.from_dictionary(data)
+		
+	
+	for i in player_colors:
+		var material = SpatialMaterial.new()
+		material.albedo_color = i
+		player_materials.append(material)
 		
 func save_player_data():
 	SaveLoad.save(player_data_filepath, player_data.to_dictionary(), true)

@@ -15,10 +15,10 @@ export var member_armor :PackedScene
 export var member_shield :PackedScene
 export var member_melee_weapon :PackedScene
 export var member_range_weapon :PackedScene
+export var member_material :SpatialMaterial
 
 export var member_hp :int = 100
 export var member_max_hp :int = 100
-export var god_mode :bool = false
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -63,6 +63,7 @@ func _spawn_members():
 		member.shield = member_shield
 		member.melee_weapon = member_melee_weapon
 		member.range_weapon = member_range_weapon
+		member.material = member_material
 		
 		member.hp = member_hp
 		member.max_hp = member_max_hp

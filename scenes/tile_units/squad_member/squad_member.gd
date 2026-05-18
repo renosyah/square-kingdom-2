@@ -9,6 +9,7 @@ export var armor :PackedScene
 export var shield :PackedScene
 export var melee_weapon :PackedScene
 export var range_weapon :PackedScene
+export var material :SpatialMaterial
 
 export var hp :int = 100
 export var max_hp :int = 100

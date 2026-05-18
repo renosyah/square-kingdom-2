@@ -11,6 +11,18 @@ func _init_formations():
 	]
 	_formation_positions = _formation_offsets.duplicate()
 	
+func master_moving(delta :float) -> void:
+	.master_moving(delta)
+	
+	if is_dead:
+		return
+		
+	if _has_enemy:
+		_is_moving = false
+		return
+		
+	_follow_path_proccess(delta, global_position)
+	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	

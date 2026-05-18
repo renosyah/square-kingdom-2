@@ -25,13 +25,9 @@ export var player_id :String
 export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 1.4
-
-export var is_dead :bool = false
-
+export var spotting_range :int = 1
 export var is_selectable :bool = false
 export var margin :float = 0.15
-export var spotting_range :int = 1
-var current_tile :Vector2
 
 var _is_moving :bool # block some function if this is true
 var _is_selected :bool # allow this unit to be selected or not
@@ -44,6 +40,8 @@ var _hidden :bool # permanent invisible
 var _spotted :bool # visible or not, but be overide by _hidden
 var _current_visible :bool # current state of visible, this dont set value to visible
 
+var current_tile :Vector2
+var is_dead :bool = false
 # for nav and targeting
 # unit_position is refrence
 # change value it also change the root variable value
@@ -174,17 +172,6 @@ func moving(delta :float) -> void:
 	if not is_dead:
 		_attack_enemy_proccess(delta, global_position)
 		
-func master_moving(delta :float) -> void:
-	.master_moving(delta)
-	
-	if is_dead:
-		return
-		
-	if _has_enemy:
-		_is_moving = false
-		return
-		
-	_follow_path_proccess(delta, global_position)
 	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
 	# because this script run on both
