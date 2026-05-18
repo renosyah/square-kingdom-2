@@ -271,6 +271,8 @@ func _on_unit_dead(squad):
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
 	
+	yield(get_tree().create_timer(1),"timeout")
+	squad.queue_free()
 
 
 

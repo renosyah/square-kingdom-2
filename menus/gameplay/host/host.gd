@@ -13,6 +13,10 @@ onready var bot_spawner_timer = $bot_spawner_timer
 func _on_tile_map_ready():
 	._on_tile_map_ready()
 	
+	spawn_player_squad()
+	bot_spawner_timer.start()
+	
+func spawn_player_squad():
 	var data :SquadData = squad_scenes.pick_random().duplicate()
 	data.network_id = 1
 	data.player_id = "player"
@@ -25,8 +29,6 @@ func _on_tile_map_ready():
 	data.team = 1
 	spawn_squad(data)
 	
-	bot_spawner_timer.start()
-	
 func _on_squad_spawned(squad :BaseSquad):
 	._on_squad_spawned(squad)
 	
@@ -36,6 +38,12 @@ func _on_squad_spawned(squad :BaseSquad):
 		return
 	
 	_squad = squad
+	
+func _on_unit_dead(squad):
+	._on_unit_dead(squad)
+	
+	if squad == _squad:
+		spawn_player_squad()
 	
 func _on_floor_clicked(pos :Vector3):
 	._on_floor_clicked(pos)
