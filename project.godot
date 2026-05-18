@@ -89,6 +89,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/equipment/equipment.gd"
 }, {
+"base": "MarginContainer",
+"class": "FloatingSquadInfo",
+"language": "GDScript",
+"path": "res://assets/user_interface/icons/floating_squad_info/floating_squad_info.gd"
+}, {
 "base": "Control",
 "class": "GameplayUi",
 "language": "GDScript",
@@ -291,6 +296,7 @@ _global_script_class_icons={
 "EditableTileMap": "",
 "EntityIndex": "",
 "Equipment": "",
+"FloatingSquadInfo": "",
 "GameplayUi": "",
 "IndirectProjectile": "",
 "InputEventMultiScreenDrag": "",

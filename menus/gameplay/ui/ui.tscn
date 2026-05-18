@@ -32,6 +32,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
+[node name="overlay_ui" type="Control" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
 [node name="movable_camera_ui" parent="CanvasLayer/Control" instance=ExtResource( 2 )]
 size_flags_vertical = 3
 max_zoom = 3.0

@@ -41,11 +41,11 @@ const player_potraits = [
 ]
 
 const player_colors = [
-	Color.red,
-	Color.blue,
-	Color.green,
-	Color.yellow,
-	Color.purple
+	Color("#820000"),
+	Color("#000e6d"),
+	Color("#007e1f"),
+	Color("#b77d00"),
+	Color("#59005c")
 ]
 var player_materials = []
 

@@ -22,6 +22,9 @@ var enemy = null
 var enemy_assign :bool = false
 var is_dead :bool = false
 
+var range_mode :bool
+var melee_mode :bool
+
 func _ready():
 	set_process(true)
 	set_physics_process(false)

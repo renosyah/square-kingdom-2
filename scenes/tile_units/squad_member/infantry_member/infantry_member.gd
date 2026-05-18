@@ -1,5 +1,37 @@
 extends SquadMember
 
+const sword_sounds = [
+	preload("res://assets/sounds/weapons/sword_1.wav"),
+	preload("res://assets/sounds/weapons/sword_2.wav"),
+	preload("res://assets/sounds/weapons/sword_3.wav"),
+	preload("res://assets/sounds/weapons/sword_4.wav"),
+	preload("res://assets/sounds/weapons/sword_5.wav"),
+	preload("res://assets/sounds/weapons/sword_6.wav")
+]
+const bow_sounds = [
+	preload("res://assets/sounds/weapons/bow_release_1.wav"),
+	preload("res://assets/sounds/weapons/bow_release_2.wav")
+]
+const hurt_sounds = [
+	preload("res://assets/sounds/hurt/hurt_1.wav"),
+	preload("res://assets/sounds/hurt/hurt_2.wav"),
+	preload("res://assets/sounds/hurt/hurt_3.wav"),
+	preload("res://assets/sounds/hurt/hurt_4.wav"),
+	preload("res://assets/sounds/hurt/hurt_5.wav"),
+	preload("res://assets/sounds/hurt/hurt_6.wav"),
+	preload("res://assets/sounds/hurt/hurt_7.wav"),
+	preload("res://assets/sounds/hurt/hurt_8.wav"),
+	preload("res://assets/sounds/hurt/hurt_9.wav"),
+	preload("res://assets/sounds/hurt/hurt_10.wav"),
+	preload("res://assets/sounds/hurt/hurt_11.wav"),
+	preload("res://assets/sounds/hurt/hurt_12.wav"),
+	preload("res://assets/sounds/hurt/hurt_13.wav"),
+	preload("res://assets/sounds/hurt/hurt_14.wav"),
+	preload("res://assets/sounds/hurt/hurt_15.wav"),
+	preload("res://assets/sounds/hurt/hurt_16.wav")
+]
+
+
 onready var leg_animation_state = $leg_animation_tree.get("parameters/playback")
 onready var body_animation_state = $body_animation_tree.get("parameters/playback")
 onready var tween = $Tween
@@ -15,6 +47,8 @@ var _melee_weapon :MeleeWeapon
 var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
+onready var combat_sound = $combat_sound
+onready var unit_sound = $unit_sound
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -25,9 +59,6 @@ onready var uniforms = [
 ]
 
 var _last_pos :Vector3
-
-var range_mode :bool
-var melee_mode :bool
 
 func _ready():
 	if melee_weapon:
@@ -87,7 +118,6 @@ func melee_attack():
 	if is_dead or not iddle:
 		return
 		
-	
 	enemy_assign = true
 	iddle = false
 	
@@ -109,6 +139,9 @@ func melee_attack():
 	auto_iddle_timer.start()
 	
 func _on_melee_attack_performed():
+	combat_sound.stream = sword_sounds.pick_random()
+	combat_sound.play()
+	
 	tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
 	tween.start()
 	yield(tween,"tween_completed")
@@ -130,7 +163,6 @@ func range_attack():
 	iddle = false
 	
 	prepare_range_weapon()
-	
 	look_at(enemy.global_position, Vector3.UP)
 	
 	body_animation_state.travel(_range_weapon.attack_animation)
@@ -142,6 +174,9 @@ func _on_pulling_bow():
 func _on_release_bow():
 	_range_weapon.release()
 	
+	combat_sound.stream = bow_sounds.pick_random()
+	combat_sound.play()
+	
 	if not is_instance_valid(enemy):
 		return
 		
@@ -151,10 +186,14 @@ func _on_release_bow():
 	arrow.to = enemy.global_position + Vector3.ONE * rand_range(-0.5,0.5)
 	arrow.launch()
 	
+	var _enemy_pos :Vector3 = enemy.global_position
 	yield(arrow,"on_reach")
-	arrow.queue_free()
 	
-	emit_signal("attack_performed", self, enemy, target_idx, _range_weapon.attack_damage)
+	if arrow.global_position.distance_to(_enemy_pos) < 0.6:
+		emit_signal("attack_performed", self, enemy, target_idx, _range_weapon.attack_damage)
+		
+	yield(get_tree().create_timer(1),"timeout")
+	arrow.queue_free()
 	
 func _on_range_attack_performed():
 	
@@ -162,6 +201,15 @@ func _on_range_attack_performed():
 	enemy = null
 	enemy_assign = false
 	auto_iddle_timer.stop()
+	
+func take_damage(amount :int):
+	.take_damage(amount)
+	
+	if is_dead:
+		return
+		
+	unit_sound.stream = hurt_sounds.pick_random()
+	unit_sound.play()
 	
 func moving(delta :float):
 	.moving(delta)

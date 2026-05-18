@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/path_indicator.obj-8b769e398269298fb3ecb2d3c63fb68b.mesh"
+
+[deps]
+
+files=[ "res://.import/path_indicator.obj-8b769e398269298fb3ecb2d3c63fb68b.mesh" ]
+
+source_file="res://assets/squad_path_indicator/path_indicator.obj"
+dest_files=[ "res://.import/path_indicator.obj-8b769e398269298fb3ecb2d3c63fb68b.mesh", "res://.import/path_indicator.obj-8b769e398269298fb3ecb2d3c63fb68b.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

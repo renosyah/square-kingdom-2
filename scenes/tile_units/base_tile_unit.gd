@@ -118,6 +118,8 @@ func _get_tile_path(to :Vector2) -> Array:
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
 		
+	paths.pop_front()
+	
 	return paths
 	
 func stop(use_rpc :bool = true):
@@ -197,18 +199,12 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	
 	var p :TileUnitPath = _paths.front()
 	
-	# temp solution so unit not backtrack
-	# to start from current tile pos
-#	if p.tile_id == current_tile:
-#		_paths.pop_front()
-#		_last_to = p.pos
-#		return
-		
 	# validate if reach destination path
-	# if pos.distance_to(p.pos) < margin:
 	if pos.distance_squared_to(p.pos) < (margin * margin):
 		_paths.pop_front()
 		_last_to = p.pos
+		
+		_on_current_tile_updated(_last_tile, current_tile)
 		return
 		
 	# validating of tile were changing
@@ -221,7 +217,6 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	if dist_from > dist_to and current_tile != p.tile_id:
 		_last_tile = current_tile
 		current_tile = p.tile_id
-		_on_current_tile_updated(current_tile, p.tile_id)
 		
 	# procced to movement function
 	# like move_and_slide or something

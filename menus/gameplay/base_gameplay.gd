@@ -232,13 +232,19 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_hp = data.member_hp
 	squad.member_max_hp = data.member_max_hp
 	
+	squad.overlay_ui = ui.overlay_ui
+	squad.camera = movable_camera.camera
+	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
+
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_unit_dead", self, "_on_unit_dead")
-
+	
+	squad.set_hidden(false)
+	
 	add_child(squad)
 	
 	squad.translation = data.pos
@@ -246,9 +252,12 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	_on_squad_spawned(squad)
 	
 func _on_squad_spawned(squad):
+	tile_position_manager.add_to_position(squad)
+	
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
-	tile_position_manager.add_to_position(squad)
+	squad.update_spotting()
+	
 	ui.minimap.add_object(squad, squad.color)
 	
 func _on_squad_taking_damage(squad, amount):

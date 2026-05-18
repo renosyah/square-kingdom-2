@@ -21,3 +21,10 @@ const equipment = [
 	null, # index 0 as NULL
 	preload("res://scenes/equipment/shield/shield.tscn")
 ]
+const squad_icon = [
+	preload("res://assets/user_interface/icons/pitch_fork.png"),
+	preload("res://assets/user_interface/icons/spear.png"),
+	preload("res://assets/user_interface/icons/melee.png"),
+	preload("res://assets/user_interface/icons/range.png"),
+	
+]
