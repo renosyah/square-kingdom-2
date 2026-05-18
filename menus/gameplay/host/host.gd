@@ -1,43 +1,28 @@
 extends BaseGameplay
 
-onready var infantry_squad = $infantry_squad
-onready var infantry_squad_2 = $infantry_squad2
-onready var infantry_squad_3 = $infantry_squad3
+var _squad :BaseSquad
 
 func _on_tile_map_ready():
 	._on_tile_map_ready()
 	
-	var tile :TileMapData = tile_map.get_tile(player_spawn_point)
-	if tile == null:
-		return
-		
-	infantry_squad_2.current_tile = tile.id
-	infantry_squad_2.translation = tile.pos
-	infantry_squad_2.update_spotting()
+	var data :SquadData = preload("res://data/squad_data/swordman.tres")
+	data.network_id = 1
+	data.node_name = "squad_1"
+	data.current_tile = Vector2.ZERO
+	data.pos = Vector3.ZERO
 	
-	infantry_squad_3.current_tile = tile.id
-	infantry_squad_3.translation = tile.pos
-	infantry_squad_3.update_spotting()
+	spawn_squad(data)
 	
-	infantry_squad.nav = nav
-	infantry_squad_2.nav = nav
-	infantry_squad_3.nav = nav
+func _on_squad_spawned(squad):
+	._on_squad_spawned(squad)
 	
-	infantry_squad_2.chase_enemy = infantry_squad
-	infantry_squad_2.chase_target()
-	
-	infantry_squad_3.chase_enemy = infantry_squad
-	infantry_squad_3.chase_target()
+	_squad = squad
+	_squad.nav = nav
+	_squad.unit_position = tile_position_manager.get_positions()
 	
 func _on_floor_clicked(pos :Vector3):
 	._on_floor_clicked(pos)
 	
 	var tile = tile_map.get_closes_tile(pos)
-	var e = [infantry_squad_2, infantry_squad_3]
-	for a in e:
-		if a.current_tile == tile.id:
-			infantry_squad.chase_enemy = a
-			infantry_squad.chase_target()
-			return
-		
-	infantry_squad.move_to(tile.id)
+	if _squad:
+		_squad.move_to(tile.id)

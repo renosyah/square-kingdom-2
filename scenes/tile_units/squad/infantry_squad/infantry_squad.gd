@@ -36,7 +36,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	_attack_timer.start()
 	
 	# assign the target of enemy squad member
-	var iddles :Array = get_iddle_member()
+	var iddles :Array = get_iddle_members()
 	
 	if _is_in_melee_range(enemy):
 		

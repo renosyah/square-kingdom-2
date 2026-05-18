@@ -1,41 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://menus/gameplay/client/client.gd" type="Script" id=1]
-[ext_resource path="res://scenes/equipment/weapons/spear/spear_shield.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/equipment/weapons/bow/bow.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/equipment/weapons/sword/sword_shield.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/equipment/weapons/dagger/dagger.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/equipment/shield/shield.tscn" type="PackedScene" id=9]
 
 [node name="gameplay" type="Node"]
 script = ExtResource( 1 )
-
-[node name="infantry_squad" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.407848 )
-spotting_range = 4
-member_scene = ExtResource( 7 )
-has_range_weapon = true
-can_attack = true
-member_shield = ExtResource( 9 )
-member_melee_weapon = ExtResource( 6 )
-member_range_weapon = ExtResource( 5 )
-member_hp = 10000
-member_max_hp = 10000
-
-[node name="infantry_squad2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.387757 )
-member_scene = ExtResource( 7 )
-can_attack = true
-member_shield = ExtResource( 9 )
-member_melee_weapon = ExtResource( 3 )
-
-[node name="infantry_squad3" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.387757 )
-spotting_range = 4
-member_scene = ExtResource( 7 )
-has_range_weapon = true
-can_attack = true
-member_melee_weapon = ExtResource( 8 )
-member_range_weapon = ExtResource( 5 )

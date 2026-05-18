@@ -181,6 +181,121 @@ func setup_players_spawn_points():
 	movable_camera.translation.z = tile.pos.z + 1
 
 
+########################################## squad  ############################################
+
+var squads :Array = []
+
+func spawn_squads(squad_datas :Array):
+	var list_bytes :Array = []
+	for i in squad_datas:
+		list_bytes.append(i.to_bytes())
+		
+	rpc("_spawn_squads", list_bytes)
+	
+func spawn_squad(squad_data :SquadData):
+	rpc("_spawn_squad", squad_data.to_bytes())
+	
+remotesync func _spawn_squads(list_bytes :Array):
+	for bytes in list_bytes:
+		_spawn_squad(bytes)
+		
+remotesync func _spawn_squad(bytes :PoolByteArray):
+	var data :SquadData = SquadData.new()
+	data.from_bytes(bytes)
+	
+	var squad :BaseSquad = EntityIndex.squads[data.scene_idx].instance()
+	squad.name = data.node_name
+	squad.network_id = data.network_id
+	squad.current_tile = data.current_tile
+	
+	squad.player_id = data.player_id
+	squad.team = data.team
+	squad.color = Global.player_colors[data.color_idx]
+	squad.speed = data.team
+	squad
+
+	# squad data
+	squad.member_scene = EntityIndex.members[data.member_scene_idx]
+	squad.has_range_weapon = data.has_range_weapon
+	squad.can_attack = data.can_attack
+	squad.turning_speed = data.turning_speed
+	squad.attack_speed = data.attack_speed
+	squad.formation_density = data.formation_density
+
+	# squad member
+	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
+	squad.member_armor = EntityIndex.equipment[data.member_armor_idx]
+	squad.member_shield = EntityIndex.equipment[data.member_shield_idx]
+	squad.member_melee_weapon = EntityIndex.weapons[data.member_melee_weapon_idx]
+	squad.member_range_weapon = EntityIndex.weapons[data.member_range_weapon_idx]
+	squad.member_hp = data.member_hp
+	squad.member_max_hp = data.member_max_hp
+	
+	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
+	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
+	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
+	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
+	squad.connect("on_finish_travel", self, "_on_finish_travel")
+	squad.connect("on_unit_dead", self, "_on_unit_dead")
+
+	add_child(squad)
+	
+	squad.translation = data.pos
+	squads.append(squad)
+	_on_squad_spawned(squad)
+	
+func _on_squad_spawned(squad):
+	tile_position_manager.add_to_position(squad)
+
+func _on_squad_taking_damage(squad, amount):
+	pass
+	
+func _on_unit_spotted(squad):
+	pass
+	
+func _on_unit_clicked(squad):
+	pass
+	
+func _on_current_tile_updated(squad, from_id, to_id):
+	tile_position_manager.update_position(squad, from_id, to_id)
+	
+func _on_finish_travel(squad, last_id, current_id):
+	pass
+	
+func _on_unit_dead(squad):
+	tile_position_manager.remove_from_position(squad)
+	squads.erase(squad)
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

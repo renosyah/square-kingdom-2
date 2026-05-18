@@ -133,6 +133,9 @@ func moving(delta :float) -> void:
 		if not is_instance_valid(m):
 			continue
 			
+		if m.is_dead:
+			continue
+			
 		if m.iddle:
 			m.translation =  m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
 			
@@ -145,11 +148,11 @@ func pick_member(iddle_one :bool = true) -> SquadMember:
 	if not iddle_one:
 		return null if _members.empty() else _members.pick_random()
 		
-	var iddles = get_iddle_member()
+	var iddles = get_iddle_members()
 	return null if iddles.empty() else iddles.pick_random()
 	
 func pick_closes(pos :Vector3, iddle_one :bool = true) -> SquadMember:
-	var iddles = get_iddle_member() if iddle_one else _members
+	var iddles = get_iddle_members() if iddle_one else _members
 	if iddles.empty():
 		return null
 		
@@ -166,13 +169,21 @@ func pick_closes(pos :Vector3, iddle_one :bool = true) -> SquadMember:
 			
 	return current
 	
-func get_iddle_member() -> Array:
+func get_iddle_members() -> Array:
 	var iddles = []
-	for i in _members:
-		if i.iddle and (not i.is_dead):
+	for i in get_members():
+		if i.iddle:
 			iddles.append(i)
 			
 	return iddles
+	
+func get_members() -> Array:
+	var alives = []
+	for i in _members:
+		if not i.is_dead:
+			alives.append(i)
+			
+	return alives
 	
 func _on_no_enemy():
 	._on_no_enemy()

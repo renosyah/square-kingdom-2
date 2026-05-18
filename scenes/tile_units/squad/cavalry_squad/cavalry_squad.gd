@@ -64,7 +64,10 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	if not is_impact:
 		return
 		
-	chase_enemy.take_damage(charge_damage + attack_damage)
+	for i in chase_enemy.get_members():
+		var m :SquadMember = i
+		m.take_damage(charge_damage)
+		
 	_ready_charge = false
 	
 
