@@ -38,6 +38,9 @@ func set_dead():
 remotesync func _on_member_dead():
 	set_process(false)
 	is_dead = true
+	dead()
+	
+func dead():
 	emit_signal("on_member_dead", self)
 	
 func prepare_melee_weapon():

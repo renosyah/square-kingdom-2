@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/equipment/weapons/axe/axe.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/equipment/weapons/melee_weapon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
 
 [node name="sword" type="Spatial"]
 script = ExtResource( 2 )
@@ -14,3 +16,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0 )
 cast_shadow = 0
 mesh = ExtResource( 1 )
 software_skinning_transform_normals = false
+material/0 = ExtResource( 4 )
+material/1 = ExtResource( 3 )

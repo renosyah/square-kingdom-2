@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/leather_armor.obj-ad1dfb3d1cffcf79dc52d54ea17c6cb4.mesh"
+
+[deps]
+
+files=[ "res://.import/leather_armor.obj-ad1dfb3d1cffcf79dc52d54ea17c6cb4.mesh" ]
+
+source_file="res://scenes/equipment/armor/leather_armor/leather_armor.obj"
+dest_files=[ "res://.import/leather_armor.obj-ad1dfb3d1cffcf79dc52d54ea17c6cb4.mesh", "res://.import/leather_armor.obj-ad1dfb3d1cffcf79dc52d54ea17c6cb4.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

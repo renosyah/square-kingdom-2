@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/cape.obj-92c10903cc36e181a3db0cf84d7736e4.mesh"
+
+[deps]
+
+files=[ "res://.import/cape.obj-92c10903cc36e181a3db0cf84d7736e4.mesh" ]
+
+source_file="res://scenes/equipment/headgear/cape/cape.obj"
+dest_files=[ "res://.import/cape.obj-92c10903cc36e181a3db0cf84d7736e4.mesh", "res://.import/cape.obj-92c10903cc36e181a3db0cf84d7736e4.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

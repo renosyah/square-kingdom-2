@@ -27,6 +27,9 @@ func master_moving(delta :float) -> void:
 	
 	if not is_dead:
 		_follow_path_proccess(delta, global_position)
+		
+func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
+	._on_enemy_in_range(delta, pos, enemy_pos)
 	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)

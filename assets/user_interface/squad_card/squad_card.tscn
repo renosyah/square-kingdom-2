@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/user_interface/squad_potrait/knight_1.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/squad_card/squad_card.gd" type="Script" id=2]
 [ext_resource path="res://assets/user_interface/icons/range.png" type="Texture" id=3]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
 
 [node name="squad_card" type="MarginContainer"]
 margin_right = 70.0
@@ -84,6 +85,29 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource( 3 )
 expand = true
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+margin_top = 74.0
+margin_right = 66.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 0, 22 )
+mouse_filter = 2
+size_flags_vertical = 8
+color = Color( 0, 0, 0, 0.709804 )
+
+[node name="Label" type="Label" parent="MarginContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 4 )
+text = "0"
+align = 1
+valign = 1
+
+[node name="hurt" type="ColorRect" parent="."]
+margin_right = 70.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 1, 0, 0, 0 )
 
 [node name="Button" type="Button" parent="."]
 margin_right = 70.0

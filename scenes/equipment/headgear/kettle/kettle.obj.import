@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/kettle.obj-4ac269a221f15d1604b8e10d41e6e9c9.mesh"
+
+[deps]
+
+files=[ "res://.import/kettle.obj-4ac269a221f15d1604b8e10d41e6e9c9.mesh" ]
+
+source_file="res://scenes/equipment/headgear/kettle/kettle.obj"
+dest_files=[ "res://.import/kettle.obj-4ac269a221f15d1604b8e10d41e6e9c9.mesh", "res://.import/kettle.obj-4ac269a221f15d1604b8e10d41e6e9c9.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

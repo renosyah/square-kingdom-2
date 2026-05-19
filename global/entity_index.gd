@@ -21,7 +21,19 @@ const weapons = [
 ]
 const equipment = [
 	null, # index 0 as NULL
-	preload("res://scenes/equipment/shield/shield.tscn")
+	
+	# shield
+	preload("res://scenes/equipment/shield/shield.tscn"),#1
+	
+	# headgear
+	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #2
+	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #3
+	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #4
+	
+	# armor
+	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #5
+	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #6
+	
 ]
 const squad_icon = [
 	preload("res://assets/user_interface/icons/pitch_fork.png"), #0

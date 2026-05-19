@@ -38,20 +38,22 @@ func spawn_player_squad():
 		
 	spawn_squads(datas)
 	
+func bot_attack_command(squad :BaseSquad, enemies :Array):
+	if squad.player_id != "bot":
+		return
+		
+	if is_instance_valid(squad.enemy):
+		return
+		
+	squad.attack_move = true
+	squad.move_to(enemies.pick_random().current_tile)
+		
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
 	
 	if squad.player_id == "bot":
-		# make bots attack random enemies
-		var enemies = []
-		for i in squads:
-			if i.player_id != "bot":
-				enemies.append(i)
-		
 		bot_squads.append(squad)
-		squad.attack_move = true
-		squad.move_to(enemies.pick_random().current_tile)
-
+	
 func _on_unit_dead(squad):
 	._on_unit_dead(squad)
 	
@@ -63,6 +65,15 @@ func _on_unit_dead(squad):
 	
 func _on_bot_spawner_timer_timeout():
 	bot_spawner_timer.start()
+	
+	var enemies = []
+	for i in squads:
+		if i.player_id != "bot":
+			enemies.append(i)
+			
+	if not enemies.empty():
+		for i in bot_squads:
+			bot_attack_command(i, enemies)
 	
 	if bot_squads.size() > 2:
 		return

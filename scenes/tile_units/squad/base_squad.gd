@@ -1,6 +1,7 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 
 const walk_sounds = [
@@ -51,17 +52,19 @@ export var member_material :SpatialMaterial
 export var member_hp :int = 100
 export var member_max_hp :int = 100
 
+var member_alive :int
+
 # MUST SET
 var squad_icon :StreamTexture
 var camera :Camera
 var overlay_ui :Control
 var selected_squads :Array # refrences
+var floating_hurt :bool
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
 puppet var _puppet_is_moving :bool
 
-var _member_alive :int
 var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
@@ -108,11 +111,13 @@ func _ready():
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
 	
+	_init_formations()
+	member_alive = _formation_offsets.size()
+	
 	# add little bit of delay
 	yield(get_tree().create_timer(0.5),"timeout")
-	
-	_init_formations()
 	_spawn_members()
+	
 	_path_indicator.translation = global_position
 	
 func _init_formations():
@@ -148,14 +153,13 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
-		_member_alive += 1
-		
 	_floating_info = preload("res://assets/user_interface/icons/floating_squad_info/floating_squad_info.tscn").instance()
 	_floating_info.selected_squads = selected_squads
 	_floating_info.squad = self
 	_floating_info.name = "info_%s" % name
 	_floating_info.color = color
 	_floating_info.icon = squad_icon
+	_floating_info.floating_hurt = floating_hurt
 	_floating_info.max_hp = get_members_total_hp()
 	overlay_ui.add_child(_floating_info)
 	
@@ -172,13 +176,14 @@ func _on_member_attack_performed(member :SquadMember, target :SquadMember, targe
 		
 func _on_member_dead(member :SquadMember):
 	if _members.has(member):
-		member.visible = false
-		_member_alive -= 1
+		member_alive -= 1
 		
 		_unit_audio.stream = death_sounds.pick_random()
 		_unit_audio.play()
 		
-	if _member_alive <= 0:
+		emit_signal("on_squad_member_dead", self, member)
+		
+	if member_alive <= 0:
 		set_dead(false)
 		
 func _tree_exiting():

@@ -246,8 +246,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.camera = movable_camera.camera
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	squad.selected_squads = selected_squads
+	squad.floating_hurt = current_player.player_id == data.player_id
 
-	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
+	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
+	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
 	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
@@ -282,6 +284,12 @@ func _move_squad_to(tile :TileMapData):
 		
 	var dup = selected_squads.duplicate() # must use dup pointer
 	
+	if dup.empty():
+		return
+		
+	if not is_instance_valid(dup[0]):
+		return
+		
 	# formations
 	var layer_id = dup[0].nav_layer
 	var pos = [tile.id] + TileMapUtils.get_astar_adjacent_tile(
@@ -295,6 +303,9 @@ func _move_squad_to(tile :TileMapData):
 		idx += 1
 	
 func _on_squad_taking_damage(squad, amount):
+	pass
+	
+func _on_squad_member_dead(squad, member):
 	pass
 	
 func _on_unit_spotted(squad):

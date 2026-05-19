@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/helm.obj-6fee3e9894a2e51b36463fbc3b14fe6f.mesh"
+
+[deps]
+
+files=[ "res://.import/helm.obj-6fee3e9894a2e51b36463fbc3b14fe6f.mesh" ]
+
+source_file="res://scenes/equipment/headgear/helm/helm.obj"
+dest_files=[ "res://.import/helm.obj-6fee3e9894a2e51b36463fbc3b14fe6f.mesh", "res://.import/helm.obj-6fee3e9894a2e51b36463fbc3b14fe6f.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

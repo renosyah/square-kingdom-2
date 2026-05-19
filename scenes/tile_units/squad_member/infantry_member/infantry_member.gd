@@ -17,6 +17,8 @@ onready var leg_animation_state = $leg_animation_tree.get("parameters/playback")
 onready var body_animation_state = $body_animation_tree.get("parameters/playback")
 onready var tween = $Tween
 
+onready var headgear_holder = $pivot/body/head
+onready var armor_holder = $pivot/body
 onready var weapon_holder = $pivot/body/hand_r/weapon_holder
 onready var shield_holder = $pivot/body/hand_l/shield_holder
 onready var range_weapon_holder = $pivot/body/hand_r/range_weapon_holder
@@ -45,6 +47,16 @@ onready var uniforms = [
 var _last_pos :Vector3
 
 func _ready():
+	if headgear:
+		var w = headgear.instance()
+		headgear_holder.add_child(w)
+		_headgear = w
+		
+	if armor:
+		var w = armor.instance()
+		armor_holder.add_child(w)
+		_armor = w
+		
 	if melee_weapon:
 		var w = melee_weapon.instance()
 		weapon_holder.add_child(w)
@@ -221,7 +233,8 @@ func moving(delta :float):
 func dead():
 	.dead()
 	
-	visible = false
+	body_animation_state.travel("die")
+	leg_animation_state.travel("die")
 
 func _on_auto_iddle_timer_timeout():
 	iddle = true
