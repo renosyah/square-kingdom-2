@@ -5,7 +5,8 @@ const squad_scenes = [
 	preload("res://data/squad_data/peasant.tres"),
 	preload("res://data/squad_data/spearman.tres"),
 	preload("res://data/squad_data/swordman.tres"),
-	preload("res://data/squad_data/archer.tres")
+	preload("res://data/squad_data/archer.tres"),
+	preload("res://data/squad_data/huscarls.tres")
 ]
 
 var bot_squads :Array

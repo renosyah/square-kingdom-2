@@ -24,15 +24,16 @@ const equipment = [
 	
 	# shield
 	preload("res://scenes/equipment/shield/shield.tscn"),#1
+	preload("res://scenes/equipment/shield/shield_round.tscn"),#2
 	
 	# headgear
-	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #2
-	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #3
-	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #4
+	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #3
+	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #4
+	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #5
 	
 	# armor
-	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #5
-	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #6
+	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #6
+	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #7
 	
 ]
 const squad_icon = [
