@@ -1,10 +1,14 @@
 extends BaseGameplay
 
 const squad_scenes = [
-	preload("res://data/squad_data/axeman.tres"), preload("res://data/squad_data/peasant.tres"), preload("res://data/squad_data/spearman.tres"), preload("res://data/squad_data/swordman.tres")
+	preload("res://data/squad_data/axeman.tres"),
+	preload("res://data/squad_data/peasant.tres"),
+	preload("res://data/squad_data/spearman.tres"),
+	preload("res://data/squad_data/swordman.tres"),
+	preload("res://data/squad_data/archer.tres")
 ]
 
-var _squad :BaseSquad
+var bot_squads :Array
 
 onready var bot_spawner_timer = $bot_spawner_timer
 
@@ -17,49 +21,42 @@ func _on_all_player_ready():
 	bot_spawner_timer.start()
 	
 func spawn_player_squad():
-	var data :SquadData = squad_scenes.pick_random().duplicate()
-	data.network_id = 1
-	data.player_id = "player"
-	data.node_name = "squad_1"
-	data.current_tile = player_spawn_point
-	data.pos = tile_map.get_tile(player_spawn_point).pos
-	data.color_idx = player.color_idx
-	data.team = 1
-	spawn_squad(data)
+	var datas = []
+	for i in 4:
+		var data :SquadData = squad_scenes.pick_random().duplicate()
+		data.network_id = 1
+		data.player_id = player.player_id
+		data.node_name = Utils.create_unique_id()
+		data.current_tile = player_spawn_point
+		data.pos = tile_map.get_tile(player_spawn_point).pos
+		data.color_idx = player.color_idx
+		data.team = 1
+		datas.append(data)
+		
+	spawn_squads(datas)
 	
-func _on_squad_spawned(squad :BaseSquad):
-	._on_squad_spawned(squad)
+func _on_squad_spawned(squad :BaseSquad, data :SquadData):
+	._on_squad_spawned(squad, data)
 	
 	if squad.player_id == "bot":
-		squad.chase_enemy = _squad
+		bot_squads.append(squad)
+		
+		squad.chase_enemy = player_squads.pick_random()
 		squad.chase_target()
-		return
-	
-	_squad = squad
-	
-	for i in squads:
-		if i.player_id == "bot":
-			i.chase_enemy = _squad
-			i.chase_target()
-	
+
 func _on_unit_dead(squad):
 	._on_unit_dead(squad)
 	
-	if squad == _squad:
+	if squad.player_id == "bot":
+		bot_squads.erase(squad)
+		
+	if player_squads.size() < 1:
 		spawn_player_squad()
-	
-func _on_floor_clicked(pos :Vector3):
-	._on_floor_clicked(pos)
-	
-	var tile = tile_map.get_closes_tile(pos)
-	if _squad:
-		_squad.move_to(tile.id)
-
 	
 func _on_bot_spawner_timer_timeout():
 	bot_spawner_timer.start()
 	
-	if squads.size() > 2:
+	if bot_squads.size() > 2:
 		return
 	
 	var data :SquadData = squad_scenes.pick_random().duplicate()

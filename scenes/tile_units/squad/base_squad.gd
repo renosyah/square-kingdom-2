@@ -30,6 +30,7 @@ export var member_max_hp :int = 100
 var squad_icon :StreamTexture
 var camera :Camera
 var overlay_ui :Control
+var selected_squads :Array # refrences
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -59,7 +60,7 @@ func _ready():
 	_walk_timer = Timer.new()
 	_walk_timer.one_shot = true
 	_walk_timer.autostart = false
-	_walk_timer.wait_time = 0.63
+	_walk_timer.wait_time = 0.43
 	add_child(_walk_timer)
 
 	_audio = AudioStreamPlayer3D.new()
@@ -71,10 +72,12 @@ func _ready():
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
 	
+	# add little bit of delay
 	yield(get_tree().create_timer(0.5),"timeout")
 	
 	_init_formations()
 	_spawn_members()
+	_path_indicator.translation = global_position
 	
 func _init_formations():
 	pass
@@ -112,6 +115,8 @@ func _spawn_members():
 		_member_alive += 1
 		
 	_floating_info = preload("res://assets/user_interface/icons/floating_squad_info/floating_squad_info.tscn").instance()
+	_floating_info.selected_squads = selected_squads
+	_floating_info.squad = self
 	_floating_info.name = "info_%s" % name
 	_floating_info.color = color
 	_floating_info.icon = squad_icon
@@ -133,6 +138,9 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member.visible = false
 		_member_alive -= 1
+		
+	if _member_alive <= 0:
+		set_dead(false)
 		
 func _tree_exiting():
 	for i in _members:
@@ -276,12 +284,13 @@ func take_damage(amount :int, member_idx :int):
 		
 	m.take_damage(amount)
 	
-	rpc_unreliable("_taking_damage", amount)
+	rpc_unreliable("_taking_damage", amount, m.hp, member_idx)
 	
-	if _member_alive <= 0:
-		set_dead()
+remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
+	var m :SquadMember = _members[member_idx]
+	if is_instance_valid(m):
+		m.hp = hp_remain
 		
-remotesync func _taking_damage(amount :int):
 	_floating_info.update_bar(get_members_total_hp())
 	emit_signal("on_squad_taking_damage", self, amount)
 	

@@ -229,6 +229,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "MarginContainer",
+"class": "SquadCard",
+"language": "GDScript",
+"path": "res://assets/user_interface/squad_card/squad_card.gd"
+}, {
 "base": "BaseData",
 "class": "SquadData",
 "language": "GDScript",
@@ -324,6 +329,7 @@ _global_script_class_icons={
 "SaveLoadImproved": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"SquadCard": "",
 "SquadData": "",
 "SquadMember": "",
 "Tile2D": "",

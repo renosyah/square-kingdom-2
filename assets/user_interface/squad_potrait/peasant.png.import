@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/reguler_2.png-c22234360a83dc469c67c3976dad5142.stex"
+path="res://.import/peasant.png-57632c34383023343c937c81d84a244c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/unit_potrait/reguler_2.png"
-dest_files=[ "res://.import/reguler_2.png-c22234360a83dc469c67c3976dad5142.stex" ]
+source_file="res://assets/user_interface/squad_potrait/peasant.png"
+dest_files=[ "res://.import/peasant.png-57632c34383023343c937c81d84a244c.stex" ]
 
 [params]
 

@@ -10,17 +10,13 @@ const members = [
 const weapons = [
 	null, # index 0 as NULL 0
 	preload("res://scenes/equipment/weapons/dagger/dagger.tscn"), #1
-	
 	preload("res://scenes/equipment/weapons/pitchfork/pitchfork.tscn"), #2
-	
 	preload("res://scenes/equipment/weapons/spear/spear.tscn"), #3
 	preload("res://scenes/equipment/weapons/spear/spear_shield.tscn"), #4
 	preload("res://scenes/equipment/weapons/sword/sword.tscn"), #5
 	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #6
-	
 	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #7
 	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
-	
 	preload("res://scenes/equipment/weapons/bow/bow.tscn") #9
 ]
 const equipment = [
@@ -33,5 +29,14 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/melee.png"), #2
 	preload("res://assets/user_interface/icons/range.png"), #3
 	preload("res://assets/user_interface/icons/axe.png") #4
-	
+]
+const squad_potraits = [
+	preload("res://assets/user_interface/squad_potrait/peasant.png"), #0
+	preload("res://assets/user_interface/squad_potrait/militia.png"), #1
+	preload("res://assets/user_interface/squad_potrait/merc_1.png"), #2
+	preload("res://assets/user_interface/squad_potrait/merc_2.png"), #3
+	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #4
+	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #5
+	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #6
+	preload("res://assets/user_interface/squad_potrait/knight_2.png") #7
 ]

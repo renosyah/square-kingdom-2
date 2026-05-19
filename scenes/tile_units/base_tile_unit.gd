@@ -26,11 +26,10 @@ export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 1.4
 export var spotting_range :int = 1
-export var is_selectable :bool = false
 export var margin :float = 0.15
 
 var _is_moving :bool # block some function if this is true
-var _is_selected :bool # allow this unit to be selected or not
+var _is_selected :bool = true # allow this unit to be selected or not
 
 var _last_tile :Vector2 # last tile leaved
 var _last_to :Vector3 # las position leave
@@ -98,8 +97,8 @@ func _move_to(tile_id :Vector2):
 	if not _is_master or not is_instance_valid(nav):
 		return
 		
-	enemy = null
 	_has_enemy = false
+	enemy = null
 	
 	var v :Array = _get_tile_path(tile_id)
 	if v.empty():
@@ -121,6 +120,12 @@ func _get_tile_path(to :Vector2) -> Array:
 	paths.pop_front()
 	
 	return paths
+	
+func click():
+	if not _is_selected:
+		return
+		
+	emit_signal("on_unit_clicked", self)
 	
 func stop(use_rpc :bool = true):
 	if _is_master or not use_rpc:
@@ -184,9 +189,10 @@ func _attack_enemy_proccess(delta :float, pos :Vector3):
 	if _is_in_range(enemy):
 		_on_enemy_in_range(delta, pos, enemy.global_position)
 		return
-		
-	enemy = null
+	
 	_has_enemy = false
+	enemy = null
+	
 	_on_no_enemy()
 	
 func _follow_path_proccess(delta :float, pos :Vector3):

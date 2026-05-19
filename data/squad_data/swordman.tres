@@ -21,6 +21,7 @@ turning_speed = 8.0
 attack_speed = 0.85
 formation_density = 0.35
 icon_idx = 2
+potrait_idx = 4
 member_headgear_idx = 0
 member_armor_idx = 0
 member_shield_idx = 1

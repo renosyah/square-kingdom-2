@@ -11,13 +11,18 @@ onready var cam_rot_l = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Margin
 onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_r
 onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
+onready var squad_holder = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/squad_holder
 
 func _ready():
 	minimap.tile_scenes = TileIndex.tiles2d
 	dialog_menu.visible = false
 
-func setup_minimap(tile_map_data :TileMapFileData):
-	minimap.load_data_map(tile_map_data)
+func add_squad_card(squad :BaseSquad, data :SquadData, selected_squads :Array):
+	var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
+	card.data = data
+	card.squad = squad
+	card.selected_squads = selected_squads
+	squad_holder.add_child(card)
 	
 func _on_cam_rot_reset_pressed():
 	emit_signal("reset_camera")

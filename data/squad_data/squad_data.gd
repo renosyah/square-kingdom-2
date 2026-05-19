@@ -23,6 +23,7 @@ export var turning_speed :float = 8
 export var attack_speed :float = 0.8
 export var formation_density :float = 0.35
 export var icon_idx :int
+export var potrait_idx :int
 
 # squad member
 export var member_headgear_idx :int
@@ -52,6 +53,7 @@ func from_dictionary(_data : Dictionary):
 	attack_speed = _data["k"]
 	formation_density = _data["l"]
 	icon_idx = _data["l1"]
+	potrait_idx = _data["l2"]
 	member_headgear_idx = _data["m"]
 	member_armor_idx = _data["n"]
 	member_shield_idx = _data["o"]
@@ -79,6 +81,7 @@ func to_dictionary() -> Dictionary :
 	_data["k"] = attack_speed
 	_data["l"] = formation_density
 	_data["l1"] = icon_idx
+	_data["l2"] = potrait_idx
 	_data["m"] = member_headgear_idx
 	_data["n"] = member_armor_idx
 	_data["o"] = member_shield_idx

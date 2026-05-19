@@ -131,7 +131,9 @@ func setup_clickable_floor():
 	add_child(clickable_floor)
 
 func _on_floor_clicked(pos :Vector3):
-	pass
+	var tile = tile_map.get_closes_tile(pos)
+	for squad in selected_squads:
+		squad.move_to(tile.id)
 	
 ########################################## UI  ############################################
 var ui :GameplayUi
@@ -143,7 +145,7 @@ func setup_ui():
 	ui.connect("exit", self, "on_back_pressed")
 	add_child(ui)
 	
-	ui.setup_minimap(current_tile_map_file_data)
+	ui.minimap.load_data_map(current_tile_map_file_data)
 	
 	var map_size :int = current_tile_map_manifest_data.map_size
 	ui.movable_camera_ui.target = movable_camera
@@ -183,6 +185,8 @@ func setup_players_spawn_points():
 
 ########################################## squad  ############################################
 
+var player_squads :Array = []
+var selected_squads :Array
 var squads :Array = []
 
 func spawn_squads(squad_datas :Array):
@@ -235,6 +239,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.overlay_ui = ui.overlay_ui
 	squad.camera = movable_camera.camera
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
+	squad.selected_squads = selected_squads
 
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
@@ -249,10 +254,14 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	squad.translation = data.pos
 	squads.append(squad)
-	_on_squad_spawned(squad)
+	_on_squad_spawned(squad, data)
 	
-func _on_squad_spawned(squad):
+func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	tile_position_manager.add_to_position(squad)
+	
+	if squad.player_id == player.player_id:
+		player_squads.append(squad)
+		ui.add_squad_card(squad, data, selected_squads)
 	
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
@@ -266,8 +275,22 @@ func _on_squad_taking_damage(squad, amount):
 func _on_unit_spotted(squad):
 	pass
 	
-func _on_unit_clicked(squad):
-	pass
+func _on_unit_clicked(squad :BaseSquad):
+	# if squad own by player
+	if squad in player_squads:
+		if squad in selected_squads:
+			selected_squads.erase(squad)
+			
+		else:
+			selected_squads.append(squad)
+	
+	# if squad is enemy squad
+	if squad.team != player.team:
+		for i in selected_squads:
+			var s :BaseSquad = i
+			s.chase_enemy = squad
+			s.chase_target()
+	
 	
 func _on_current_tile_updated(squad, from_id, to_id):
 	tile_position_manager.update_position(squad, from_id, to_id)
@@ -275,11 +298,14 @@ func _on_current_tile_updated(squad, from_id, to_id):
 func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
-func _on_unit_dead(squad):
+func _on_unit_dead(squad :BaseSquad):
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
 	
+	if squad.player_id == player.player_id:
+		player_squads.erase(squad)
+		
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()
 
