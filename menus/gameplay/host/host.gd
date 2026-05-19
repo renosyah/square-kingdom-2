@@ -22,13 +22,16 @@ func _on_all_player_ready():
 	
 func spawn_player_squad():
 	var datas = []
-	for i in 10:
+	var tiles = [player_spawn_point] + TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), player_spawn_point, 1
+	)
+	for tile in tiles:
 		var data :SquadData = squad_scenes.pick_random().duplicate()
 		data.network_id = 1
 		data.player_id = player.player_id
 		data.node_name = Utils.create_unique_id()
-		data.current_tile = player_spawn_point
-		data.pos = tile_map.get_tile(player_spawn_point).pos
+		data.current_tile = tile
+		data.pos = tile_map.get_tile(tile).pos
 		data.color_idx = player.color_idx
 		data.team = 1
 		datas.append(data)
@@ -39,9 +42,15 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
 	
 	if squad.player_id == "bot":
+		# make bots attack random enemies
+		var enemies = []
+		for i in squads:
+			if i.player_id != "bot":
+				enemies.append(i)
+		
 		bot_squads.append(squad)
 		squad.attack_move = true
-		squad.move_to(player_squads.pick_random().current_tile)
+		squad.move_to(enemies.pick_random().current_tile)
 
 func _on_unit_dead(squad):
 	._on_unit_dead(squad)

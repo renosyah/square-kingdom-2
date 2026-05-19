@@ -40,6 +40,10 @@ onready var weapon_holder = $pivot/body/hand_r/weapon_holder
 onready var shield_holder = $pivot/body/hand_l/shield_holder
 onready var range_weapon_holder = $pivot/body/hand_r/range_weapon_holder
 
+onready var range_storage_holder = $pivot/body/range_storage_holder
+onready var melee_storage_holder = $pivot/body/melee_storage_holder
+onready var shield_storage_holder = $pivot/body/shield_storage_holder
+
 var _headgear :Equipment
 var _armor :Equipment
 var _shield :Equipment
@@ -64,16 +68,19 @@ func _ready():
 	if melee_weapon:
 		var w = melee_weapon.instance()
 		weapon_holder.add_child(w)
+		melee_storage_holder.add_child(w.duplicate())
 		_melee_weapon = w
 		
 	if shield:
 		var w = shield.instance()
 		shield_holder.add_child(w)
+		shield_storage_holder.add_child(w.duplicate())
 		_shield = w
 	
 	if range_weapon:
 		var w = range_weapon.instance()
 		range_weapon_holder.add_child(w)
+		range_storage_holder.add_child(w.duplicate())
 		_range_weapon = w
 		
 	if range_weapon:
@@ -99,6 +106,10 @@ func prepare_melee_weapon():
 	shield_holder.visible = true
 	range_weapon_holder.visible = false
 	
+	range_storage_holder.visible = true
+	melee_storage_holder.visible = false
+	shield_storage_holder.visible = false
+
 func prepare_range_weapon():
 	.prepare_range_weapon()
 	
@@ -111,6 +122,10 @@ func prepare_range_weapon():
 	weapon_holder.visible = false
 	shield_holder.visible = false
 	range_weapon_holder.visible = true
+	
+	range_storage_holder.visible = false
+	melee_storage_holder.visible = true
+	shield_storage_holder.visible = true
 	
 func melee_attack():
 	#.melee_attack()
