@@ -43,6 +43,8 @@ func _ready():
 		battle.visible = false
 		sync_map.request_map_data()
 		
+	Global.current_player.player_network_id = NetworkLobbyManager.get_id()
+	
 func _on_minimap_on_minimap_ready():
 	_on_lobby_player_update(NetworkLobbyManager.get_players())
 	Global.hide_transition()

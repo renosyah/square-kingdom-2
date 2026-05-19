@@ -17,15 +17,18 @@ func _on_all_player_ready():
 	
 func spawn_player_squad():
 	var datas = []
-	for i in 10:
+	var tiles = [player_spawn_point] + TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), player_spawn_point, 1
+	)
+	for tile in tiles:
 		var data :SquadData = squad_scenes.pick_random().duplicate()
-		data.network_id = 1
-		data.player_id = player.player_id
+		data.network_id = current_player.player_network_id
+		data.player_id = current_player.player_id
 		data.node_name = Utils.create_unique_id()
-		data.current_tile = player_spawn_point
-		data.pos = tile_map.get_tile(player_spawn_point).pos
-		data.color_idx = player.color_idx
-		data.team = 1
+		data.current_tile = tile
+		data.pos = tile_map.get_tile(tile).pos
+		data.color_idx = current_player.color_idx
+		data.team = current_player.team
 		datas.append(data)
 		
 	spawn_squads(datas)

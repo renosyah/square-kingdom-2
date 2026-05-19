@@ -12,25 +12,6 @@ const bow_sounds = [
 	preload("res://assets/sounds/weapons/bow_release_1.wav"),
 	preload("res://assets/sounds/weapons/bow_release_2.wav")
 ]
-const hurt_sounds = [
-	preload("res://assets/sounds/hurt/hurt_1.wav"),
-	preload("res://assets/sounds/hurt/hurt_2.wav"),
-	preload("res://assets/sounds/hurt/hurt_3.wav"),
-	preload("res://assets/sounds/hurt/hurt_4.wav"),
-	preload("res://assets/sounds/hurt/hurt_5.wav"),
-	preload("res://assets/sounds/hurt/hurt_6.wav"),
-	preload("res://assets/sounds/hurt/hurt_7.wav"),
-	preload("res://assets/sounds/hurt/hurt_8.wav"),
-	preload("res://assets/sounds/hurt/hurt_9.wav"),
-	preload("res://assets/sounds/hurt/hurt_10.wav"),
-	preload("res://assets/sounds/hurt/hurt_11.wav"),
-	preload("res://assets/sounds/hurt/hurt_12.wav"),
-	preload("res://assets/sounds/hurt/hurt_13.wav"),
-	preload("res://assets/sounds/hurt/hurt_14.wav"),
-	preload("res://assets/sounds/hurt/hurt_15.wav"),
-	preload("res://assets/sounds/hurt/hurt_16.wav")
-]
-
 
 onready var leg_animation_state = $leg_animation_tree.get("parameters/playback")
 onready var body_animation_state = $body_animation_tree.get("parameters/playback")
@@ -52,7 +33,6 @@ var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
 onready var combat_sound = $combat_sound
-onready var unit_sound = $unit_sound
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -216,16 +196,7 @@ func _on_range_attack_performed():
 	enemy = null
 	enemy_assign = false
 	auto_iddle_timer.stop()
-	
-func take_damage(amount :int):
-	.take_damage(amount)
-	
-	if is_dead:
-		return
-		
-	unit_sound.stream = hurt_sounds.pick_random()
-	unit_sound.play()
-	
+
 func moving(delta :float):
 	.moving(delta)
 	

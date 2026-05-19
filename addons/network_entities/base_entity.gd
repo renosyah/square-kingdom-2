@@ -48,6 +48,8 @@ func _on_camera_exited(_camera: Camera):
 ############################################################
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	set_network_master(network_id)
+	
 	_is_online = _is_network_running()
 	_is_master = _is_network_master()
 	
@@ -56,8 +58,6 @@ func _ready() -> void:
 	_visibility_notifier.connect("camera_entered", self, "_on_camera_entered")
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)
-	
-	set_network_master(network_id)
 	
 	# add little delay
 	# just in case all its puppet created in time

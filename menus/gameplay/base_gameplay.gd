@@ -2,7 +2,7 @@ extends Node
 class_name BaseGameplay
 
 onready var is_server = NetworkLobbyManager.is_server()
-onready var player :PlayerData = Global.player_data
+onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
 
 func _ready():
@@ -23,6 +23,9 @@ func _ready():
 	setup_clickable_floor()
 	setup_ui()
 	
+	# usualy call this after doing some shady work
+	# because we dont generate and prepare shit anymore
+	# just tell everybody to join
 	if NetworkLobbyManager.is_server():
 		NetworkLobbyManager.set_host_ready()
 	
@@ -45,6 +48,9 @@ func _on_leave():
 func _on_all_player_ready():
 	Global.hide_transition()
 	
+
+########################################## proccess  ############################################
+
 func _process(delta):
 	var pos = movable_camera.translation * Vector3(1,0,1)
 	tile_map.update_camera_location(Vector2(pos.x, pos.z))
@@ -104,6 +110,28 @@ func _on_tile_map_ready():
 	# if tile map is ready and setup properly
 	setup_players_spawn_points()
 	
+########################################## players spawn  ############################################
+
+var player_spawn_points = []
+var player_spawn_point :Vector2
+
+func setup_players_spawn_points():
+	var map_size :int = current_tile_map_manifest_data.map_size
+	player_spawn_points = ReserveTile.get_spawn_points(map_size, 3)
+	
+	for index in players.size():
+		var p :PlayerData = players[index]
+		if p.player_id == current_player.player_id:
+			player_spawn_point = player_spawn_points[index]
+			break
+	
+	var tile :TileMapData = tile_map.get_tile(player_spawn_point)
+	if tile == null:
+		return
+	
+	movable_camera.translation.x = tile.pos.x + 1
+	movable_camera.translation.z = tile.pos.z + 1
+	
 ########################################## camera  ############################################
 var movable_camera :MovableCamera
 
@@ -160,27 +188,6 @@ func setup_ui():
 func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45
 	
-########################################## SPLAYER SPAWNS  ############################################
-var player_spawn_points = []
-var player_spawn_point :Vector2
-
-func setup_players_spawn_points():
-	var map_size :int = current_tile_map_manifest_data.map_size
-	player_spawn_points = ReserveTile.get_spawn_points(map_size, 3)
-	
-	for index in players.size():
-		var p :PlayerData = players[index]
-		if p.player_id == player.player_id:
-			player_spawn_point = player_spawn_points[index]
-			break
-	
-	var tile :TileMapData = tile_map.get_tile(player_spawn_point)
-	if tile == null:
-		return
-	
-	movable_camera.translation.x = tile.pos.x + 1
-	movable_camera.translation.z = tile.pos.z + 1
-
 
 ########################################## squad  ############################################
 
@@ -258,7 +265,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	tile_position_manager.add_to_position(squad)
 	
-	if squad.player_id == player.player_id:
+	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data, selected_squads)
 		ui.sort_squad_holder()
@@ -302,7 +309,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			selected_squads.append(clicked_squad)
 	
 	# if squad is enemy squad
-	if clicked_squad.team != player.team:
+	if clicked_squad.team != current_player.team:
 		var dup = selected_squads.duplicate() # must use dup pointer
 		for s in dup:
 			s.chase_enemy = clicked_squad
@@ -320,7 +327,7 @@ func _on_unit_dead(squad :BaseSquad):
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
 	
-	if squad.player_id == player.player_id:
+	if squad.player_id == current_player.player_id:
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
 		ui.sort_squad_holder()

@@ -190,6 +190,8 @@ func hide_transition():
 	
 ##########################################  lobby  ############################################
 
+# specific for game session
+var current_player :PlayerData 
 var players :Array = []
 
 

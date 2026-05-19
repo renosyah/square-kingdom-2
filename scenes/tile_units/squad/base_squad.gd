@@ -8,6 +8,31 @@ const walk_sounds = [
 	preload("res://assets/sounds/walks/walk_2.wav"),
 	preload("res://assets/sounds/walks/walk_3.wav")
 ]
+const hurt_sounds = [
+	preload("res://assets/sounds/hurt/hurt_1.wav"),
+	preload("res://assets/sounds/hurt/hurt_2.wav"),
+	preload("res://assets/sounds/hurt/hurt_3.wav"),
+	preload("res://assets/sounds/hurt/hurt_4.wav"),
+	preload("res://assets/sounds/hurt/hurt_5.wav"),
+	preload("res://assets/sounds/hurt/hurt_6.wav"),
+	preload("res://assets/sounds/hurt/hurt_7.wav"),
+	preload("res://assets/sounds/hurt/hurt_8.wav"),
+	preload("res://assets/sounds/hurt/hurt_9.wav"),
+	preload("res://assets/sounds/hurt/hurt_10.wav"),
+	preload("res://assets/sounds/hurt/hurt_11.wav"),
+	preload("res://assets/sounds/hurt/hurt_12.wav"),
+	preload("res://assets/sounds/hurt/hurt_13.wav"),
+	preload("res://assets/sounds/hurt/hurt_14.wav"),
+	preload("res://assets/sounds/hurt/hurt_15.wav"),
+	preload("res://assets/sounds/hurt/hurt_16.wav")
+]
+const death_sounds = [
+	preload("res://assets/sounds/death/dead_1.wav"),
+	preload("res://assets/sounds/death/dead_2.wav"),
+	preload("res://assets/sounds/death/dead_3.wav"),
+	preload("res://assets/sounds/death/dead_4.wav"),
+	preload("res://assets/sounds/death/dead_5.wav")
+]
 
 export var member_scene :PackedScene
 export var has_range_weapon :bool
@@ -42,11 +67,14 @@ var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
 
-var _audio :AudioStreamPlayer3D
 var _attack_timer :Timer
 var _walk_timer :Timer
 var _path_indicator :Spatial
 var _floating_info :FloatingSquadInfo
+
+var _step_audio :AudioStreamPlayer3D
+var _combat_audio :AudioStreamPlayer3D
+var _unit_audio :AudioStreamPlayer3D
 
 func _ready():
 	connect("tree_exiting", self, "_tree_exiting")
@@ -63,9 +91,17 @@ func _ready():
 	_walk_timer.wait_time = 0.43
 	add_child(_walk_timer)
 
-	_audio = AudioStreamPlayer3D.new()
-	_audio.unit_db = 5
-	add_child(_audio)
+	_step_audio = AudioStreamPlayer3D.new()
+	_step_audio.unit_db = 5
+	add_child(_step_audio)
+	
+	_combat_audio = AudioStreamPlayer3D.new()
+	_combat_audio.unit_db = 5
+	add_child(_combat_audio)
+	
+	_unit_audio = AudioStreamPlayer3D.new()
+	_unit_audio.unit_db = 5
+	add_child(_unit_audio)
 	
 	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
 	_path_indicator.material = member_material
@@ -139,6 +175,9 @@ func _on_member_dead(member :SquadMember):
 		member.visible = false
 		_member_alive -= 1
 		
+		_unit_audio.stream = death_sounds.pick_random()
+		_unit_audio.play()
+		
 	if _member_alive <= 0:
 		set_dead(false)
 		
@@ -194,8 +233,8 @@ func moving(delta :float) -> void:
 		
 	if _is_moving and _walk_timer.is_stopped():
 		_walk_timer.start()
-		_audio.stream = walk_sounds.pick_random()
-		_audio.play()
+		_step_audio.stream = walk_sounds.pick_random()
+		_step_audio.play()
 		
 	# track floating ui
 	if not overlay_ui.visible or not _floating_info:
@@ -292,6 +331,11 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
 		m.hp = hp_remain
 		
 	_floating_info.update_bar(get_members_total_hp())
+	
+	if not _unit_audio.playing:
+		_unit_audio.stream = hurt_sounds.pick_random()
+		_unit_audio.play()
+	
 	emit_signal("on_squad_taking_damage", self, amount)
 	
 func puppet_moving(delta :float) -> void:

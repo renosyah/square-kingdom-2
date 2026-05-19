@@ -78,11 +78,20 @@ func _join(info):
 	stop_finding()
 	_overlay_loading.visible = true
 	
+	# test
+	var player_data = Global.player_data
+	player_data.player_id = Utils.create_unique_id()
+	player_data.player_name = RandomNameGenerator.generate_name()
+	player_data.team = 2
+	player_data.color_idx = randi() % Global.player_colors.size()
+	player_data.potrait_idx = randi() % Global.player_potraits.size()
+	Global.current_player = player_data
+	
 	var configuration = NetworkClient.new()
 	configuration.ip = info["ip"]
 	
-	NetworkLobbyManager.player_name = Global.player_data.player_name
-	NetworkLobbyManager.player_extra_data = Global.player_data.to_dictionary()
+	NetworkLobbyManager.player_name = player_data.player_name
+	NetworkLobbyManager.player_extra_data = player_data.to_dictionary()
 	NetworkLobbyManager.configuration = configuration
 	NetworkLobbyManager.init_lobby()
 	

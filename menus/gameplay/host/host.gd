@@ -27,13 +27,13 @@ func spawn_player_squad():
 	)
 	for tile in tiles:
 		var data :SquadData = squad_scenes.pick_random().duplicate()
-		data.network_id = 1
-		data.player_id = player.player_id
+		data.network_id = current_player.player_network_id
+		data.player_id = current_player.player_id
 		data.node_name = Utils.create_unique_id()
 		data.current_tile = tile
 		data.pos = tile_map.get_tile(tile).pos
-		data.color_idx = player.color_idx
-		data.team = 1
+		data.color_idx = current_player.color_idx
+		data.team = current_player.team
 		datas.append(data)
 		
 	spawn_squads(datas)
@@ -74,7 +74,7 @@ func _on_bot_spawner_timer_timeout():
 	data.current_tile = Vector2.ZERO
 	data.pos = Vector3.ZERO
 	data.color_idx = 0
-	data.team = 2
+	data.team = -1
 	spawn_squad(data)
 
 
