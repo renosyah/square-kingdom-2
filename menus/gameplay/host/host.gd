@@ -22,7 +22,7 @@ func _on_all_player_ready():
 	
 func spawn_player_squad():
 	var datas = []
-	for i in 4:
+	for i in 10:
 		var data :SquadData = squad_scenes.pick_random().duplicate()
 		data.network_id = 1
 		data.player_id = player.player_id
@@ -40,9 +40,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	
 	if squad.player_id == "bot":
 		bot_squads.append(squad)
-		
-		squad.chase_enemy = player_squads.pick_random()
-		squad.chase_target()
+		squad.attack_move = true
+		squad.move_to(player_squads.pick_random().current_tile)
 
 func _on_unit_dead(squad):
 	._on_unit_dead(squad)

@@ -114,6 +114,8 @@ anchor_bottom = 1.0
 margin_left = -40.5
 margin_top = -54.0
 margin_right = 40.5
+focus_mode = 0
+enabled_focus_mode = 0
 flat = true
 
 [connection signal="pressed" from="Control3/Button" to="." method="_on_Button_pressed"]

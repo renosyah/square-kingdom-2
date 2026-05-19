@@ -68,6 +68,12 @@ func get_pos_v3(id :Vector2) -> Vector3:
 		
 	return _navigation_pos[id]
 	
+func get_astar(layer_id :int) -> AStar2D:
+	return _navigations[layer_id]
+	
+func get_navigation_id(layer_id :int, id :Vector2) -> int:
+	return _get_navigation_id(layer_id, id)
+	
 func _load_data_nav(layer_id :int, navigation_map :Array):
 	if not _has_layer(layer_id):
 		_navigations.append(AStar2D.new())

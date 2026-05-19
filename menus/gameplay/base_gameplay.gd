@@ -132,8 +132,7 @@ func setup_clickable_floor():
 
 func _on_floor_clicked(pos :Vector3):
 	var tile = tile_map.get_closes_tile(pos)
-	for squad in selected_squads:
-		squad.move_to(tile.id)
+	_move_squad_to(tile)
 	
 ########################################## UI  ############################################
 var ui :GameplayUi
@@ -262,12 +261,31 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data, selected_squads)
-	
+		ui.sort_squad_holder()
+		
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
 	squad.update_spotting()
 	
 	ui.minimap.add_object(squad, squad.color)
+	
+func _move_squad_to(tile :TileMapData):
+	if selected_squads.empty():
+		return
+		
+	var dup = selected_squads.duplicate() # must use dup pointer
+	
+	# formations
+	var layer_id = dup[0].nav_layer
+	var pos = [tile.id] + TileMapUtils.get_astar_adjacent_tile(
+		nav.get_astar(layer_id), nav.get_navigation_id(layer_id, tile.id), 2
+	) 
+	
+	var idx = 0
+	for squad in dup:
+		squad.move_to(pos[idx])
+		squad.click() # to unselect
+		idx += 1
 	
 func _on_squad_taking_damage(squad, amount):
 	pass
@@ -275,22 +293,21 @@ func _on_squad_taking_damage(squad, amount):
 func _on_unit_spotted(squad):
 	pass
 	
-func _on_unit_clicked(squad :BaseSquad):
+func _on_unit_clicked(clicked_squad :BaseSquad):
 	# if squad own by player
-	if squad in player_squads:
-		if squad in selected_squads:
-			selected_squads.erase(squad)
-			
+	if clicked_squad in player_squads:
+		if clicked_squad in selected_squads:
+			selected_squads.erase(clicked_squad)
 		else:
-			selected_squads.append(squad)
+			selected_squads.append(clicked_squad)
 	
 	# if squad is enemy squad
-	if squad.team != player.team:
-		for i in selected_squads:
-			var s :BaseSquad = i
-			s.chase_enemy = squad
+	if clicked_squad.team != player.team:
+		var dup = selected_squads.duplicate() # must use dup pointer
+		for s in dup:
+			s.chase_enemy = clicked_squad
 			s.chase_target()
-	
+			s.click() # to unselect
 	
 func _on_current_tile_updated(squad, from_id, to_id):
 	tile_position_manager.update_position(squad, from_id, to_id)
@@ -305,6 +322,8 @@ func _on_unit_dead(squad :BaseSquad):
 	
 	if squad.player_id == player.player_id:
 		player_squads.erase(squad)
+		ui.remove_squad_card(squad)
+		ui.sort_squad_holder()
 		
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()

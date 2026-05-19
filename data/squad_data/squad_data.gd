@@ -16,6 +16,7 @@ export var speed :float = 2
 export var spotting_range :int = 1
 
 # squad data
+export var squad_type :int
 export var member_scene_idx :int
 export var has_range_weapon :bool
 export var can_attack :bool = true
@@ -46,6 +47,7 @@ func from_dictionary(_data : Dictionary):
 	color_idx = _data["e"]
 	speed = _data["f"]
 	spotting_range = _data["f1"]
+	squad_type = _data["f2"]
 	member_scene_idx = _data["g"]
 	has_range_weapon = _data["h"]
 	can_attack = _data["i"]
@@ -74,6 +76,7 @@ func to_dictionary() -> Dictionary :
 	_data["e"] = color_idx
 	_data["f"] = speed
 	_data["f1"] = spotting_range
+	_data["f2"] = squad_type
 	_data["g"] = member_scene_idx
 	_data["h"] = has_range_weapon
 	_data["i"] = can_attack

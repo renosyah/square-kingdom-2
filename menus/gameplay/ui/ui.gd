@@ -24,6 +24,26 @@ func add_squad_card(squad :BaseSquad, data :SquadData, selected_squads :Array):
 	card.selected_squads = selected_squads
 	squad_holder.add_child(card)
 	
+func remove_squad_card(squad :BaseSquad):
+	for c in squad_holder.get_children():
+		if c.squad == squad:
+			squad_holder.remove_child(c)
+			c.queue_free()
+			break
+	
+func sort_squad_holder():
+	var nodes = []
+	for c in squad_holder.get_children():
+		nodes.append(c)
+		
+	nodes.sort_custom(self, "_sort_by_order")
+	
+	for i in nodes.size():
+		squad_holder.move_child(nodes[i], i)
+		
+func _sort_by_order(a, b):
+	return a.data.squad_type < b.data.squad_type
+	
 func _on_cam_rot_reset_pressed():
 	emit_signal("reset_camera")
 	
