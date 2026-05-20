@@ -6,7 +6,8 @@ const squad_scenes = [
 	preload("res://data/squad_data/spearman.tres"),
 	preload("res://data/squad_data/swordman.tres"),
 	preload("res://data/squad_data/archer.tres"),
-	preload("res://data/squad_data/huscarls.tres")
+	preload("res://data/squad_data/huscarls.tres"),
+	preload("res://data/squad_data/byzantine_guard.tres")
 ]
 
 func _on_all_player_ready():

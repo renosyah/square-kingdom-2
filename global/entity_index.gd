@@ -17,7 +17,8 @@ const weapons = [
 	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #6
 	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #7
 	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
-	preload("res://scenes/equipment/weapons/bow/bow.tscn") #9
+	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #9
+	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn") #10
 ]
 const equipment = [
 	null, # index 0 as NULL

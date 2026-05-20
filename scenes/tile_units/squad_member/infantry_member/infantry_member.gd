@@ -72,7 +72,10 @@ func _ready():
 	if range_weapon:
 		var w = range_weapon.instance()
 		range_weapon_holder.add_child(w)
-		range_storage_holder.add_child(w.duplicate())
+		
+		if w.show_on_stored:
+			range_storage_holder.add_child(w.duplicate())
+			
 		_range_weapon = w
 		
 	if range_weapon:
@@ -187,21 +190,14 @@ func _on_release_bow():
 	if not is_instance_valid(enemy):
 		return
 		
-	var arrow = preload("res://scenes/projectiles/arrow.tscn").instance()
-	add_child(arrow)
-	arrow.translation = global_position
-	arrow.to = enemy.global_position + Vector3.ONE * rand_range(-0.5,0.5)
-	arrow.launch()
-	
 	var _enemy_pos :Vector3 = enemy.global_position
-	yield(arrow,"on_reach")
+	_range_weapon.shot_projectile(_enemy_pos)
 	
-	if arrow.global_position.distance_to(_enemy_pos) < 0.6:
+	var pos = yield(_range_weapon,"on_hit")
+	
+	if pos.distance_to(_enemy_pos) < 0.6:
 		emit_signal("attack_performed", self, enemy, target_idx, _range_weapon.attack_damage)
 		
-	yield(get_tree().create_timer(1),"timeout")
-	arrow.queue_free()
-	
 func _on_range_attack_performed():
 	
 	iddle = true

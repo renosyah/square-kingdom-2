@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=2]
+[ext_resource path="res://scenes/equipment/weapons/axe/axe.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://scenes/equipment/weapons/throwing_axe/throwing_axe.gd" type="Script" id=4]
+[ext_resource path="res://scenes/projectiles/axe_projectile.tscn" type="PackedScene" id=5]
+
+[node name="throwing_axe" type="Spatial"]
+script = ExtResource( 4 )
+projectile = ExtResource( 5 )
+attack_damage = 7
+show_on_stored = false
+attack_animation = "throw_range_weapon"
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.15, 0 )
+cast_shadow = 0
+mesh = ExtResource( 3 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 2 )
