@@ -14,4 +14,3 @@ func release():
 	.release()
 	
 	mesh_instance.visible = false
-	

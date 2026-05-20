@@ -67,15 +67,28 @@ func _process(delta):
 		ui.minimap.offset = Vector2(pos.x, pos.z) * 10
 		
 ########################################## ambient sound  ############################################
-var map_ambient :AudioStreamPlayer
+const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 
-var ap_ambient_pos :float = 0.0
+const attack = [
+	preload("res://assets/sounds/unit/attack/attack_1_1.wav"), preload("res://assets/sounds/unit/attack/attack_1_2.wav"), preload("res://assets/sounds/unit/attack/attack_1_3.wav"), preload("res://assets/sounds/unit/attack/attack_1_4.wav")
+]
+const movement = [
+	preload("res://assets/sounds/unit/move/moving_1_1.wav"), preload("res://assets/sounds/unit/move/moving_1_2.wav"), preload("res://assets/sounds/unit/move/moving_1_3.wav"), preload("res://assets/sounds/unit/move/moving_1_4.wav"), preload("res://assets/sounds/unit/move/moving_2_1.wav"), preload("res://assets/sounds/unit/move/moving_2_2.wav"), preload("res://assets/sounds/unit/move/moving_2_3.wav")
+]
+const selection = [
+	preload("res://assets/sounds/unit/selection/selection_1_1.wav"), preload("res://assets/sounds/unit/selection/selection_1_2.wav"), preload("res://assets/sounds/unit/selection/selection_1_3.wav"), preload("res://assets/sounds/unit/selection/selection_2_1.wav"), preload("res://assets/sounds/unit/selection/selection_2_2.wav"), preload("res://assets/sounds/unit/selection/selection_2_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_1.wav"), preload("res://assets/sounds/unit/selection/selection_3_2.wav"), preload("res://assets/sounds/unit/selection/selection_3_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_4.wav")
+]
+
+var ui_sound :AudioStreamPlayer
+var unit_sound :AudioStreamPlayer
 
 func setup_ambient_audio():
-	map_ambient = AudioStreamPlayer.new()
-	map_ambient.volume_db = -12.0
-	#grand_map_ambient.stream = preload("MUSIC.ogg")
-	add_child(map_ambient)
+	ui_sound = AudioStreamPlayer.new()
+	ui_sound.volume_db = -8.0
+	add_child(ui_sound)
+	
+	unit_sound = AudioStreamPlayer.new()
+	add_child(unit_sound)
 	
 ########################################## position manager ############################################
 var tile_position_manager :TilePositionManager
@@ -306,6 +319,9 @@ func _move_squad_to(tile :TileMapData):
 		tiles += TileMapUtils.get_astar_adjacent_tile(
 			nav.get_astar(s.nav_layer), nav.get_navigation_id(s.nav_layer, tile.id), 2
 		)
+		
+	unit_sound.stream = movement.pick_random()
+	unit_sound.play()
 	
 	var idx = 0
 	for squad in dup:
@@ -314,7 +330,7 @@ func _move_squad_to(tile :TileMapData):
 		squad.click() # to unselect
 		tap.tap(tile_map.get_tile(tile_id).pos)
 		idx += 1
-	
+		
 func _on_squad_taking_damage(squad, amount):
 	pass
 	
@@ -331,11 +347,26 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			selected_squads.erase(clicked_squad)
 		else:
 			selected_squads.append(clicked_squad)
-	
+			
+			if not unit_sound.playing:
+				unit_sound.stream = selection.pick_random()
+				unit_sound.play()
+			
 	# if squad is enemy squad
 	if clicked_squad.team != current_player.team:
+		if selected_squads.empty():
+			return
+			
+		if not ui_sound.playing:
+			ui_sound.stream = attack_sfx
+			ui_sound.play()
+			
+		unit_sound.stream = attack.pick_random()
+		unit_sound.play()
+		
 		var dup = selected_squads.duplicate() # must use dup pointer
 		for s in dup:
+			tap.tap(tile_map.get_tile(clicked_squad.current_tile).pos, 1)
 			s.chase_enemy = clicked_squad
 			s.chase_target()
 			s.click() # to unselect
@@ -352,8 +383,12 @@ func _on_unit_dead(squad :BaseSquad):
 	squads.erase(squad)
 	
 	if squad.player_id == current_player.player_id:
+		if selected_squads.has(squad):
+			selected_squads.erase(squad)
+			
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
+		
 		ui.sort_squad_holder()
 		
 	yield(get_tree().create_timer(1),"timeout")

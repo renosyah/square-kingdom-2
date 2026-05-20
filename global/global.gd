@@ -8,6 +8,7 @@ func _ready():
 	load_player_data()
 	setup_tick()
 	load_custom_squad()
+	setup_music()
 	
 ##########################################  tick  ############################################
 
@@ -175,6 +176,19 @@ func save_ss(map_name:String, vp :Viewport) -> String:
 	
 	return img_path
 	
+##########################################  music  ############################################
+const main_music = "res://music/medieval_theme.ogg"
+var music :AudioStreamPlayer
+
+func setup_music():
+	music = AudioStreamPlayer.new()
+	music.volume_db = -8.0
+	
+	if ResourceLoader.exists(main_music):
+		music.stream = preload(main_music)
+		
+	music.autoplay = true
+	add_child(music)
 	
 ##########################################  transisiion  ############################################
 var transition :CanvasLayer
@@ -198,20 +212,22 @@ const template_squads = [
 	preload("res://data/squad_data/spearman.tres"),
 	preload("res://data/squad_data/swordman.tres"),
 	preload("res://data/squad_data/axeman.tres"),
-	preload("res://data/squad_data/byzantine_guard.tres"),
+	preload("res://data/squad_data/knight.tres"),
+	preload("res://data/squad_data/elite_guard.tres"),
 	preload("res://data/squad_data/huscarls.tres"),
+	preload("res://data/squad_data/longbowman.tres"),
 ]
 onready var custom_squads :Array = []
 
 func set_default_custom_squad():
 	for i in 4:
-		custom_squads.append(template_squads[i].duplicate())
+		custom_squads.append(template_squads.pick_random().duplicate())
 
 func load_custom_squad():
 	var data = SaveLoad.load_save(custom_squads_filepath, true)
 	if data == null:
 		set_default_custom_squad()
-		save_custom_squad()
+		#save_custom_squad()
 		return
 		
 	custom_squads = []

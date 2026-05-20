@@ -17,3 +17,4 @@ func release():
 	
 	mesh_instance.visible = true
 	mesh_instance_2.visible = false
+	

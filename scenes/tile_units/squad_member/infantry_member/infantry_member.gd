@@ -156,7 +156,8 @@ func _on_melee_attack_performed():
 	tween.start()
 	yield(tween,"tween_completed")
 	
-	emit_signal("attack_performed", self, enemy, target_idx, _melee_weapon.attack_damage)
+	if is_instance_valid(enemy):
+		emit_signal("on_set_damage_to_target", self, enemy, target_idx, _melee_weapon.attack_damage)
 	
 	iddle = true
 	enemy = null
@@ -190,16 +191,15 @@ func _on_release_bow():
 	if not is_instance_valid(enemy):
 		return
 		
-	var _enemy_pos :Vector3 = enemy.global_position
-	_range_weapon.shot_projectile(_enemy_pos)
+	_range_weapon.shot_projectile(enemy.global_position)
+	yield(_range_weapon,"on_hit")
 	
-	var pos = yield(_range_weapon,"on_hit")
+	if not is_instance_valid(enemy):
+		return
 	
-	if pos.distance_to(_enemy_pos) < 0.6:
-		emit_signal("attack_performed", self, enemy, target_idx, _range_weapon.attack_damage)
-		
+	emit_signal("on_set_damage_to_tile", self, enemy.squad.current_tile, _range_weapon.attack_damage)
+	
 func _on_range_attack_performed():
-	
 	iddle = true
 	enemy = null
 	enemy_assign = false

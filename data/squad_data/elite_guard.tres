@@ -1,0 +1,34 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Elite Guard"
+description = "Hybrid heavy spear and range unit"
+scene_idx = 0
+node_name = ""
+current_tile = Vector2( 0, 0 )
+pos = Vector3( 0, 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+speed = 1.2
+spotting_range = 4
+squad_type = 2
+member_scene_idx = 0
+can_attack = true
+turning_speed = 8.0
+attack_speed = 0.9
+formation_density = 0.35
+icon_idx = 1
+potrait_idx = 4
+member_headgear_idx = 7
+member_armor_idx = 9
+member_shield_idx = 0
+member_melee_weapon_idx = 3
+member_range_weapon_idx = 9
+member_hp = 110
+member_max_hp = 110

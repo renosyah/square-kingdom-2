@@ -2,7 +2,8 @@ extends Spatial
 class_name SquadMember
 
 signal on_member_dead(member)
-signal attack_performed(member, target, target_idx, amount)
+signal on_set_damage_to_target(member, target, target_idx, amount)
+signal on_set_damage_to_tile(member, tile, amount)
 
 export var headgear :PackedScene
 export var armor :PackedScene
@@ -50,25 +51,10 @@ func prepare_range_weapon():
 	pass
 	
 func melee_attack():
-	iddle = false
-	
-	# walk closer to enemy
-	# perform melee animation
-	emit_signal("attack_performed", self, enemy, target_idx, 0)
-	
-	iddle = true
-	enemy = null
+	pass
 	
 func range_attack():
-	iddle = false
-	
-	# do shoting animation
-	# if projectile hit enemy
-	emit_signal("attack_performed", self, enemy, target_idx, 0)
-	
-	# back to ready animation
-	iddle = true
-	enemy = null
+	pass
 	
 func moving(delta :float):
 	if is_dead:

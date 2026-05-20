@@ -147,7 +147,8 @@ func _spawn_members():
 		member.hp = member_hp
 		member.max_hp = member_max_hp
 		
-		member.connect("attack_performed", self, "_on_member_attack_performed")
+		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
+		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
 		member.connect("on_member_dead", self, "_on_member_dead")
 		
 		add_child(member)
@@ -165,17 +166,43 @@ func _spawn_members():
 	_floating_info.total_member = _members.size()
 	overlay_ui.add_child(_floating_info)
 	
-func _on_member_attack_performed(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
+func _on_member_set_damage_to_tile(member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
 		return
 		
-	# why use target.squad?
-	# if we were use enemy (squad)
-	# the pointer of enemy will be gone/replace
-	# this signal is called on diffrent event so...
-	if is_instance_valid(target):
-		target.squad.take_damage(attack_damage, target_member_idx)
+	# 25 % chance of doing no damage
+	if randf() < 0.25:
+		return
 		
+	if not unit_position.has(tile_id):
+		return
+		
+	var unit_positions :Array = unit_position[tile_id]
+	if unit_positions.empty():
+		return
+		
+	var enemy_squad = unit_positions.pick_random()
+	if not is_instance_valid(enemy_squad):
+		return
+		
+	var members :Array = enemy_squad.get_members()
+	if members.empty():
+		return
+		
+	# set damage to random member
+	var idx :int = randi() % members.size()
+	enemy_squad.take_damage(attack_damage, idx)
+	
+func _on_member_set_damage_to_target(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
+	if not _is_master:
+		return
+		
+	# 15 % chance of doing no damage
+	if randf() < 0.15:
+		return
+		
+	target.squad.take_damage(attack_damage, target_member_idx)
+	
 func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
@@ -303,14 +330,6 @@ func get_members() -> Array:
 			
 	return alives
 	
-func get_members_total_hp() -> int:
-	var total = 0
-	var m = get_members()
-	for i in m:
-		total += i.hp
-		
-	return total
-	
 func _on_no_enemy():
 	._on_no_enemy()
 	
@@ -324,6 +343,9 @@ func take_damage(amount :int, member_idx :int):
 	if is_dead:
 		return
 		
+	if member_idx > _members.size() - 1:
+		return
+		
 	var m :SquadMember = _members[member_idx]
 	if not is_instance_valid(m):
 		return
@@ -333,6 +355,9 @@ func take_damage(amount :int, member_idx :int):
 	rpc_unreliable("_taking_damage", amount, m.hp, member_idx)
 	
 remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
+	if member_idx > _members.size() - 1:
+		return
+		
 	var m :SquadMember = _members[member_idx]
 	if is_instance_valid(m):
 		m.hp = hp_remain

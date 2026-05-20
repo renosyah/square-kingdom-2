@@ -1,16 +1,21 @@
 extends Spatial
 class_name TapIndicator
 
+const attack_tap = preload("res://assets/tap/attack_tap.tres")
+const move_tap = preload("res://assets/tap/move_tap.tres")
+
 onready var _template = $template
 
 var _holders :Dictionary = {} # {node:float}
 
-func tap(pos :Vector3):
+func tap(pos :Vector3, type_tap :int = 0):
 	var dup = _template.duplicate()
+	dup.set_surface_material(0, move_tap if (type_tap == 0) else attack_tap)
 	dup.set_as_toplevel(true)
 	dup.visible = true
 	add_child(dup)
 	dup.translation = pos
+	
 	_holders[dup] = 1.0
 	
 func _process(delta):

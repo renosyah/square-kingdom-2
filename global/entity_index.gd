@@ -30,11 +30,13 @@ const equipment = [
 	# headgear
 	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #3
 	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #4
-	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #5
+	preload("res://scenes/equipment/headgear/helm/helm_2.tscn"), #5
+	preload("res://scenes/equipment/headgear/helm/helm_3.tscn"), #6
+	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #7
 	
 	# armor
-	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #6
-	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #7
+	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #8
+	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #9
 	
 ]
 const squad_icon = [
@@ -51,6 +53,7 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/merc_2.png"), #3
 	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #4
 	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #5
-	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #6
-	preload("res://assets/user_interface/squad_potrait/knight_2.png") #7
+	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #6
+	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #7
+	preload("res://assets/user_interface/squad_potrait/knight_2.png") #8
 ]
