@@ -4,6 +4,9 @@
 
 [resource]
 script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Huscarls"
+description = "Hybrid heavy axe and range unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
@@ -16,7 +19,6 @@ speed = 1.2
 spotting_range = 2
 squad_type = 2
 member_scene_idx = 0
-has_range_weapon = true
 can_attack = true
 turning_speed = 8.0
 attack_speed = 0.75

@@ -1,6 +1,11 @@
 extends BaseData
 class_name SquadData
 
+# general info
+export var squad_id :int
+export var squad_name :String
+export var description :String
+
 # squad scene
 export var scene_idx :int
 export var node_name :String
@@ -18,7 +23,6 @@ export var spotting_range :int = 1
 # squad data
 export var squad_type :int
 export var member_scene_idx :int
-export var has_range_weapon :bool
 export var can_attack :bool = true
 export var turning_speed :float = 8
 export var attack_speed :float = 0.8
@@ -41,6 +45,9 @@ func from_dictionary(_data : Dictionary):
 	node_name = _data["a2"]
 	current_tile = _data["a3"]
 	pos = _data["a4"]
+	squad_id = _data["a5"]
+	squad_name = _data["a6"]
+	description = _data["a7"]
 	network_id = _data["b"]
 	player_id = _data["c"]
 	team = _data["d"]
@@ -49,7 +56,6 @@ func from_dictionary(_data : Dictionary):
 	spotting_range = _data["f1"]
 	squad_type = _data["f2"]
 	member_scene_idx = _data["g"]
-	has_range_weapon = _data["h"]
 	can_attack = _data["i"]
 	turning_speed = _data["j"]
 	attack_speed = _data["k"]
@@ -70,6 +76,9 @@ func to_dictionary() -> Dictionary :
 	_data["a2"] = node_name
 	_data["a3"] = current_tile
 	_data["a4"] = pos
+	_data["a5"] = squad_id
+	_data["a6"] = squad_name
+	_data["a7"] = description
 	_data["b"] = network_id
 	_data["c"] = player_id
 	_data["d"] = team
@@ -78,7 +87,6 @@ func to_dictionary() -> Dictionary :
 	_data["f1"] = spotting_range
 	_data["f2"] = squad_type
 	_data["g"] = member_scene_idx
-	_data["h"] = has_range_weapon
 	_data["i"] = can_attack
 	_data["j"] = turning_speed
 	_data["k"] = attack_speed

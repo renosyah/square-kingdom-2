@@ -7,6 +7,7 @@
 
 [node name="axe_projectile" type="Spatial"]
 script = ExtResource( 1 )
+speed = 5.0
 
 [node name="Spatial" type="Spatial" parent="."]
 

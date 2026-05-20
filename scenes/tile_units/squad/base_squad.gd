@@ -36,7 +36,6 @@ const death_sounds = [
 ]
 
 export var member_scene :PackedScene
-export var has_range_weapon :bool
 export var can_attack :bool
 export var turning_speed :float = 8
 export var attack_speed :float = 0.8
@@ -78,6 +77,9 @@ var _floating_info :FloatingSquadInfo
 var _step_audio :AudioStreamPlayer3D
 var _combat_audio :AudioStreamPlayer3D
 var _unit_audio :AudioStreamPlayer3D
+
+onready var _has_shield :bool = member_shield != null
+onready var _has_range_weapon :bool = member_range_weapon != null
 
 func _ready():
 	connect("tree_exiting", self, "_tree_exiting")
@@ -160,7 +162,7 @@ func _spawn_members():
 	_floating_info.color = color
 	_floating_info.icon = squad_icon
 	_floating_info.floating_hurt = floating_hurt
-	_floating_info.max_hp = get_members_total_hp()
+	_floating_info.total_member = _members.size()
 	overlay_ui.add_child(_floating_info)
 	
 func _on_member_attack_performed(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
@@ -335,8 +337,6 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
 	if is_instance_valid(m):
 		m.hp = hp_remain
 		
-	_floating_info.update_bar(get_members_total_hp())
-	
 	if not _unit_audio.playing:
 		_unit_audio.stream = hurt_sounds.pick_random()
 		_unit_audio.play()

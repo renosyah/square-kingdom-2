@@ -225,7 +225,6 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
-	squad.has_range_weapon = data.has_range_weapon
 	squad.can_attack = data.can_attack
 	squad.turning_speed = data.turning_speed
 	squad.attack_speed = data.attack_speed
