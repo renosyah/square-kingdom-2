@@ -7,6 +7,7 @@ func _ready():
 	setup_transition()
 	load_player_data()
 	setup_tick()
+	load_custom_squad()
 	
 ##########################################  tick  ############################################
 
@@ -188,14 +189,77 @@ func change_scene(scene :String, use :bool = false, bg_idx :int = 0):
 func hide_transition():
 	transition.hide_transition()
 	
-##########################################  lobby  ############################################
+##########################################  army editor  ############################################
+const custom_squads_filepath :String = "custom_squads.dat"
 
-# specific for game session
-var current_player :PlayerData 
-var players :Array = []
+const template_squads = [
+	preload("res://data/squad_data/peasant.tres"),
+	preload("res://data/squad_data/archer.tres"),
+	preload("res://data/squad_data/spearman.tres"),
+	preload("res://data/squad_data/swordman.tres"),
+	preload("res://data/squad_data/axeman.tres"),
+	preload("res://data/squad_data/byzantine_guard.tres"),
+	preload("res://data/squad_data/huscarls.tres"),
+]
+onready var custom_squads :Array = []
 
+func set_default_custom_squad():
+	for i in 4:
+		custom_squads.append(template_squads[i].duplicate())
 
+func load_custom_squad():
+	var data = SaveLoad.load_save(custom_squads_filepath, true)
+	if data == null:
+		set_default_custom_squad()
+		save_custom_squad()
+		return
+		
+	custom_squads = []
+	for i in data["custom_squads"]:
+		var s :SquadData = SquadData.new()
+		s.from_dictionary(i)
+		custom_squads.append(s)
+	
+func save_custom_squad():
+	var datas = []
+	for i in custom_squads:
+		var s :SquadData = i
+		datas.append(s.to_dictionary())
+		
+	var data :Dictionary = {"custom_squads":datas}
+	SaveLoad.save(custom_squads_filepath, data, true)
+	
+##########################################  lobby & gameplay  ############################################
+var current_player :PlayerData # specific for game session
+var players :Array = [] # list of players in MP
 
+# value of index of custom_squads
+# so if anything in custom_squads update
+# current_army will also updated too
+var current_army :Array = []
+
+func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
+	var datas = []
+	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), spawn_pos, 1
+	)
+	for idx in current_army.size():
+		var tile_id = tiles[idx]
+		datas.append(prepare_squad(current_army[idx], map.get_tile(tile_id)))
+		
+	return datas
+	
+# idx is from current_army
+func prepare_squad(idx :int, tile :TileMapData) -> SquadData:
+	var data :SquadData = custom_squads[idx].duplicate()
+	data.network_id = current_player.player_network_id
+	data.player_id = current_player.player_id
+	data.node_name = Utils.create_unique_id()
+	data.current_tile = tile.id
+	data.pos = tile.pos
+	data.color_idx = current_player.color_idx
+	data.team = current_player.team
+	return data
 
 
 

@@ -22,6 +22,7 @@ func _ready():
 	spawn_enviroment()
 	setup_clickable_floor()
 	setup_ui()
+	set_tap()
 	
 	# usualy call this after doing some shady work
 	# because we dont generate and prepare shit anymore
@@ -162,6 +163,13 @@ func _on_floor_clicked(pos :Vector3):
 	var tile = tile_map.get_closes_tile(pos)
 	_move_squad_to(tile)
 	
+########################################## Tap  ############################################
+var tap :TapIndicator
+
+func set_tap():
+	tap = preload("res://assets/tap/tap.tscn").instance()
+	add_child(tap)
+
 ########################################## UI  ############################################
 var ui :GameplayUi
 
@@ -271,6 +279,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		ui.add_squad_card(squad, data, selected_squads)
 		ui.sort_squad_holder()
 		
+	squad.nav_layer = 0
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
 	squad.update_spotting()
@@ -290,15 +299,20 @@ func _move_squad_to(tile :TileMapData):
 		return
 		
 	# formations
-	var layer_id = dup[0].nav_layer
-	var pos = [tile.id] + TileMapUtils.get_astar_adjacent_tile(
-		nav.get_astar(layer_id), nav.get_navigation_id(layer_id, tile.id), 2
-	) 
+	var s :BaseSquad = dup[0]
+	var tiles :Array = [tile.id]
+	
+	if dup.size() > 1:
+		tiles += TileMapUtils.get_astar_adjacent_tile(
+			nav.get_astar(s.nav_layer), nav.get_navigation_id(s.nav_layer, tile.id), 2
+		)
 	
 	var idx = 0
 	for squad in dup:
-		squad.move_to(pos[idx])
+		var tile_id = tiles[idx]
+		squad.move_to(tile_id)
 		squad.click() # to unselect
+		tap.tap(tile_map.get_tile(tile_id).pos)
 		idx += 1
 	
 func _on_squad_taking_damage(squad, amount):

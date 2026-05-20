@@ -902,14 +902,17 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "_on_pulling_bow"
 }, {
 "args": [  ],
 "method": "_on_release_bow"
+}, {
+"args": [  ],
+"method": "_on_range_attack_performed"
 } ]
 }
 tracks/11/type = "value"
