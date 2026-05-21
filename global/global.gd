@@ -220,8 +220,8 @@ const template_squads = [
 onready var custom_squads :Array = []
 
 func set_default_custom_squad():
-	for i in 4:
-		custom_squads.append(template_squads.pick_random().duplicate())
+	for i in template_squads:
+		custom_squads.append(i.duplicate())
 
 func load_custom_squad():
 	var data = SaveLoad.load_save(custom_squads_filepath, true)
@@ -266,6 +266,12 @@ func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
 		
 	return datas
 	
+func sort_army():
+	current_army.sort_custom(self, "_sort_by_order")
+	
+func _sort_by_order(a, b):
+	return custom_squads[a].squad_type < custom_squads[b].squad_type
+
 # idx is from current_army
 func prepare_squad(idx :int, tile :TileMapData) -> SquadData:
 	var data :SquadData = custom_squads[idx].duplicate()

@@ -2,6 +2,8 @@ extends Control
 
 const dragable_card_scene = preload("res://assets/dragable_card/dragable_card.tscn")
 
+onready var army_label = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/Label2
+
 onready var squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer/squad_holder
 onready var army_squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer/army_squad_holder_holder
 
@@ -14,6 +16,7 @@ onready var army_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxCont
 onready var squad_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/highlight
 
 onready var dragable_item = $CanvasLayer/Control/dragable_item
+onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer/squad_holder/add_button_squad
 
 onready var areas = {
 	trash_area:trash_highlight,
@@ -39,6 +42,8 @@ func _process(delta):
 		areas[key].visible = _is_point_inside_area(key, pos)
 	
 func display_current_squad():
+	squad_holder.remove_child(add_button_squad)
+	
 	for i in squad_holder.get_children():
 		squad_holder.remove_child(i)
 		i.queue_free()
@@ -46,6 +51,7 @@ func display_current_squad():
 	var idx = 0
 	for data in Global.custom_squads:
 		var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
+		data.color_idx = Global.player_data.color_idx
 		card.data = data
 		
 		var dragable = dragable_card_scene.instance()
@@ -63,6 +69,8 @@ func display_current_squad():
 		
 		idx += 1
 		
+	squad_holder.add_child(add_button_squad)
+	
 func display_current_army():
 	for i in army_squad_holder.get_children():
 		army_squad_holder.remove_child(i)
@@ -89,7 +97,9 @@ func display_current_army():
 		dragable.add_child(c)
 		
 		idx += 1
-		
+	
+	army_label.text = "  Army (%s/%s)" % [Global.current_army.size(), Global.max_army_size]
+	
 func _notification(what):
 	match what:
 		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
@@ -104,8 +114,7 @@ func _is_point_inside_area(container :MarginContainer, point: Vector2) -> bool:
 	var x: bool = point.x >= container.rect_global_position.x and point.x <= container.rect_global_position.x + (container.rect_size.x * container.get_global_transform_with_canvas().get_scale().x)
 	var y: bool = point.y >= container.rect_global_position.y and point.y <= container.rect_global_position.y + (container.rect_size.y * container.get_global_transform_with_canvas().get_scale().y)
 	return x and y
-
-
+	
 func _on_card_on_grab(card, pos, container):
 	dragable_item.visible = true
 	dragable_item.rect_position = pos
@@ -127,12 +136,26 @@ func _on_card_on_release(card, pos, idx, type_drag):
 		if Global.current_army.size() < Global.max_army_size:
 			Global.current_army.append(idx)
 			
+	# asume drag from squad to trash
+	# and ajust the army too
+	if type_drag == 1 and areas[trash_area].visible:
+		Global.custom_squads.remove(idx)
+		display_current_squad()
+		
+		var dups = Global.current_army.duplicate()
+		Global.current_army.clear()
+		
+		for new_idx in dups:
+			if new_idx != idx:
+				Global.current_army.append(new_idx)
+			
 	# asume drag from army container to trash or back to squad
 	# which honestly work the same as removing it
 	if type_drag == 2 and (areas[trash_area].visible or areas[squad_container].visible):
 		if Global.current_army.size() > 0:
 			Global.current_army.remove(idx)
 			
+	Global.sort_army()
 	display_current_army()
 	
 	for key in areas.keys():

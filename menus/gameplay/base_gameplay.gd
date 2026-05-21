@@ -303,7 +303,6 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
-		ui.sort_squad_holder()
 		
 	squad.nav_layer = 0
 	squad.nav = nav
@@ -404,9 +403,7 @@ func _on_unit_dead(squad :BaseSquad):
 			
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
-		
-		ui.sort_squad_holder()
-		
+	
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()
 
