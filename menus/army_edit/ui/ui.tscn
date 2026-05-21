@@ -1,0 +1,422 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=1]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=2]
+[ext_resource path="res://menus/army_edit/ui/ui.gd" type="Script" id=4]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=5]
+[ext_resource path="res://assets/user_interface/icons/delete.png" type="Texture" id=6]
+
+[node name="ui" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="bg" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/bg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Control" type="MarginContainer" parent="CanvasLayer/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control"]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer"]
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+
+[node name="back" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_right = 120.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
+size_flags_horizontal = 8
+icon = ExtResource( 1 )
+icon_align = 1
+expand_icon = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 124.0
+margin_right = 148.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 152.0
+margin_right = 586.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
+margin_top = 12.0
+margin_right = 434.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 2 )
+text = "Army Editor"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 590.0
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+size_flags_horizontal = 3
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
+margin_top = 64.0
+margin_right = 1024.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
+margin_top = 76.0
+margin_right = 1024.0
+margin_bottom = 484.0
+size_flags_vertical = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="squad_container" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 332.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 320, 0 )
+mouse_filter = 2
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
+margin_right = 320.0
+margin_bottom = 408.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+
+[node name="highlight" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
+visible = false
+margin_right = 320.0
+margin_bottom = 408.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
+margin_right = 320.0
+margin_bottom = 408.0
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
+margin_right = 320.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 2 )
+text = "  Units"
+valign = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
+margin_top = 50.0
+margin_right = 320.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
+margin_top = 66.0
+margin_right = 320.0
+margin_bottom = 392.0
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 326.0
+rect_min_size = Vector2( 8, 0 )
+mouse_filter = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 12.0
+margin_bottom = 326.0
+mouse_filter = 2
+scroll_horizontal_enabled = false
+
+[node name="squad_holder" type="GridContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer"]
+margin_bottom = 326.0
+mouse_filter = 2
+size_flags_vertical = 3
+columns = 4
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
+margin_top = 396.0
+margin_right = 320.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="MarginContainer5" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
+margin_left = 336.0
+margin_right = 338.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 2, 0 )
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
+margin_left = 342.0
+margin_right = 1012.0
+margin_bottom = 408.0
+mouse_filter = 2
+size_flags_horizontal = 3
+
+[node name="army_container" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 670.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 200 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
+margin_right = 670.0
+margin_bottom = 200.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+
+[node name="highlight" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
+visible = false
+margin_right = 670.0
+margin_bottom = 200.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
+margin_right = 670.0
+margin_bottom = 200.0
+mouse_filter = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
+margin_right = 670.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 2 )
+text = "  Army"
+valign = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
+margin_top = 50.0
+margin_right = 670.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
+margin_top = 66.0
+margin_right = 670.0
+margin_bottom = 66.0
+mouse_filter = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
+
+[node name="army_squad_holder_holder" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer"]
+margin_left = 16.0
+margin_right = 16.0
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
+margin_top = 70.0
+margin_right = 670.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 0, 24 )
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 204.0
+margin_right = 670.0
+margin_bottom = 408.0
+size_flags_vertical = 3
+
+[node name="info" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 466.0
+margin_bottom = 204.0
+size_flags_horizontal = 3
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info"]
+margin_right = 466.0
+margin_bottom = 204.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info"]
+margin_right = 466.0
+margin_bottom = 204.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info/VBoxContainer"]
+margin_right = 466.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 2 )
+text = "  Info"
+valign = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info/VBoxContainer"]
+margin_top = 50.0
+margin_right = 466.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 12 )
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info/VBoxContainer"]
+margin_top = 66.0
+margin_right = 466.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 0, 24 )
+
+[node name="trash_area" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 470.0
+margin_right = 670.0
+margin_bottom = 204.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area"]
+margin_right = 200.0
+margin_bottom = 204.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+
+[node name="highlight" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area"]
+visible = false
+margin_right = 200.0
+margin_bottom = 204.0
+size_flags_horizontal = 3
+color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area"]
+margin_right = 200.0
+margin_bottom = 204.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area/VBoxContainer"]
+margin_right = 200.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 2 )
+text = "  Trash"
+valign = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area/VBoxContainer"]
+margin_top = 50.0
+margin_right = 200.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 12 )
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area/VBoxContainer"]
+margin_left = 55.0
+margin_top = 66.0
+margin_right = 145.0
+margin_bottom = 156.0
+rect_min_size = Vector2( 90, 90 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 6 )
+expand = true
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/trash_area/VBoxContainer"]
+margin_top = 160.0
+margin_right = 200.0
+margin_bottom = 181.0
+custom_fonts/font = ExtResource( 5 )
+text = "Drop to delete"
+align = 1
+valign = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
+margin_left = 1016.0
+margin_right = 1024.0
+margin_bottom = 408.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
+margin_top = 488.0
+margin_right = 1024.0
+margin_bottom = 496.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
+margin_top = 500.0
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4"]
+margin_right = 1024.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4"]
+margin_right = 1024.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 60, 60 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_right = 24.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="MarginContainer6" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_left = 28.0
+margin_right = 996.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 240, 0 )
+size_flags_horizontal = 3
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_left = 1000.0
+margin_right = 1024.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="dragable_item" type="MarginContainer" parent="CanvasLayer/Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -40.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 80, 80 )
+rect_pivot_offset = Vector2( 40, 40 )
+mouse_filter = 2
+
+[connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]

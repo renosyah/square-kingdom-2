@@ -38,6 +38,7 @@ export var member_melee_weapon_idx :int
 export var member_range_weapon_idx :int
 export var member_hp :int = 100
 export var member_max_hp :int = 100
+export var total_member :int = 9
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -69,6 +70,7 @@ func from_dictionary(_data : Dictionary):
 	member_range_weapon_idx = _data["q"]
 	member_hp = _data["r"]
 	member_max_hp = _data["s"]
+	total_member = _data["t"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -100,6 +102,7 @@ func to_dictionary() -> Dictionary :
 	_data["q"] = member_range_weapon_idx
 	_data["r"] = member_hp
 	_data["s"] = member_max_hp
+	_data["t"] = total_member
 	return _data
 	
 

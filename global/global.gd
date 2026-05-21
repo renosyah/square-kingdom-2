@@ -253,6 +253,7 @@ var players :Array = [] # list of players in MP
 # so if anything in custom_squads update
 # current_army will also updated too
 var current_army :Array = []
+var max_army_size :int = 9
 
 func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
 	var datas = []

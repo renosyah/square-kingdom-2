@@ -32,3 +32,4 @@ member_melee_weapon_idx = 4
 member_range_weapon_idx = 0
 member_hp = 80
 member_max_hp = 80
+total_member = 9

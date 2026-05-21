@@ -61,11 +61,6 @@ func _on_list_map_selected_map(manif :TileMapFileManifest):
 		player_data.potrait_idx = randi() % Global.player_potraits.size()
 		Global.current_player = player_data
 		
-		# army test
-		Global.current_army = []
-		for i in 9:
-			Global.current_army.append(randi() % Global.custom_squads.size())
-		
 		var config :NetworkServer = NetworkServer.new()
 		NetworkLobbyManager.configuration = config
 		NetworkLobbyManager.player_name = player_data.player_name
@@ -115,3 +110,6 @@ func _on_text_input_popup_on_continue():
 func _on_list_map_new_map(nm):
 	Global.current_tile_map_manifest_data.map_name = nm
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+
+func _on_unit_editor_pressed():
+	Global.change_scene("res://menus/army_edit/army_edit.tscn", true)

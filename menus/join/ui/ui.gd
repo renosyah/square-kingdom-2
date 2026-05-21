@@ -87,11 +87,6 @@ func _join(info):
 	player_data.potrait_idx = randi() % Global.player_potraits.size()
 	Global.current_player = player_data
 	
-	# army test
-	Global.current_army = []
-	for i in 9:
-		Global.current_army.append(randi() % Global.custom_squads.size())
-			
 	var configuration = NetworkClient.new()
 	configuration.ip = info["ip"]
 	

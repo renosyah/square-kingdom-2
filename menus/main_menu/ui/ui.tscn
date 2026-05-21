@@ -219,7 +219,6 @@ margin_bottom = 105.0
 rect_min_size = Vector2( 180, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-disabled = true
 text = "Army"
 icon = ExtResource( 13 )
 expand_icon = true
@@ -272,6 +271,7 @@ expand_icon = true
 [connection signal="selected_map" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_selected_map"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/unit_editor" to="." method="_on_unit_editor_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/play_battle" to="." method="_on_play_battle_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/setting" to="." method="_on_setting_pressed"]
