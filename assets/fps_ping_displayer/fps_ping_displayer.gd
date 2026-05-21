@@ -1,7 +1,7 @@
 extends MarginContainer
 
-onready var _fps = $VBoxContainer/HBoxContainer/fps
-onready var _ping = $VBoxContainer/HBoxContainer2/ping
+onready var _fps_label = $VBoxContainer/HBoxContainer/fps
+onready var _ping_label = $VBoxContainer/HBoxContainer2/ping
 
 export var extend :bool
 
@@ -57,18 +57,18 @@ func _process(_delta):
 			Performance.OBJECT_ORPHAN_NODE_COUNT
 		)
 	
-		_fps.text = "FPS: " + str(fps) + "\n" + \
+		_fps_label.text = "FPS: " + str(fps) + "\n" + \
 			"Draw Calls: " + str(draw_calls) + "\n" + \
 			"Objects: " + str(objects) + "\n" + \
 			"Nodes: " + str(nodes) + "\n" + \
 			"Orphans: " + str(orphan) + "\n" + \
 			"Memory: " + str(round(memory)) + " MB"
 	else:
-		_fps.text = "Fps : " +  str(Engine.get_frames_per_second())
+		_fps_label.text = "Fps : " +  str(Engine.get_frames_per_second())
 		
 	if _is_online and _enable_pinging:
 		pinging(_delta)
-		_ping.text = "Ping : " + str(_ping_value) + "/ms"
+		_ping_label.text = "Ping : " + str(_ping_value) + "/ms"
 	
 
 

@@ -345,14 +345,25 @@ func _scan_area():
 		if unit_positions.empty():
 			continue
 			
-		for unit in unit_positions:
-			if is_instance_valid(unit):
-				if not unit.is_dead and unit.team != team:
-					enemy = unit
-					_has_enemy = true
-					_on_enemy_set()
-					return
-				
+		if _check_enemy_in_position(unit_positions):
+			_has_enemy = true
+			_on_enemy_set()
+			return
+			
+func _check_enemy_in_position(datas :Array) -> bool:
+	for unit in datas:
+		if not is_instance_valid(unit):
+			continue
+			
+		if unit.is_dead or unit.nav_layer != nav_layer:
+			continue
+			
+		if unit.team != team:
+			enemy = unit
+			return true
+			
+	return false
+
 func _is_in_range(_unit) -> bool:
 	if _unit.is_dead:
 		return false

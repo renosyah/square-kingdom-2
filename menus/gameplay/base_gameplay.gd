@@ -304,6 +304,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		
+	 # default layer
 	squad.nav_layer = 0
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()

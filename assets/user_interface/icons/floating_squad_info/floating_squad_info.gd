@@ -27,9 +27,9 @@ func _ready():
 	_update_bar()
 	
 	if floating_hurt:
-		squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
 		squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 		
+	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	
 func _process(delta):

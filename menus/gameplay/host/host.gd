@@ -13,15 +13,12 @@ func _on_all_player_ready():
 	bot_spawner_timer.start()
 	
 func bot_attack_command(squad :BaseSquad, enemies :Array):
-	if squad.player_id != "bot":
-		return
-		
 	if is_instance_valid(squad.enemy):
 		return
 		
 	squad.attack_move = true
 	squad.move_to(enemies.pick_random().current_tile)
-		
+	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
 	
@@ -45,11 +42,12 @@ func _on_bot_spawner_timer_timeout():
 	if not enemies.empty():
 		for i in bot_squads:
 			bot_attack_command(i, enemies)
-	
-	if bot_squads.size() > 2:
+			
+	# limit harashment
+	if bot_squads.size() >= Global.players.size():
 		return
 	
-	var data :SquadData = Global.template_squads[randi() % 6].duplicate()
+	var data :SquadData = Global.template_squads.pick_random().duplicate()
 	data.network_id = 1
 	data.player_id = "bot"
 	data.node_name = Utils.create_unique_id()

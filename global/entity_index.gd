@@ -45,7 +45,8 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/melee.png"), #2
 	preload("res://assets/user_interface/icons/range.png"), #3
 	preload("res://assets/user_interface/icons/axe.png"), #4
-	preload("res://assets/user_interface/icons/special.png") #5
+	preload("res://assets/user_interface/icons/special.png"), #5
+	preload("res://assets/user_interface/icons/commander.png") #6
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/peasant.png"), #0

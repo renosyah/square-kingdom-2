@@ -18,6 +18,9 @@ onready var squad_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxCon
 onready var dragable_item = $CanvasLayer/Control/dragable_item
 onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer/squad_holder/add_button_squad
 
+onready var info = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
+onready var snack_bar = $CanvasLayer/Control/snack_bar
+
 onready var areas = {
 	trash_area:trash_highlight,
 	army_container:army_highlight,
@@ -59,7 +62,7 @@ func display_current_squad():
 		c.mouse_filter = MOUSE_FILTER_IGNORE
 		c.add_child(card)
 		
-		dragable.connect("on_grab", self, "_on_card_on_grab", [c])
+		dragable.connect("on_grab", self, "_on_card_on_grab", [c, Global.custom_squads[idx]])
 		dragable.connect("on_draging", self, "_on_card_on_draging")
 		dragable.connect("on_release", self, "_on_card_on_release", [idx, 1])
 		dragable.connect("on_cancel", self, "_on_card_on_cancel")
@@ -88,7 +91,7 @@ func display_current_army():
 		c.mouse_filter = MOUSE_FILTER_IGNORE
 		c.add_child(card)
 		
-		dragable.connect("on_grab", self, "_on_card_on_grab", [c])
+		dragable.connect("on_grab", self, "_on_card_on_grab", [c, Global.custom_squads[i]])
 		dragable.connect("on_draging", self, "_on_card_on_draging")
 		dragable.connect("on_release", self, "_on_card_on_release", [idx, 2])
 		dragable.connect("on_cancel", self, "_on_card_on_cancel")
@@ -115,16 +118,20 @@ func _is_point_inside_area(container :MarginContainer, point: Vector2) -> bool:
 	var y: bool = point.y >= container.rect_global_position.y and point.y <= container.rect_global_position.y + (container.rect_size.y * container.get_global_transform_with_canvas().get_scale().y)
 	return x and y
 	
-func _on_card_on_grab(card, pos, container):
+func _on_card_on_grab(card, pos, container, data):
+	card.modulate.a = 0.2
 	dragable_item.visible = true
 	dragable_item.rect_position = pos
 	dragable_item.add_child(container.duplicate(true))
 	set_process(true)
 	
+	info.display_info(data)
+	
 func _on_card_on_draging(card, pos):
 	dragable_item.rect_position = pos
 	
 func _on_card_on_release(card, pos, idx, type_drag):
+	card.modulate.a = 1
 	dragable_item.visible = false
 	var _child = dragable_item.get_child(0)
 	dragable_item.remove_child(_child)
@@ -162,6 +169,7 @@ func _on_card_on_release(card, pos, idx, type_drag):
 		areas[key].visible = false
 	
 func _on_card_on_cancel(card):
+	card.modulate.a = 1
 	dragable_item.visible = false
 	var _child = dragable_item.get_child(0)
 	dragable_item.remove_child(_child)
@@ -171,8 +179,20 @@ func _on_card_on_cancel(card):
 	for key in areas.keys():
 		areas[key].visible = false
 		
+func _on_delete_button_pressed():
+	Global.current_army.clear()
+	display_current_army()
+	
 func _on_back_pressed():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
+
+func _on_save_pressed():
+	Global.save_custom_squad()
+	snack_bar.text = "Army saved!"
+	snack_bar.show()
+
+
+
 
 
 

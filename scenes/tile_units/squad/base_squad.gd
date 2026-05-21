@@ -189,8 +189,9 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 	if members.empty():
 		return
 		
+		
 	# set damage to random member
-	var idx :int = randi() % members.size()
+	var idx :int = enemy_squad.get_member_index(members.pick_random())
 	enemy_squad.take_damage(attack_damage, idx)
 	
 func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
@@ -260,6 +261,9 @@ func moving(delta :float) -> void:
 		if m.is_dead:
 			continue
 			
+		# this is funnies shit, 
+		# now archer can fire on the move, 
+		# all fking foot archer
 		if m.iddle or m.range_mode:
 			m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
 			
@@ -270,6 +274,19 @@ func moving(delta :float) -> void:
 		_step_audio.stream = walk_sounds.pick_random()
 		_step_audio.play()
 		
+	_set_floating_info_pos(_get_avg_member_pos(pos), delta)
+	
+func _get_avg_member_pos(pos :Vector3) -> Vector3:
+	var m :Array = get_members()
+	if m.empty():
+		return pos
+	var npos = pos
+	for i in m:
+		npos += i.global_position
+		
+	return npos / (m.size() + 1)
+	
+func _set_floating_info_pos(pos :Vector3, delta :float):
 	# track floating ui
 	if not overlay_ui.visible or not _floating_info:
 		return
@@ -343,7 +360,7 @@ func take_damage(amount :int, member_idx :int):
 	if is_dead:
 		return
 		
-	if member_idx > _members.size() - 1:
+	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
 	var m :SquadMember = _members[member_idx]
@@ -355,7 +372,7 @@ func take_damage(amount :int, member_idx :int):
 	rpc_unreliable("_taking_damage", amount, m.hp, member_idx)
 	
 remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
-	if member_idx > _members.size() - 1:
+	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
 	var m :SquadMember = _members[member_idx]

@@ -29,7 +29,8 @@ func _ready():
 	minimap.tile_scenes = TileIndex.tiles2d
 	dialog_menu.visible = false
 	movement_mode.icon = icon_normal_movement_mode
-
+	squad_command_ui.visible = false
+	
 func selected_squads_updated():
 	squad_command_ui.visible = not selected_squads.empty()
 	_check_movement_mode()
@@ -117,8 +118,8 @@ func _on_stop_button_pressed():
 		return
 		
 	for i in selected_squads:
-		i.chase_enemy = null
-		i.enemy = null
+		var tile = i.current_tile
+		i.move_to(tile)
 		i.stop(false)
 	
 

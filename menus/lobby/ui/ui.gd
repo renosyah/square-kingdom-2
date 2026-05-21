@@ -76,7 +76,7 @@ func map_data_received(player_network_unique_id :int):
 	var player_loading = false
 	for i in player_holder.get_children():
 		if i.player_network_unique_id == player_network_unique_id:
-			player_map_data_received.append(i.id)
+			player_map_data_received.append(i.player_network_unique_id)
 			i.set_loading(false)
 		
 		if i.is_loading():

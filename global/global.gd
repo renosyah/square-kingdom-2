@@ -219,15 +219,20 @@ const template_squads = [
 ]
 onready var custom_squads :Array = []
 
-func set_default_custom_squad():
+func set_default_squad_army():
 	for i in template_squads:
 		custom_squads.append(i.duplicate())
-
+		
+	for i in 9:
+		current_army.append(randi() % custom_squads.size())
+		
+	sort_army()
+	
 func load_custom_squad():
 	var data = SaveLoad.load_save(custom_squads_filepath, true)
 	if data == null:
-		set_default_custom_squad()
-		#save_custom_squad()
+		set_default_squad_army()
+		save_custom_squad()
 		return
 		
 	custom_squads = []
@@ -235,6 +240,8 @@ func load_custom_squad():
 		var s :SquadData = SquadData.new()
 		s.from_dictionary(i)
 		custom_squads.append(s)
+		
+	current_army = data["armies"]
 	
 func save_custom_squad():
 	var datas = []
@@ -242,7 +249,7 @@ func save_custom_squad():
 		var s :SquadData = i
 		datas.append(s.to_dictionary())
 		
-	var data :Dictionary = {"custom_squads":datas}
+	var data :Dictionary = {"custom_squads":datas,"armies":current_army}
 	SaveLoad.save(custom_squads_filepath, data, true)
 	
 ##########################################  lobby & gameplay  ############################################
@@ -262,7 +269,7 @@ func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
 	)
 	for idx in current_army.size():
 		var tile_id = tiles[idx]
-		datas.append(prepare_squad(current_army[idx], map.get_tile(tile_id)))
+		datas.append(prepare_squad(idx, current_army[idx], map.get_tile(tile_id)))
 		
 	return datas
 	
@@ -273,7 +280,7 @@ func _sort_by_order(a, b):
 	return custom_squads[a].squad_type < custom_squads[b].squad_type
 
 # idx is from current_army
-func prepare_squad(idx :int, tile :TileMapData) -> SquadData:
+func prepare_squad(i :int,idx :int, tile :TileMapData) -> SquadData:
 	var data :SquadData = custom_squads[idx].duplicate()
 	data.network_id = current_player.player_network_id
 	data.player_id = current_player.player_id
@@ -282,6 +289,11 @@ func prepare_squad(idx :int, tile :TileMapData) -> SquadData:
 	data.pos = tile.pos
 	data.color_idx = current_player.color_idx
 	data.team = current_player.team
+	
+	# 1st position is commander
+	if i == 0:
+		data.icon_idx = 6
+		
 	return data
 
 
