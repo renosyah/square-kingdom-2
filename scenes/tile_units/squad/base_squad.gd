@@ -166,7 +166,7 @@ func _spawn_members():
 	_floating_info.total_member = _members.size()
 	overlay_ui.add_child(_floating_info)
 	
-func _on_member_set_damage_to_tile(member :SquadMember, tile_id :Vector2, attack_damage :int):
+func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
 		return
 		
@@ -193,7 +193,7 @@ func _on_member_set_damage_to_tile(member :SquadMember, tile_id :Vector2, attack
 	var idx :int = randi() % members.size()
 	enemy_squad.take_damage(attack_damage, idx)
 	
-func _on_member_set_damage_to_target(member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
+func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
 	if not _is_master:
 		return
 		

@@ -191,9 +191,14 @@ func setup_ui():
 	ui.name = "ui"
 	ui.connect("reset_camera", self, "_on_ui_reset_camera")
 	ui.connect("exit", self, "on_back_pressed")
+	
+	ui.player_squads = player_squads
+	ui.selected_squads = selected_squads
+	
 	add_child(ui)
 	
 	ui.minimap.load_data_map(current_tile_map_file_data)
+	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
 	
 	var map_size :int = current_tile_map_manifest_data.map_size
 	ui.movable_camera_ui.target = movable_camera
@@ -209,6 +214,14 @@ func setup_ui():
 func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45
 	
+func _on_ui_route_button_pressed():
+	if selected_squads.empty():
+		return
+		
+	for i in selected_squads:
+		i.attack_move = false
+		
+	_move_squad_to(tile_map.get_tile(player_spawn_point))
 
 ########################################## squad  ############################################
 
@@ -270,10 +283,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 
 	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
-	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
+	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
-	squad.connect("on_finish_travel", self, "_on_finish_travel")
+	#squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_unit_dead", self, "_on_unit_dead")
 	
 	squad.set_hidden(false)
@@ -289,7 +302,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	
 	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
-		ui.add_squad_card(squad, data, selected_squads)
+		ui.add_squad_card(squad, data)
 		ui.sort_squad_holder()
 		
 	squad.nav_layer = 0
@@ -328,7 +341,7 @@ func _move_squad_to(tile :TileMapData):
 		var tile_id = tiles[idx]
 		squad.move_to(tile_id)
 		squad.click() # to unselect
-		tap.tap(tile_map.get_tile(tile_id).pos)
+		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
 		idx += 1
 		
 func _on_squad_taking_damage(squad, amount):
@@ -351,7 +364,10 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			if not unit_sound.playing:
 				unit_sound.stream = selection.pick_random()
 				unit_sound.play()
-			
+				
+		ui.selected_squads_updated()
+		return
+		
 	# if squad is enemy squad
 	if clicked_squad.team != current_player.team:
 		if selected_squads.empty():

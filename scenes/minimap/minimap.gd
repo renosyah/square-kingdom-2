@@ -24,7 +24,7 @@ func _ready():
 	_viewport.size = rect_size
 	_nine_patch_rect_2.visible = cam_pos
 	
-func _process(delta):
+func _process(_delta):
 	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, 5)
 	_map.rotation = rotation_rad
 	

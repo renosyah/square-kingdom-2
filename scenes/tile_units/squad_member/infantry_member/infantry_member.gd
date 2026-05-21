@@ -47,6 +47,32 @@ onready var uniforms = [
 var _last_pos :Vector3
 
 func _ready():
+	apply_equipment()
+	
+	if range_weapon:
+		prepare_range_weapon()
+		
+	else:
+		prepare_melee_weapon()
+	
+	for i in uniforms:
+		var m :MeshInstance = i
+		m.set_surface_material(0, material)
+	
+func apply_equipment():
+	# remove currently equiped
+	var current = [_headgear, _melee_weapon, _shield, _armor, _range_weapon]
+	for i in current:
+		if is_instance_valid(i):
+			i.queue_free()
+			
+	# remove currently stored
+	var current_storeds = [melee_storage_holder, shield_storage_holder, range_storage_holder]
+	for current_stored in current_storeds:
+		for i in current_stored.get_children():
+			current_stored.remove_child(i)
+			i.queue_free()
+			
 	if headgear:
 		var w = headgear.instance()
 		headgear_holder.add_child(w)
@@ -60,7 +86,10 @@ func _ready():
 	if melee_weapon:
 		var w = melee_weapon.instance()
 		weapon_holder.add_child(w)
-		melee_storage_holder.add_child(w.duplicate())
+		
+		if w.show_on_stored:
+			melee_storage_holder.add_child(w.duplicate())
+			
 		_melee_weapon = w
 		
 	if shield:
@@ -77,16 +106,6 @@ func _ready():
 			range_storage_holder.add_child(w.duplicate())
 			
 		_range_weapon = w
-		
-	if range_weapon:
-		prepare_range_weapon()
-		
-	else:
-		prepare_melee_weapon()
-	
-	for i in uniforms:
-		var m :MeshInstance = i
-		m.set_surface_material(0, material)
 	
 func prepare_melee_weapon():
 	.prepare_melee_weapon()

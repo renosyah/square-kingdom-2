@@ -28,13 +28,13 @@ func _ready():
 func _process(delta):
 	_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 	
-func _on_squad_taking_damage(squad, amount):
+func _on_squad_taking_damage(_squad, _amount):
 	_hurt.color.a = 1
 	
-func _on_unit_clicked(unit):
+func _on_unit_clicked(_unit):
 	_overlay.visible = squad in selected_squads
 
-func _on_squad_member_dead(squad, member):
+func _on_squad_member_dead(_squad, _member):
 	_label.text = "%s" % squad.member_alive
 
 func _on_Button_pressed():

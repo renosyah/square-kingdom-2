@@ -2,6 +2,7 @@ extends Equipment
 class_name MeleeWeapon
 
 export var attack_damage :int
+export var show_on_stored :bool = true
 
 export var walk_animation :String = "walk"
 export var ready_animation :String = "weapon_ready"
