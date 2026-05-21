@@ -167,7 +167,10 @@ func _on_card_on_cancel(card):
 	dragable_item.remove_child(_child)
 	_child.queue_free()
 	set_process(false)
-
+	
+	for key in areas.keys():
+		areas[key].visible = false
+		
 func _on_back_pressed():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 
