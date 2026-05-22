@@ -33,7 +33,8 @@ func _ready():
 	_update_bar()
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
-	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
+	squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
+	squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	
 func _process(delta):
@@ -41,7 +42,7 @@ func _process(delta):
 		_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 		_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)
 	
-func _on_squad_member_dead(_squad, _member):
+func _on_squad_member_updated(_squad, _member):
 	_update_bar()
 	_update_bar_colors()
 	

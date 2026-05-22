@@ -89,23 +89,22 @@ margin_bottom = 332.0
 mouse_filter = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
+[node name="log_event" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
+visible = false
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_top = -100.0
-margin_right = 240.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 240, 200 )
+margin_top = -125.0
+margin_right = 400.0
+margin_bottom = 125.0
+rect_min_size = Vector2( 400, 250 )
 mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": true
-}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/MarginContainer"]
-margin_right = 240.0
-margin_bottom = 200.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/log_event"]
+margin_right = 400.0
+margin_bottom = 250.0
 mouse_filter = 2
 size_flags_vertical = 3
+custom_constants/separation = 8
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
 margin_top = 336.0

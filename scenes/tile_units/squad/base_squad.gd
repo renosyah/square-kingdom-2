@@ -1,6 +1,7 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+signal on_squad_member_resurect(squad, member)
 signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
@@ -53,6 +54,7 @@ export var member_material :SpatialMaterial
 export var member_hp :int = 100
 export var member_max_hp :int = 100
 export var heal_amount :int = 10
+export var reinfoce_tiles :Array = []
 
 var member_alive :int
 
@@ -107,7 +109,7 @@ func _ready():
 	_heal_timer.one_shot = true
 	_heal_timer.autostart = false
 	_heal_timer.wait_time = 5
-	_heal_timer.connect("timeout", self, "_healing")
+	_heal_timer.connect("timeout", self, "_on_heal_timer")
 	add_child(_heal_timer)
 	
 	_heal_timer.start()
@@ -130,7 +132,6 @@ func _ready():
 	_path_indicator.set_as_toplevel(true)
 	
 	_init_formations()
-	member_alive = _formation_offsets.size()
 	
 	# add little bit of delay
 	yield(get_tree().create_timer(0.5),"timeout")
@@ -145,7 +146,7 @@ func _spawn_members():
 	var pos :Vector3 = global_position
 	var basis :Basis = global_transform.basis
 	
-	for idx in _formation_offsets.size():
+	for idx in member_alive:
 		var offset :Vector3 = _formation_offsets[idx] * formation_density
 		_formation_positions[idx] = (pos + basis.xform(offset))
 		
@@ -353,8 +354,8 @@ func get_members() -> Array:
 			
 	return alives
 	
-func _healing():
-	if (not _is_master):
+func _on_heal_timer():
+	if not _is_master or is_dead:
 		return
 		
 	_heal_timer.wait_time = rand_range(4, 8)
@@ -363,23 +364,37 @@ func _healing():
 	if _heal_interupt:
 		_heal_interupt = false
 		return
-	
-	# cannot heal if
-	# - still engaging or taking damage
-	# - on the move
+		
 	if _has_enemy or _is_moving:
 		return
 		
+	_resurecting()
+	_healing()
+
+func _healing():
+	# heal first
 	for idx in _members.size():
-		if is_dead:
+		var m = _members[idx]
+		if m.is_dead:
 			continue
 			
-		if _members[idx].hp >= member_max_hp:
+		if m.hp >= member_max_hp:
 			continue
 			
 		_members[idx].hp = int(clamp(_members[idx].hp + heal_amount, 0, member_max_hp))
 		rpc_unreliable("_taking_heal", _members[idx].hp, idx) # 0: healing
 		return
+		
+func _resurecting():
+	if not (current_tile in reinfoce_tiles):
+		return
+		
+	# resurect the dead
+	for idx in _members.size():
+		var m = _members[idx]
+		if m.is_dead:
+			rpc("_resurect", idx)
+			return
 
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
@@ -401,6 +416,19 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 		m.take_damage(amount)
 	
 	rpc_unreliable("_taking_damage", amount, m.hp, member_idx, from)
+	
+remotesync func _resurect(member_idx :int):
+	if member_idx > _members.size() - 1 or member_idx == -1:
+		return
+		
+	var m :SquadMember = _members[member_idx]
+	if not is_instance_valid(m):
+		return
+		
+	m.resurect()
+	member_alive += 1
+	
+	emit_signal("on_squad_member_resurect", self, m)
 	
 remotesync func _taking_heal(hp_remain :int, member_idx :int):
 	if member_idx > _members.size() - 1 or member_idx == -1:

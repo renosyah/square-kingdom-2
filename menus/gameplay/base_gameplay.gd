@@ -278,6 +278,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_hp = data.member_hp
 	squad.member_max_hp = data.member_max_hp
 	squad.heal_amount = data.heal_amount
+	squad.member_alive = data.total_member
 	
 	squad.overlay_ui = ui.overlay_ui
 	squad.camera = movable_camera.camera
@@ -287,6 +288,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 
 	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
+	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
 	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
@@ -305,6 +307,9 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	tile_position_manager.add_to_position(squad)
 	
 	if squad.player_id == current_player.player_id:
+		# use current spawn tile as reinfoce tile
+		squad.reinfoce_tiles = [player_spawn_point]
+			
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		
@@ -354,6 +359,9 @@ func _on_squad_taking_damage(squad, amount):
 func _on_squad_member_dead(squad :BaseSquad, member):
 	var attacked_by =  get_node(squad.attacked_by)
 	ui.add_log("%s's (%s) member %s killed by %s (%s)" % [squad.unit_name, squad.player_id, member.name, attacked_by.unit_name, attacked_by.player_id])
+	
+func _on_squad_member_resurect(squad :BaseSquad, member):
+	ui.add_log("%s's (%s) member %s resurected" % [squad.unit_name, squad.player_id, member.name])
 	
 func _on_unit_spotted(squad):
 	pass

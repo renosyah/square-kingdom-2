@@ -57,6 +57,17 @@ func _ready():
 	for i in uniforms:
 		var m :MeshInstance = i
 		m.set_surface_material(0, material)
+		
+func resurect():
+	.resurect()
+	
+	translation = squad.global_position
+	hp = max_hp
+	is_dead = false
+	leg_animation_state.start("iddle")
+	body_animation_state.start("iddle")
+	set_process(true)
+	
 	
 func apply_equipment():
 	# remove currently equiped

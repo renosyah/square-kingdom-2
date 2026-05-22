@@ -78,10 +78,11 @@ func remove_squad_card(squad :BaseSquad):
 			
 func add_log(v :String):
 	var l = Label.new()
+	l.autowrap = true
 	l.text = v
-	var list = $CanvasLayer/Control/VBoxContainer/Control/MarginContainer/VBoxContainer
+	var list = $CanvasLayer/Control/VBoxContainer/Control/log_event/VBoxContainer
 	list.add_child(l)
-	if list.get_child_count() > 12:
+	if list.get_child_count() > 6:
 		var c = list.get_children().front()
 		list.remove_child(c)
 		c.queue_free()

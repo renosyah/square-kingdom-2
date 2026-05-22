@@ -28,7 +28,8 @@ func _ready():
 	
 	if squad:
 		squad.connect("on_unit_clicked", self, "_on_unit_clicked")
-		squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
+		squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
+		squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")
 		squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 		squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
 		
@@ -45,7 +46,7 @@ func _on_squad_taking_damage(_squad, amount):
 func _on_unit_clicked(_unit):
 	_overlay.visible = squad in selected_squads
 
-func _on_squad_member_dead(_squad, _member):
+func _on_squad_member_updated(_squad, _member):
 	_label.text = "%s" % squad.member_alive
 
 func _on_Button_pressed():

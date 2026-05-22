@@ -74,6 +74,11 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		m.target_idx = target_idx
 		m.enemy = enemy_member
 		m.melee_attack()
+		
+		# force stop enemy if on same tile as your squad
+		if enemy.current_tile == current_tile and enemy.is_moving():
+			enemy.stop()
+		
 		return
 		
 	if _has_range_weapon:
