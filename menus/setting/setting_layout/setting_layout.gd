@@ -2,6 +2,10 @@ extends Control
 
 signal close
 
+export var enable_setting_audio :bool = true
+export var enable_setting_graphic :bool = true
+export var enable_setting_profile :bool = true
+
 onready var overlays = [
 	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/audio_setting/overlay_audio,
 	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/graphic_setting/overlay_graphic,
@@ -14,7 +18,15 @@ onready var right_panels = [
 	$Control/Control/VBoxContainer/HBoxContainer/right_panel_profile,
 ]
 
+onready var audio_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/audio_setting
+onready var graphic_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/graphic_setting
+onready var profile_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/profile_setting
+
 func _ready():
+	audio_setting.visible = enable_setting_audio
+	graphic_setting.visible = enable_setting_graphic
+	profile_setting.visible = enable_setting_profile
+	
 	_on_audio_setting_pressed()
 
 func _hide_all():

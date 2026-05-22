@@ -8,7 +8,7 @@ export var voice :float = 0.8
 export var mute :bool = false
 
 # graphic 
-export var shadow_type :int = 1
+export var shadow_type :int = 0
 export var enable_fog :bool = true
 export var enable_tilt_shift :bool = true
 

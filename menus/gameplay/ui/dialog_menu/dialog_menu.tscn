@@ -100,6 +100,7 @@ rect_min_size = Vector2( 0, 24 )
 
 [node name="setting_layout" parent="." instance=ExtResource( 4 )]
 visible = false
+enable_setting_profile = false
 
 [node name="confirm_popup" parent="." instance=ExtResource( 5 )]
 visible = false
