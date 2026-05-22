@@ -20,12 +20,15 @@ onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxCo
 
 onready var info = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
 onready var snack_bar = $CanvasLayer/Control/snack_bar
+onready var confirm_popup = $CanvasLayer/Control/confirm_popup
 
 onready var areas = {
 	trash_area:trash_highlight,
 	army_container:army_highlight,
 	squad_container:squad_highlight
 }
+
+onready var temp_current_army :Array = Global.current_army.duplicate()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -82,7 +85,7 @@ func display_current_army():
 	var squads = Global.custom_squads
 	
 	var idx = 0
-	for i in Global.current_army:
+	for i in temp_current_army:
 		var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
 		card.data = squads[i]
 		
@@ -101,7 +104,7 @@ func display_current_army():
 		
 		idx += 1
 	
-	army_label.text = "  Army (%s/%s)" % [Global.current_army.size(), Global.max_army_size]
+	army_label.text = "  Army (%s/%s)" % [temp_current_army.size(), Global.max_army_size]
 	
 func _notification(what):
 	match what:
@@ -140,29 +143,34 @@ func _on_card_on_release(card, pos, idx, type_drag):
 	
 	# asume drag from squad to army container
 	if type_drag == 1 and areas[army_container].visible:
-		if Global.current_army.size() < Global.max_army_size:
-			Global.current_army.append(idx)
+		if temp_current_army.size() < Global.max_army_size:
+			temp_current_army.append(idx)
 			
 	# asume drag from squad to trash
 	# and ajust the army too
 	if type_drag == 1 and areas[trash_area].visible:
-		Global.custom_squads.remove(idx)
-		display_current_squad()
+		confirm_popup.show_popup("Delete","Delete this Squad?")
+		confirm_popup.visible = true
+		var result = yield(confirm_popup,"confirmed")
+		confirm_popup.visible = false
+		if result:
+			Global.custom_squads.remove(idx)
+			display_current_squad()
 		
-		var dups = Global.current_army.duplicate()
-		Global.current_army.clear()
-		
-		for new_idx in dups:
-			if new_idx != idx:
-				Global.current_army.append(new_idx)
+			var dups = temp_current_army.duplicate()
+			temp_current_army.clear()
+			
+			for new_idx in dups:
+				if new_idx != idx:
+					temp_current_army.append(new_idx)
 			
 	# asume drag from army container to trash or back to squad
 	# which honestly work the same as removing it
 	if type_drag == 2 and (areas[trash_area].visible or areas[squad_container].visible):
-		if Global.current_army.size() > 0:
-			Global.current_army.remove(idx)
+		if temp_current_army.size() > 0:
+			temp_current_army.remove(idx)
 			
-	Global.sort_army()
+	Global.sort_army(temp_current_army)
 	display_current_army()
 	
 	for key in areas.keys():
@@ -180,13 +188,19 @@ func _on_card_on_cancel(card):
 		areas[key].visible = false
 		
 func _on_delete_button_pressed():
-	Global.current_army.clear()
-	display_current_army()
+	confirm_popup.show_popup("Clear","Clear Army?")
+	confirm_popup.visible = true
+	var result = yield(confirm_popup,"confirmed")
+	confirm_popup.visible = false
+	if result:
+		temp_current_army.clear()
+		display_current_army()
 	
 func _on_back_pressed():
-	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
+	Global.change_scene("res://menus/main_menu/main_menu.tscn", false)
 
 func _on_save_pressed():
+	Global.current_army = temp_current_army
 	Global.save_custom_squad()
 	snack_bar.text = "Army saved!"
 	snack_bar.show()

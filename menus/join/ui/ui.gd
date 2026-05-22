@@ -33,7 +33,7 @@ func _notification(what):
 			
 func _on_back_pressed():
 	stop_finding()
-	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
+	Global.change_scene("res://menus/main_menu/main_menu.tscn", false)
 	
 func start_finding():
 	show_loading(true)

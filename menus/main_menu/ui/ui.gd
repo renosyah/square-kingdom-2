@@ -112,4 +112,4 @@ func _on_list_map_new_map(nm):
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 
 func _on_unit_editor_pressed():
-	Global.change_scene("res://menus/army_edit/army_edit.tscn", true)
+	Global.change_scene("res://menus/army_edit/army_edit.tscn", false)

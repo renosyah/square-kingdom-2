@@ -226,7 +226,7 @@ func set_default_squad_army():
 	for i in 9:
 		current_army.append(randi() % custom_squads.size())
 		
-	sort_army()
+	sort_army(current_army)
 	
 func load_custom_squad():
 	var data = SaveLoad.load_save(custom_squads_filepath, true)
@@ -273,8 +273,8 @@ func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
 		
 	return datas
 	
-func sort_army():
-	current_army.sort_custom(self, "_sort_by_order")
+func sort_army(datas :Array):
+	datas.sort_custom(self, "_sort_by_order")
 	
 func _sort_by_order(a, b):
 	return custom_squads[a].squad_type < custom_squads[b].squad_type
