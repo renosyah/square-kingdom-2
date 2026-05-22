@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 squad_id = 0
 squad_name = "Swordman"
-description = "Standar sword unit to hold a line"
+description = "Standar sword line unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )

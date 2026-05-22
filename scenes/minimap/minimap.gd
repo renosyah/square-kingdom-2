@@ -18,11 +18,15 @@ onready var _viewport :Viewport = $ViewportContainer/Viewport
 onready var _map :Node2D = $ViewportContainer/Viewport/map
 onready var _nine_patch_rect_2 = $NinePatchRect2
 onready var _batch_spawner = $batch_spawner
+onready var _nine_patch_rect = $NinePatchRect
 
 func _ready():
 	set_physics_process(false)
 	_viewport.size = rect_size
 	_nine_patch_rect_2.visible = cam_pos
+	
+func set_color(v :Color):
+	_nine_patch_rect.modulate = v
 	
 func _process(_delta):
 	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, 5)

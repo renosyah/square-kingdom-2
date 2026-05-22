@@ -40,6 +40,8 @@ func _ready():
 	display_current_squad()
 	display_current_army()
 	
+	info.display_info(Global.custom_squads[0])
+	
 	Global.hide_transition()
 	
 func _process(delta):

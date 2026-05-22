@@ -34,7 +34,6 @@ var _melee_weapon :MeleeWeapon
 var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
-onready var combat_sound = $combat_sound
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -168,8 +167,8 @@ func melee_attack():
 	auto_iddle_timer.start()
 	
 func _on_melee_attack_performed():
-	combat_sound.stream = sword_sounds.pick_random()
-	combat_sound.play()
+	_combat_sound.stream = sword_sounds.pick_random()
+	_combat_sound.play()
 	
 	tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
 	tween.start()
@@ -204,8 +203,8 @@ func _on_pulling_bow():
 func _on_release_bow():
 	_range_weapon.release()
 	
-	combat_sound.stream = bow_sounds.pick_random()
-	combat_sound.play()
+	_combat_sound.stream = bow_sounds.pick_random()
+	_combat_sound.play()
 	
 	if not is_instance_valid(enemy):
 		return

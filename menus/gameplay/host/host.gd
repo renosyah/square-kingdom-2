@@ -53,7 +53,7 @@ func _on_bot_spawner_timer_timeout():
 	data.node_name = Utils.create_unique_id()
 	data.current_tile = Vector2.ZERO
 	data.pos = Vector3.ZERO
-	data.color_idx = 0
+	data.color_idx = 1
 	data.team = -1
 	spawn_squad(data)
 

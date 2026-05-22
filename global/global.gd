@@ -9,6 +9,7 @@ func _ready():
 	setup_tick()
 	load_custom_squad()
 	setup_music()
+	load_Setting()
 	
 ##########################################  tick  ############################################
 
@@ -43,11 +44,15 @@ const player_potraits = [
 ]
 
 const player_colors = [
-	Color("#820000"),
-	Color("#000e6d"),
-	Color("#007e1f"),
-	Color("#b77d00"),
-	Color("#59005c")
+	Color("#2B5D9D"),
+	Color("#982D2D"),
+	Color("#583591"),
+	Color("#31753F"),
+	Color("#AD7F1D"),
+	Color("#36A1B8"),
+	Color("#B8541B"),
+	Color("#B14C7E"),
+	Color("#585F69")
 ]
 var player_materials = []
 
@@ -178,10 +183,15 @@ func save_ss(map_name:String, vp :Viewport) -> String:
 	
 ##########################################  music  ############################################
 const main_music = "res://music/medieval_theme.ogg"
+
 var music :AudioStreamPlayer
+const bus_music = "music"
+const bus_sfx = "sfx"
+const bus_voice = "voice"
 
 func setup_music():
 	music = AudioStreamPlayer.new()
+	music.bus = bus_music
 	music.volume_db = -8.0
 	
 	if ResourceLoader.exists(main_music):
@@ -190,6 +200,41 @@ func setup_music():
 	music.autoplay = true
 	add_child(music)
 	
+func set_bus_volume(bus_name :String, volume :float, mute :bool = false):
+	var bus_index = AudioServer.get_bus_index(bus_name)
+	AudioServer.set_bus_volume_db(bus_index, linear2db(volume)) 
+	
+func set_bus_mute(bus_name :String, v :bool):
+	var bus_index = AudioServer.get_bus_index(bus_name)
+	AudioServer.set_bus_mute(bus_index, v)
+	
+##########################################  setting  ############################################
+signal on_setting_updated(data)
+
+const setting_filepath :String = "setting.dat"
+var setting_data :SettingData
+
+func load_Setting():
+	setting_data = SettingData.new()
+	var data = SaveLoad.load_save(setting_filepath, true)
+	if data == null:
+		setting_data = SettingData.new()
+		save_setting()
+		
+	else:
+		setting_data.from_dictionary(data)
+		
+	# apply audio setting
+	set_bus_volume(bus_music, setting_data.music)
+	set_bus_volume(bus_sfx, setting_data.sfx)
+	set_bus_volume(bus_voice, setting_data.voice)
+	
+func setting_updated():
+	emit_signal("on_setting_updated", setting_data)
+
+func save_setting():
+	SaveLoad.save(setting_filepath, setting_data.to_dictionary(), true)
+
 ##########################################  transisiion  ############################################
 var transition :CanvasLayer
 
@@ -210,9 +255,10 @@ const template_squads = [
 	preload("res://data/squad_data/peasant.tres"),
 	preload("res://data/squad_data/archer.tres"),
 	preload("res://data/squad_data/spearman.tres"),
+	preload("res://data/squad_data/pikeman.tres"),
 	preload("res://data/squad_data/swordman.tres"),
-	preload("res://data/squad_data/axeman.tres"),
 	preload("res://data/squad_data/knight.tres"),
+	preload("res://data/squad_data/axeman.tres"),
 	preload("res://data/squad_data/elite_guard.tres"),
 	preload("res://data/squad_data/huscarls.tres"),
 	preload("res://data/squad_data/longbowman.tres"),

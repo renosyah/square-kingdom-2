@@ -97,15 +97,15 @@ func _ready():
 	add_child(_walk_timer)
 
 	_step_audio = AudioStreamPlayer3D.new()
-	_step_audio.unit_db = 5
+	_step_audio.bus = Global.bus_sfx
 	add_child(_step_audio)
 	
 	_combat_audio = AudioStreamPlayer3D.new()
-	_combat_audio.unit_db = 5
+	_combat_audio.bus = Global.bus_sfx
 	add_child(_combat_audio)
 	
 	_unit_audio = AudioStreamPlayer3D.new()
-	_unit_audio.unit_db = 5
+	_unit_audio.bus = Global.bus_sfx
 	add_child(_unit_audio)
 	
 	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()

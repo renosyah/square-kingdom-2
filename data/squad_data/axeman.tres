@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 squad_id = 0
-squad_name = "AxeMan"
+squad_name = "Axeman"
 description = "Melee Support"
 scene_idx = 0
 node_name = ""

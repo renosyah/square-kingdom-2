@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://menus/main_menu/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -8,7 +8,6 @@
 [ext_resource path="res://assets/background/battle.png" type="Texture" id=6]
 [ext_resource path="res://assets/background/join.png" type="Texture" id=7]
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
-[ext_resource path="res://assets/text_input_popup/text_input_popup.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
 [ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=12]
@@ -44,13 +43,6 @@ mouse_filter = 2
 margin_right = 1024.0
 margin_bottom = 446.0
 size_flags_vertical = 3
-
-[node name="text_input_popup" parent="CanvasLayer/Control/VBoxContainer/Control" instance=ExtResource( 9 )]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 0.0
-margin_bottom = 0.0
 
 [node name="list_map" parent="CanvasLayer/Control/VBoxContainer/Control" instance=ExtResource( 4 )]
 visible = false
@@ -264,8 +256,6 @@ icon = ExtResource( 8 )
 icon_align = 1
 expand_icon = true
 
-[connection signal="close" from="CanvasLayer/Control/VBoxContainer/Control/text_input_popup" to="." method="_on_text_input_popup_close"]
-[connection signal="on_continue" from="CanvasLayer/Control/VBoxContainer/Control/text_input_popup" to="." method="_on_text_input_popup_on_continue"]
 [connection signal="close" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_close"]
 [connection signal="new_map" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_new_map"]
 [connection signal="selected_map" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_selected_map"]

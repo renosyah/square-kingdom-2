@@ -2,8 +2,6 @@ extends Control
 
 onready var list_map = $CanvasLayer/Control/VBoxContainer/Control/list_map
 onready var play = $CanvasLayer/Control/VBoxContainer/Control/play
-onready var text_input_popup = $CanvasLayer/Control/VBoxContainer/Control/text_input_popup
-onready var player_new_name = text_input_popup.map_name_editor
 
 var map_selected_type :String = "PLAY" # PLAY or EDITOR
 
@@ -32,7 +30,6 @@ func on_back_pressed():
 	get_tree().quit()
 	
 func hide_all():
-	text_input_popup.visible = false
 	play.visible = false
 	list_map.visible = false
 	
@@ -91,21 +88,7 @@ func _on_join_pressed():
 
 func _on_setting_pressed():
 	hide_all()
-	text_input_popup.title = "Player"
-	text_input_popup.place_holder = Global.player_data.player_name
-	text_input_popup.show()
-	text_input_popup.visible = true
-
-func _on_text_input_popup_close():
-	text_input_popup.visible = false
-
-func _on_text_input_popup_on_continue():
-	if player_new_name.text.empty():
-		return
-		
-	text_input_popup.visible = false
-	Global.player_data.player_name = player_new_name.text
-	Global.save_player_data()
+	Global.change_scene("res://menus/setting/setting.tscn", false)
 
 func _on_list_map_new_map(nm):
 	Global.current_tile_map_manifest_data.map_name = nm

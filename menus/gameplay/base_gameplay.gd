@@ -85,9 +85,11 @@ var unit_sound :AudioStreamPlayer
 func setup_ambient_audio():
 	ui_sound = AudioStreamPlayer.new()
 	ui_sound.volume_db = -8.0
+	ui_sound.bus = Global.bus_sfx
 	add_child(ui_sound)
 	
 	unit_sound = AudioStreamPlayer.new()
+	unit_sound.bus = Global.bus_voice
 	add_child(unit_sound)
 	
 ########################################## position manager ############################################

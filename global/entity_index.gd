@@ -57,5 +57,6 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #5
 	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #6
 	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #7
-	preload("res://assets/user_interface/squad_potrait/knight_2.png") #8
+	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #8
+	preload("res://assets/user_interface/squad_potrait/knight_3.png") #9
 ]

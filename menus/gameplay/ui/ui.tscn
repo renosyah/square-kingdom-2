@@ -314,9 +314,6 @@ margin_right = 150.0
 margin_bottom = 165.0
 texture = ExtResource( 17 )
 
-[node name="dialog_menu" parent="CanvasLayer/Control" instance=ExtResource( 9 )]
-visible = false
-
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
 anchor_left = 1.0
 anchor_top = 0.5
@@ -342,9 +339,12 @@ rect_min_size = Vector2( 60, 60 )
 icon = ExtResource( 19 )
 expand_icon = true
 
+[node name="dialog_menu" parent="CanvasLayer/Control" instance=ExtResource( 9 )]
+visible = false
+
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]
-[connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/selection_button" to="." method="_on_selection_button_pressed"]
+[connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]

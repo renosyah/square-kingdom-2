@@ -26,7 +26,13 @@ var is_dead :bool = false
 var range_mode :bool
 var melee_mode :bool
 
+var _combat_sound :AudioStreamPlayer3D
+
 func _ready():
+	_combat_sound = AudioStreamPlayer3D.new()
+	_combat_sound.bus = Global.bus_sfx
+	add_child(_combat_sound)
+	
 	set_process(true)
 	set_physics_process(false)
 	
