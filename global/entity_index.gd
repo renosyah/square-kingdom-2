@@ -13,12 +13,13 @@ const weapons = [
 	preload("res://scenes/equipment/weapons/pitchfork/pitchfork.tscn"), #2
 	preload("res://scenes/equipment/weapons/spear/spear.tscn"), #3
 	preload("res://scenes/equipment/weapons/spear/spear_shield.tscn"), #4
-	preload("res://scenes/equipment/weapons/sword/sword.tscn"), #5
-	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #6
-	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #7
-	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
-	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #9
-	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn") #10
+	preload("res://scenes/equipment/weapons/pike/pike.tscn"), #5
+	preload("res://scenes/equipment/weapons/sword/sword.tscn"), #6
+	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #7
+	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #8
+	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #9
+	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #10
+	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn") #11
 ]
 const equipment = [
 	null, # index 0 as NULL

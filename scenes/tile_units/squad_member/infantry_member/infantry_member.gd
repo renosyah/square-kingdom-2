@@ -229,19 +229,21 @@ func moving(delta :float):
 	if is_dead:
 		return
 		
+	var _is_moving = squad.is_moving() and not squad.has_enemy()
+		
 	if iddle:
 		if range_mode:
 			body_animation_state.travel(
-				_range_weapon.walk_animation if squad.is_moving() else _range_weapon.ready_animation
+				_range_weapon.walk_animation if _is_moving else _range_weapon.ready_animation
 			)
 			
 		if melee_mode:
 			body_animation_state.travel(
-				_melee_weapon.walk_animation if squad.is_moving() else _melee_weapon.ready_animation
+				_melee_weapon.walk_animation if _is_moving else _melee_weapon.ready_animation
 			)
 		
 	leg_animation_state.travel(
-		"walk" if squad.is_moving() or (enemy_assign and melee_mode) else "iddle"
+		"walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
 	)
 
 func dead():

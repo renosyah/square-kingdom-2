@@ -75,6 +75,17 @@ func remove_squad_card(squad :BaseSquad):
 			c.queue_free()
 			break
 			
+			
+func add_log(v :String):
+	var l = Label.new()
+	l.text = v
+	var list = $CanvasLayer/Control/VBoxContainer/Control/MarginContainer/VBoxContainer
+	list.add_child(l)
+	if list.get_child_count() > 12:
+		var c = list.get_children().front()
+		list.remove_child(c)
+		c.queue_free()
+	
 func _on_cam_rot_reset_pressed():
 	emit_signal("reset_camera")
 	

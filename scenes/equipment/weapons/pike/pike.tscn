@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/weapons/melee_weapon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/weapons/pike/pike.obj" type="ArrayMesh" id=4]
+
+[node name="spear" type="Spatial"]
+script = ExtResource( 2 )
+attack_damage = 7
+walk_animation = "walk_weapon_hold"
+attack_animation = "weapon_trust_attack"
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+cast_shadow = 0
+mesh = ExtResource( 4 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 3 )

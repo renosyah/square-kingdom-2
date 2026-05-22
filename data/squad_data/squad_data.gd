@@ -39,6 +39,7 @@ export var member_range_weapon_idx :int
 export var member_hp :int = 100
 export var member_max_hp :int = 100
 export var total_member :int = 9
+export var heal_amount :int = 10
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -71,6 +72,7 @@ func from_dictionary(_data : Dictionary):
 	member_hp = _data["r"]
 	member_max_hp = _data["s"]
 	total_member = _data["t"]
+	heal_amount = _data["u"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -103,6 +105,7 @@ func to_dictionary() -> Dictionary :
 	_data["r"] = member_hp
 	_data["s"] = member_max_hp
 	_data["t"] = total_member
+	_data["u"] = heal_amount
 	return _data
 	
 

@@ -111,6 +111,12 @@ margin_bottom = 100.0
 mouse_filter = 2
 color = Color( 1, 0, 0, 0 )
 
+[node name="heal" type="ColorRect" parent="."]
+margin_right = 70.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 0, 1, 0.133333, 0 )
+
 [node name="Button" type="Button" parent="."]
 margin_right = 70.0
 margin_bottom = 100.0

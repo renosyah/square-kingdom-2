@@ -255,6 +255,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.current_tile = data.current_tile
 	
 	squad.player_id = data.player_id
+	squad.unit_name = data.squad_name
 	squad.team = data.team
 	squad.color = Global.player_colors[data.color_idx]
 	squad.speed = data.speed
@@ -276,6 +277,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = data.member_hp
 	squad.member_max_hp = data.member_max_hp
+	squad.heal_amount = data.heal_amount
 	
 	squad.overlay_ui = ui.overlay_ui
 	squad.camera = movable_camera.camera
@@ -349,8 +351,9 @@ func _move_squad_to(tile :TileMapData):
 func _on_squad_taking_damage(squad, amount):
 	pass
 	
-func _on_squad_member_dead(squad, member):
-	pass
+func _on_squad_member_dead(squad :BaseSquad, member):
+	var attacked_by =  get_node(squad.attacked_by)
+	ui.add_log("%s's (%s) member %s killed by %s (%s)" % [squad.unit_name, squad.player_id, member.name, attacked_by.unit_name, attacked_by.player_id])
 	
 func _on_unit_spotted(squad):
 	pass
@@ -391,11 +394,15 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 	
 func _on_current_tile_updated(squad, from_id, to_id):
 	tile_position_manager.update_position(squad, from_id, to_id)
+	#print("squad position updated %s : %s" % [squad, squad.current_tile])
 	
 func _on_finish_travel(squad, last_id, current_id):
-	pass
+	print("squad finish travel %s : %s" % [squad, squad.current_tile])
 	
 func _on_unit_dead(squad :BaseSquad):
+	var attacked_by = get_node(squad.attacked_by)
+	ui.add_log("squad %s (%s) wiped by %s (%s)" % [squad.unit_name, squad.player_id, attacked_by.unit_name, attacked_by.player_id])
+
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)

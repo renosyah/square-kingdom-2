@@ -13,9 +13,11 @@ onready var _color = $Control2/MarginContainer/MarginContainer/color
 onready var _icon = $Control2/MarginContainer/MarginContainer/MarginContainer2/icon
 onready var _overlay = $Control2/MarginContainer/overlay
 onready var _hurt = $Control2/MarginContainer/hurt
+onready var _heal = $Control2/MarginContainer/heal
 
 onready var _temp_green = $Control/temp_green
 onready var _temp_red = $Control/temp_red
+onready var _temp_grey = $Control/temp_grey
 
 onready var _hp_bar_holder = $Control/MarginContainer/hp_bar_holder
 
@@ -30,22 +32,33 @@ func _ready():
 
 	_update_bar()
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
+	squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	
 func _process(delta):
 	if floating_hurt and visible:
 		_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
+		_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)
 	
 func _on_squad_member_dead(_squad, _member):
 	_update_bar()
 	_update_bar_colors()
 	
-func _on_squad_taking_damage(_squad, _amount):
+func _on_squad_taking_heal(_squad):
 	if not visible:
 		return
 		
 	if floating_hurt:
+		_heal.color.a = 1
+		
+	_update_bar_colors()
+	
+func _on_squad_taking_damage(_squad, amount):
+	if not visible:
+		return
+		
+	if floating_hurt and amount > 0:
 		_hurt.color.a = 1
 		
 	_update_bar_colors()
@@ -101,7 +114,7 @@ func _update_bar():
 		_member_bars[alive_member[i]] = dup
 		
 	for _i in (total_member - alive_member.size()):
-		var dup = _temp_red.duplicate()
+		var dup = _temp_grey.duplicate()
 		dup.visible = true
 		_hp_bar_holder.add_child(dup)
 	

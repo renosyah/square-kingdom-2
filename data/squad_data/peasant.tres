@@ -33,3 +33,4 @@ member_range_weapon_idx = 0
 member_hp = 25
 member_max_hp = 25
 total_member = 9
+heal_amount = 8

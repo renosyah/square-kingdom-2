@@ -3,6 +3,7 @@ class_name BaseSquad
 
 signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
+signal on_squad_taking_heal(squad)
 
 const walk_sounds = [
 	preload("res://assets/sounds/walks/walk_1.wav"),
@@ -32,7 +33,8 @@ const death_sounds = [
 	preload("res://assets/sounds/death/dead_2.wav"),
 	preload("res://assets/sounds/death/dead_3.wav"),
 	preload("res://assets/sounds/death/dead_4.wav"),
-	preload("res://assets/sounds/death/dead_5.wav")
+	preload("res://assets/sounds/death/dead_5.wav"),
+	preload("res://assets/sounds/death/wilhem_scream.wav")
 ]
 
 export var member_scene :PackedScene
@@ -50,6 +52,7 @@ export var member_material :SpatialMaterial
 
 export var member_hp :int = 100
 export var member_max_hp :int = 100
+export var heal_amount :int = 10
 
 var member_alive :int
 
@@ -71,12 +74,16 @@ var _melee_ranges :Array = []
 
 var _attack_timer :Timer
 var _walk_timer :Timer
+var _heal_timer :Timer
 var _path_indicator :Spatial
 var _floating_info :FloatingSquadInfo
+var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
 var _combat_audio :AudioStreamPlayer3D
 var _unit_audio :AudioStreamPlayer3D
+
+var attacked_by :NodePath
 
 onready var _has_shield :bool = member_shield != null
 onready var _has_range_weapon :bool = member_range_weapon != null
@@ -95,7 +102,16 @@ func _ready():
 	_walk_timer.autostart = false
 	_walk_timer.wait_time = 0.43
 	add_child(_walk_timer)
-
+	
+	_heal_timer = Timer.new()
+	_heal_timer.one_shot = true
+	_heal_timer.autostart = false
+	_heal_timer.wait_time = 5
+	_heal_timer.connect("timeout", self, "_healing")
+	add_child(_heal_timer)
+	
+	_heal_timer.start()
+	
 	_step_audio = AudioStreamPlayer3D.new()
 	_step_audio.bus = Global.bus_sfx
 	add_child(_step_audio)
@@ -189,10 +205,9 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 	if members.empty():
 		return
 		
-		
 	# set damage to random member
 	var idx :int = enemy_squad.get_member_index(members.pick_random())
-	enemy_squad.take_damage(attack_damage, idx)
+	enemy_squad.take_damage(attack_damage, idx, get_path())
 	
 func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
 	if not _is_master:
@@ -202,7 +217,7 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 	if randf() < 0.15:
 		return
 		
-	target.squad.take_damage(attack_damage, target_member_idx)
+	target.squad.take_damage(attack_damage, target_member_idx, get_path())
 	
 func _on_member_dead(member :SquadMember):
 	if _members.has(member):
@@ -253,21 +268,12 @@ func moving(delta :float) -> void:
 		var offset :Vector3 = _formation_offsets[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
-	var idx = 0
-	for m in _members:
-		if not is_instance_valid(m):
-			continue
-			
-		if m.is_dead:
-			continue
-			
-		# this is funnies shit, 
-		# now archer can fire on the move, 
-		# all fking foot archer
+	var members = get_members()
+		
+	for idx in members.size():
+		var m = members[idx]
 		if m.iddle or m.range_mode:
 			m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
-			
-		idx += 1
 		
 	if _is_moving and _walk_timer.is_stopped():
 		_walk_timer.start()
@@ -347,19 +353,56 @@ func get_members() -> Array:
 			
 	return alives
 	
-func _on_no_enemy():
-	._on_no_enemy()
-	
-	if not _attack_timer.is_stopped():
-		_attack_timer.stop()
+func _healing():
+	if (not _is_master):
+		return
 		
+	_heal_timer.wait_time = rand_range(4, 8)
+	_heal_timer.start()
+	
+	if _heal_interupt:
+		_heal_interupt = false
+		return
+	
+	# cannot heal if
+	# - still engaging or taking damage
+	# - on the move
+	if _has_enemy or _is_moving:
+		return
+		
+	for idx in _members.size():
+		if is_dead:
+			continue
+			
+		if _members[idx].hp >= member_max_hp:
+			continue
+			
+		_members[idx].hp = int(clamp(_members[idx].hp + heal_amount, 0, member_max_hp))
+		rpc_unreliable("_taking_heal", _members[idx].hp, idx) # 0: healing
+		return
+
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
 	
-func take_damage(amount :int, member_idx :int):
+func take_damage(amount :int, member_idx :int, from :NodePath):
 	if is_dead:
 		return
 		
+	if member_idx > _members.size() - 1 or member_idx == -1:
+		return
+		
+	attacked_by = from
+	
+	var m :SquadMember = _members[member_idx]
+	if not is_instance_valid(m):
+		return
+		
+	if amount > 0:
+		m.take_damage(amount)
+	
+	rpc_unreliable("_taking_damage", amount, m.hp, member_idx, from)
+	
+remotesync func _taking_heal(hp_remain :int, member_idx :int):
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
@@ -367,19 +410,25 @@ func take_damage(amount :int, member_idx :int):
 	if not is_instance_valid(m):
 		return
 		
-	m.take_damage(amount)
-	
-	rpc_unreliable("_taking_damage", amount, m.hp, member_idx)
-	
-remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int):
+	m.hp = hp_remain
+	emit_signal("on_squad_taking_heal", self)
+		
+remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, from :NodePath):
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
-	var m :SquadMember = _members[member_idx]
-	if is_instance_valid(m):
-		m.hp = hp_remain
+	if _is_master and not _heal_interupt:
+		_heal_interupt = true
 		
-	if not _unit_audio.playing:
+	attacked_by = from
+	
+	var m :SquadMember = _members[member_idx]
+	if not is_instance_valid(m):
+		return
+		
+	m.hp = hp_remain
+	
+	if not _unit_audio.playing and amount > 0:
 		_unit_audio.stream = hurt_sounds.pick_random()
 		_unit_audio.play()
 	

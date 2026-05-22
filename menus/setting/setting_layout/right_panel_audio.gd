@@ -1,6 +1,8 @@
 extends MarginContainer
 
 const max_value = 100
+const switch_off = preload("res://assets/user_interface/icons/switch_off.png")
+const switch_on = preload("res://assets/user_interface/icons/switch_on.png")
 
 onready var music_volume_slider = $VBoxContainer/VBoxContainer/HBoxContainer/music_volume_slider
 onready var sfx_volume_slider = $VBoxContainer/VBoxContainer/HBoxContainer2/sfx_volume_slider
@@ -9,7 +11,7 @@ onready var voice_volume_slider = $VBoxContainer/VBoxContainer/HBoxContainer3/vo
 onready var music_volume_label = $VBoxContainer/VBoxContainer/HBoxContainer/music_volume_label
 onready var sfx_volume_label = $VBoxContainer/VBoxContainer/HBoxContainer2/sfx_volume_label
 onready var voice_volume_label = $VBoxContainer/VBoxContainer/HBoxContainer3/voice_volume_label
-onready var mute_all = $VBoxContainer/VBoxContainer/HBoxContainer4/mute_all
+onready var mute_switch = $VBoxContainer/VBoxContainer/HBoxContainer4/mute_switch
 
 onready var setting_data = Global.setting_data
 
@@ -22,7 +24,7 @@ func _ready():
 	sfx_volume_label.text = "%s%s" % [(setting_data.sfx * max_value),"%"]
 	voice_volume_label.text = "%s%s" % [(setting_data.voice * max_value),"%"]
 	
-	mute_all.pressed = setting_data.mute
+	mute_switch.icon = switch_on if setting_data.mute else switch_off
 	
 func _on_music_volume_slider_value_changed(value):
 	music_volume_label.text = "%s%s" % [value,"%"]
@@ -39,8 +41,12 @@ func _on_voice_volume_slider_value_changed(value):
 	setting_data.voice = clamp(0, float(value) / float(max_value), 1)
 	Global.set_bus_volume(Global.bus_voice, setting_data.voice)
 
-func _on_mute_all_pressed():
-	setting_data.mute = mute_all.pressed
+func _on_mute_switch_pressed():
+	setting_data.mute = not setting_data.mute
+	_on_mute_switch_pressed_apply()
+	
+func _on_mute_switch_pressed_apply():
+	mute_switch.icon = switch_on if setting_data.mute else switch_off
 	Global.set_bus_mute(Global.bus_sfx, setting_data.mute)
 	Global.set_bus_mute(Global.bus_music, setting_data.mute)
 	Global.set_bus_mute(Global.bus_voice, setting_data.mute)
@@ -56,16 +62,7 @@ func _on_reset_button_pressed():
 	_on_sfx_volume_slider_value_changed(n.sfx * max_value)
 	_on_voice_volume_slider_value_changed(n.voice * max_value)
 	
-	mute_all.pressed = n.mute
-	_on_mute_all_pressed()
-
-
-
-
-
-
-
-
-
+	setting_data.mute = n.mute
+	_on_mute_switch_pressed_apply()
 
 

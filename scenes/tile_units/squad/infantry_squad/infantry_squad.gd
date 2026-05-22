@@ -5,8 +5,8 @@ func _init_formations():
 	
 	# flag carrier were center
 	_formation_offsets = [
-		Vector3.FORWARD + Vector3.LEFT, Vector3.FORWARD, Vector3.FORWARD + Vector3.RIGHT,
 		Vector3.ZERO + Vector3.LEFT, Vector3.ZERO, Vector3.ZERO + Vector3.RIGHT,
+		Vector3.FORWARD + Vector3.LEFT, Vector3.FORWARD, Vector3.FORWARD + Vector3.RIGHT,
 		Vector3.BACK + Vector3.LEFT, Vector3.BACK,Vector3.BACK + Vector3.RIGHT,
 	]
 	_formation_positions = _formation_offsets.duplicate()
@@ -18,7 +18,6 @@ func master_moving(delta :float) -> void:
 		return
 		
 	if _has_enemy:
-		_is_moving = false
 		return
 		
 	_follow_path_proccess(delta, global_position)
@@ -99,7 +98,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 			m.enemy = enemy_member
 			m.range_attack()
 			
-func take_damage(amount :int, member_idx :int):
+func take_damage(amount :int, member_idx :int, from :NodePath):
 	if is_dead:
 		return
 		
@@ -108,7 +107,7 @@ func take_damage(amount :int, member_idx :int):
 	if _has_shield and randf() < 0.20:
 		return
 
-	.take_damage(amount, member_idx)
+	.take_damage(amount, member_idx, from)
 	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)

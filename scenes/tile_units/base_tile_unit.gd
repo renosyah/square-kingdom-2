@@ -22,6 +22,7 @@ class TileUnitPath:
 		
 # info
 export var player_id :String
+export var unit_name :String
 export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 1.4
@@ -111,6 +112,9 @@ func _move_to(tile_id :Vector2):
 func is_moving() -> bool:
 	return _is_moving
 	
+func has_enemy() -> bool:
+	return _has_enemy
+	
 func _get_tile_path(to :Vector2) -> Array:
 	var paths :Array = []
 	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
@@ -179,38 +183,36 @@ func moving(delta :float) -> void:
 	if not is_dead:
 		_attack_enemy_proccess(delta, global_position)
 		
-	
 func _attack_enemy_proccess(delta :float, pos :Vector3):
 	# because this script run on both
 	# must check via is_instance_valid enemy
-	if not is_instance_valid(enemy):
-		return
-		
-	if _is_in_range(enemy):
-		_on_enemy_in_range(delta, pos, enemy.global_position)
-		return
+	if is_instance_valid(enemy):
+		if _is_in_range(enemy):
+			_on_enemy_in_range(delta, pos, enemy.global_position)
+			return
 	
 	_has_enemy = false
 	enemy = null
-	
-	_on_no_enemy()
 	
 func _follow_path_proccess(delta :float, pos :Vector3):
 	_is_moving = not _paths.empty()
 	
 	# if no more path
 	if not _is_moving:
-		_on_finish_travel(_last_tile, current_tile)
 		return
 	
 	var p :TileUnitPath = _paths.front()
 	
 	# validate if reach destination path
-	if pos.distance_squared_to(p.pos) < (margin * margin):
+	if pos.distance_to(p.pos) < margin:
 		_paths.pop_front()
 		_last_to = p.pos
 		
 		_on_current_tile_updated(_last_tile, current_tile)
+		
+		if _paths.empty():
+			_on_finish_travel(_last_tile, current_tile)
+			
 		return
 		
 	# validating of tile were changing
@@ -234,21 +236,6 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 func _on_enemy_in_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
 	pass
 	
-func _on_no_enemy():
-	if not _is_master:
-		return
-		
-	update_spotting()
-	_scan_area()
-	
-	if is_instance_valid(chase_enemy):
-		# for better chase
-		var v :Array = _get_tile_path(chase_enemy.current_tile)
-		if not v.empty():
-			_is_moving = true
-			_paths.clear()
-			_paths.append_array(v)
-	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	
@@ -267,6 +254,9 @@ func puppet_moving(delta :float) -> void:
 # for active enemy spotting
 func _on_global_tick():
 	if _is_master and not _is_moving:
+		
+		# have task to chase enemy
+		# go get them
 		if _chase_on_iddle():
 			return
 			
@@ -300,16 +290,6 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_finish_travel", self, from_id, to_id)
 	
-	if not _is_master:
-		return
-		
-	update_spotting()
-	
-	if _chase_on_iddle():
-		return
-		
-	_scan_area()
-	
 func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
 		# stop the chase
@@ -336,7 +316,7 @@ func _scan_area():
 	if is_instance_valid(enemy):
 		if not enemy.is_dead:
 			return
-		
+			
 	for pos in spotting_area:
 		if not unit_position.has(pos):
 			continue

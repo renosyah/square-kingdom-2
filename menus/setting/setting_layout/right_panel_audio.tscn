@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=3]
 [ext_resource path="res://menus/setting/setting_layout/right_panel_audio.gd" type="Script" id=4]
+[ext_resource path="res://assets/user_interface/background/white.png" type="Texture" id=5]
+[ext_resource path="res://assets/user_interface/icons/switch_off.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxLine" id=1]
+thickness = 8
+
+[sub_resource type="StyleBoxLine" id=2]
+color = Color( 0.537255, 0.537255, 0.537255, 1 )
+thickness = 8
 
 [node name="right_panel_audio" type="MarginContainer"]
 margin_right = 622.0
@@ -72,11 +81,17 @@ rect_min_size = Vector2( 12, 0 )
 
 [node name="music_volume_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 126.0
-margin_top = 22.0
+margin_top = 14.0
 margin_right = 511.0
-margin_bottom = 38.0
+margin_bottom = 46.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 5 )
+custom_icons/grabber = ExtResource( 5 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
+value = 50.0
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 515.0
@@ -126,11 +141,16 @@ rect_min_size = Vector2( 12, 0 )
 
 [node name="sfx_volume_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 126.0
-margin_top = 22.0
+margin_top = 14.0
 margin_right = 511.0
-margin_bottom = 38.0
+margin_bottom = 46.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 5 )
+custom_icons/grabber = ExtResource( 5 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 515.0
@@ -180,11 +200,16 @@ rect_min_size = Vector2( 12, 0 )
 
 [node name="voice_volume_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 126.0
-margin_top = 22.0
+margin_top = 14.0
 margin_right = 511.0
-margin_bottom = 38.0
+margin_bottom = 46.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 5 )
+custom_icons/grabber = ExtResource( 5 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 515.0
@@ -209,42 +234,48 @@ rect_min_size = Vector2( 40, 0 )
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 192.0
 margin_right = 622.0
-margin_bottom = 252.0
+margin_bottom = 256.0
 rect_min_size = Vector2( 0, 60 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
 margin_right = 12.0
-margin_bottom = 60.0
+margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 16.0
-margin_top = 16.0
+margin_top = 18.0
 margin_right = 113.0
-margin_bottom = 44.0
+margin_bottom = 46.0
 custom_fonts/font = ExtResource( 2 )
 text = "Mute All"
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 117.0
 margin_right = 518.0
-margin_bottom = 60.0
+margin_bottom = 64.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
 
-[node name="mute_all" type="CheckButton" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
+[node name="mute_switch" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
 margin_left = 522.0
-margin_right = 598.0
-margin_bottom = 60.0
+margin_right = 586.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+enabled_focus_mode = 0
+icon = ExtResource( 6 )
+flat = true
+expand_icon = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
-margin_left = 602.0
+margin_left = 590.0
 margin_right = 622.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 20, 0 )
+margin_bottom = 64.0
+rect_min_size = Vector2( 32, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
-margin_top = 256.0
+margin_top = 260.0
 margin_right = 622.0
 margin_bottom = 289.0
 size_flags_vertical = 3
@@ -281,5 +312,5 @@ mouse_filter = 2
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/music_volume_slider" to="." method="_on_music_volume_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer2/sfx_volume_slider" to="." method="_on_sfx_volume_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer3/voice_volume_slider" to="." method="_on_voice_volume_slider_value_changed"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer4/mute_all" to="." method="_on_mute_all_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer4/mute_switch" to="." method="_on_mute_switch_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer5/reset_button" to="." method="_on_reset_button_pressed"]
