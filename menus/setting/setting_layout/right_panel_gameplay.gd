@@ -1,5 +1,8 @@
 extends MarginContainer
 
+const check = preload("res://assets/user_interface/icons/check.png")
+const uncheck = preload("res://assets/user_interface/icons/uncheck.png")
+
 onready var cam_speed_slider = $VBoxContainer/VBoxContainer/HBoxContainer3/cam_speed_slider
 onready var zoom_speed_slider = $VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_slider
 onready var rot_speed_slider = $VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_slider
@@ -7,6 +10,8 @@ onready var rot_speed_slider = $VBoxContainer/VBoxContainer/HBoxContainer/rot_sp
 onready var cam_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer3/cam_speed_label
 onready var zoom_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_label
 onready var rot_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_label
+
+onready var auto_unselect = $VBoxContainer/VBoxContainer/HBoxContainer4/auto_unselect
 
 onready var setting_data = Global.setting_data
 
@@ -23,6 +28,7 @@ func _ready():
 	zoom_speed_label.text = "%s%s" % [z,"%"]
 	rot_speed_label.text = "%s%s" % [r,"%"]
 	
+	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
 	
 func _from_setting(value, min_value, max_value) -> int:
 	return int(((value - min_value) / (max_value - min_value)) * 100.0)
@@ -57,4 +63,9 @@ func _on_reset_button_pressed():
 	_on_zoom_speed_slider_value_changed(z)
 	_on_rot_speed_slider_value_changed(r)
 	
-
+	setting_data.unselect_on_command = n.unselect_on_command
+	auto_unselect.icon = check if n.unselect_on_command else uncheck
+	
+func _on_auto_unselect_pressed():
+	setting_data.unselect_on_command = not setting_data.unselect_on_command
+	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck

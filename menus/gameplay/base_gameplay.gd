@@ -120,6 +120,9 @@ func setup_ambient_audio():
 	add_child(annoucer_sound)
 	
 func unit_move_response(w :bool = false):
+	if annoucer_sound.playing:
+		return
+		
 	if unit_sound.playing and w:
 		return
 		
@@ -127,6 +130,9 @@ func unit_move_response(w :bool = false):
 	unit_sound.play()
 	
 func unit_select_response(w :bool = false):
+	if annoucer_sound.playing:
+		return
+		
 	if unit_sound.playing and w:
 		return
 		
@@ -134,6 +140,9 @@ func unit_select_response(w :bool = false):
 	unit_sound.play()
 	
 func unit_attacking_response(w :bool = false):
+	if annoucer_sound.playing:
+		return
+		
 	if unit_sound.playing and w:
 		return
 		
@@ -428,7 +437,9 @@ func _move_squad_to(tile :TileMapData):
 			tile_id = tiles[idx]
 			
 		squad.move_to(tile_id)
-		squad.click() # to unselect
+		if setting.unselect_on_command:
+			squad.click() # to unselect
+			
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
 		idx += 1
 		
@@ -472,7 +483,9 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			tap.tap(tile_map.get_tile(clicked_squad.current_tile).pos, 1)
 			s.chase_enemy = clicked_squad
 			s.chase_target()
-			s.click() # to unselect
+			
+			if setting.unselect_on_command:
+				s.click() # to unselect
 	
 func _on_current_tile_updated(squad, from_id, to_id):
 	tile_position_manager.update_position(squad, from_id, to_id)

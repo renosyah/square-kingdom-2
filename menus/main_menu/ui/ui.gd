@@ -49,13 +49,9 @@ func _on_list_map_selected_map(manif :TileMapFileManifest):
 		Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 		
 	elif map_selected_type == "PLAY":
-		# player test
+		# unique new id each play
 		var player_data = Global.player_data
 		player_data.player_id = Utils.create_unique_id()
-		player_data.player_name = RandomNameGenerator.generate_name()
-		player_data.team = 1
-		player_data.color_idx = randi() % Global.player_colors.size()
-		player_data.potrait_idx = randi() % Global.player_potraits.size()
 		Global.current_player = player_data
 		
 		var config :NetworkServer = NetworkServer.new()

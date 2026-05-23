@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/user_interface/background/white.png" type="Texture" id=4]
 [ext_resource path="res://menus/setting/setting_layout/right_panel_gameplay.gd" type="Script" id=5]
+[ext_resource path="res://assets/user_interface/icons/uncheck.png" type="Texture" id=6]
 
 [sub_resource type="StyleBoxLine" id=1]
 thickness = 8
@@ -230,8 +231,44 @@ margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 40, 0 )
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 192.0
+margin_right = 693.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_right = 12.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 16.0
+margin_top = 18.0
+margin_right = 186.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 170, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "Auto Unselect"
+
+[node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 190.0
+margin_right = 202.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="auto_unselect" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer4"]
+margin_left = 206.0
+margin_right = 270.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+icon = ExtResource( 6 )
+expand_icon = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 260.0
 margin_right = 693.0
 margin_bottom = 361.0
 size_flags_vertical = 3
@@ -268,4 +305,5 @@ mouse_filter = 2
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer3/cam_speed_slider" to="." method="_on_cam_speed_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_slider" to="." method="_on_zoom_speed_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_slider" to="." method="_on_rot_speed_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer4/auto_unselect" to="." method="_on_auto_unselect_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer5/reset_button" to="." method="_on_reset_button_pressed"]
