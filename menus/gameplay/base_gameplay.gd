@@ -81,9 +81,19 @@ const movement = [
 const selection = [
 	preload("res://assets/sounds/unit/selection/selection_1_1.wav"), preload("res://assets/sounds/unit/selection/selection_1_2.wav"), preload("res://assets/sounds/unit/selection/selection_1_3.wav"), preload("res://assets/sounds/unit/selection/selection_2_1.wav"), preload("res://assets/sounds/unit/selection/selection_2_2.wav"), preload("res://assets/sounds/unit/selection/selection_2_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_1.wav"), preload("res://assets/sounds/unit/selection/selection_3_2.wav"), preload("res://assets/sounds/unit/selection/selection_3_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_4.wav")
 ]
+const announce_squad_killed = [
+	preload("res://assets/sounds/announcement/squad_kill_1.wav"), preload("res://assets/sounds/announcement/squad_kill_2.wav"), preload("res://assets/sounds/announcement/squad_kill_3.wav"), preload("res://assets/sounds/announcement/squad_kill_4.wav"), preload("res://assets/sounds/announcement/squad_kill_5.wav"), preload("res://assets/sounds/announcement/squad_kill_6.wav")
+]
+const announce_squad_lost = [
+	preload("res://assets/sounds/announcement/squad_lost_1.wav"), preload("res://assets/sounds/announcement/squad_lost_2.wav"), preload("res://assets/sounds/announcement/squad_lost_3.wav"), preload("res://assets/sounds/announcement/squad_lost_4.wav"), preload("res://assets/sounds/announcement/squad_lost_5.wav"), preload("res://assets/sounds/announcement/squad_lost_6.wav")
+]
 
 var ui_sound :AudioStreamPlayer
 var unit_sound :AudioStreamPlayer
+var annoucer_sound :AudioStreamPlayer
+
+var announce_killed_idx :int
+var announce_lost_idx :int
 
 func setup_ambient_audio():
 	ui_sound = AudioStreamPlayer.new()
@@ -93,7 +103,54 @@ func setup_ambient_audio():
 	
 	unit_sound = AudioStreamPlayer.new()
 	unit_sound.bus = Global.bus_voice
+	unit_sound.volume_db = -4
 	add_child(unit_sound)
+	
+	annoucer_sound = AudioStreamPlayer.new()
+	annoucer_sound.bus = Global.bus_voice
+	annoucer_sound.volume_db = 6
+	add_child(annoucer_sound)
+	
+func unit_move_response(w :bool = false):
+	if unit_sound.playing and w:
+		return
+		
+	unit_sound.stream = movement.pick_random()
+	unit_sound.play()
+	
+func unit_select_response(w :bool = false):
+	if unit_sound.playing and w:
+		return
+		
+	unit_sound.stream = selection.pick_random()
+	unit_sound.play()
+	
+func unit_attacking_response(w :bool = false):
+	if unit_sound.playing and w:
+		return
+		
+	unit_sound.stream = attack.pick_random()
+	unit_sound.play()
+	
+func play_squad_lost():
+	if announce_lost_idx > (announce_squad_lost.size() - 1):
+		announce_lost_idx = 0
+		
+	if not annoucer_sound.playing:
+		annoucer_sound.stream = announce_squad_lost[announce_lost_idx]
+		annoucer_sound.play()
+	
+	announce_lost_idx += 1
+
+func play_squad_killed():
+	if announce_killed_idx > (announce_squad_killed.size() - 1):
+		announce_killed_idx = 0
+		
+	if not annoucer_sound.playing:
+		annoucer_sound.stream = announce_squad_killed[announce_killed_idx]
+		annoucer_sound.play()
+	
+	announce_killed_idx += 1
 	
 ########################################## position manager ############################################
 var tile_position_manager :TilePositionManager
@@ -352,8 +409,7 @@ func _move_squad_to(tile :TileMapData):
 			nav.get_astar(s.nav_layer), nav.get_navigation_id(s.nav_layer, tile.id), 2
 		)
 		
-	unit_sound.stream = movement.pick_random()
-	unit_sound.play()
+	unit_move_response()
 	
 	var idx = 0
 	for squad in dup:
@@ -367,11 +423,10 @@ func _on_squad_taking_damage(squad, amount):
 	pass
 	
 func _on_squad_member_dead(squad :BaseSquad, member):
-	var attacked_by =  get_node(squad.attacked_by)
-	ui.add_log("%s's (%s) member %s killed by %s (%s)" % [squad.unit_name, squad.player_id, member.name, attacked_by.unit_name, attacked_by.player_id])
+	pass
 	
 func _on_squad_member_resurect(squad :BaseSquad, member):
-	ui.add_log("%s's (%s) member %s resurected" % [squad.unit_name, squad.player_id, member.name])
+	pass
 	
 func _on_unit_spotted(squad):
 	pass
@@ -383,11 +438,8 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			selected_squads.erase(clicked_squad)
 		else:
 			selected_squads.append(clicked_squad)
+			unit_select_response(true)
 			
-			if not unit_sound.playing:
-				unit_sound.stream = selection.pick_random()
-				unit_sound.play()
-				
 		ui.selected_squads_updated()
 		return
 		
@@ -400,8 +452,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			ui_sound.stream = attack_sfx
 			ui_sound.play()
 			
-		unit_sound.stream = attack.pick_random()
-		unit_sound.play()
+		unit_attacking_response()
 		
 		var dup = selected_squads.duplicate() # must use dup pointer
 		for s in dup:
@@ -418,9 +469,6 @@ func _on_finish_travel(squad, last_id, current_id):
 	print("squad finish travel %s : %s" % [squad, squad.current_tile])
 	
 func _on_unit_dead(squad :BaseSquad):
-	var attacked_by = get_node(squad.attacked_by)
-	ui.add_log("squad %s (%s) wiped by %s (%s)" % [squad.unit_name, squad.player_id, attacked_by.unit_name, attacked_by.player_id])
-
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
@@ -431,7 +479,12 @@ func _on_unit_dead(squad :BaseSquad):
 			
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
-	
+		play_squad_lost()
+		
+	if squad.team != current_player.team:
+		play_squad_killed()
+		
+		
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()
 

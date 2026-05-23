@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/squad_lost_6.wav-5eb2fd63914b6fc5df8d6c8905e0fc82.sample"
+
+[deps]
+
+source_file="res://assets/sounds/announcement/squad_lost_6.wav"
+dest_files=[ "res://.import/squad_lost_6.wav-5eb2fd63914b6fc5df8d6c8905e0fc82.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

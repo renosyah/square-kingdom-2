@@ -158,6 +158,8 @@ func is_selected() -> bool:
 remote func _stop():
 	_is_moving = false
 	_paths.clear()
+	_on_current_tile_updated(_last_tile, current_tile)
+	_on_finish_travel(_last_tile, current_tile)
 	
 func sync_update() -> void:
 	if not is_dead:
