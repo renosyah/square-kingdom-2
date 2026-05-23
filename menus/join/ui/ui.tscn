@@ -104,7 +104,7 @@ margin_right = 900.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 8 )
-text = "Find Host"
+text = "Join"
 align = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]

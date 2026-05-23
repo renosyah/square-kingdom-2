@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://menus/setting/setting_layout/right_panel_profile.tscn" type="PackedScene" id=12]
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=13]
 [ext_resource path="res://menus/setting/setting_layout/right_panel_gameplay.tscn" type="PackedScene" id=14]
+[ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=15]
 
 [node name="setting_layout" type="Control"]
 anchor_right = 1.0
@@ -104,6 +105,7 @@ rect_min_size = Vector2( 0, 8 )
 margin_top = 76.0
 margin_right = 1024.0
 margin_bottom = 544.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control/Control/VBoxContainer/HBoxContainer"]
@@ -113,32 +115,33 @@ rect_min_size = Vector2( 8, 0 )
 
 [node name="left_panel" type="MarginContainer" parent="Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 12.0
-margin_right = 267.0
+margin_right = 212.0
 margin_bottom = 468.0
-rect_min_size = Vector2( 255, 0 )
 mouse_filter = 2
+script = ExtResource( 15 )
 
 [node name="ColorRect2" type="ColorRect" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel"]
-margin_right = 255.0
+margin_right = 200.0
 margin_bottom = 468.0
 mouse_filter = 2
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel"]
-margin_right = 255.0
+margin_right = 200.0
 margin_bottom = 468.0
+rect_min_size = Vector2( 200, 0 )
 custom_constants/separation = 12
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer"]
-margin_right = 255.0
+margin_right = 200.0
 
 [node name="gameplay" type="Button" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer"]
-margin_left = 12.0
+margin_left = 10.0
 margin_top = 12.0
-margin_right = 242.0
+margin_right = 190.0
 margin_bottom = 92.0
-rect_min_size = Vector2( 230, 80 )
+rect_min_size = Vector2( 180, 80 )
 size_flags_horizontal = 4
 expand_icon = true
 
@@ -186,11 +189,11 @@ custom_fonts/font = ExtResource( 4 )
 text = "Game"
 
 [node name="audio_setting" type="Button" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer"]
-margin_left = 12.0
+margin_left = 10.0
 margin_top = 104.0
-margin_right = 242.0
+margin_right = 190.0
 margin_bottom = 184.0
-rect_min_size = Vector2( 230, 80 )
+rect_min_size = Vector2( 180, 80 )
 size_flags_horizontal = 4
 expand_icon = true
 
@@ -239,11 +242,11 @@ custom_fonts/font = ExtResource( 4 )
 text = "Audio"
 
 [node name="graphic_setting" type="Button" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer"]
-margin_left = 12.0
+margin_left = 10.0
 margin_top = 196.0
-margin_right = 242.0
+margin_right = 190.0
 margin_bottom = 276.0
-rect_min_size = Vector2( 230, 80 )
+rect_min_size = Vector2( 180, 80 )
 size_flags_horizontal = 4
 expand_icon = true
 
@@ -292,11 +295,11 @@ custom_fonts/font = ExtResource( 4 )
 text = "Graphic"
 
 [node name="profile_setting" type="Button" parent="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer"]
-margin_left = 12.0
+margin_left = 10.0
 margin_top = 288.0
-margin_right = 242.0
+margin_right = 190.0
 margin_bottom = 368.0
-rect_min_size = Vector2( 230, 80 )
+rect_min_size = Vector2( 180, 80 )
 size_flags_horizontal = 4
 expand_icon = true
 
@@ -345,7 +348,7 @@ custom_fonts/font = ExtResource( 4 )
 text = "Profile"
 
 [node name="right_panel_audio" parent="Control/Control/VBoxContainer/HBoxContainer" instance=ExtResource( 10 )]
-margin_left = 271.0
+margin_left = 216.0
 margin_right = 1012.0
 margin_bottom = 468.0
 

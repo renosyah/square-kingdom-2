@@ -156,7 +156,7 @@ func play_squad_killed(is_commander :bool):
 		announce_killed_idx = 0
 		
 	if not annoucer_sound.playing:
-		var v = announce_commander_killed[announce_lost_idx] if is_commander else announce_squad_killed[announce_lost_idx]
+		var v = announce_commander_killed[announce_killed_idx] if is_commander else announce_squad_killed[announce_killed_idx]
 		annoucer_sound.stream = v
 		annoucer_sound.play()
 	

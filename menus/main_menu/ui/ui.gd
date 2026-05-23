@@ -75,7 +75,7 @@ func _on_host_pressed():
 	hide_all()
 	list_map.visible = true
 	map_selected_type = "PLAY"
-	list_map.set_title("select Map")
+	list_map.set_title("Select map")
 
 func _on_join_pressed():
 	# test

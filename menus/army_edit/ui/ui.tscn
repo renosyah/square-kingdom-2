@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/user_interface/icons/save.png" type="Texture" id=8]
 [ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/snack_bar/snack_bar.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=11]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -30,7 +31,6 @@ color = Color( 0, 0, 0, 1 )
 [node name="Control" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
 
 [node name="Control" type="MarginContainer" parent="CanvasLayer/Control"]
 anchor_right = 1.0
@@ -135,6 +135,7 @@ margin_right = 267.0
 margin_bottom = 474.0
 rect_min_size = Vector2( 255, 0 )
 mouse_filter = 2
+script = ExtResource( 11 )
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
 margin_right = 255.0
@@ -408,22 +409,14 @@ size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="snack_bar" parent="CanvasLayer/Control" instance=ExtResource( 10 )]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -202.0
-margin_right = 202.0
-margin_bottom = 84.0
+anchor_right = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
 
 [node name="dragable_item" type="MarginContainer" parent="CanvasLayer/Control"]
 visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -40.0
-margin_top = -40.0
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 80.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 80, 80 )
 rect_pivot_offset = Vector2( 40, 40 )
 mouse_filter = 2
