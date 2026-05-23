@@ -23,41 +23,41 @@ mouse_filter = 2
 color = Color( 1, 1, 1, 0.760784 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 70.0
+margin_bottom = 100.0
+mouse_filter = 2
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 68.0
 margin_bottom = 98.0
-rect_min_size = Vector2( 66, 96 )
-mouse_filter = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
-margin_right = 66.0
-margin_bottom = 96.0
 mouse_filter = 2
 expand = true
 stretch_mode = 7
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
-margin_right = 22.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 22, 22 )
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 20.0
+margin_bottom = 20.0
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/MarginContainer"]
-margin_right = 22.0
-margin_bottom = 22.0
+margin_right = 18.0
+margin_bottom = 18.0
 mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer"]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 20.0
-margin_bottom = 20.0
+margin_right = 18.0
+margin_bottom = 18.0
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -83,9 +83,10 @@ size_flags_vertical = 4
 expand = true
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer"]
-margin_top = 74.0
-margin_right = 66.0
-margin_bottom = 96.0
+margin_left = 2.0
+margin_top = 76.0
+margin_right = 68.0
+margin_bottom = 98.0
 rect_min_size = Vector2( 0, 22 )
 mouse_filter = 2
 size_flags_vertical = 8

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=2]
@@ -11,6 +11,36 @@
 [ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/snack_bar/snack_bar.tscn" type="PackedScene" id=10]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=11]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.458824, 0.458824, 0.458824, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.729412, 0.729412, 0.729412, 1 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxLine" id=3]
+content_margin_left = 12.0
+content_margin_right = 12.0
+thickness = 24
+vertical = true
+
+[sub_resource type="Theme" id=2]
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/decrement_pressed = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/icons/increment_pressed = null
+VScrollBar/styles/grabber = SubResource( 1 )
+VScrollBar/styles/grabber_highlight = SubResource( 1 )
+VScrollBar/styles/grabber_pressed = SubResource( 1 )
+VScrollBar/styles/scroll = SubResource( 3 )
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -131,14 +161,14 @@ rect_min_size = Vector2( 8, 0 )
 
 [node name="squad_container" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 12.0
-margin_right = 267.0
+margin_right = 282.0
 margin_bottom = 474.0
-rect_min_size = Vector2( 255, 0 )
+rect_min_size = Vector2( 270, 0 )
 mouse_filter = 2
 script = ExtResource( 11 )
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 474.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -146,18 +176,18 @@ color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="highlight" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
 visible = false
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 474.0
 mouse_filter = 2
 size_flags_horizontal = 3
 color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container"]
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 474.0
 
 [node name="Label3" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 46.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 2 )
@@ -166,40 +196,53 @@ valign = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
 margin_top = 50.0
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 62.0
 rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
 margin_top = 66.0
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 458.0
 mouse_filter = 2
 size_flags_vertical = 3
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer"]
-margin_right = 8.0
-margin_bottom = 392.0
-rect_min_size = Vector2( 8, 0 )
-mouse_filter = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer"]
-margin_left = 12.0
-margin_right = 255.0
-margin_bottom = 392.0
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 262.0
+margin_bottom = 384.0
 mouse_filter = 1
-size_flags_horizontal = 3
+theme = SubResource( 2 )
 scroll_horizontal_enabled = false
 
-[node name="squad_holder" type="GridContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer"]
-margin_right = 70.0
-margin_bottom = 392.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer"]
+margin_right = 254.0
+margin_bottom = 376.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="squad_holder" type="GridContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 250.0
+margin_bottom = 372.0
+mouse_filter = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 3
 
-[node name="add_button_squad" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/HBoxContainer/ScrollContainer/squad_holder"]
+[node name="add_button_squad" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/squad_holder"]
 margin_right = 70.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 70, 100 )
@@ -209,27 +252,27 @@ text = "+"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer"]
 margin_top = 462.0
-margin_right = 255.0
+margin_right = 270.0
 margin_bottom = 474.0
 rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
 [node name="MarginContainer5" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
-margin_left = 271.0
-margin_right = 273.0
+margin_left = 286.0
+margin_right = 288.0
 margin_bottom = 474.0
 rect_min_size = Vector2( 2, 0 )
 mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
-margin_left = 277.0
+margin_left = 292.0
 margin_right = 1012.0
 margin_bottom = 474.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="army_container" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 0, 250 )
 mouse_filter = 2
@@ -237,7 +280,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 0
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 250.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -245,19 +288,19 @@ color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="highlight" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
 visible = false
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 250.0
 mouse_filter = 2
 size_flags_horizontal = 3
 color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container"]
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 250.0
 mouse_filter = 2
 
 [node name="Label2" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 46.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 2 )
@@ -266,14 +309,14 @@ valign = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
 margin_top = 50.0
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 62.0
 rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
 margin_top = 66.0
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 213.0
 mouse_filter = 2
 size_flags_vertical = 3
@@ -293,7 +336,7 @@ size_flags_vertical = 3
 
 [node name="Label4" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
 margin_top = 217.0
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 238.0
 custom_fonts/font = ExtResource( 5 )
 text = "Drag Squad Here"
@@ -302,22 +345,22 @@ valign = 1
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer"]
 margin_top = 242.0
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 0, 8 )
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 254.0
-margin_right = 735.0
+margin_right = 720.0
 margin_bottom = 474.0
 
 [node name="info" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 7 )]
-margin_right = 531.0
+margin_right = 516.0
 
 [node name="trash_area" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 535.0
-margin_right = 735.0
+margin_left = 520.0
+margin_right = 720.0
 margin_bottom = 220.0
 rect_min_size = Vector2( 200, 0 )
 

@@ -111,6 +111,10 @@ func _move_to(tile_id :Vector2):
 	_paths.clear()
 	_paths.append_array(v)
 	
+	if attack_move:
+		update_spotting()
+		_scan_area()
+		
 func is_moving() -> bool:
 	return _is_moving
 	
@@ -161,10 +165,6 @@ remote func _stop():
 	_is_moving = false
 	_paths.clear()
 	
-	# if got force stop, update the position duh
-	_on_current_tile_updated(_last_tile, current_tile)
-	_on_finish_travel(_last_tile, current_tile)
-	
 func sync_update() -> void:
 	if not is_dead:
 		.sync_update()
@@ -181,7 +181,7 @@ func last_sync_update() -> void:
 		rset("_puppet_current_tile", current_tile)
 		
 func _follow_path_proccess(delta :float, pos :Vector3):
-	# stop all none sense
+	# safeguard
 	if not _is_moving:
 		return
 		
@@ -192,26 +192,17 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 		
 	var p :TileUnitPath = _paths.front()
 	
-	# validating of tile were changing
-	# by checking which position were closer
-	var dist_from = _last_to.distance_squared_to(pos)
-	var dist_to = p.pos.distance_squared_to(pos)
-	
-	# check if new tile pos closer
-	# to make sure also check if id is not same
-	if dist_from > dist_to and current_tile != p.tile_id:
+	if pos.distance_squared_to(p.pos) <= (margin * margin):
 		_last_tile = current_tile
 		current_tile = p.tile_id
 		
-	if pos.distance_to(p.pos) <= margin:
+		_on_current_tile_updated(_last_tile, current_tile)
+		
 		_paths.pop_front()
 		_last_to = p.pos
-		
-		_on_current_tile_updated(_last_tile, current_tile)
 		return
 		
 	# procced to movement function
-	# like move_and_slide or something
 	_move_to_next_path(delta, pos, p.pos)
 	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
@@ -300,6 +291,9 @@ func update_spotting():
 	
 func _scan_area():
 	if unit_position.empty():
+		return
+		
+	if _has_enemy:
 		return
 		
 	for pos in spotting_area:
