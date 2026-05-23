@@ -9,10 +9,14 @@ onready var batch_spawner = $batch_spawner
 onready var batch_despawner = $batch_despawner
 onready var untouch_tiles = generate_spawn_points()
 
+onready var setting :SettingData = Global.setting_data
+
 var nav_tiles :Dictionary
 var nav :NavTileMap
 
 func _ready():
+	Global.connect("on_setting_updated", self, "_on_setting_updated")
+	
 	var map_size :int = Global.current_tile_map_manifest_data.map_size
 	ui.random.connect("pressed", self, "_on_random_button_press")
 	ui.nav_toggle.connect("pressed", self, "_on_nav_toggle_button_press")
@@ -21,6 +25,9 @@ func _ready():
 	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size )
 	ui.movable_camera_ui.detect_in_out = false
 	
+	ui.movable_camera_ui.move_speed = setting.camera_move_speed
+	ui.movable_camera_ui.zoom_speed= setting.camera_zoom_speed
+	
 	ui.movable_camera_minimap.target = movable_camera
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.detect_in_out = false
@@ -28,10 +35,21 @@ func _ready():
 	editable_tile_map.tile_scenes = TileIndex.tiles
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 	
+func _on_setting_updated(d :SettingData):
+	ui.movable_camera_ui.move_speed = d.camera_move_speed
+	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
+	
 func _process(delta):
 	var pos = movable_camera.global_transform.origin * Vector3(1,0,1)
 	editable_tile_map.update_camera_location(Vector2(pos.x, pos.z).round())
 	clickable_floor.translation = pos
+	
+	if ui.cam_rot_l.pressed:
+		movable_camera.rotation_degrees.y -= setting.camera_rotation_speed * delta
+		
+	elif ui.cam_rot_r.pressed:
+		movable_camera.rotation_degrees.y += setting.camera_rotation_speed * delta
+	
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10
 	

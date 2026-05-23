@@ -88,14 +88,6 @@ func _notification(what):
 func on_back_pressed():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 	
-func _process(delta):
-	var cam :Spatial = movable_camera_ui.target
-	if cam_rot_l.pressed:
-		cam.rotation_degrees.y -= 45 * delta
-		
-	elif cam_rot_r.pressed:
-		cam.rotation_degrees.y += 45 * delta
-		
 func _on_card_on_grab(card, pos, _child):
 	dragable_item.visible = true
 	dragable_item.rect_position = pos

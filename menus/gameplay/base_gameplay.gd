@@ -4,9 +4,12 @@ class_name BaseGameplay
 onready var is_server = NetworkLobbyManager.is_server()
 onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
+onready var setting :SettingData = Global.setting_data
 
 func _ready():
 	self.name = "gameplay"
+	
+	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	
 	NetworkLobbyManager.connect("all_player_ready", self, "_on_all_player_ready")
 	NetworkLobbyManager.connect("on_host_disconnected", self, "_on_leave")
@@ -58,9 +61,9 @@ func _process(delta):
 	
 	if is_instance_valid(ui):
 		if ui.cam_rot_l.pressed:
-			movable_camera.rotation_degrees.y -= 45 * delta
+			movable_camera.rotation_degrees.y -= setting.camera_rotation_speed * delta
 		elif ui.cam_rot_r.pressed:
-			movable_camera.rotation_degrees.y += 45 * delta
+			movable_camera.rotation_degrees.y += setting.camera_rotation_speed * delta
 			
 		clickable_floor.translation = pos
 		ui.minimap.rotation_rad = movable_camera.rotation.y
@@ -208,10 +211,17 @@ func setup_ui():
 	ui.movable_camera_ui.center_pos = tile_map.global_position
 	ui.movable_camera_ui.detect_in_out = false
 	
+	ui.movable_camera_ui.move_speed = setting.camera_move_speed
+	ui.movable_camera_ui.zoom_speed = setting.camera_zoom_speed
+	
 	ui.movable_camera_minimap.target = movable_camera
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.center_pos = tile_map.global_position
 	ui.movable_camera_minimap.detect_in_out = false
+	
+func _on_setting_updated(d :SettingData):
+	ui.movable_camera_ui.move_speed = d.camera_move_speed
+	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
 	
 func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45

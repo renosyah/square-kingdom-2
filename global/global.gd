@@ -225,10 +225,15 @@ func load_Setting():
 		setting_data.from_dictionary(data)
 		
 	# apply audio setting
-	set_bus_volume(bus_music, setting_data.music)
-	set_bus_volume(bus_sfx, setting_data.sfx)
-	set_bus_volume(bus_voice, setting_data.voice)
-	
+	var audios = {
+		bus_music:setting_data.music,
+		bus_sfx:setting_data.sfx,
+		bus_voice:setting_data.voice
+	}
+	for key in audios.keys():
+		set_bus_volume(key, audios[key])
+		set_bus_mute(key, setting_data.mute)
+		
 func setting_updated():
 	emit_signal("on_setting_updated", setting_data)
 
@@ -282,12 +287,12 @@ func load_custom_squad():
 		return
 		
 	custom_squads = []
-	for i in data["custom_squads"]:
+	for i in data["s"]:
 		var s :SquadData = SquadData.new()
 		s.from_dictionary(i)
 		custom_squads.append(s)
 		
-	current_army = data["armies"]
+	current_army = data["a"]
 	
 func save_custom_squad():
 	var datas = []
@@ -295,7 +300,7 @@ func save_custom_squad():
 		var s :SquadData = i
 		datas.append(s.to_dictionary())
 		
-	var data :Dictionary = {"custom_squads":datas,"armies":current_army}
+	var data :Dictionary = {"s":datas,"a":current_army}
 	SaveLoad.save(custom_squads_filepath, data, true)
 	
 ##########################################  lobby & gameplay  ############################################

@@ -224,7 +224,11 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
 		
-		_unit_audio.stream = death_sounds.pick_random()
+		_unit_audio.stream = death_sounds[randi() % 4]
+		
+		if randf() < 0.08:
+			_unit_audio.stream = death_sounds[5] # wilhem
+		
 		_unit_audio.play()
 		
 		emit_signal("on_squad_member_dead", self, member)

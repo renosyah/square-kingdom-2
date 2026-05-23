@@ -1,0 +1,271 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/user_interface/background/white.png" type="Texture" id=4]
+[ext_resource path="res://menus/setting/setting_layout/right_panel_gameplay.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxLine" id=1]
+thickness = 8
+
+[sub_resource type="StyleBoxLine" id=2]
+color = Color( 0.537255, 0.537255, 0.537255, 1 )
+thickness = 8
+
+[node name="right_panel_gameplay" type="MarginContainer"]
+margin_right = 693.0
+margin_bottom = 507.0
+rect_min_size = Vector2( 255, 0 )
+mouse_filter = 2
+size_flags_horizontal = 3
+script = ExtResource( 5 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_right = 693.0
+margin_bottom = 507.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 693.0
+margin_bottom = 507.0
+
+[node name="Label3" type="Label" parent="VBoxContainer"]
+margin_right = 693.0
+margin_bottom = 46.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 1 )
+text = "  Gameplay"
+valign = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 50.0
+margin_right = 693.0
+margin_bottom = 62.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 66.0
+margin_right = 693.0
+margin_bottom = 491.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_right = 693.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 12.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 186.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 170, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "Camera Speed"
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 190.0
+margin_right = 202.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="cam_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 206.0
+margin_top = 14.0
+margin_right = 582.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 4 )
+custom_icons/grabber = ExtResource( 4 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 586.0
+margin_right = 610.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="cam_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 614.0
+margin_top = 19.0
+margin_right = 649.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 3 )
+text = "90%"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 653.0
+margin_right = 693.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 64.0
+margin_right = 693.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 12.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 186.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 170, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "Zoom Speed"
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 190.0
+margin_right = 202.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="zoom_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 206.0
+margin_top = 14.0
+margin_right = 582.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 4 )
+custom_icons/grabber = ExtResource( 4 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 586.0
+margin_right = 610.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="zoom_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 614.0
+margin_top = 19.0
+margin_right = 649.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 3 )
+text = "90%"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 653.0
+margin_right = 693.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 128.0
+margin_right = 693.0
+margin_bottom = 188.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 186.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 170, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "Rotate Speed"
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 190.0
+margin_right = 202.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="rot_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 206.0
+margin_top = 14.0
+margin_right = 582.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_icons/grabber_highlight = ExtResource( 4 )
+custom_icons/grabber = ExtResource( 4 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = SubResource( 2 )
+custom_styles/grabber_area = SubResource( 2 )
+value = 50.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 586.0
+margin_right = 610.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="rot_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 614.0
+margin_top = 19.0
+margin_right = 649.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 3 )
+text = "90%"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 653.0
+margin_right = 693.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 40, 0 )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 192.0
+margin_right = 693.0
+margin_bottom = 361.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+margin_top = 365.0
+margin_right = 693.0
+margin_bottom = 425.0
+alignment = 2
+
+[node name="reset_button" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 545.0
+margin_right = 665.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 2 )
+text = "Reset"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer5"]
+margin_left = 669.0
+margin_right = 693.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 495.0
+margin_right = 693.0
+margin_bottom = 507.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer3/cam_speed_slider" to="." method="_on_cam_speed_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_slider" to="." method="_on_zoom_speed_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_slider" to="." method="_on_rot_speed_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer5/reset_button" to="." method="_on_reset_button_pressed"]

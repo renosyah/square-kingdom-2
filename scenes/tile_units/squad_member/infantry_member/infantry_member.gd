@@ -240,7 +240,7 @@ func moving(delta :float):
 	if is_dead:
 		return
 		
-	var _is_moving = squad.is_moving() and not squad.has_enemy()
+	var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy))
 		
 	if iddle:
 		if range_mode:

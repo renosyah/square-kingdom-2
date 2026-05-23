@@ -112,9 +112,6 @@ func _move_to(tile_id :Vector2):
 func is_moving() -> bool:
 	return _is_moving
 	
-func has_enemy() -> bool:
-	return _has_enemy
-	
 func _get_tile_path(to :Vector2) -> Array:
 	var paths :Array = []
 	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
