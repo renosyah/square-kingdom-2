@@ -105,6 +105,7 @@ func _move_to(tile_id :Vector2):
 	if v.empty():
 		return
 		
+	_last_to = global_position
 	_is_moving = true
 	_paths.clear()
 	_paths.append_array(v)
@@ -158,8 +159,6 @@ func is_selected() -> bool:
 remote func _stop():
 	_is_moving = false
 	_paths.clear()
-	_on_current_tile_updated(_last_tile, current_tile)
-	_on_finish_travel(_last_tile, current_tile)
 	
 func sync_update() -> void:
 	if not is_dead:
@@ -194,26 +193,17 @@ func _attack_enemy_proccess(delta :float, pos :Vector3):
 	enemy = null
 	
 func _follow_path_proccess(delta :float, pos :Vector3):
-	_is_moving = not _paths.empty()
-	
-	# if no more path
+	# stop all none sense
 	if not _is_moving:
 		return
-	
-	var p :TileUnitPath = _paths.front()
-	
-	# validate if reach destination path
-	if pos.distance_to(p.pos) < margin:
-		_paths.pop_front()
-		_last_to = p.pos
 		
-		_on_current_tile_updated(_last_tile, current_tile)
-		
-		if _paths.empty():
-			_on_finish_travel(_last_tile, current_tile)
-			
+	if _paths.empty():
+		_is_moving = false
+		_on_finish_travel(_last_tile, current_tile)
 		return
 		
+	var p :TileUnitPath = _paths.front()
+	
 	# validating of tile were changing
 	# by checking which position were closer
 	var dist_from = _last_to.distance_squared_to(pos)
@@ -224,6 +214,13 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 	if dist_from > dist_to and current_tile != p.tile_id:
 		_last_tile = current_tile
 		current_tile = p.tile_id
+		
+	if pos.distance_to(p.pos) <= margin:
+		_paths.pop_front()
+		_last_to = p.pos
+		
+		_on_current_tile_updated(_last_tile, current_tile)
+		return
 		
 	# procced to movement function
 	# like move_and_slide or something
