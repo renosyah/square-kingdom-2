@@ -81,6 +81,7 @@ const movement = [
 const selection = [
 	preload("res://assets/sounds/unit/selection/selection_1_1.wav"), preload("res://assets/sounds/unit/selection/selection_1_2.wav"), preload("res://assets/sounds/unit/selection/selection_1_3.wav"), preload("res://assets/sounds/unit/selection/selection_2_1.wav"), preload("res://assets/sounds/unit/selection/selection_2_2.wav"), preload("res://assets/sounds/unit/selection/selection_2_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_1.wav"), preload("res://assets/sounds/unit/selection/selection_3_2.wav"), preload("res://assets/sounds/unit/selection/selection_3_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_4.wav")
 ]
+
 const announce_squad_killed = [
 	preload("res://assets/sounds/announcement/squad_kill_1.wav"), preload("res://assets/sounds/announcement/squad_kill_2.wav"), preload("res://assets/sounds/announcement/squad_kill_3.wav"), preload("res://assets/sounds/announcement/squad_kill_4.wav"), preload("res://assets/sounds/announcement/squad_kill_5.wav"), preload("res://assets/sounds/announcement/squad_kill_6.wav")
 ]
@@ -88,12 +89,19 @@ const announce_squad_lost = [
 	preload("res://assets/sounds/announcement/squad_lost_1.wav"), preload("res://assets/sounds/announcement/squad_lost_2.wav"), preload("res://assets/sounds/announcement/squad_lost_3.wav"), preload("res://assets/sounds/announcement/squad_lost_4.wav"), preload("res://assets/sounds/announcement/squad_lost_5.wav"), preload("res://assets/sounds/announcement/squad_lost_6.wav")
 ]
 
+const announce_commander_killed = [
+	preload("res://assets/sounds/announcement/commander_kill_1.wav"), preload("res://assets/sounds/announcement/commander_kill_2.wav"), preload("res://assets/sounds/announcement/commander_kill_3.wav"), preload("res://assets/sounds/announcement/commander_kill_4.wav"), preload("res://assets/sounds/announcement/commander_kill_5.wav"), preload("res://assets/sounds/announcement/commander_kill_6.wav")
+]
+const announce_commander_lost = [
+	preload("res://assets/sounds/announcement/commander_lost_1.wav"), preload("res://assets/sounds/announcement/commander_lost_2.wav"), preload("res://assets/sounds/announcement/commander_lost_3.wav"), preload("res://assets/sounds/announcement/commander_lost_4.wav"), preload("res://assets/sounds/announcement/commander_lost_5.wav"), preload("res://assets/sounds/announcement/commander_lost_6.wav")
+]
+
 var ui_sound :AudioStreamPlayer
 var unit_sound :AudioStreamPlayer
 var annoucer_sound :AudioStreamPlayer
 
-var announce_killed_idx :int
-var announce_lost_idx :int
+onready var announce_killed_idx :int = randi() % announce_squad_lost.size()
+onready var announce_lost_idx :int = randi() % announce_squad_lost.size()
 
 func setup_ambient_audio():
 	ui_sound = AudioStreamPlayer.new()
@@ -132,22 +140,24 @@ func unit_attacking_response(w :bool = false):
 	unit_sound.stream = attack.pick_random()
 	unit_sound.play()
 	
-func play_squad_lost():
+func play_squad_lost(is_commander :bool):
 	if announce_lost_idx > (announce_squad_lost.size() - 1):
 		announce_lost_idx = 0
 		
 	if not annoucer_sound.playing:
-		annoucer_sound.stream = announce_squad_lost[announce_lost_idx]
+		var v = announce_commander_lost[announce_lost_idx] if is_commander else announce_squad_lost[announce_lost_idx]
+		annoucer_sound.stream = v
 		annoucer_sound.play()
 	
 	announce_lost_idx += 1
 
-func play_squad_killed():
+func play_squad_killed(is_commander :bool):
 	if announce_killed_idx > (announce_squad_killed.size() - 1):
 		announce_killed_idx = 0
 		
 	if not annoucer_sound.playing:
-		annoucer_sound.stream = announce_squad_killed[announce_killed_idx]
+		var v = announce_commander_killed[announce_lost_idx] if is_commander else announce_squad_killed[announce_lost_idx]
+		annoucer_sound.stream = v
 		annoucer_sound.play()
 	
 	announce_killed_idx += 1
@@ -156,7 +166,7 @@ func play_squad_killed():
 var tile_position_manager :TilePositionManager
 
 func setup_unit_position_manager():
-	tile_position_manager = preload("res://addons/tile_position_manager/tile_position_manager.tscn").instance()
+	tile_position_manager = preload("res://assets/tile_position_manager/tile_position_manager.tscn").instance()
 	tile_position_manager.name = "tile_position_manager"
 	add_child(tile_position_manager)
 	
@@ -360,7 +370,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
-	squad.connect("on_unit_dead", self, "_on_unit_dead")
+	squad.connect("on_unit_dead", self, "_on_unit_dead", [data])
 	
 	squad.set_hidden(false)
 	
@@ -371,7 +381,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	_on_squad_spawned(squad, data)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
-	tile_position_manager.add_to_position(squad)
+	tile_position_manager.add_to_position(squad, data.current_tile)
 	
 	if squad.player_id == current_player.player_id:
 		# use current spawn tile as reinfoce tile
@@ -470,10 +480,13 @@ func _on_current_tile_updated(squad, from_id, to_id):
 func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
-func _on_unit_dead(squad :BaseSquad):
+func _on_unit_dead(squad :BaseSquad, data :SquadData):
 	ui.minimap.remove_object(squad)
-	tile_position_manager.remove_from_position(squad)
+	
+	tile_position_manager.remove_from_position(squad, squad.current_tile)
 	squads.erase(squad)
+	
+	var is_commander :bool = (data.icon_idx == 6)
 	
 	# confirm the lost was yours
 	if squad.player_id == current_player.player_id:
@@ -482,15 +495,15 @@ func _on_unit_dead(squad :BaseSquad):
 			
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
-		play_squad_lost()
+		
+		play_squad_lost(is_commander)
 		
 	# confirm the kill was yours
 	if squad.team != current_player.team:
 		var attacked_by :BaseSquad = get_node_or_null(squad.attacked_by)
 		if is_instance_valid(attacked_by):
 			if attacked_by.player_id == current_player.player_id:
-				play_squad_killed()
-		
+				play_squad_killed(is_commander)
 		
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()

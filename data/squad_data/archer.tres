@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 squad_id = 0
 squad_name = "Archer"
-description = "Range support"
+description = "Missile unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
@@ -15,7 +15,7 @@ network_id = 1
 player_id = ""
 team = 1
 color_idx = 0
-speed = 1.6
+speed = 1.5
 spotting_range = 4
 squad_type = 5
 member_scene_idx = 0

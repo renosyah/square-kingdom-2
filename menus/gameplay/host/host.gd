@@ -36,8 +36,8 @@ func _on_squad_member_resurect(squad :BaseSquad, member):
 	
 	ui.add_log("%s's (%s) member %s resurected" % [squad.unit_name, squad.player_id, member.name])
 	
-func _on_unit_dead(squad):
-	._on_unit_dead(squad)
+func _on_unit_dead(squad, data):
+	._on_unit_dead(squad, data)
 	
 	var attacked_by = get_node(squad.attacked_by)
 	ui.add_log("squad %s (%s) wiped by %s (%s)" % [squad.unit_name, squad.player_id, attacked_by.unit_name, attacked_by.player_id])

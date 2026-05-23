@@ -264,6 +264,7 @@ const template_squads = [
 	preload("res://data/squad_data/swordman.tres"),
 	preload("res://data/squad_data/knight.tres"),
 	preload("res://data/squad_data/axeman.tres"),
+	preload("res://data/squad_data/javeliner.tres"),
 	preload("res://data/squad_data/elite_guard.tres"),
 	preload("res://data/squad_data/huscarls.tres"),
 	preload("res://data/squad_data/longbowman.tres"),

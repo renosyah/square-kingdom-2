@@ -106,6 +106,7 @@ func _move_to(tile_id :Vector2):
 		return
 		
 	_last_to = global_position
+	
 	_is_moving = true
 	_paths.clear()
 	_paths.append_array(v)
@@ -273,6 +274,11 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_finish_travel", self, from_id, to_id)
 	
+	update_spotting()
+	
+	if _is_master:
+		_scan_area()
+	
 func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
 		# stop the chase
@@ -296,10 +302,6 @@ func _scan_area():
 	if unit_position.empty():
 		return
 		
-	if is_instance_valid(enemy):
-		if not enemy.is_dead:
-			return
-			
 	for pos in spotting_area:
 		if not unit_position.has(pos):
 			continue

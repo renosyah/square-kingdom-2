@@ -20,7 +20,8 @@ const weapons = [
 	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #9
 	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #10
 	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #11
-	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn") #12
+	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn"), #12
+	preload("res://scenes/equipment/weapons/javeline/javelin.tscn"), #13
 ]
 const equipment = [
 	null, # index 0 as NULL
@@ -48,17 +49,19 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/range.png"), #3
 	preload("res://assets/user_interface/icons/axe.png"), #4
 	preload("res://assets/user_interface/icons/special.png"), #5
-	preload("res://assets/user_interface/icons/commander.png") #6
+	preload("res://assets/user_interface/icons/commander.png"),#6
+	preload("res://assets/user_interface/icons/javeline.png") #7
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/peasant.png"), #0
 	preload("res://assets/user_interface/squad_potrait/militia.png"), #1
 	preload("res://assets/user_interface/squad_potrait/merc_1.png"), #2
 	preload("res://assets/user_interface/squad_potrait/merc_2.png"), #3
-	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #4
-	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #5
-	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #6
-	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #7
-	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #8
-	preload("res://assets/user_interface/squad_potrait/knight_3.png") #9
+	preload("res://assets/user_interface/squad_potrait/merc_3.png"), #4
+	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #5
+	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #6
+	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #7
+	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #8
+	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #9
+	preload("res://assets/user_interface/squad_potrait/knight_3.png") #10
 ]

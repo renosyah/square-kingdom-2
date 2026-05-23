@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 squad_id = 0
 squad_name = "Pikeman"
-description = "Elit spear line unit"
+description = "Elit spear unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
@@ -24,7 +24,7 @@ turning_speed = 8.0
 attack_speed = 0.75
 formation_density = 0.35
 icon_idx = 1
-potrait_idx = 9
+potrait_idx = 10
 member_headgear_idx = 6
 member_armor_idx = 9
 member_shield_idx = 0

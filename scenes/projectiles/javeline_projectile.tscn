@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/projectiles/javeline_projectile.gd" type="Script" id=1]
+[ext_resource path="res://scenes/equipment/weapons/javeline/javeline.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=4]
+
+[node name="jav_projectiile" type="Spatial"]
+script = ExtResource( 1 )
+speed = 8.0
+max_range = 2.0
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0.03 )
+mesh = ExtResource( 2 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )

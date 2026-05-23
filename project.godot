@@ -287,7 +287,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "TilePositionManager",
 "language": "GDScript",
-"path": "res://addons/tile_position_manager/tile_position_manager.gd"
+"path": "res://assets/tile_position_manager/tile_position_manager.gd"
 }, {
 "base": "Node",
 "class": "Utils",

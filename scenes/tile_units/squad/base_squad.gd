@@ -58,6 +58,8 @@ export var reinfoce_tiles :Array = []
 
 var member_alive :int
 
+export var show_move_indicator:bool = false
+
 # MUST SET
 var squad_icon :StreamTexture
 var camera :Camera
@@ -78,7 +80,7 @@ var _attack_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
-#var _path_indicator2 :Spatial
+var _path_indicator2 :Spatial
 var _floating_info :FloatingSquadInfo
 var _heal_interupt :bool = false
 
@@ -127,14 +129,15 @@ func _ready():
 	_unit_audio.bus = Global.bus_sfx
 	add_child(_unit_audio)
 	
-	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-	_path_indicator.material = member_material
-	add_child(_path_indicator)
-	_path_indicator.set_as_toplevel(true)
-	
-#	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-#	add_child(_path_indicator2)
-#	_path_indicator2.set_as_toplevel(true)
+	if show_move_indicator:
+		_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+		_path_indicator.material = member_material
+		add_child(_path_indicator)
+		_path_indicator.set_as_toplevel(true)
+		
+		_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+		add_child(_path_indicator2)
+		_path_indicator2.set_as_toplevel(true)
 	
 	_init_formations()
 	
@@ -142,7 +145,8 @@ func _ready():
 	yield(get_tree().create_timer(0.5),"timeout")
 	_spawn_members()
 	
-	_path_indicator.translation = global_position
+	if show_move_indicator:
+		_path_indicator.translation = global_position
 	
 func _init_formations():
 	pass
@@ -247,14 +251,17 @@ func _tree_exiting():
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
+	if not show_move_indicator:
+		return
+		
 	_path_indicator.visible = (nav != null)
-	#_path_indicator2.visible = (nav != null)
+	_path_indicator2.visible = (nav != null)
 	
 	if _path_indicator.visible:
 		_path_indicator.translation = nav.get_pos_v3(to_id)
 		
-#	if _path_indicator2.visible:
-#		_path_indicator2.translation = nav.get_pos_v3(from_id)
+	if _path_indicator2.visible:
+		_path_indicator2.translation = nav.get_pos_v3(from_id)
 	
 func sync_update() -> void:
 	.sync_update()
@@ -276,6 +283,7 @@ func moving(delta :float) -> void:
 		return
 		
 	var pos :Vector3 = global_position
+	
 	_ajust_formation(pos, delta)
 	_set_floating_info_pos(_get_avg_member_pos(pos), delta)
 	_attack_enemy_proccess(pos, delta)

@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 squad_id = 0
 squad_name = "Longbowman"
-description = "Elit Range support"
+description = "Elit missile unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
@@ -24,7 +24,7 @@ turning_speed = 8.0
 attack_speed = 2.6
 formation_density = 0.35
 icon_idx = 5
-potrait_idx = 6
+potrait_idx = 7
 member_headgear_idx = 5
 member_armor_idx = 8
 member_shield_idx = 0

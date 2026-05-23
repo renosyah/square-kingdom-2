@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/javeline.obj-f9e9d7924abc5b6217d4253b999a5c06.mesh"
+
+[deps]
+
+files=[ "res://.import/javeline.obj-f9e9d7924abc5b6217d4253b999a5c06.mesh" ]
+
+source_file="res://scenes/equipment/weapons/javeline/javeline.obj"
+dest_files=[ "res://.import/javeline.obj-f9e9d7924abc5b6217d4253b999a5c06.mesh", "res://.import/javeline.obj-f9e9d7924abc5b6217d4253b999a5c06.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
