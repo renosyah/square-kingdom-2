@@ -412,8 +412,11 @@ func _move_squad_to(tile :TileMapData):
 	unit_move_response()
 	
 	var idx = 0
+	var tile_id
 	for squad in dup:
-		var tile_id = tiles[idx]
+		if idx <= tiles.size() - 1:
+			tile_id = tiles[idx]
+			
 		squad.move_to(tile_id)
 		squad.click() # to unselect
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
@@ -463,16 +466,16 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 	
 func _on_current_tile_updated(squad, from_id, to_id):
 	tile_position_manager.update_position(squad, from_id, to_id)
-	#print("squad position updated %s : %s" % [squad, squad.current_tile])
 	
 func _on_finish_travel(squad, last_id, current_id):
-	print("squad finish travel %s : %s" % [squad, squad.current_tile])
+	pass
 	
 func _on_unit_dead(squad :BaseSquad):
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad)
 	squads.erase(squad)
 	
+	# confirm the lost was yours
 	if squad.player_id == current_player.player_id:
 		if selected_squads.has(squad):
 			selected_squads.erase(squad)
@@ -481,8 +484,12 @@ func _on_unit_dead(squad :BaseSquad):
 		ui.remove_squad_card(squad)
 		play_squad_lost()
 		
+	# confirm the kill was yours
 	if squad.team != current_player.team:
-		play_squad_killed()
+		var attacked_by :BaseSquad = get_node_or_null(squad.attacked_by)
+		if is_instance_valid(attacked_by):
+			if attacked_by.player_id == current_player.player_id:
+				play_squad_killed()
 		
 		
 	yield(get_tree().create_timer(1),"timeout")

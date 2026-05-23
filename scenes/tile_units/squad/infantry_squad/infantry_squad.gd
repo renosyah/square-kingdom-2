@@ -56,17 +56,11 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		
 		if iddles.empty():
 			return
-		
-		var m :SquadMember = iddles.pick_random()
-		if not is_instance_valid(m):
-			return
 			
 		# tell to attack 
 		# use melee weapon
+		var m :SquadMember = iddles.pick_random()
 		var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
-		if not is_instance_valid(enemy_member):
-			return
-			
 		var target_idx :int = enemy.get_member_index(enemy_member)
 		if target_idx == -1:
 			return
@@ -87,13 +81,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 			i.prepare_range_weapon()
 			
 		for i in iddles:
-			if not is_instance_valid(i):
-				continue
-				
 			var enemy_member :SquadMember = enemy.pick_member(false)
-			if not is_instance_valid(enemy_member):
-				continue
-				
 			var target_idx :int = enemy.get_member_index(enemy_member)
 			if target_idx == -1:
 				continue

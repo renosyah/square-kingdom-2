@@ -160,6 +160,10 @@ remote func _stop():
 	_is_moving = false
 	_paths.clear()
 	
+	# if got force stop, update the position duh
+	_on_current_tile_updated(_last_tile, current_tile)
+	_on_finish_travel(_last_tile, current_tile)
+	
 func sync_update() -> void:
 	if not is_dead:
 		.sync_update()
@@ -175,23 +179,6 @@ func last_sync_update() -> void:
 		rset("_puppet_translation", global_position)
 		rset("_puppet_current_tile", current_tile)
 		
-func moving(delta :float) -> void:
-	.moving(delta)
-	
-	if not is_dead:
-		_attack_enemy_proccess(delta, global_position)
-		
-func _attack_enemy_proccess(delta :float, pos :Vector3):
-	# because this script run on both
-	# must check via is_instance_valid enemy
-	if is_instance_valid(enemy):
-		if _is_in_range(enemy):
-			_on_enemy_in_range(delta, pos, enemy.global_position)
-			return
-	
-	_has_enemy = false
-	enemy = null
-	
 func _follow_path_proccess(delta :float, pos :Vector3):
 	# stop all none sense
 	if not _is_moving:

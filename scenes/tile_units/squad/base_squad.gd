@@ -78,7 +78,7 @@ var _attack_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
-var _path_indicator2 :Spatial
+#var _path_indicator2 :Spatial
 var _floating_info :FloatingSquadInfo
 var _heal_interupt :bool = false
 
@@ -132,9 +132,9 @@ func _ready():
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
 	
-	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-	add_child(_path_indicator2)
-	_path_indicator2.set_as_toplevel(true)
+#	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+#	add_child(_path_indicator2)
+#	_path_indicator2.set_as_toplevel(true)
 	
 	_init_formations()
 	
@@ -242,22 +242,19 @@ func _on_member_dead(member :SquadMember):
 		set_dead(false)
 		
 func _tree_exiting():
-	for i in _members:
-		i.queue_free()
-		
 	_floating_info.queue_free()
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
 	_path_indicator.visible = (nav != null)
-	_path_indicator2.visible = (nav != null)
+	#_path_indicator2.visible = (nav != null)
 	
 	if _path_indicator.visible:
 		_path_indicator.translation = nav.get_pos_v3(to_id)
 		
-	if _path_indicator2.visible:
-		_path_indicator2.translation = nav.get_pos_v3(from_id)
+#	if _path_indicator2.visible:
+#		_path_indicator2.translation = nav.get_pos_v3(from_id)
 	
 func sync_update() -> void:
 	.sync_update()
@@ -275,7 +272,15 @@ func sync_update() -> void:
 func moving(delta :float) -> void:
 	.moving(delta)
 	
+	if is_dead:
+		return
+		
 	var pos :Vector3 = global_position
+	_ajust_formation(pos, delta)
+	_set_floating_info_pos(_get_avg_member_pos(pos), delta)
+	_attack_enemy_proccess(pos, delta)
+	
+func _ajust_formation(pos :Vector3, delta :float):
 	var basis :Basis = global_transform.basis
 	
 	for i in _formation_offsets.size():
@@ -283,7 +288,6 @@ func moving(delta :float) -> void:
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
 	var members = get_members()
-		
 	for idx in members.size():
 		var m = members[idx]
 		if m.iddle or m.range_mode:
@@ -293,8 +297,17 @@ func moving(delta :float) -> void:
 		_walk_timer.start()
 		_step_audio.stream = walk_sounds.pick_random()
 		_step_audio.play()
-		
-	_set_floating_info_pos(_get_avg_member_pos(pos), delta)
+	
+func _attack_enemy_proccess(pos :Vector3, delta :float):
+	# because this script run on both master & puppet
+	# must check via is_instance_valid enemy
+	if is_instance_valid(enemy):
+		if _is_in_range(enemy):
+			_on_enemy_in_range(delta, pos, enemy.global_position)
+			return
+			
+	_has_enemy = false
+	enemy = null
 	
 func _get_avg_member_pos(pos :Vector3) -> Vector3:
 	var m :Array = get_members()
@@ -422,9 +435,6 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	attacked_by = from
 	
 	var m :SquadMember = _members[member_idx]
-	if not is_instance_valid(m):
-		return
-		
 	if amount > 0:
 		m.take_damage(amount)
 	
@@ -435,9 +445,6 @@ remotesync func _resurect(member_idx :int):
 		return
 		
 	var m :SquadMember = _members[member_idx]
-	if not is_instance_valid(m):
-		return
-		
 	m.resurect()
 	member_alive += 1
 	
@@ -448,9 +455,6 @@ remotesync func _taking_heal(hp_remain :int, member_idx :int):
 		return
 		
 	var m :SquadMember = _members[member_idx]
-	if not is_instance_valid(m):
-		return
-		
 	m.hp = hp_remain
 	emit_signal("on_squad_taking_heal", self)
 		
@@ -464,9 +468,6 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, fro
 	attacked_by = from
 	
 	var m :SquadMember = _members[member_idx]
-	if not is_instance_valid(m):
-		return
-		
 	m.hp = hp_remain
 	
 	if not _unit_audio.playing and amount > 0:
