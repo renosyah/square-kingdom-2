@@ -5,6 +5,7 @@ export var icon :StreamTexture
 export var color :Color
 export var floating_hurt :bool
 export var total_member :int
+export var is_mounted :bool
 
 var selected_squads :Array # refrences
 var squad # refrences of BaseSquad
@@ -23,19 +24,25 @@ onready var _hp_bar_holder = $Control/MarginContainer/hp_bar_holder
 
 onready var _green_color = $Control/temp_green.color
 onready var _red_color = $Control/temp_red.color
+onready var _mounted = $Control2/MarginContainer/mounted
 
 var _member_bars :Dictionary = {} # {member:colorrect}
 
 func _ready():
+	visible = false
+	_mounted.visible = is_mounted
 	_icon.texture = icon
 	_color.color = color
-
-	_update_bar()
+	
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
+	
+	yield(get_tree().create_timer(0.8),"timeout")
+	_update_bar()
+	visible = true
 	
 func _process(delta):
 	if floating_hurt and visible:

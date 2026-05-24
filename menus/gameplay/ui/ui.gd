@@ -23,6 +23,7 @@ onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/sq
 onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
 
+
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences
 var selected_squads :Array # refrences
@@ -75,7 +76,19 @@ func remove_squad_card(squad :BaseSquad):
 			c.queue_free()
 			break
 			
-			
+func add_squad_floating_info(squad :BaseSquad, data :SquadData, p :PlayerData):
+	var _floating_info :FloatingSquadInfo= preload("res://assets/user_interface/icons/floating_squad_info/floating_squad_info.tscn").instance()
+	_floating_info.selected_squads = selected_squads
+	_floating_info.squad = squad
+	_floating_info.name = "info_%s" % name
+	_floating_info.color = squad.color
+	_floating_info.icon = EntityIndex.squad_icon[data.icon_idx]
+	_floating_info.floating_hurt = squad.player_id == p.player_id
+	_floating_info.total_member = data.total_member
+	_floating_info.is_mounted = data.is_mounted
+	overlay_ui.add_child(_floating_info)
+	squad.floating_info = _floating_info
+	
 func add_log(v :String):
 	var l = Label.new()
 	l.autowrap = true

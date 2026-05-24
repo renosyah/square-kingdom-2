@@ -61,11 +61,8 @@ var member_alive :int
 export var show_move_indicator:bool = false
 
 # MUST SET
-var squad_icon :StreamTexture
 var camera :Camera
-var overlay_ui :Control
-var selected_squads :Array # refrences
-var floating_hurt :bool
+var floating_info :FloatingSquadInfo
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -81,7 +78,7 @@ var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
 var _path_indicator2 :Spatial
-var _floating_info :FloatingSquadInfo
+
 var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
@@ -92,9 +89,9 @@ var attacked_by :NodePath
 
 onready var _has_shield :bool = member_shield != null
 onready var _has_range_weapon :bool = member_range_weapon != null
+var _member_spawned :bool = false
 
 func _ready():
-	connect("tree_exiting", self, "_tree_exiting")
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	
 	_attack_timer = Timer.new()
@@ -136,15 +133,16 @@ func _ready():
 	_path_indicator.set_as_toplevel(true)
 	_path_indicator.visible = show_move_indicator
 		
-#		_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-#		add_child(_path_indicator2)
-#		_path_indicator2.set_as_toplevel(true)
+#	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+#	add_child(_path_indicator2)
+#	_path_indicator2.set_as_toplevel(true)
 	
 	_init_formations()
 	
 	# add little bit of delay
 	yield(get_tree().create_timer(0.5),"timeout")
 	_spawn_members()
+	_member_spawned = true
 	
 	if show_move_indicator:
 		_path_indicator.translation = global_position
@@ -186,17 +184,7 @@ func _spawn_members():
 		member.set_as_toplevel(true)
 		member.translation = _formation_positions[idx]
 		_members.append(member)
-		
-	_floating_info = preload("res://assets/user_interface/icons/floating_squad_info/floating_squad_info.tscn").instance()
-	_floating_info.selected_squads = selected_squads
-	_floating_info.squad = self
-	_floating_info.name = "info_%s" % name
-	_floating_info.color = color
-	_floating_info.icon = squad_icon
-	_floating_info.floating_hurt = floating_hurt
-	_floating_info.total_member = _members.size()
-	overlay_ui.add_child(_floating_info)
-	
+
 func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
 		return
@@ -250,9 +238,6 @@ func _on_member_dead(member :SquadMember):
 	if member_alive <= 0:
 		set_dead(false)
 		
-func _tree_exiting():
-	_floating_info.queue_free()
-	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
@@ -334,7 +319,11 @@ func _get_avg_member_pos(pos :Vector3) -> Vector3:
 	
 func _set_floating_info_pos(pos :Vector3, delta :float):
 	# track floating ui
-	if not overlay_ui.visible or not _floating_info:
+	if not _member_spawned:
+		return
+		
+	var _floating_info = floating_info
+	if not _floating_info:
 		return
 		
 	_floating_info.visible = _current_visible
@@ -442,6 +431,11 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	if is_dead:
 		return
 		
+	# shield provide 20% chance of receive no damage
+	# even if this hybrid unit using a range weapon
+	if _has_shield and randf() < 0.20:
+		return
+		
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
@@ -496,3 +490,12 @@ func puppet_moving(delta :float) -> void:
 		rotation.y = lerp_angle(rotation.y, _puppet_rotation_y, 25 * delta)
 		enemy = get_node_or_null(_puppet_enemy)
 		_is_moving = _puppet_is_moving
+		
+func update_spotting():
+	.update_spotting()
+	
+	_melee_ranges = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
+	) + [current_tile]
+
+

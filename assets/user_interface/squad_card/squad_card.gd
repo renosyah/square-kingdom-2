@@ -8,17 +8,21 @@ var squad :BaseSquad # refrences
 onready var _overlay = $overlay
 onready var _bg = $bg
 onready var _texture_rect = $MarginContainer/TextureRect
-onready var _color = $MarginContainer/MarginContainer/MarginContainer/color
-onready var _icon = $MarginContainer/MarginContainer/MarginContainer/MarginContainer2/icon
+onready var _color = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/color
+onready var _icon = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/MarginContainer2/icon
 onready var _label = $MarginContainer/ColorRect/Label
+onready var _color2 = $MarginContainer/VBoxContainer/mounted/MarginContainer/color
+onready var _mounted = $MarginContainer/VBoxContainer/mounted
 
 onready var _heal = $heal
 onready var _hurt = $hurt
 onready var _button = $Button
 
 func _ready():
+	_mounted.visible = data.is_mounted
 	_bg.color = Global.player_colors[data.color_idx]
 	_color.color = Global.player_colors[data.color_idx]
+	_color2.color = Global.player_colors[data.color_idx]
 	_texture_rect.texture = EntityIndex.squad_potraits[data.potrait_idx]
 	_icon.texture = EntityIndex.squad_icon[data.icon_idx]
 	_label.text = "%s" % data.total_member

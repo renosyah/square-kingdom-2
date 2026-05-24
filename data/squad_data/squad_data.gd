@@ -29,6 +29,7 @@ export var attack_speed :float = 0.8
 export var formation_density :float = 0.35
 export var icon_idx :int
 export var potrait_idx :int
+export var is_mounted :bool = false
 
 # squad member
 export var member_headgear_idx :int
@@ -73,6 +74,7 @@ func from_dictionary(_data : Dictionary):
 	member_max_hp = _data["s"]
 	total_member = _data["t"]
 	heal_amount = _data["u"]
+	is_mounted = _data["v"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -106,6 +108,7 @@ func to_dictionary() -> Dictionary :
 	_data["s"] = member_max_hp
 	_data["t"] = total_member
 	_data["u"] = heal_amount
+	_data["v"] = is_mounted
 	return _data
 	
 

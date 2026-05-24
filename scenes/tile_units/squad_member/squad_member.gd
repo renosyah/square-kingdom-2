@@ -11,6 +11,7 @@ export var shield :PackedScene
 export var melee_weapon :PackedScene
 export var range_weapon :PackedScene
 export var material :SpatialMaterial
+export var on_horse :bool = false
 
 export var hp :int = 100
 export var max_hp :int = 100
@@ -37,7 +38,10 @@ func _ready():
 	set_physics_process(false)
 	
 func resurect():
-	pass
+	hp = max_hp
+	is_dead = false
+	set_process(true)
+	translation = squad.global_position
 	
 func set_dead():
 	set_process(false)
@@ -46,11 +50,11 @@ func set_dead():
 	rpc("_on_member_dead")
 	
 remotesync func _on_member_dead():
-	set_process(false)
-	is_dead = true
 	dead()
 	
 func dead():
+	set_process(false)
+	is_dead = true
 	emit_signal("on_member_dead", self)
 	
 func prepare_melee_weapon():

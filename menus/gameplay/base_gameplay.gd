@@ -365,13 +365,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_max_hp = data.member_max_hp
 	squad.heal_amount = data.heal_amount
 	squad.member_alive = data.total_member
-	
-	squad.overlay_ui = ui.overlay_ui
-	squad.camera = movable_camera.camera
-	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
-	squad.selected_squads = selected_squads
-	squad.floating_hurt = current_player.player_id == data.player_id
 	squad.show_move_indicator = setting.show_unit_tile
+	
+	# for floating info
+	squad.camera = movable_camera.camera
 
 	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
@@ -407,6 +404,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	squad.update_spotting()
 	
 	ui.minimap.add_object(squad, squad.color)
+	ui.add_squad_floating_info(squad, data, current_player)
 	
 func _move_squad_to(tile :TileMapData):
 	if selected_squads.empty():
@@ -520,6 +518,7 @@ func _on_unit_dead(squad :BaseSquad, data :SquadData):
 				play_squad_killed(is_commander)
 		
 	yield(get_tree().create_timer(1),"timeout")
+	squad.floating_info.queue_free()
 	squad.queue_free()
 
 

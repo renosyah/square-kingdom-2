@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad_member/infantry_member/body.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/tile_units/squad_member/infantry_member/hand.obj" type="ArrayMesh" id=2]
@@ -2131,6 +2131,58 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=69]
+resource_name = "on_sadle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/leg_r:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.05, -0.1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/leg_r:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 32 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/leg_l:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.05, -0.1, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/leg_l:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -32 ) ]
+}
+
 [sub_resource type="Animation" id=5]
 resource_name = "walk"
 length = 0.6
@@ -2313,6 +2365,9 @@ animation = "die"
 [sub_resource type="AnimationNodeAnimation" id=6]
 animation = "iddle"
 
+[sub_resource type="AnimationNodeAnimation" id=70]
+animation = "on_sadle"
+
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "walk"
 
@@ -2322,15 +2377,20 @@ animation = "walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=55]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=71]
+
 [sub_resource type="AnimationNodeStateMachine" id=10]
 states/die/node = SubResource( 54 )
 states/die/position = Vector2( 183, 165 )
 states/iddle/node = SubResource( 6 )
 states/iddle/position = Vector2( 183, 75 )
+states/on_sadle/node = SubResource( 70 )
+states/on_sadle/position = Vector2( 16.175, 75 )
 states/walk/node = SubResource( 7 )
 states/walk/position = Vector2( 383, 75 )
-transitions = [ "iddle", "walk", SubResource( 8 ), "walk", "iddle", SubResource( 9 ), "iddle", "die", SubResource( 55 ) ]
+transitions = [ "iddle", "walk", SubResource( 8 ), "walk", "iddle", SubResource( 9 ), "iddle", "die", SubResource( 55 ), "iddle", "on_sadle", SubResource( 71 ) ]
 start_node = "iddle"
+graph_offset = Vector2( -338.825, 0 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
@@ -2341,7 +2401,6 @@ script = ExtResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301446, 0 )
 
 [node name="body" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="head" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0 )
@@ -2448,6 +2507,7 @@ anims/weapon_trust_attack = SubResource( 36 )
 anims/RESET = SubResource( 4 )
 anims/die = SubResource( 51 )
 anims/iddle = SubResource( 3 )
+anims/on_sadle = SubResource( 69 )
 anims/walk = SubResource( 5 )
 
 [node name="body_animation_tree" type="AnimationTree" parent="."]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://assets/user_interface/icons/horse.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/squad_card/squad_card.gd" type="Script" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
 
@@ -40,46 +41,95 @@ mouse_filter = 2
 expand = true
 stretch_mode = 7
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 20.0
 margin_bottom = 20.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 18.0
+margin_bottom = 18.0
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/MarginContainer"]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/MarginContainer"]
 margin_right = 18.0
 margin_bottom = 18.0
 mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
 margin_right = 18.0
 margin_bottom = 18.0
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="color" type="ColorRect" parent="MarginContainer/MarginContainer/MarginContainer"]
+[node name="color" type="ColorRect" parent="MarginContainer/VBoxContainer/MarginContainer/MarginContainer"]
 margin_right = 18.0
 margin_bottom = 18.0
 mouse_filter = 2
 color = Color( 1, 0, 0, 1 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/MarginContainer/MarginContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/MarginContainer"]
 margin_right = 18.0
 margin_bottom = 18.0
 mouse_filter = 2
 
-[node name="icon" type="TextureRect" parent="MarginContainer/MarginContainer/MarginContainer/MarginContainer2"]
+[node name="icon" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/MarginContainer/MarginContainer2"]
 margin_right = 18.0
 margin_bottom = 18.0
 rect_min_size = Vector2( 18, 18 )
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+expand = true
+
+[node name="mounted" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 22.0
+margin_right = 18.0
+margin_bottom = 40.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/mounted"]
+margin_right = 18.0
+margin_bottom = 18.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/mounted"]
+margin_right = 18.0
+margin_bottom = 18.0
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="color" type="ColorRect" parent="MarginContainer/VBoxContainer/mounted/MarginContainer"]
+margin_right = 18.0
+margin_bottom = 18.0
+mouse_filter = 2
+color = Color( 1, 0, 0, 1 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/mounted/MarginContainer"]
+margin_right = 18.0
+margin_bottom = 18.0
+mouse_filter = 2
+
+[node name="icon" type="TextureRect" parent="MarginContainer/VBoxContainer/mounted/MarginContainer/MarginContainer2"]
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 1 )
 expand = true
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer"]

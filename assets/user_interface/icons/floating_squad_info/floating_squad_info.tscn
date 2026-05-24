@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/user_interface/icons/floating_squad_info/floating_squad_info.gd" type="Script" id=1]
+[ext_resource path="res://assets/user_interface/icons/horse.png" type="Texture" id=2]
 [ext_resource path="res://assets/user_interface/icons/range.png" type="Texture" id=3]
 
 [node name="floating_unit_info" type="MarginContainer"]
+visible = false
 margin_right = 80.0
 margin_bottom = 13.0
 rect_pivot_offset = Vector2( 40, 6 )
@@ -134,6 +136,34 @@ mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource( 3 )
+expand = true
+
+[node name="mounted" type="MarginContainer" parent="Control2/MarginContainer"]
+margin_right = 12.0
+margin_bottom = 12.0
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="color" type="ColorRect" parent="Control2/MarginContainer/mounted"]
+margin_right = 12.0
+margin_bottom = 12.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control2/MarginContainer/mounted"]
+margin_right = 12.0
+margin_bottom = 12.0
+mouse_filter = 2
+
+[node name="icon" type="TextureRect" parent="Control2/MarginContainer/mounted/MarginContainer2"]
+margin_right = 12.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 12, 12 )
+mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 2 )
 expand = true
 
 [node name="hurt" type="ColorRect" parent="Control2/MarginContainer"]

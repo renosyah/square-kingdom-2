@@ -91,17 +91,6 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 			m.enemy = enemy_member
 			m.range_attack()
 			
-func take_damage(amount :int, member_idx :int, from :NodePath):
-	if is_dead:
-		return
-		
-	# shield provide 20% chance of receive no damage
-	# even if this hybrid unit using a range weapon
-	if _has_shield and randf() < 0.20:
-		return
-
-	.take_damage(amount, member_idx, from)
-	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	
@@ -119,9 +108,3 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	if is_align:
 		translation += -transform.basis.z * speed * delta
 		
-func update_spotting():
-	.update_spotting()
-	
-	_melee_ranges = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
-	) + [current_tile]

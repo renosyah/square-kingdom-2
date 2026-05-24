@@ -58,15 +58,13 @@ func _ready():
 		var m :MeshInstance = i
 		m.set_surface_material(0, material)
 		
+	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
+	
 func resurect():
 	.resurect()
 	
-	translation = squad.global_position
-	hp = max_hp
-	is_dead = false
-	leg_animation_state.start("iddle")
+	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
 	body_animation_state.start("iddle")
-	set_process(true)
 	
 	
 func apply_equipment():
@@ -163,16 +161,12 @@ func melee_attack():
 	_last_pos = global_position
 	
 	prepare_melee_weapon()
+	_look_at(enemy.global_position)
 	
-	var _dir = global_position.direction_to(enemy.global_position)
-	if _dir.length() > 0.001:
-		var dot = abs(_dir.dot(Vector3.UP))
-		if dot < 0.999:
-			look_at(enemy.global_position, Vector3.UP)
-	
-	tween.interpolate_property(self, "translation", global_position, enemy.global_position, 0.8)
-	tween.start()
-	yield(tween,"tween_completed")
+	if not on_horse:
+		tween.interpolate_property(self, "translation", global_position, enemy.global_position, 0.8)
+		tween.start()
+		yield(tween,"tween_completed")
 	
 	body_animation_state.travel(_melee_weapon.attack_animation)
 	auto_iddle_timer.start()
@@ -181,9 +175,10 @@ func _on_melee_attack_performed():
 	_combat_sound.stream = sword_sounds.pick_random()
 	_combat_sound.play()
 	
-	tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
-	tween.start()
-	yield(tween,"tween_completed")
+	if not on_horse:
+		tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
+		tween.start()
+		yield(tween,"tween_completed")
 	
 	if is_instance_valid(enemy):
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, _melee_weapon.attack_damage)
@@ -203,11 +198,21 @@ func range_attack():
 	iddle = false
 	
 	prepare_range_weapon()
-	look_at(enemy.global_position, Vector3.UP)
+	_look_at(enemy.global_position)
 	
 	body_animation_state.travel(_range_weapon.attack_animation)
 	auto_iddle_timer.start()
 	
+func _look_at(pos :Vector3):
+	var _pos = pos
+	_pos.y = global_position.y
+	
+	var _dir = global_position.direction_to(_pos)
+	if _dir.length() > 0.001:
+		var dot = abs(_dir.dot(Vector3.UP))
+		if dot < 0.999:
+			look_at(_pos, Vector3.UP)
+			
 func _on_pulling_bow():
 	_range_weapon.pull()
 	
@@ -240,8 +245,7 @@ func moving(delta :float):
 	if is_dead:
 		return
 		
-	var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy))
-		
+	var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy)) and not on_horse
 	if iddle:
 		if range_mode:
 			body_animation_state.travel(
@@ -253,9 +257,10 @@ func moving(delta :float):
 				_melee_weapon.walk_animation if _is_moving else _melee_weapon.ready_animation
 			)
 		
-	leg_animation_state.travel(
-		"walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
-	)
+	if not on_horse:
+		leg_animation_state.travel(
+			"walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
+		)
 
 func dead():
 	.dead()

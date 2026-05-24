@@ -2,10 +2,12 @@ extends Node
 class_name EntityIndex
 
 const squads = [
-	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn")
+	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn"),
+	preload("res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.tscn")
 ]
 const members = [
-	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn")
+	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"),
+	preload("res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.tscn")
 ]
 const weapons = [
 	null, # index 0 as NULL 0

@@ -25,6 +25,7 @@ attack_speed = 1.2
 formation_density = 0.35
 icon_idx = 7
 potrait_idx = 4
+is_mounted = false
 member_headgear_idx = 3
 member_armor_idx = 0
 member_shield_idx = 0
