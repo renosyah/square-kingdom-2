@@ -41,6 +41,7 @@ func _ready():
 	display_current_army()
 	
 	Global.hide_transition()
+	info.display_info(Global.custom_squads[0])
 	
 func _process(delta):
 	var pos = dragable_item.rect_position

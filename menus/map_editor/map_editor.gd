@@ -55,7 +55,7 @@ func _process(delta):
 	
 func generate_spawn_points() -> Array:
 	var datas :Array = []
-	var spawn_points_offset :Array = ReserveTile.get_spawn_points(
+	var spawn_points_offset :Array = TileIndex.get_spawn_points(
 		Global.current_tile_map_manifest_data.map_size, 3
 	)
 	

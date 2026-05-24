@@ -226,12 +226,13 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
 		
-		_unit_audio.stream = death_sounds[randi() % 4]
+		if not _unit_audio.playing:
+			_unit_audio.stream = death_sounds[randi() % 4]
 		
-		if randf() < 0.08:
-			_unit_audio.stream = death_sounds[5] # wilhem
+			if randf() < 0.08:
+				_unit_audio.stream = death_sounds[5] # wilhem
 		
-		_unit_audio.play()
+			_unit_audio.play()
 		
 		emit_signal("on_squad_member_dead", self, member)
 		
@@ -374,10 +375,10 @@ func get_iddle_members() -> Array:
 			
 	return iddles
 	
-func get_members() -> Array:
+func get_members(all :bool = false) -> Array:
 	var alives = []
 	for i in _members:
-		if not i.is_dead:
+		if not i.is_dead or all:
 			alives.append(i)
 			
 	return alives

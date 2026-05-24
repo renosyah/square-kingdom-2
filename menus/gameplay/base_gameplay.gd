@@ -81,6 +81,9 @@ const movement = [
 const selection = [
 	preload("res://assets/sounds/unit/selection/selection_1_1.wav"), preload("res://assets/sounds/unit/selection/selection_1_2.wav"), preload("res://assets/sounds/unit/selection/selection_1_3.wav"), preload("res://assets/sounds/unit/selection/selection_2_1.wav"), preload("res://assets/sounds/unit/selection/selection_2_2.wav"), preload("res://assets/sounds/unit/selection/selection_2_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_1.wav"), preload("res://assets/sounds/unit/selection/selection_3_2.wav"), preload("res://assets/sounds/unit/selection/selection_3_3.wav"), preload("res://assets/sounds/unit/selection/selection_3_4.wav")
 ]
+const cav_charged = [
+	preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_1.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_2.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_3.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_4.wav")
+]
 
 const announce_squad_killed = [
 	preload("res://assets/sounds/announcement/squad_kill_1.wav"), preload("res://assets/sounds/announcement/squad_kill_2.wav"), preload("res://assets/sounds/announcement/squad_kill_3.wav"), preload("res://assets/sounds/announcement/squad_kill_4.wav"), preload("res://assets/sounds/announcement/squad_kill_5.wav"), preload("res://assets/sounds/announcement/squad_kill_6.wav")
@@ -88,7 +91,6 @@ const announce_squad_killed = [
 const announce_squad_lost = [
 	preload("res://assets/sounds/announcement/squad_lost_1.wav"), preload("res://assets/sounds/announcement/squad_lost_2.wav"), preload("res://assets/sounds/announcement/squad_lost_3.wav"), preload("res://assets/sounds/announcement/squad_lost_4.wav"), preload("res://assets/sounds/announcement/squad_lost_5.wav"), preload("res://assets/sounds/announcement/squad_lost_6.wav")
 ]
-
 const announce_commander_killed = [
 	preload("res://assets/sounds/announcement/commander_kill_1.wav"), preload("res://assets/sounds/announcement/commander_kill_2.wav"), preload("res://assets/sounds/announcement/commander_kill_3.wav"), preload("res://assets/sounds/announcement/commander_kill_4.wav"), preload("res://assets/sounds/announcement/commander_kill_5.wav"), preload("res://assets/sounds/announcement/commander_kill_6.wav")
 ]
@@ -147,6 +149,16 @@ func unit_attacking_response(w :bool = false):
 		return
 		
 	unit_sound.stream = attack.pick_random()
+	unit_sound.play()
+	
+func unit_charged_impact(w :bool = false):
+	if annoucer_sound.playing:
+		return
+		
+	if unit_sound.playing and w:
+		return
+		
+	unit_sound.stream = cav_charged.pick_random()
 	unit_sound.play()
 	
 func play_squad_lost(is_commander :bool):
@@ -212,7 +224,7 @@ var player_spawn_point :Vector2
 
 func setup_players_spawn_points():
 	var map_size :int = current_tile_map_manifest_data.map_size
-	player_spawn_points = ReserveTile.get_spawn_points(map_size, 3)
+	player_spawn_points = TileIndex.get_spawn_points(map_size, 3)
 	
 	for index in players.size():
 		var p :PlayerData = players[index]
@@ -343,7 +355,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.player_id = data.player_id
 	squad.unit_name = data.squad_name
 	squad.team = data.team
-	squad.color = Global.player_colors[data.color_idx]
+	squad.color = EntityIndex.player_colors[data.color_idx]
 	squad.speed = data.speed
 
 	# squad data
@@ -378,6 +390,9 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_unit_dead", self, "_on_unit_dead", [data])
+	
+	if squad is CavalrySquad:
+		squad.connect("on_cav_charge", self, "_on_cav_charge")
 	
 	squad.set_hidden(false)
 	
@@ -516,13 +531,15 @@ func _on_unit_dead(squad :BaseSquad, data :SquadData):
 		if is_instance_valid(attacked_by):
 			if attacked_by.player_id == current_player.player_id:
 				play_squad_killed(is_commander)
-		
+				
+	squad.floating_info.visible = false
 	yield(get_tree().create_timer(1),"timeout")
 	squad.floating_info.queue_free()
 	squad.queue_free()
 
 
-
+func _on_cav_charge(squad):
+	unit_charged_impact()
 
 
 

@@ -12,17 +12,17 @@ var player_data :PlayerData = Global.player_data
 func _ready():
 	_apply()
 	
-	for idx in Global.player_colors.size():
+	for idx in EntityIndex.player_colors.size():
 		var btn :Button = color_btn_temp.duplicate()
 		btn.visible = true
 		btn.connect("pressed", self, "_color_btn_pressed", [idx])
-		btn.get_child(0).color = Global.player_colors[idx]
+		btn.get_child(0).color = EntityIndex.player_colors[idx]
 		color_option_holder.add_child(btn)
 	
 func _apply():
 	edit_player_name.text = player_data.player_name
-	player_color_display.color = Global.player_colors[player_data.color_idx]
-	player_potrait_display.texture = Global.player_potraits[player_data.potrait_idx]
+	player_color_display.color = EntityIndex.player_colors[player_data.color_idx]
+	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
 
 func _on_button_edit_name_pressed():
 	edit_player_name.editable = not edit_player_name.editable
@@ -37,9 +37,9 @@ func _on_edit_player_name_text_changed(new_text):
 
 func _on_change_potrait_pressed():
 	player_data.potrait_idx += 1
-	if player_data.potrait_idx > Global.player_potraits.size() - 1:
+	if player_data.potrait_idx > EntityIndex.player_potraits.size() - 1:
 		player_data.potrait_idx = 0
 		
-	player_potrait_display.texture = Global.player_potraits[player_data.potrait_idx]
+	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
 
 

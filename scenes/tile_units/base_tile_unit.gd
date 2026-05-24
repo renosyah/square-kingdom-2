@@ -182,7 +182,7 @@ func last_sync_update() -> void:
 		
 func _follow_path_proccess(delta :float, pos :Vector3):
 	# safeguard
-	if not _is_moving:
+	if not _is_moving or is_dead:
 		return
 		
 	if _paths.empty():

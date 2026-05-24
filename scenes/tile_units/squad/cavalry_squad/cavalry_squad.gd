@@ -1,5 +1,33 @@
 extends BaseSquad
+class_name CavalrySquad
 
+signal on_cav_charge(squad)
+
+const horse_dead = [
+	preload("res://assets/sounds/death/horse_dead_1.wav"),
+	preload("res://assets/sounds/death/horse_dead_2.wav"),
+	preload("res://assets/sounds/death/horse_dead_3.wav")
+]
+
+export var charge_damage :int = 23
+export var charge_required :int = 3
+
+var _charges :int
+
+var _horse_audio :AudioStreamPlayer3D
+
+func _ready():
+	_horse_audio = AudioStreamPlayer3D.new()
+	_horse_audio.bus = Global.bus_sfx
+	add_child(_horse_audio)
+	
+func _on_member_dead(member :SquadMember):
+	._on_member_dead(member)
+	
+	if not _horse_audio.playing:
+		_horse_audio.stream = horse_dead.pick_random()
+		_horse_audio.play()
+	
 func _init_formations():
 	._init_formations()
 	
@@ -10,6 +38,64 @@ func _init_formations():
 		Vector3.BACK
 	]
 	_formation_positions = _formation_offsets.duplicate()
+	
+func _move_to(tile_id :Vector2):
+	._move_to(tile_id)
+	
+	_charges = 0
+	
+func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
+	._on_current_tile_updated(from_id, to_id)
+	
+	# if there are chases enemy
+	# and cav travel more than enough
+	if is_instance_valid(chase_enemy):
+		_charges += 1
+	
+func _on_finish_travel(from_id :Vector2, to_id :Vector2):
+	._on_finish_travel(from_id, to_id)
+	
+	# on stop, there will be impact
+	if (_charges >= charge_required):
+		_cav_charge(to_id, charge_damage + _charges)
+		
+	_charges = 0
+	
+func _cav_charge(tile_id :Vector2, attack_damage :int):
+	if not _is_master:
+		return
+	
+	if not unit_position.has(tile_id):
+		return
+		
+	var unit_positions :Array = unit_position[tile_id]
+	if unit_positions.empty():
+		return
+		
+	var squad_hit :int = 0
+	for enemy_squad in unit_positions:
+		if not is_instance_valid(enemy_squad):
+			continue
+			
+		# we dont want clamp ourself
+		if enemy_squad == self:
+			continue
+			
+		var members :Array = enemy_squad.get_members(true)
+		if members.empty():
+			continue
+			
+		squad_hit += 1
+			
+		for idx in members.size():
+			enemy_squad.take_damage(int(attack_damage * clamp(randf(), 0.5, 1)), idx, get_path())
+	
+	if squad_hit > 0:
+		if not _horse_audio.playing:
+			_horse_audio.stream = horse_dead.pick_random()
+			_horse_audio.play()
+		
+		emit_signal("on_cav_charge", self)
 
 func _ajust_formation(pos :Vector3, delta :float):
 	var basis :Basis = global_transform.basis
@@ -30,7 +116,16 @@ func _ajust_formation(pos :Vector3, delta :float):
 		
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
-
+	
+	if not _is_moving:
+		# align Y
+		var look :Vector3 = enemy_pos
+		look.y = pos.y
+		
+		# look at enemy position
+		var t:Transform = transform.looking_at(look, Vector3.UP)
+		transform = transform.interpolate_with(t, turning_speed * delta)
+	
 	if not can_attack:
 		return
 		

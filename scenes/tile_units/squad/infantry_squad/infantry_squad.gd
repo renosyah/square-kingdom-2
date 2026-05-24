@@ -1,4 +1,5 @@
 extends BaseSquad
+class_name InfantrySquad
 
 func _init_formations():
 	._init_formations()

@@ -31,31 +31,7 @@ func _on_tick():
 	
 ##########################################  player data  ############################################
 
-const player_potraits = [
-	preload("res://assets/user_interface/potrait/1.png"),
-	preload("res://assets/user_interface/potrait/2.png"),
-	preload("res://assets/user_interface/potrait/3.png"),
-	preload("res://assets/user_interface/potrait/4.png"),
-	preload("res://assets/user_interface/potrait/5.png"),
-	preload("res://assets/user_interface/potrait/6.png"),
-	preload("res://assets/user_interface/potrait/7.png"),
-	preload("res://assets/user_interface/potrait/8.png"),
-	preload("res://assets/user_interface/potrait/9.png")
-]
-
-const player_colors = [
-	Color("#2B5D9D"),
-	Color("#982D2D"),
-	Color("#583591"),
-	Color("#31753F"),
-	Color("#AD7F1D"),
-	Color("#36A1B8"),
-	Color("#B8541B"),
-	Color("#B14C7E"),
-	Color("#585F69"),
-	Color.black
-]
-var player_materials = []
+var player_materials = [] # SpatialMaterial
 
 const player_data_filepath :String = "player_data.dat"
 var player_data :PlayerData
@@ -74,15 +50,15 @@ func load_player_data():
 		player_data.player_id = Utils.create_unique_id()
 		player_data.player_name = OS.get_name()
 		player_data.team = 1
-		player_data.color_idx = randi() % player_colors.size()
-		player_data.potrait_idx = randi() % player_potraits.size()
+		player_data.color_idx = randi() % EntityIndex.player_colors.size()
+		player_data.potrait_idx = randi() % EntityIndex.player_potraits.size()
 		save_player_data()
 		
 	else:
 		player_data.from_dictionary(data)
 		
 	
-	for i in player_colors:
+	for i in EntityIndex.player_colors:
 		var material = SpatialMaterial.new()
 		material.albedo_color = i
 		player_materials.append(material)
@@ -267,12 +243,13 @@ const template_squads = [
 	preload("res://data/squad_data/pikeman.tres"),#6
 	preload("res://data/squad_data/knight.tres"),#7
 	preload("res://data/squad_data/crossbowman.tres"),#8
-	preload("res://data/squad_data/elite_guard.tres"),#9
-	preload("res://data/squad_data/huscarls.tres"),#10
-	preload("res://data/squad_data/longbowman.tres"),#11
 	preload("res://data/squad_data/cavalry_spear.tres"),
 	preload("res://data/squad_data/cavalry_sword.tres"),
 	preload("res://data/squad_data/cavalry_archer.tres"),
+	preload("res://data/squad_data/elite_guard.tres"),#9
+	preload("res://data/squad_data/huscarls.tres"),#10
+	preload("res://data/squad_data/longbowman.tres"),#11
+	preload("res://data/squad_data/cavalry_household.tres")
 ]
 onready var custom_squads :Array = []
 

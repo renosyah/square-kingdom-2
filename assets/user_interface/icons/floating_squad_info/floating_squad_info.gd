@@ -15,6 +15,8 @@ onready var _icon = $Control2/MarginContainer/MarginContainer/MarginContainer2/i
 onready var _overlay = $Control2/MarginContainer/overlay
 onready var _hurt = $Control2/MarginContainer/hurt
 onready var _heal = $Control2/MarginContainer/heal
+onready var _color2 = $Control2/MarginContainer/mounted/color
+onready var _icon2 = $Control2/MarginContainer/mounted/MarginContainer2/icon
 
 onready var _temp_green = $Control/temp_green
 onready var _temp_red = $Control/temp_red
@@ -131,6 +133,10 @@ func _sort_by_hp(a, b):
 	
 func _on_unit_clicked(_v):
 	_overlay.visible = squad in selected_squads
-
+	
+	if is_mounted:
+		_color2.color = Color("#ffffff") if _overlay.visible else Color("#000000")
+		_icon2.modulate = Color("#ffffff") if not _overlay.visible else Color("#000000")
+	
 func _on_Button_pressed():
 	squad.click()

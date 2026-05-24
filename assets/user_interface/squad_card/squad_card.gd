@@ -20,9 +20,9 @@ onready var _button = $Button
 
 func _ready():
 	_mounted.visible = data.is_mounted
-	_bg.color = Global.player_colors[data.color_idx]
-	_color.color = Global.player_colors[data.color_idx]
-	_color2.color = Global.player_colors[data.color_idx]
+	_bg.color = EntityIndex.player_colors[data.color_idx]
+	_color.color = EntityIndex.player_colors[data.color_idx]
+	_color2.color = EntityIndex.player_colors[data.color_idx]
 	_texture_rect.texture = EntityIndex.squad_potraits[data.potrait_idx]
 	_icon.texture = EntityIndex.squad_icon[data.icon_idx]
 	_label.text = "%s" % data.total_member

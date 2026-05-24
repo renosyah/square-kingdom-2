@@ -69,4 +69,30 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #9
 	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #10
 	preload("res://assets/user_interface/squad_potrait/knight_3.png"), #11
+	preload("res://assets/user_interface/squad_potrait/elit_1.png"), #12
+]
+
+const player_potraits = [
+	preload("res://assets/user_interface/potrait/1.png"),
+	preload("res://assets/user_interface/potrait/2.png"),
+	preload("res://assets/user_interface/potrait/3.png"),
+	preload("res://assets/user_interface/potrait/4.png"),
+	preload("res://assets/user_interface/potrait/5.png"),
+	preload("res://assets/user_interface/potrait/6.png"),
+	preload("res://assets/user_interface/potrait/7.png"),
+	preload("res://assets/user_interface/potrait/8.png"),
+	preload("res://assets/user_interface/potrait/9.png")
+]
+
+const player_colors = [
+	Color("#2B5D9D"),
+	Color("#982D2D"),
+	Color("#583591"),
+	Color("#31753F"),
+	Color("#AD7F1D"),
+	Color("#36A1B8"),
+	Color("#B8541B"),
+	Color("#B14C7E"),
+	Color("#585F69"),
+	Color.black
 ]

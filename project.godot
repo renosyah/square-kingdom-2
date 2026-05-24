@@ -54,6 +54,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/batch_spawner/batch_spawner.gd"
 }, {
+"base": "BaseSquad",
+"class": "CavalrySquad",
+"language": "GDScript",
+"path": "res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.gd"
+}, {
 "base": "Node",
 "class": "ChunkManagement",
 "language": "GDScript",
@@ -82,7 +87,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "EntityIndex",
 "language": "GDScript",
-"path": "res://global/entity_index.gd"
+"path": "res://index/entity_index.gd"
 }, {
 "base": "Spatial",
 "class": "Equipment",
@@ -103,6 +108,11 @@ _global_script_classes=[ {
 "class": "IndirectProjectile",
 "language": "GDScript",
 "path": "res://addons/base_projectiles/indirect/indirect.gd"
+}, {
+"base": "BaseSquad",
+"class": "InfantrySquad",
+"language": "GDScript",
+"path": "res://scenes/tile_units/squad/infantry_squad/infantry_squad.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventMultiScreenDrag",
@@ -262,7 +272,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "TileIndex",
 "language": "GDScript",
-"path": "res://global/tile_indexs.gd"
+"path": "res://index/tile_indexs.gd"
 }, {
 "base": "Resource",
 "class": "TileMapData",
@@ -304,6 +314,7 @@ _global_script_class_icons={
 "BaseTileUnit": "",
 "BatchDespawner": "",
 "BatchSpawner": "",
+"CavalrySquad": "",
 "ChunkManagement": "",
 "ClickableFloor": "",
 "ClickableScreen": "",
@@ -314,6 +325,7 @@ _global_script_class_icons={
 "FloatingSquadInfo": "",
 "GameplayUi": "",
 "IndirectProjectile": "",
+"InfantrySquad": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
 "InputEventScreenTwist": "",

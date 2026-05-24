@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/cav_charge_ok_3.wav-0af3c779b1b585a49a6687dd5ca624e2.sample"
+
+[deps]
+
+source_file="res://assets/sounds/unit/charge_impact/cav_charge_ok_3.wav"
+dest_files=[ "res://.import/cav_charge_ok_3.wav-0af3c779b1b585a49a6687dd5ca624e2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

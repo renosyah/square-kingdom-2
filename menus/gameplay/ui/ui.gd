@@ -8,7 +8,7 @@ const icon_unknown_mode = preload("res://assets/user_interface/icons/question.pn
 const icon_normal_movement_mode = preload("res://assets/user_interface/icons/movement_mode.png")
 const icon_attack_move_mode = preload("res://assets/user_interface/icons/attack_move_mode.png")
 
-onready var ui_color :Color = Global.player_colors[Global.current_player.color_idx]
+onready var ui_color :Color = EntityIndex.player_colors[Global.current_player.color_idx]
 onready var overlay_ui = $CanvasLayer/Control/overlay_ui
 onready var movable_camera_ui = $CanvasLayer/Control/movable_camera_ui
 onready var movable_camera_minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap/movable_camera_minimap
@@ -22,7 +22,6 @@ onready var selection_button = $CanvasLayer/Control/MarginContainer/VBoxContaine
 onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode
 onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
-
 
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences

@@ -5,7 +5,6 @@
 [ext_resource path="res://assets/user_interface/icons/range.png" type="Texture" id=3]
 
 [node name="floating_unit_info" type="MarginContainer"]
-visible = false
 margin_right = 80.0
 margin_bottom = 13.0
 rect_pivot_offset = Vector2( 40, 6 )

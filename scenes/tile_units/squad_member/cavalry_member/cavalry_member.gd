@@ -77,4 +77,26 @@ func moving(delta :float):
 		return
 		
 	rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
+	
+	#var run_anim = "run" if not squad.attack_move else "walk"
 	animation_state.travel("walk" if squad.is_moving() else "iddle")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,8 +16,8 @@ onready var team = $HBoxContainer/team
 
 func _ready():
 	player_name.text = player.player_name
-	potrait.texture = Global.player_potraits[player.potrait_idx]
-	bg.self_modulate = Global.player_colors[player.color_idx]
+	potrait.texture = EntityIndex.player_potraits[player.potrait_idx]
+	bg.self_modulate = EntityIndex.player_colors[player.color_idx]
 	team_label.text = "%s" % player.team
 	team.disabled = player.player_id != local_player_id
 	set_loading(false)

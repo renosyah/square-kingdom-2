@@ -1,0 +1,37 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Royal Cavalry"
+description = "Elite spear & range cavalry"
+scene_idx = 1
+node_name = ""
+current_tile = Vector2( 0, 0 )
+pos = Vector3( 0, 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+speed = 2.6
+spotting_range = 4
+squad_type = 2
+member_scene_idx = 1
+can_attack = true
+turning_speed = 15.0
+attack_speed = 0.9
+formation_density = 0.35
+icon_idx = 5
+potrait_idx = 12
+is_mounted = true
+member_headgear_idx = 6
+member_armor_idx = 9
+member_shield_idx = 1
+member_melee_weapon_idx = 4
+member_range_weapon_idx = 14
+member_hp = 270
+member_max_hp = 270
+total_member = 4
+heal_amount = 47
