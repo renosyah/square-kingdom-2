@@ -5,7 +5,8 @@ class_name SettingData
 export var camera_move_speed :float = 0.018 # 0.008 - 0.040
 export var camera_zoom_speed :float = 0.02 # 0.01 - 0.03
 export var camera_rotation_speed :float = 45.0 # 20 - 90
-export var unselect_on_command :bool = true
+export var unselect_on_command :bool = false
+export var show_unit_tile :bool = false
 
 # volume
 export var music :float = 0.8
@@ -33,6 +34,7 @@ func from_dictionary(_data : Dictionary):
 	camera_zoom_speed = _data["i"]
 	camera_rotation_speed = _data["j"]
 	unselect_on_command = _data["k"]
+	show_unit_tile = _data["l"]
 
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -48,4 +50,5 @@ func to_dictionary() -> Dictionary :
 	_data["i"] = camera_zoom_speed
 	_data["j"] = camera_rotation_speed
 	_data["k"] = unselect_on_command
+	_data["l"] = show_unit_tile
 	return _data

@@ -95,6 +95,7 @@ onready var _has_range_weapon :bool = member_range_weapon != null
 
 func _ready():
 	connect("tree_exiting", self, "_tree_exiting")
+	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	
 	_attack_timer = Timer.new()
 	_attack_timer.one_shot = true
@@ -129,15 +130,15 @@ func _ready():
 	_unit_audio.bus = Global.bus_sfx
 	add_child(_unit_audio)
 	
-	if show_move_indicator:
-		_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-		_path_indicator.material = member_material
-		add_child(_path_indicator)
-		_path_indicator.set_as_toplevel(true)
+	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+	_path_indicator.material = member_material
+	add_child(_path_indicator)
+	_path_indicator.set_as_toplevel(true)
+	_path_indicator.visible = show_move_indicator
 		
-		_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-		add_child(_path_indicator2)
-		_path_indicator2.set_as_toplevel(true)
+#		_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+#		add_child(_path_indicator2)
+#		_path_indicator2.set_as_toplevel(true)
 	
 	_init_formations()
 	
@@ -147,6 +148,10 @@ func _ready():
 	
 	if show_move_indicator:
 		_path_indicator.translation = global_position
+	
+func _on_setting_updated(d :SettingData):
+	show_move_indicator = d.show_unit_tile
+	_path_indicator.visible = d.show_unit_tile
 	
 func _init_formations():
 	pass
@@ -255,13 +260,13 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 		return
 		
 	_path_indicator.visible = (nav != null)
-	_path_indicator2.visible = (nav != null)
+	#_path_indicator2.visible = (nav != null)
 	
 	if _path_indicator.visible:
 		_path_indicator.translation = nav.get_pos_v3(to_id)
 		
-	if _path_indicator2.visible:
-		_path_indicator2.translation = nav.get_pos_v3(from_id)
+#	if _path_indicator2.visible:
+#		_path_indicator2.translation = nav.get_pos_v3(from_id)
 	
 func sync_update() -> void:
 	.sync_update()

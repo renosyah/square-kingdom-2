@@ -193,13 +193,6 @@ margin_right = 248.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
-visible = false
-margin_left = 252.0
-margin_right = 276.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 24, 0 )
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 252.0
 margin_right = 701.0
@@ -208,21 +201,20 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
 margin_top = 18.0
-margin_right = 90.0
+margin_right = 45.0
 margin_bottom = 46.0
-rect_min_size = Vector2( 90, 0 )
 custom_fonts/font = ExtResource( 3 )
 text = "Fog"
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
-margin_left = 94.0
-margin_right = 106.0
+margin_left = 49.0
+margin_right = 61.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="fog" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
-margin_left = 110.0
-margin_right = 174.0
+margin_left = 65.0
+margin_right = 129.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 size_flags_vertical = 4

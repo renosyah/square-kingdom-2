@@ -10,6 +10,7 @@ onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/
 onready var sync_map = $sync_map
 onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4/Label_loading_host
 
+onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
 var player_map_data_received :Array = []
 
@@ -92,7 +93,7 @@ func _on_lobby_player_update(players :Array):
 		
 	Global.players.clear()
 		
-	var idx = 1
+
 	for i in players:
 		var player :NetworkPlayer = i
 		
@@ -104,9 +105,11 @@ func _on_lobby_player_update(players :Array):
 		var has_map :bool = player_map_data_received.has(player.player_network_unique_id)
 		
 		var item = player_item_scene.instance()
+		item.local_player_id = current_player.player_id
 		item.player_network_unique_id = player.player_network_unique_id
-		item.no = idx
 		item.player = player_data
+		item.connect("team_change", self, "_on_team_change")
+		
 		player_holder.add_child(item)
 		
 		if NetworkLobbyManager.is_server():
@@ -115,13 +118,17 @@ func _on_lobby_player_update(players :Array):
 		if is_host:
 			item.set_loading(false)
 			
-		idx += 1
+
 		
 	# make sure host dont initiate play
 	# if player is more than 1 and not all ready
 	if NetworkLobbyManager.is_server():
 		battle.disabled = players.size() > 1
 		
+func _on_team_change(t :int):
+	current_player.team = t
+	NetworkLobbyManager.update_player_extra_data(current_player.to_dictionary())
+	
 func on_back_pressed():
 	NetworkLobbyManager.leave()
 	

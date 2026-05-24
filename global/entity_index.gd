@@ -22,6 +22,7 @@ const weapons = [
 	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #11
 	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn"), #12
 	preload("res://scenes/equipment/weapons/javeline/javelin.tscn"), #13
+	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #14
 ]
 const equipment = [
 	null, # index 0 as NULL
@@ -50,7 +51,8 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/axe.png"), #4
 	preload("res://assets/user_interface/icons/special.png"), #5
 	preload("res://assets/user_interface/icons/commander.png"),#6
-	preload("res://assets/user_interface/icons/javeline.png") #7
+	preload("res://assets/user_interface/icons/javeline.png"), #7
+	preload("res://assets/user_interface/icons/crossbow.png")  #8
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/peasant.png"), #0
@@ -61,7 +63,8 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #5
 	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #6
 	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #7
-	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #8
-	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #9
-	preload("res://assets/user_interface/squad_potrait/knight_3.png") #10
+	preload("res://assets/user_interface/squad_potrait/reguler_4.png"), #8
+	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #9
+	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #10
+	preload("res://assets/user_interface/squad_potrait/knight_3.png"), #11
 ]

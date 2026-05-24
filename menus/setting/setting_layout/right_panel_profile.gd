@@ -2,10 +2,10 @@ extends MarginContainer
 
 onready var color_btn_temp = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/color_btn_temp
 
-onready var player_color_display = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MarginContainer/player_color_display
-onready var player_potrait_display = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MarginContainer/MarginContainer2/player_potrait_display
-onready var color_option_holder = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer2
+onready var player_color_display = $VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer4/player_color_display
+onready var player_potrait_display = $VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer4/MarginContainer2/player_potrait_display
 onready var edit_player_name = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/edit_player_name
+onready var color_option_holder = $VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/color_option_holder
 
 var player_data :PlayerData = Global.player_data
 
@@ -23,6 +23,9 @@ func _apply():
 	edit_player_name.text = player_data.player_name
 	player_color_display.color = Global.player_colors[player_data.color_idx]
 	player_potrait_display.texture = Global.player_potraits[player_data.potrait_idx]
+
+func _on_button_edit_name_pressed():
+	edit_player_name.editable = not edit_player_name.editable
 	
 func _color_btn_pressed(idx):
 	player_data.color_idx = idx
@@ -38,3 +41,5 @@ func _on_change_potrait_pressed():
 		player_data.potrait_idx = 0
 		
 	player_potrait_display.texture = Global.player_potraits[player_data.potrait_idx]
+
+

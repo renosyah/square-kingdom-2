@@ -52,7 +52,8 @@ const player_colors = [
 	Color("#36A1B8"),
 	Color("#B8541B"),
 	Color("#B14C7E"),
-	Color("#585F69")
+	Color("#585F69"),
+	Color.black
 ]
 var player_materials = []
 
@@ -257,17 +258,18 @@ func hide_transition():
 const custom_squads_filepath :String = "custom_squads.dat"
 
 const template_squads = [
-	preload("res://data/squad_data/peasant.tres"),
-	preload("res://data/squad_data/archer.tres"),
-	preload("res://data/squad_data/spearman.tres"),
-	preload("res://data/squad_data/pikeman.tres"),
-	preload("res://data/squad_data/swordman.tres"),
-	preload("res://data/squad_data/knight.tres"),
-	preload("res://data/squad_data/axeman.tres"),
-	preload("res://data/squad_data/javeliner.tres"),
-	preload("res://data/squad_data/elite_guard.tres"),
-	preload("res://data/squad_data/huscarls.tres"),
-	preload("res://data/squad_data/longbowman.tres"),
+	preload("res://data/squad_data/peasant.tres"),#0
+	preload("res://data/squad_data/axeman.tres"),#1
+	preload("res://data/squad_data/javeliner.tres"),#2
+	preload("res://data/squad_data/spearman.tres"),#3
+	preload("res://data/squad_data/swordman.tres"),#4
+	preload("res://data/squad_data/archer.tres"),#5
+	preload("res://data/squad_data/pikeman.tres"),#6
+	preload("res://data/squad_data/knight.tres"),#7
+	preload("res://data/squad_data/crossbowman.tres"),#8
+	preload("res://data/squad_data/elite_guard.tres"),#9
+	preload("res://data/squad_data/huscarls.tres"),#10
+	preload("res://data/squad_data/longbowman.tres"),#11
 ]
 onready var custom_squads :Array = []
 
@@ -275,9 +277,7 @@ func set_default_squad_army():
 	for i in template_squads:
 		custom_squads.append(i.duplicate())
 		
-	for i in 9:
-		current_army.append(randi() % custom_squads.size())
-		
+	current_army = [3,3,4,4,5,5,8,9]
 	sort_army(current_army)
 	
 func load_custom_squad():

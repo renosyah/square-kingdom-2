@@ -11,7 +11,9 @@ onready var cam_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer3/cam_sp
 onready var zoom_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_label
 onready var rot_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_label
 
-onready var auto_unselect = $VBoxContainer/VBoxContainer/HBoxContainer4/auto_unselect
+onready var auto_unselect = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/auto_unselect
+onready var unit_tile = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5/unit_tile
+
 
 onready var setting_data = Global.setting_data
 
@@ -29,6 +31,7 @@ func _ready():
 	rot_speed_label.text = "%s%s" % [r,"%"]
 	
 	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
+	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
 	
 func _from_setting(value, min_value, max_value) -> int:
 	return int(((value - min_value) / (max_value - min_value)) * 100.0)
@@ -64,8 +67,15 @@ func _on_reset_button_pressed():
 	_on_rot_speed_slider_value_changed(r)
 	
 	setting_data.unselect_on_command = n.unselect_on_command
+	setting_data.show_unit_tile = n.show_unit_tile
+	
 	auto_unselect.icon = check if n.unselect_on_command else uncheck
+	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
 	
 func _on_auto_unselect_pressed():
 	setting_data.unselect_on_command = not setting_data.unselect_on_command
 	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
+
+func _on_unit_tile_pressed():
+	setting_data.show_unit_tile = not setting_data.show_unit_tile
+	unit_tile.icon = check if setting_data.show_unit_tile else uncheck

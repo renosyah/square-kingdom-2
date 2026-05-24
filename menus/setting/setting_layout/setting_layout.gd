@@ -38,9 +38,9 @@ func _hide_all():
 	for i in overlays + right_panels:
 		i.visible = false
 		
-	
-	
+
 func _on_back_pressed():
+	Global.save_player_data()
 	Global.setting_updated()
 	Global.save_setting()
 	emit_signal("close")

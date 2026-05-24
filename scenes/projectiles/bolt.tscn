@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/projectiles/arrow.gd" type="Script" id=1]
+[ext_resource path="res://scenes/projectiles/bolt.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+albedo_color = Color( 0.686275, 0.686275, 0.686275, 1 )
+
+[node name="bolt" type="Spatial"]
+script = ExtResource( 1 )
+speed = 9.0
+max_range = 2.0
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1.4, 0, 0, 0, -6.11959e-08, 1.4, 0, -1.4, -6.11959e-08, 0, 0, 0 )
+mesh = ExtResource( 2 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = SubResource( 1 )

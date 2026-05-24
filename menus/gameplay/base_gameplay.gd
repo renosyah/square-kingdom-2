@@ -371,6 +371,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	squad.selected_squads = selected_squads
 	squad.floating_hurt = current_player.player_id == data.player_id
+	squad.show_move_indicator = setting.show_unit_tile
 
 	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")

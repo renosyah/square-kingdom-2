@@ -58,20 +58,28 @@ margin_right = 24.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 
-[node name="bg" type="TextureRect" parent="HBoxContainer"]
-self_modulate = Color( 1, 0, 0, 1 )
+[node name="team" type="Button" parent="HBoxContainer"]
 margin_left = 28.0
 margin_top = 20.0
 margin_right = 88.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 60, 60 )
+focus_mode = 0
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 1 )
+flat = true
+
+[node name="bg" type="TextureRect" parent="HBoxContainer/team"]
+self_modulate = Color( 1, 0, 0, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
-[node name="no_label" type="Label" parent="HBoxContainer/bg"]
+[node name="team" type="Label" parent="HBoxContainer/team/bg"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -158,3 +166,5 @@ margin_left = 441.0
 margin_right = 449.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 8, 0 )
+
+[connection signal="pressed" from="HBoxContainer/team" to="." method="_on_team_pressed"]
