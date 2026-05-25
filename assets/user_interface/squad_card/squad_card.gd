@@ -1,6 +1,10 @@
 extends MarginContainer
 class_name SquadCard
 
+const color_trans = Color("#00ffffff")
+const color_red_trans = Color("#8fff0000")
+const color_orange_trans = Color("#8fc05100")
+
 var data:SquadData
 var selected_squads :Array # refrences
 var squad :BaseSquad # refrences
@@ -14,10 +18,14 @@ onready var _label = $MarginContainer/VBoxContainer2/ColorRect/Label
 onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
 onready var _charge_amount = $MarginContainer/VBoxContainer2/charge_amount
+onready var _hurt_color_stats = $hurt_color_stats
 
 onready var _heal = $heal
 onready var _hurt = $hurt
 onready var _button = $Button
+
+var _members :Array = []
+var _total_hp :int = 0
 
 func _ready():
 	_mounted.visible = data.is_mounted
@@ -33,6 +41,8 @@ func _ready():
 	_button.mouse_filter = MOUSE_FILTER_STOP if squad != null else MOUSE_FILTER_IGNORE
 	
 	if squad:
+		
+		_total_hp = squad.member_max_hp * squad.member_alive
 		squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 		squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
 		squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")
@@ -42,7 +52,35 @@ func _ready():
 		if data.is_mounted:
 			squad.connect("on_cav_charge_buildup", self, "_on_cav_charge_buildup")
 			squad.connect("on_cav_charge", self, "_on_cav_charge")
+			
+	yield(get_tree().create_timer(1),"timeout")
+	_members = squad.get_members(true)
+	update_hurt_color_stats()
+	
+func update_hurt_color_stats():
+	var current_total_hp :int = 0
+	for i in _members:
+		current_total_hp += i.hp
 		
+	_hurt_color_stats.color = _get_hp_color(current_total_hp,_total_hp)
+	
+func _get_hp_color(hp :int, max_hp: int) -> Color:
+	# prevent zero by devision
+	if hp <= 0:
+		return color_red_trans
+		
+	var ratio :float = float(hp) / float(max_hp)
+	if ratio > 0.5:
+		return color_orange_trans.linear_interpolate(
+			color_trans,
+			(ratio - 0.5) * 2.0
+		)
+		
+	return color_red_trans.linear_interpolate(
+		color_orange_trans,
+		ratio * 2.0
+	)
+	
 func _process(delta):
 	_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 	_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)
@@ -56,9 +94,11 @@ func _on_cav_charge(cav):
 	
 func _on_squad_taking_heal(_squad):
 	_heal.color.a = 1
+	update_hurt_color_stats()
 	
 func _on_squad_taking_damage(_squad, amount):
 	_hurt.color.a = 1
+	update_hurt_color_stats()
 	
 func _on_unit_clicked(_unit):
 	_overlay.visible = squad in selected_squads

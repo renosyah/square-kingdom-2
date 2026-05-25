@@ -171,6 +171,12 @@ margin_bottom = 100.0
 mouse_filter = 2
 color = Color( 1, 0, 0, 0 )
 
+[node name="hurt_color_stats" type="ColorRect" parent="."]
+margin_right = 70.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
+
 [node name="heal" type="ColorRect" parent="."]
 margin_right = 70.0
 margin_bottom = 100.0

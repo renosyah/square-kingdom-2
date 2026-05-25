@@ -76,6 +76,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	if _has_range_weapon:
 		if _range_attack_timer.is_stopped():
 			_range_attack_timer.start()
+			_range_engagement = true
 			
 			var iddles :Array = get_iddle_members()
 			if iddles.empty():
@@ -94,7 +95,9 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 				m.target_idx = target_idx
 				m.enemy = enemy_member
 				m.range_attack()
-		
+				
+			
+			
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	

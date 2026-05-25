@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/blood_particle/blood_particle.obj" type="ArrayMesh" id=1]
+
+[node name="blood_particle" type="CPUParticles"]
+emitting = false
+amount = 24
+lifetime = 1.2
+one_shot = true
+preprocess = 0.3
+explosiveness = 0.6
+randomness = 0.6
+lifetime_randomness = 0.6
+local_coords = false
+draw_order = 1
+mesh = ExtResource( 1 )
+direction = Vector3( 0, 1, 0 )
+spread = 18.0
+gravity = Vector3( 0, -12.8, 0 )
+initial_velocity = 8.0
+initial_velocity_random = 0.4
+angular_velocity = 8.0
+damping = 6.0
+damping_random = 0.2
+angle = 2.0
+scale_amount_random = 0.5
+color = Color( 1, 0, 0, 1 )

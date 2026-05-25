@@ -87,15 +87,21 @@ var _heal_interupt :bool = false
 var _step_audio :AudioStreamPlayer3D
 var _combat_audio :AudioStreamPlayer3D
 var _unit_audio :AudioStreamPlayer3D
+var _blood_particle :CPUParticles
 
 var attacked_by :NodePath
 
 onready var _has_shield :bool = member_shield != null
 onready var _has_range_weapon :bool = member_range_weapon != null
 var _member_spawned :bool = false
+var _range_engagement :bool
 
 func _ready():
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
+	
+	_blood_particle = preload("res://assets/blood_particle/blood_particle.tscn").instance()
+	_blood_particle.set_as_toplevel(true)
+	add_child(_blood_particle)
 	
 	_melee_attack_timer = Timer.new()
 	_melee_attack_timer.one_shot = true
@@ -235,6 +241,10 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
 		
+		if not _blood_particle.emitting and visible:
+			_blood_particle.translation = member.global_position
+			_blood_particle.emitting = true
+			
 		if not _unit_audio.playing:
 			_unit_audio.stream = death_sounds[randi() % 4]
 		
@@ -242,6 +252,7 @@ func _on_member_dead(member :SquadMember):
 				_unit_audio.stream = death_sounds[5] # wilhem
 		
 			_unit_audio.play()
+		
 		
 		emit_signal("on_squad_member_dead", self, member)
 		
@@ -479,11 +490,23 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, fro
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
+	attacked_by = from
+	
 	if _is_master and not _heal_interupt:
 		_heal_interupt = true
 		
-	attacked_by = from
-	
+		# if on range engagement
+		# and getting clap by melee enemy
+		# change attention to them
+		if _range_engagement:
+			var s = get_node_or_null(attacked_by)
+			if is_instance_valid(s):
+				if _is_in_melee_range(s):
+					enemy = s
+					_has_enemy = true
+					_on_enemy_set()
+					_range_engagement = false
+					
 	var m :SquadMember = _members[member_idx]
 	m.hp = hp_remain
 	
