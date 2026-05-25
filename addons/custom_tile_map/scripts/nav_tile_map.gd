@@ -51,7 +51,11 @@ func enable_nav_tile(layer_id :int, id :Vector2, enable :bool):
 # param blocked_ids is usefull for 
 # seting temporary blocked tile
 # like ally unit in the way
-func get_navigation(layer_id :int, start_id :Vector2, end_id :Vector2, blocked_ids :Array = []) -> PoolVector2Array:
+
+# param use_safe 
+#is use to get path event if the a -> b path is blocked or b is invalid
+# but you get the path that bassicaly stop near actual destination
+func get_navigation(layer_id :int, start_id :Vector2, end_id :Vector2, blocked_ids :Array = [], use_safe :bool = false) -> PoolVector2Array:
 	if not _has_layer(layer_id):
 		return PoolVector2Array([])
 		
@@ -60,7 +64,7 @@ func get_navigation(layer_id :int, start_id :Vector2, end_id :Vector2, blocked_i
 	if start == -1 or end == -1:
 		return PoolVector2Array([])
 		
-	return _get_navigation(_navigations[layer_id], start, end, blocked_ids) # [ Vector2 ]
+	return _get_navigation(_navigations[layer_id], start, end, blocked_ids, use_safe) # [ Vector2 ]
 	
 func get_pos_v3(id :Vector2) -> Vector3:
 	if not _navigation_pos.has(id):
@@ -97,7 +101,7 @@ func _get_navigation_id(layer_id :int, id :Vector2) -> int:
 	
 	return _navigation_ids[layer_id][id]
 	
-func _get_navigation(_nav :AStar2D, start :int, end :int, _blocked_nav_ids :Array) -> PoolVector2Array:
+func _get_navigation(_nav :AStar2D, start :int, end :int, _blocked_nav_ids :Array, use_safe :bool = false) -> PoolVector2Array:
 	var paths :PoolVector2Array = PoolVector2Array([])
 	if not _nav.has_point(start):
 		return paths
@@ -116,7 +120,7 @@ func _get_navigation(_nav :AStar2D, start :int, end :int, _blocked_nav_ids :Arra
 			_nav.set_point_disabled(navigation_id, true)
 		
 	# get path with blocked tiles
-	paths = _nav.get_point_path(start, end)
+	paths = _get_path_safe(_nav, start, end) if use_safe else _nav.get_point_path(start, end)
 	
 	# open blocked tile
 	for navigation_id in _restored_disabled_point:
@@ -124,6 +128,28 @@ func _get_navigation(_nav :AStar2D, start :int, end :int, _blocked_nav_ids :Arra
 		
 	return paths
 	
+func _get_path_safe(astar: AStar2D, start_id: int, target_id: int) -> PoolVector2Array:
+	if not astar.is_point_disabled(target_id):
+		return astar.get_point_path(start_id, target_id)
+		
+	var connections = astar.get_point_connections(target_id)
+	var best_path = PoolVector2Array()
+	var best_distance = INF
+
+	for neighbor_id in connections:
+		if astar.is_point_disabled(neighbor_id):
+			continue
+			
+		var path = astar.get_point_path(start_id, neighbor_id)
+		if path.size() > 0:
+			var dist = astar.get_point_position(neighbor_id).distance_to(
+				astar.get_point_position(target_id)
+			)
+			if dist < best_distance:
+				best_distance = dist
+				best_path = path
+				
+	return best_path
 func _add_point(nav :AStar2D, data :Array):
 	for i in data:
 		var x :NavigationData = i

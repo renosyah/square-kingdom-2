@@ -83,15 +83,15 @@ func chase_target():
 			_on_enemy_set()
 			return
 			
-		_move_to(chase_enemy.current_tile)
+		_move_to(chase_enemy.current_tile, false)
 		if _paths.empty():
 			chase_enemy = null
 			
 func move_to(tile_id :Vector2):
 	chase_enemy = null
-	_move_to(tile_id)
+	_move_to(tile_id, true)
 	
-func _move_to(tile_id :Vector2):
+func _move_to(tile_id :Vector2, use_safe :bool):
 	if is_dead:
 		return
 		
@@ -101,7 +101,7 @@ func _move_to(tile_id :Vector2):
 	_has_enemy = false
 	enemy = null
 	
-	var v :Array = _get_tile_path(tile_id)
+	var v :Array = _get_tile_path(tile_id, use_safe)
 	if v.empty():
 		return
 		
@@ -118,9 +118,9 @@ func _move_to(tile_id :Vector2):
 func is_moving() -> bool:
 	return _is_moving
 	
-func _get_tile_path(to :Vector2) -> Array:
+func _get_tile_path(to :Vector2, use_safe :bool) -> Array:
 	var paths :Array = []
-	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [])
+	var p :PoolVector2Array = nav.get_navigation(nav_layer, current_tile, to, [], use_safe)
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
 		
