@@ -19,6 +19,7 @@ export var shadow_type :int = 1
 export var enable_fog :bool = true
 export var enable_tilt_shift :bool = true
 export var light :float = 1
+export var enable_blood :bool = true
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -35,6 +36,7 @@ func from_dictionary(_data : Dictionary):
 	camera_rotation_speed = _data["j"]
 	unselect_on_command = _data["k"]
 	show_unit_tile = _data["l"]
+	enable_blood = _data["m"]
 
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -51,4 +53,5 @@ func to_dictionary() -> Dictionary :
 	_data["j"] = camera_rotation_speed
 	_data["k"] = unselect_on_command
 	_data["l"] = show_unit_tile
+	_data["m"] = enable_blood
 	return _data

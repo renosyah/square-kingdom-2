@@ -66,6 +66,8 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
+	emit_signal("on_squad_member_ready", self, _members)
+	
 func _on_member_dead(member :SquadMember):
 	._on_member_dead(member)
 	

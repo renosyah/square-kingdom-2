@@ -2,7 +2,7 @@ extends MarginContainer
 class_name SquadCard
 
 const color_trans = Color("#00ffffff")
-const color_red_trans = Color("#8fff0000")
+const color_red_trans = Color("#890000")
 const color_orange_trans = Color("#8fc05100")
 
 var data:SquadData
@@ -18,7 +18,7 @@ onready var _label = $MarginContainer/VBoxContainer2/ColorRect/Label
 onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
 onready var _charge_amount = $MarginContainer/VBoxContainer2/charge_amount
-onready var _hurt_color_stats = $hurt_color_stats
+onready var _hurt_color_stats = $MarginContainer/hurt_color_stats
 
 onready var _heal = $heal
 onready var _hurt = $hurt
@@ -41,7 +41,6 @@ func _ready():
 	_button.mouse_filter = MOUSE_FILTER_STOP if squad != null else MOUSE_FILTER_IGNORE
 	
 	if squad:
-		
 		_total_hp = squad.member_max_hp * squad.member_alive
 		squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 		squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
@@ -53,9 +52,9 @@ func _ready():
 			squad.connect("on_cav_charge_buildup", self, "_on_cav_charge_buildup")
 			squad.connect("on_cav_charge", self, "_on_cav_charge")
 			
-	yield(get_tree().create_timer(1),"timeout")
-	_members = squad.get_members(true)
-	update_hurt_color_stats()
+		var results = yield(squad,"on_squad_member_ready")
+		_members = results[1]
+		update_hurt_color_stats()
 	
 func update_hurt_color_stats():
 	var current_total_hp :int = 0

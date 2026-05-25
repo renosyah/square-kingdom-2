@@ -1,6 +1,7 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+signal on_squad_member_ready(squad, members)
 signal on_squad_member_resurect(squad, member)
 signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
@@ -61,6 +62,7 @@ export var squad_role :int
 var member_alive :int
 
 export var show_move_indicator:bool = false
+export var enable_blood :bool
 
 # MUST SET
 var camera :Camera
@@ -80,7 +82,7 @@ var _range_attack_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
-var _path_indicator2 :Spatial
+#var _path_indicator2 :Spatial
 
 var _heal_interupt :bool = false
 
@@ -146,7 +148,7 @@ func _ready():
 	_path_indicator.material = member_material
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
-	_path_indicator.visible = show_move_indicator
+	_path_indicator.visible = false
 		
 #	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
 #	add_child(_path_indicator2)
@@ -160,11 +162,13 @@ func _ready():
 	_member_spawned = true
 	
 	if show_move_indicator:
+		_path_indicator.visible = true
 		_path_indicator.translation = global_position
 	
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
+	enable_blood = d.enable_blood
 	
 func _init_formations():
 	pass
@@ -199,6 +203,8 @@ func _spawn_members():
 		member.set_as_toplevel(true)
 		member.translation = _formation_positions[idx]
 		_members.append(member)
+		
+	emit_signal("on_squad_member_ready", self, _members)
 
 func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
@@ -241,7 +247,7 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
 		
-		if not _blood_particle.emitting and visible:
+		if not _blood_particle.emitting and visible and enable_blood:
 			_blood_particle.translation = member.global_position
 			_blood_particle.emitting = true
 			
