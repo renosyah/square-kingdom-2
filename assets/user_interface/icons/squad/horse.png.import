@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/axe.png-5e3b057f218c6ecaaafe1530ed937b5c.stex"
+path="res://.import/horse.png-01e944b7859731db45c008e099334022.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/axe.png"
-dest_files=[ "res://.import/axe.png-5e3b057f218c6ecaaafe1530ed937b5c.stex" ]
+source_file="res://assets/user_interface/icons/squad/horse.png"
+dest_files=[ "res://.import/horse.png-01e944b7859731db45c008e099334022.stex" ]
 
 [params]
 

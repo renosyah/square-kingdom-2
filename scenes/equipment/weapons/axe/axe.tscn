@@ -8,6 +8,7 @@
 [node name="sword" type="Spatial"]
 script = ExtResource( 2 )
 attack_damage = 9
+counters = [ 2, 3 ]
 ready_animation = "iddle"
 attack_animation = "weapon_slash_attack"
 

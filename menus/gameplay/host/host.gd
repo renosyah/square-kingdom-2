@@ -61,7 +61,7 @@ func _on_bot_spawner_timer_timeout():
 	if bot_squads.size() >= Global.players.size():
 		return
 	
-	var data :SquadData = Global.template_squads.pick_random().duplicate()
+	var data :SquadData = Global.custom_squads.pick_random().duplicate()
 	data.network_id = 1
 	data.player_id = "bot"
 	data.node_name = Utils.create_unique_id()

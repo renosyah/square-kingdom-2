@@ -69,6 +69,16 @@ func melee_attack():
 func range_attack():
 	pass
 	
+func _look_at(pos :Vector3):
+	var _pos = pos
+	_pos.y = global_position.y
+	
+	var _dir = global_position.direction_to(_pos)
+	if _dir.length() > 0.001:
+		var dot = abs(_dir.dot(Vector3.UP))
+		if dot < 0.999:
+			look_at(_pos, Vector3.UP)
+			
 func moving(delta :float):
 	if is_dead:
 		return

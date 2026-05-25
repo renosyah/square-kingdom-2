@@ -9,7 +9,7 @@
 [node name="throwing_axe" type="Spatial"]
 script = ExtResource( 4 )
 projectile = ExtResource( 5 )
-attack_damage = 7
+attack_damage = 12
 show_on_stored = false
 attack_animation = "throw_range_weapon"
 

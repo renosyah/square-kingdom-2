@@ -11,8 +11,13 @@ onready var _attack = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/
 onready var _speed = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3/speed
 onready var _mounted = $VBoxContainer/HBoxContainer/VBoxContainer2/mounted
 onready var _info_icon_color2 = $VBoxContainer/HBoxContainer/VBoxContainer2/mounted/MarginContainer/info_icon_color
+onready var _info_layout = $info_layout
+
+func _ready():
+	_info_layout.visible = false
 
 func display_info(data :SquadData):
+	_info_layout.visible = false
 	_info_bg.color = EntityIndex.player_colors[data.color_idx]
 	_info_potrait.texture = EntityIndex.squad_potraits[data.potrait_idx]
 	_info_name.text = data.squad_name
@@ -31,25 +36,28 @@ func _get_attack_values(data :SquadData) -> Array:
 	if m:
 		var w :MeleeWeapon = m.instance()
 		add_child(w)
-		s[0] = w.attack_damage
+		s[0] = calculate_dps(w.attack_damage, data.melee_attack_speed)
 		w.queue_free()
 		
 	var r :PackedScene = EntityIndex.weapons[data.member_range_weapon_idx]
 	if r:
 		var w :RangeWeapon = r.instance()
 		add_child(w)
-		s[1] = w.attack_damage
+		s[1] = calculate_dps(w.attack_damage * data.total_member, data.range_attack_speed) 
 		w.queue_free()
 		
 	return s
+	
+func calculate_dps(damage: int, duration: float) -> int:
+	if duration <= 0:
+		return 0
+		
+	var v :float = float(damage) / duration
+	
+	return 1 if v > 0.0 and v < 1.0 else int(v)
 
+func _on_info_pressed():
+	_info_layout.visible = true
 
-
-
-
-
-
-
-
-
-
+func _on_close_info_pressed():
+	_info_layout.visible = false

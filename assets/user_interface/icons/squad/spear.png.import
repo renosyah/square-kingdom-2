@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spear.png-430fd17326239451cd1dd9b95e679a49.stex"
+path="res://.import/spear.png-1ed041598cd6d1b0acce7c4ffcc6bd8c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/spear.png"
-dest_files=[ "res://.import/spear.png-430fd17326239451cd1dd9b95e679a49.stex" ]
+source_file="res://assets/user_interface/icons/squad/spear.png"
+dest_files=[ "res://.import/spear.png-1ed041598cd6d1b0acce7c4ffcc6bd8c.stex" ]
 
 [params]
 

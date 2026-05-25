@@ -126,10 +126,10 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 3 )
 max_length = 32
-editable = false
 placeholder_text = "Player Name"
 
 [node name="button_edit_name" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
+visible = false
 margin_left = 244.0
 margin_right = 304.0
 margin_bottom = 60.0

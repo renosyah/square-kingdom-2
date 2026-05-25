@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
 [ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
-[ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=12]
+[ext_resource path="res://assets/user_interface/icons/sword_attack.png" type="Texture" id=12]
 [ext_resource path="res://assets/user_interface/icons/base.png" type="Texture" id=13]
 
 [node name="ui" type="Control"]

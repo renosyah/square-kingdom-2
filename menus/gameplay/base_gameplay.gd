@@ -266,7 +266,7 @@ func setup_clickable_floor():
 
 func _on_floor_clicked(pos :Vector3):
 	var tile = tile_map.get_closes_tile(pos)
-	_move_squad_to(tile)
+	_move_squad_to(tile, setting.unselect_on_command)
 	
 ########################################## Tap  ############################################
 var tap :TapIndicator
@@ -321,7 +321,7 @@ func _on_ui_route_button_pressed():
 	for i in selected_squads:
 		i.attack_move = false
 		
-	_move_squad_to(tile_map.get_tile(player_spawn_point))
+	_move_squad_to(tile_map.get_tile(player_spawn_point), true)
 
 ########################################## squad  ############################################
 
@@ -362,7 +362,8 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
 	squad.can_attack = data.can_attack
 	squad.turning_speed = data.turning_speed
-	squad.attack_speed = data.attack_speed
+	squad.melee_attack_speed = data.melee_attack_speed
+	squad.range_attack_speed = data.range_attack_speed
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
 
@@ -422,7 +423,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	ui.minimap.add_object(squad, squad.color)
 	ui.add_squad_floating_info(squad, data, current_player)
 	
-func _move_squad_to(tile :TileMapData):
+func _move_squad_to(tile :TileMapData, then_unselect :bool):
 	if selected_squads.empty():
 		return
 		
@@ -452,7 +453,7 @@ func _move_squad_to(tile :TileMapData):
 			tile_id = tiles[idx]
 			
 		squad.move_to(tile_id)
-		if setting.unselect_on_command:
+		if then_unselect:
 			squad.click() # to unselect
 			
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))

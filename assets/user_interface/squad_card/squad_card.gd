@@ -10,9 +10,10 @@ onready var _bg = $bg
 onready var _texture_rect = $MarginContainer/TextureRect
 onready var _color = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/color
 onready var _icon = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/MarginContainer2/icon
-onready var _label = $MarginContainer/ColorRect/Label
+onready var _label = $MarginContainer/VBoxContainer2/ColorRect/Label
 onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
+onready var _charge_amount = $MarginContainer/VBoxContainer2/charge_amount
 
 onready var _heal = $heal
 onready var _hurt = $hurt
@@ -20,6 +21,7 @@ onready var _button = $Button
 
 func _ready():
 	_mounted.visible = data.is_mounted
+	_charge_amount.visible = data.is_mounted
 	_bg.color = EntityIndex.player_colors[data.color_idx]
 	_color.color = EntityIndex.player_colors[data.color_idx]
 	_color2.color = EntityIndex.player_colors[data.color_idx]
@@ -37,9 +39,20 @@ func _ready():
 		squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 		squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
 		
+		if data.is_mounted:
+			squad.connect("on_cav_charge_buildup", self, "_on_cav_charge_buildup")
+			squad.connect("on_cav_charge", self, "_on_cav_charge")
+		
 func _process(delta):
 	_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 	_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)
+	
+func _on_cav_charge_buildup(cav, amount):
+	if amount <= 3:
+		_charge_amount.text = ">".repeat(amount)
+	
+func _on_cav_charge(cav):
+	_charge_amount.text = ""
 	
 func _on_squad_taking_heal(_squad):
 	_heal.color.a = 1

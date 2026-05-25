@@ -15,7 +15,6 @@ onready var meshes = [
 	$pivot/body/leg_b_r/leg
 ]
 
-
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var rider_holder = $rider_holder
 
@@ -94,7 +93,7 @@ func moving(delta :float):
 		
 	rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
 	
-	#var run_anim = "run" if not squad.attack_move else "walk"
+	#var run_anim = "run" if not squad.attack_move else "walk" # <- this wont work in MP
 	animation_state.travel("walk" if squad.is_moving() else "iddle")
 
 

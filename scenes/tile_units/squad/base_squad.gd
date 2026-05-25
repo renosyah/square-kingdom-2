@@ -41,7 +41,8 @@ const death_sounds = [
 export var member_scene :PackedScene
 export var can_attack :bool
 export var turning_speed :float = 8
-export var attack_speed :float = 0.8
+export var melee_attack_speed :float = 0.8
+export var range_attack_speed :float = 0.8
 export var formation_density :float = 0.35
 
 export var member_headgear :PackedScene
@@ -74,7 +75,8 @@ var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
 
-var _attack_timer :Timer
+var _melee_attack_timer :Timer
+var _range_attack_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
@@ -95,11 +97,17 @@ var _member_spawned :bool = false
 func _ready():
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	
-	_attack_timer = Timer.new()
-	_attack_timer.one_shot = true
-	_attack_timer.autostart = false
-	_attack_timer.wait_time = attack_speed
-	add_child(_attack_timer)
+	_melee_attack_timer = Timer.new()
+	_melee_attack_timer.one_shot = true
+	_melee_attack_timer.autostart = false
+	_melee_attack_timer.wait_time = melee_attack_speed
+	add_child(_melee_attack_timer)
+	
+	_range_attack_timer = Timer.new()
+	_range_attack_timer.one_shot = true
+	_range_attack_timer.autostart = false
+	_range_attack_timer.wait_time = range_attack_speed
+	add_child(_range_attack_timer)
 	
 	_walk_timer = Timer.new()
 	_walk_timer.one_shot = true

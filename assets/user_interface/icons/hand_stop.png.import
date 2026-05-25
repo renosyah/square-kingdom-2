@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/melee.png-ae9582b17ec1fc88984f99b6e43be1b9.stex"
+path="res://.import/hand_stop.png-b6e95c38f6bc6cc06d5fde4dbeba8278.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/melee.png"
-dest_files=[ "res://.import/melee.png-ae9582b17ec1fc88984f99b6e43be1b9.stex" ]
+source_file="res://assets/user_interface/icons/hand_stop.png"
+dest_files=[ "res://.import/hand_stop.png-b6e95c38f6bc6cc06d5fde4dbeba8278.stex" ]
 
 [params]
 

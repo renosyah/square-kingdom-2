@@ -37,7 +37,8 @@ export var squad_role :int
 export var member_scene_idx :int
 export var can_attack :bool = true
 export var turning_speed :float = 8
-export var attack_speed :float = 0.8
+export var melee_attack_speed :float = 0.8
+export var range_attack_speed :float = 0.8
 export var formation_density :float = 0.35
 export var icon_idx :int
 export var potrait_idx :int
@@ -74,7 +75,8 @@ func from_dictionary(_data : Dictionary):
 	member_scene_idx = _data["g"]
 	can_attack = _data["i"]
 	turning_speed = _data["j"]
-	attack_speed = _data["k"]
+	melee_attack_speed = _data["k1"]
+	range_attack_speed = _data["k2"]
 	formation_density = _data["l"]
 	icon_idx = _data["l1"]
 	potrait_idx = _data["l2"]
@@ -109,7 +111,8 @@ func to_dictionary() -> Dictionary :
 	_data["g"] = member_scene_idx
 	_data["i"] = can_attack
 	_data["j"] = turning_speed
-	_data["k"] = attack_speed
+	_data["k1"] = melee_attack_speed
+	_data["k2"] = range_attack_speed
 	_data["l"] = formation_density
 	_data["l1"] = icon_idx
 	_data["l2"] = potrait_idx

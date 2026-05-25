@@ -235,21 +235,21 @@ const custom_squads_filepath :String = "custom_squads.dat"
 
 const template_squads = [
 	preload("res://data/squad_data/peasant.tres"),#0
-	preload("res://data/squad_data/axeman.tres"),#1
-	preload("res://data/squad_data/javeliner.tres"),#2
-	preload("res://data/squad_data/spearman.tres"),#3
-	preload("res://data/squad_data/swordman.tres"),#4
+	preload("res://data/squad_data/axeman.tres"),
+	preload("res://data/squad_data/javeliner.tres"),
+	preload("res://data/squad_data/spearman.tres"),
+	preload("res://data/squad_data/swordman.tres"),
 	preload("res://data/squad_data/archer.tres"),#5
-	preload("res://data/squad_data/pikeman.tres"),#6
-	preload("res://data/squad_data/knight.tres"),#7
-	preload("res://data/squad_data/crossbowman.tres"),#8
+	preload("res://data/squad_data/pikeman.tres"),
+	preload("res://data/squad_data/knight.tres"),
+	preload("res://data/squad_data/crossbowman.tres"),
+	preload("res://data/squad_data/elite_guard.tres"),
+	preload("res://data/squad_data/huscarls.tres"), #10
+	preload("res://data/squad_data/longbowman.tres"),
 	preload("res://data/squad_data/cavalry_spear.tres"),
 	preload("res://data/squad_data/cavalry_sword.tres"),
 	preload("res://data/squad_data/cavalry_archer.tres"),
-	preload("res://data/squad_data/elite_guard.tres"),#9
-	preload("res://data/squad_data/huscarls.tres"),#10
-	preload("res://data/squad_data/longbowman.tres"),#11
-	preload("res://data/squad_data/cavalry_household.tres")#12
+	preload("res://data/squad_data/cavalry_household.tres")
 ]
 onready var custom_squads :Array = []
 
@@ -257,7 +257,7 @@ func set_default_squad_army():
 	for i in template_squads:
 		custom_squads.append(i.duplicate())
 		
-	current_army = [3,3,4,4,5,5,8,9]
+	current_army = [3,3,4,4,5,5,8,12]
 	sort_army(current_army)
 	
 func load_custom_squad():
