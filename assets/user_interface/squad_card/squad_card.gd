@@ -11,7 +11,7 @@ onready var _texture_rect = $MarginContainer/TextureRect
 onready var _color = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/color
 onready var _icon = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/MarginContainer2/icon
 onready var _label = $MarginContainer/ColorRect/Label
-onready var _color2 = $MarginContainer/VBoxContainer/mounted/MarginContainer/color
+onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
 
 onready var _heal = $heal

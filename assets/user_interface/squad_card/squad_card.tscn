@@ -45,9 +45,10 @@ stretch_mode = 7
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 20.0
-margin_bottom = 20.0
+margin_bottom = 42.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+custom_constants/separation = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 margin_right = 18.0
@@ -90,39 +91,28 @@ size_flags_vertical = 4
 expand = true
 
 [node name="mounted" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
-visible = false
-margin_top = 22.0
+margin_top = 18.0
 margin_right = 18.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 0, 22 )
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/mounted"]
+[node name="color" type="ColorRect" parent="MarginContainer/VBoxContainer/mounted"]
 margin_right = 18.0
-margin_bottom = 18.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/mounted"]
-margin_right = 18.0
-margin_bottom = 18.0
-mouse_filter = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="color" type="ColorRect" parent="MarginContainer/VBoxContainer/mounted/MarginContainer"]
-margin_right = 18.0
-margin_bottom = 18.0
+margin_bottom = 22.0
 mouse_filter = 2
 color = Color( 1, 0, 0, 1 )
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/mounted/MarginContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/mounted"]
+margin_top = 2.0
 margin_right = 18.0
-margin_bottom = 18.0
+margin_bottom = 20.0
 mouse_filter = 2
+size_flags_vertical = 4
 
-[node name="icon" type="TextureRect" parent="MarginContainer/VBoxContainer/mounted/MarginContainer/MarginContainer2"]
+[node name="icon" type="TextureRect" parent="MarginContainer/VBoxContainer/mounted/MarginContainer2"]
 margin_right = 18.0
 margin_bottom = 18.0
 rect_min_size = Vector2( 18, 18 )

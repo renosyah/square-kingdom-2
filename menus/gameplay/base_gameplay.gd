@@ -378,6 +378,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.heal_amount = data.heal_amount
 	squad.member_alive = data.total_member
 	squad.show_move_indicator = setting.show_unit_tile
+	squad.squad_role = data.squad_role
 	
 	# for floating info
 	squad.camera = movable_camera.camera

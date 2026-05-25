@@ -18,6 +18,7 @@ color_idx = 0
 speed = 1.4
 spotting_range = 6
 sort_order = 23
+squad_role = 3
 member_scene_idx = 0
 can_attack = true
 turning_speed = 8.0

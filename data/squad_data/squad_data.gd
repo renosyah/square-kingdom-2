@@ -27,6 +27,12 @@ export var spotting_range :int = 1
 # 4 ranges : [41] crossbowman,[42] archer,[43] javeliner
 export var sort_order :int
 
+# this is for selection need
+# 1 :cavalry
+# 2 :infantry melee
+# 3 :archer
+export var squad_role :int
+
 # squad data
 export var member_scene_idx :int
 export var can_attack :bool = true
@@ -64,6 +70,7 @@ func from_dictionary(_data : Dictionary):
 	speed = _data["f"]
 	spotting_range = _data["f1"]
 	sort_order = _data["f2"]
+	squad_role = _data["f3"]
 	member_scene_idx = _data["g"]
 	can_attack = _data["i"]
 	turning_speed = _data["j"]
@@ -98,6 +105,7 @@ func to_dictionary() -> Dictionary :
 	_data["f"] = speed
 	_data["f1"] = spotting_range
 	_data["f2"] = sort_order
+	_data["f3"] = squad_role
 	_data["g"] = member_scene_idx
 	_data["i"] = can_attack
 	_data["j"] = turning_speed

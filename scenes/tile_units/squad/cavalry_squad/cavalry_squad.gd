@@ -83,8 +83,8 @@ func _init_formations():
 	]
 	_formation_positions = _formation_offsets.duplicate()
 	
-func _move_to(tile_id :Vector2):
-	._move_to(tile_id)
+func _move_to(tile_id :Vector2, use_safe :bool):
+	._move_to(tile_id, use_safe)
 	
 	if not _is_master:
 		return

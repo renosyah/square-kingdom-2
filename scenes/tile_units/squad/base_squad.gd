@@ -55,6 +55,7 @@ export var member_hp :int = 100
 export var member_max_hp :int = 100
 export var heal_amount :int = 10
 export var reinfoce_tiles :Array = []
+export var squad_role :int
 
 var member_alive :int
 

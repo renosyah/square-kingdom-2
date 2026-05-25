@@ -11,14 +11,13 @@ const icon_attack_move_mode = preload("res://assets/user_interface/icons/attack_
 onready var ui_color :Color = EntityIndex.player_colors[Global.current_player.color_idx]
 onready var overlay_ui = $CanvasLayer/Control/overlay_ui
 onready var movable_camera_ui = $CanvasLayer/Control/movable_camera_ui
-onready var movable_camera_minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap/movable_camera_minimap
-onready var cam_rot_l = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_l
-onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/HBoxContainer/cam_rot_r
-onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/VBoxContainer/minimap
+onready var movable_camera_minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/minimap/movable_camera_minimap
+onready var cam_rot_l = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_l
+onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_r
+onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/minimap
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 onready var squad_holder = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/squad_holder
 onready var squad_command_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command
-onready var selection_button = $CanvasLayer/Control/MarginContainer/VBoxContainer/selection_button
 onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode
 onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
@@ -98,32 +97,45 @@ func add_log(v :String):
 		var c = list.get_children().front()
 		list.remove_child(c)
 		c.queue_free()
+		
+func select_all_squad(squad_role :int = 0):
+	var player_squad_size :int = 0
+	for i in player_squads:
+		if i.squad_role == squad_role or squad_role == 0:
+			 player_squad_size += 1
 	
-func _on_cam_rot_reset_pressed():
-	emit_signal("reset_camera")
-	
-func _on_back_pressed():
-	dialog_menu.visible = true
-	
-func _on_dialog_menu_on_exit():
-	emit_signal("exit")
-
-func _on_selection_button_pressed():
-	var player_squad_size :int = player_squads.size()
-	var selected_squad_size :int = selected_squads.size()
-	
+	var selected_squad_size :int = 0
+	for i in selected_squads:
+		if i.squad_role == squad_role or squad_role == 0:
+			 selected_squad_size += 1
+		
 	# must use dup, because array can change its content
-	var dup :Array = selected_squads.duplicate()
-	
+	var dup :Array = []
+	for i in selected_squads:
+		if i.squad_role == squad_role or squad_role == 0:
+			 dup.append(i)
+			
+	# unselect all first
+	# if want select spesific item
+	var temp_dup = selected_squads.duplicate()
+	if squad_role != 0 and not temp_dup.empty():
+		for i in temp_dup:
+			i.click() # unselect
+		
 	# unselect all from selected_squads
 	if selected_squad_size == player_squad_size:
+		
 		for i in dup:
-			i.click()
+			if (i.squad_role == squad_role or squad_role == 0):
+				i.click()
 			
 	# select all that not in selected_squads
 	elif player_squad_size != selected_squad_size:
 		for i in player_squads:
-			if not dup.has(i):
+			if dup.has(i):
+				continue
+				
+			if (i.squad_role == squad_role or squad_role == 0):
 				i.click()
 
 func _on_movement_mode_pressed():
@@ -141,7 +153,28 @@ func _on_movement_mode_pressed():
 		movement_mode.icon = icon_normal_movement_mode
 		for i in selected_squads:
 			i.attack_move = false
+			
+func _on_cam_rot_reset_pressed():
+	emit_signal("reset_camera")
+	
+func _on_back_pressed():
+	dialog_menu.visible = true
+	
+func _on_dialog_menu_on_exit():
+	emit_signal("exit")
 
+func _on_selection_button_all_pressed():
+	select_all_squad(0)
+	
+func _on_selection_button_cav_pressed():
+	select_all_squad(1)
+
+func _on_selection_button_inf_pressed():
+	select_all_squad(2)
+
+func _on_selection_button_rng_pressed():
+	select_all_squad(3)
+	
 func _on_stop_button_pressed():
 	if selected_squads.empty():
 		return
@@ -151,6 +184,11 @@ func _on_stop_button_pressed():
 		i.move_to(tile)
 		i.stop(false)
 	
+
+
+
+
+
 
 
 
