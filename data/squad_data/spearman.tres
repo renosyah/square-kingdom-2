@@ -6,7 +6,7 @@
 script = ExtResource( 1 )
 squad_id = 0
 squad_name = "Spearman"
-description = "Standar spear unit"
+description = "Spear unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
@@ -17,7 +17,7 @@ team = 1
 color_idx = 0
 speed = 1.4
 spotting_range = 1
-squad_type = 3
+sort_order = 33
 member_scene_idx = 0
 can_attack = true
 turning_speed = 8.0

@@ -57,19 +57,23 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/crossbow.png")  #8
 ]
 const squad_potraits = [
-	preload("res://assets/user_interface/squad_potrait/peasant.png"), #0
-	preload("res://assets/user_interface/squad_potrait/militia.png"), #1
-	preload("res://assets/user_interface/squad_potrait/merc_1.png"), #2
-	preload("res://assets/user_interface/squad_potrait/merc_2.png"), #3
-	preload("res://assets/user_interface/squad_potrait/merc_3.png"), #4
-	preload("res://assets/user_interface/squad_potrait/reguler_1.png"), #5
-	preload("res://assets/user_interface/squad_potrait/reguler_2.png"), #6
-	preload("res://assets/user_interface/squad_potrait/reguler_3.png"), #7
-	preload("res://assets/user_interface/squad_potrait/reguler_4.png"), #8
-	preload("res://assets/user_interface/squad_potrait/knight_1.png"), #9
-	preload("res://assets/user_interface/squad_potrait/knight_2.png"), #10
-	preload("res://assets/user_interface/squad_potrait/knight_3.png"), #11
-	preload("res://assets/user_interface/squad_potrait/elit_1.png"), #12
+	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0
+	preload("res://assets/user_interface/squad_potrait/infantry/militia.png"), #1
+	preload("res://assets/user_interface/squad_potrait/infantry/merc_1.png"), #2
+	preload("res://assets/user_interface/squad_potrait/infantry/merc_2.png"), #3
+	preload("res://assets/user_interface/squad_potrait/infantry/merc_3.png"), #4
+	preload("res://assets/user_interface/squad_potrait/infantry/reguler_1.png"), #5
+	preload("res://assets/user_interface/squad_potrait/infantry/reguler_2.png"), #6
+	preload("res://assets/user_interface/squad_potrait/infantry/reguler_3.png"), #7
+	preload("res://assets/user_interface/squad_potrait/infantry/reguler_4.png"), #8
+	preload("res://assets/user_interface/squad_potrait/infantry/knight_1.png"), #9
+	preload("res://assets/user_interface/squad_potrait/infantry/knight_2.png"), #10
+	preload("res://assets/user_interface/squad_potrait/infantry/knight_3.png"), #11
+	preload("res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"), #12
+	preload("res://assets/user_interface/squad_potrait/cavalry/sword_cav.png"), #13
+	preload("res://assets/user_interface/squad_potrait/cavalry/archer_cav.png"), #14
+	preload("res://assets/user_interface/squad_potrait/cavalry/royal_cav.png"), #15
+	
 ]
 
 const player_potraits = [

@@ -8,12 +8,16 @@ const horse_dead = [
 	preload("res://assets/sounds/death/horse_dead_2.wav"),
 	preload("res://assets/sounds/death/horse_dead_3.wav")
 ]
+const horse_skins = [
+	preload("res://scenes/tile_units/squad_member/materials/horse_skin_1.tres"),
+	preload("res://scenes/tile_units/squad_member/materials/horse_skin_2.tres"),
+	preload("res://scenes/tile_units/squad_member/materials/horse_skin_3.tres")
+]
 
 export var charge_damage :int = 23
-export var charge_required :int = 3
+export var min_charge_required :int = 3
 
 var _charges :int
-
 var _horse_audio :AudioStreamPlayer3D
 
 func _ready():
@@ -21,6 +25,46 @@ func _ready():
 	_horse_audio.bus = Global.bus_sfx
 	add_child(_horse_audio)
 	
+# override
+func _spawn_members():
+	#._spawn_members()
+	
+	# use network id so it persistence
+	var _rng = RandomNumberGenerator.new()
+	_rng.seed = network_id + member_max_hp
+	
+	var pos :Vector3 = global_position
+	var basis :Basis = global_transform.basis
+	
+	for idx in member_alive:
+		var offset :Vector3 = _formation_offsets[idx] * formation_density
+		_formation_positions[idx] = (pos + basis.xform(offset))
+		
+		var member :CavalryMember = member_scene.instance()
+		member.squad = self
+		member.name = "%s_member_%s" % [name, idx]
+		
+		member.headgear = member_headgear
+		member.armor = member_armor
+		member.shield = member_shield
+		member.melee_weapon = member_melee_weapon
+		member.range_weapon = member_range_weapon
+		member.material = member_material
+		
+		member.horse_skin = horse_skins[_rng.randi_range(0, horse_skins.size() - 1)]
+		
+		member.hp = member_hp
+		member.max_hp = member_max_hp
+		
+		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
+		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
+		member.connect("on_member_dead", self, "_on_member_dead")
+		
+		add_child(member)
+		member.set_as_toplevel(true)
+		member.translation = _formation_positions[idx]
+		_members.append(member)
+		
 func _on_member_dead(member :SquadMember):
 	._on_member_dead(member)
 	
@@ -42,29 +86,37 @@ func _init_formations():
 func _move_to(tile_id :Vector2):
 	._move_to(tile_id)
 	
+	if not _is_master:
+		return
+		
 	_charges = 0
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
+	if not _is_master:
+		return
+		
 	# if there are chases enemy
 	# and cav travel more than enough
 	if is_instance_valid(chase_enemy):
 		_charges += 1
-	
+		
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	._on_finish_travel(from_id, to_id)
 	
+	if not _is_master:
+		return
+		
 	# on stop, there will be impact
-	if (_charges >= charge_required):
+	# the more  of_charges value 
+	# the more damage it dealt
+	if _charges >= min_charge_required:
 		_cav_charge(to_id, charge_damage + _charges)
 		
 	_charges = 0
 	
 func _cav_charge(tile_id :Vector2, attack_damage :int):
-	if not _is_master:
-		return
-	
 	if not unit_position.has(tile_id):
 		return
 		
@@ -77,8 +129,8 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 		if not is_instance_valid(enemy_squad):
 			continue
 			
-		# we dont want clamp ourself
-		if enemy_squad == self:
+		# we dont want clamp ourself or our kin
+		if enemy_squad == self or enemy_squad.team == team:
 			continue
 			
 		var members :Array = enemy_squad.get_members(true)

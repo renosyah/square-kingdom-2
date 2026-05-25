@@ -1,77 +1,93 @@
 extends SquadMember
+class_name CavalryMember
 
 const rider_scene = preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn")
 
-var rider
+export var horse_skin :SpatialMaterial
+
+var _rider
+
+onready var meshes = [
+	$pivot/body/body,
+	$pivot/body/leg_f_l/leg,
+	$pivot/body/leg_f_r/leg,
+	$pivot/body/leg_b_l/leg,
+	$pivot/body/leg_b_r/leg
+]
+
 
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var rider_holder = $rider_holder
 
 func _ready():
-	rider = rider_scene.instance()
-	rider.squad = squad
-	rider.name = "%s_rider" % name
+	_rider = rider_scene.instance()
+	_rider.squad = squad
+	_rider.name = "%s_rider" % name
 	
-	rider.headgear = headgear
-	rider.armor = armor
-	rider.shield = shield
-	rider.melee_weapon = melee_weapon
-	rider.range_weapon = range_weapon
-	rider.material = material
-	rider.on_horse = true
+	_rider.headgear = headgear
+	_rider.armor = armor
+	_rider.shield = shield
+	_rider.melee_weapon = melee_weapon
+	_rider.range_weapon = range_weapon
+	_rider.material = material
+	_rider.on_horse = true
 	
-	rider.hp = hp
-	rider.max_hp = max_hp
+	_rider.hp = hp
+	_rider.max_hp = max_hp
 	
-	rider.connect("on_set_damage_to_tile", squad, "_on_member_set_damage_to_tile")
-	rider.connect("on_set_damage_to_target", squad, "_on_member_set_damage_to_target")
+	_rider.connect("on_set_damage_to_tile", squad, "_on_member_set_damage_to_tile")
+	_rider.connect("on_set_damage_to_target", squad, "_on_member_set_damage_to_target")
 	
-	rider_holder.add_child(rider)
+	rider_holder.add_child(_rider)
 	
-	rider.set_as_toplevel(true)
-	rider.translation = rider_holder.global_position
+	_rider.set_as_toplevel(true)
+	_rider.translation = rider_holder.global_position
+	
+	for i in meshes:
+		var m :MeshInstance = i
+		m.set_surface_material(0, horse_skin)
 	
 func prepare_melee_weapon():
 	.prepare_melee_weapon()
 	
-	rider.prepare_melee_weapon()
+	_rider.prepare_melee_weapon()
 	
 func prepare_range_weapon():
 	.prepare_range_weapon()
 	
-	rider.prepare_range_weapon()
+	_rider.prepare_range_weapon()
 	
 func melee_attack():
 	.melee_attack()
 	
-	rider.enemy = enemy
-	rider.melee_attack()
-	iddle = rider.iddle
+	_rider.enemy = enemy
+	_rider.melee_attack()
+	iddle = _rider.iddle
 	
 func range_attack():
 	.range_attack()
 	
-	rider.enemy = enemy
-	rider.range_attack()
-	iddle = rider.iddle
+	_rider.enemy = enemy
+	_rider.range_attack()
+	iddle = _rider.iddle
 	
 func dead():
 	.dead()
 	
-	rider.dead()
+	_rider.dead()
 	animation_state.travel("dead")
 	
 func resurect():
 	.resurect()
 	
-	rider.resurect()
+	_rider.resurect()
 	animation_state.start("iddle")
 	
 func moving(delta :float):
 	#.moving(delta)
 	
-	rider.translation = rider_holder.global_position
-	iddle = rider.iddle
+	_rider.translation = rider_holder.global_position
+	iddle = _rider.iddle
 	
 	if is_dead:
 		return

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/merc_3.png-84149b68db9be1b3b6c64950baacacc5.stex"
+path="res://.import/trebuchet.png-f2016981a89c3b14fd77ce2a1a89755d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/squad_potrait/merc_3.png"
-dest_files=[ "res://.import/merc_3.png-84149b68db9be1b3b6c64950baacacc5.stex" ]
+source_file="res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png"
+dest_files=[ "res://.import/trebuchet.png-f2016981a89c3b14fd77ce2a1a89755d.stex" ]
 
 [params]
 

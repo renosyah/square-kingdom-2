@@ -249,7 +249,7 @@ const template_squads = [
 	preload("res://data/squad_data/elite_guard.tres"),#9
 	preload("res://data/squad_data/huscarls.tres"),#10
 	preload("res://data/squad_data/longbowman.tres"),#11
-	preload("res://data/squad_data/cavalry_household.tres")
+	preload("res://data/squad_data/cavalry_household.tres")#12
 ]
 onready var custom_squads :Array = []
 
@@ -309,7 +309,7 @@ func sort_army(datas :Array):
 	datas.sort_custom(self, "_sort_by_order")
 	
 func _sort_by_order(a, b):
-	return custom_squads[a].squad_type < custom_squads[b].squad_type
+	return custom_squads[a].sort_order < custom_squads[b].sort_order
 
 # idx is from current_army
 func prepare_squad(i :int,idx :int, tile :TileMapData) -> SquadData:

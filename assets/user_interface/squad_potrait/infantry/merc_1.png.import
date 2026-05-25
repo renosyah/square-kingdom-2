@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/reguler_2.png-6f73ac9d8fee234c2da53ca1aab982c5.stex"
+path="res://.import/merc_1.png-300fc89c6f7920c8e945e62ab192886f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/squad_potrait/reguler_2.png"
-dest_files=[ "res://.import/reguler_2.png-6f73ac9d8fee234c2da53ca1aab982c5.stex" ]
+source_file="res://assets/user_interface/squad_potrait/infantry/merc_1.png"
+dest_files=[ "res://.import/merc_1.png-300fc89c6f7920c8e945e62ab192886f.stex" ]
 
 [params]
 

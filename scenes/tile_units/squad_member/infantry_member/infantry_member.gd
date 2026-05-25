@@ -1,4 +1,5 @@
 extends SquadMember
+class_name InfantryMember
 
 const sword_sounds = [
 	preload("res://assets/sounds/weapons/sword_1.wav"),

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/knight_3.png-b74f2502e6e82609a33a219fb85393b9.stex"
+path="res://.import/knight_2.png-c7e31d5904e35e2d32901c25987dcfa0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/squad_potrait/knight_3.png"
-dest_files=[ "res://.import/knight_3.png-b74f2502e6e82609a33a219fb85393b9.stex" ]
+source_file="res://assets/user_interface/squad_potrait/infantry/knight_2.png"
+dest_files=[ "res://.import/knight_2.png-c7e31d5904e35e2d32901c25987dcfa0.stex" ]
 
 [params]
 

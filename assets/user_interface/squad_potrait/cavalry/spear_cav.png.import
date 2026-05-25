@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/reguler_1.png-74179b55da40971a2722e54de508d53f.stex"
+path="res://.import/spear_cav.png-e3eb45674f4275208926717761dee88f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/squad_potrait/reguler_1.png"
-dest_files=[ "res://.import/reguler_1.png-74179b55da40971a2722e54de508d53f.stex" ]
+source_file="res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"
+dest_files=[ "res://.import/spear_cav.png-e3eb45674f4275208926717761dee88f.stex" ]
 
 [params]
 

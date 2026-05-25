@@ -20,8 +20,14 @@ export var color_idx :int
 export var speed :float = 2
 export var spotting_range :int = 1
 
+# sort order is for ui
+# 1 cav : [11] cavalry_household ,[12] cavalry_spear,[13] cavalry_sword,[14] cavalry_archer
+# 2 special : [21] elite_guard, [22] huscarls,[23] longbowman
+# 3 infantry : [31] pikeman, [32] knight, [33] spearman, [34] swordman, [35] axeman, [36] peasant
+# 4 ranges : [41] crossbowman,[42] archer,[43] javeliner
+export var sort_order :int
+
 # squad data
-export var squad_type :int
 export var member_scene_idx :int
 export var can_attack :bool = true
 export var turning_speed :float = 8
@@ -57,7 +63,7 @@ func from_dictionary(_data : Dictionary):
 	color_idx = _data["e"]
 	speed = _data["f"]
 	spotting_range = _data["f1"]
-	squad_type = _data["f2"]
+	sort_order = _data["f2"]
 	member_scene_idx = _data["g"]
 	can_attack = _data["i"]
 	turning_speed = _data["j"]
@@ -91,7 +97,7 @@ func to_dictionary() -> Dictionary :
 	_data["e"] = color_idx
 	_data["f"] = speed
 	_data["f1"] = spotting_range
-	_data["f2"] = squad_type
+	_data["f2"] = sort_order
 	_data["g"] = member_scene_idx
 	_data["i"] = can_attack
 	_data["j"] = turning_speed

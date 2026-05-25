@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/merc_1.png-1bf5cf7e6b77c7b9ba48088c41707571.stex"
+path="res://.import/archer_cav.png-b1e47c4a53af7cc558429c240427e07d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/squad_potrait/merc_1.png"
-dest_files=[ "res://.import/merc_1.png-1bf5cf7e6b77c7b9ba48088c41707571.stex" ]
+source_file="res://assets/user_interface/squad_potrait/cavalry/archer_cav.png"
+dest_files=[ "res://.import/archer_cav.png-b1e47c4a53af7cc558429c240427e07d.stex" ]
 
 [params]
 

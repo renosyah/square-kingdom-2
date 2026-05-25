@@ -2,9 +2,6 @@ extends Node
 class_name BaseGameplay
 
 onready var is_server = NetworkLobbyManager.is_server()
-onready var current_player :PlayerData = Global.current_player
-onready var players :Array = Global.players # [PlayerData]
-onready var setting :SettingData = Global.setting_data
 
 func _ready():
 	self.name = "gameplay"
@@ -218,6 +215,8 @@ func _on_tile_map_ready():
 	setup_players_spawn_points()
 	
 ########################################## players spawn  ############################################
+onready var current_player :PlayerData = Global.current_player
+onready var players :Array = Global.players # [PlayerData]
 
 var player_spawn_points = []
 var player_spawn_point :Vector2
@@ -278,6 +277,7 @@ func set_tap():
 
 ########################################## UI  ############################################
 var ui :GameplayUi
+onready var setting :SettingData = Global.setting_data
 
 func setup_ui():
 	ui = preload("res://menus/gameplay/ui/ui.tscn").instance()
@@ -536,10 +536,9 @@ func _on_unit_dead(squad :BaseSquad, data :SquadData):
 	yield(get_tree().create_timer(1),"timeout")
 	squad.floating_info.queue_free()
 	squad.queue_free()
-
-
+	
 func _on_cav_charge(squad):
-	unit_charged_impact()
+	unit_charged_impact(true)
 
 
 
