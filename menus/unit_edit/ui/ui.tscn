@@ -112,107 +112,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control"]
-margin_right = 1024.0
-margin_bottom = 600.0
-mouse_filter = 2
-
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 0, 60 )
-mouse_filter = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
-margin_top = 64.0
-margin_right = 1024.0
-margin_bottom = 144.0
-rect_min_size = Vector2( 0, 80 )
-mouse_filter = 2
-
-[node name="ViewportContainer" type="ViewportContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
-margin_top = 148.0
-margin_right = 1024.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 300, 400 )
-mouse_filter = 2
-size_flags_vertical = 3
-
-[node name="Viewport" type="Viewport" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer"]
-size = Vector2( 1024, 450 )
-transparent_bg = true
-handle_input_locally = false
-usage = 3
-render_target_update_mode = 3
-
-[node name="movable_camera" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 12 )]
-transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.35, 0 )
-
-[node name="horse" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport"]
-transform = Transform( 0.99231, 0, -0.123775, 0, 1, 0, 0.123775, 0, 0.99231, -0.0640824, 0.300111, 0.239429 )
-
-[node name="body" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse"]
-transform = Transform( -0.342217, 0, -0.939621, 0, 1, 0, 0.939621, 0, -0.342217, 0.0340206, 0, -0.405708 )
-
-[node name="body" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
-mesh = ExtResource( 10 )
-skeleton = NodePath("../../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 13 )
-
-[node name="leg_f_l" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, -0.164 )
-
-[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body/leg_f_l"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
-mesh = ExtResource( 11 )
-skeleton = NodePath("../../../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 13 )
-
-[node name="leg_f_r" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, -0.164 )
-
-[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body/leg_f_r"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
-mesh = ExtResource( 11 )
-skeleton = NodePath("../../../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 13 )
-
-[node name="leg_b_l" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, 0.178365 )
-
-[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body/leg_b_l"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
-mesh = ExtResource( 11 )
-skeleton = NodePath("../../../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 13 )
-
-[node name="leg_b_r" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, 0.178365 )
-
-[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse/body/leg_b_r"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
-mesh = ExtResource( 11 )
-skeleton = NodePath("../../../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 13 )
-
-[node name="infantry_member" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport" instance=ExtResource( 8 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0437853, 0 )
-is_dead = true
-
-[node name="DirectionalLight" type="DirectionalLight" parent="CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 0.181978, 0.983303, 0, -0.983303, 0.181978, 0, 0, 0 )
-
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Control/Control"]
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -449,6 +348,87 @@ margin_bottom = 36.0
 size_flags_horizontal = 4
 custom_fonts/font = ExtResource( 4 )
 text = "..."
+
+[node name="ViewportContainer" type="ViewportContainer" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer"]
+margin_right = 412.0
+margin_bottom = 524.0
+mouse_filter = 2
+size_flags_vertical = 3
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+usage = 3
+render_target_update_mode = 3
+
+[node name="movable_camera" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.35, 0 )
+
+[node name="horse" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport"]
+transform = Transform( 0.99231, 0, -0.123775, 0, 1, 0, 0.123775, 0, 0.99231, -0.0640824, 0.300111, 0.239429 )
+
+[node name="body" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse"]
+transform = Transform( -0.342217, 0, -0.939621, 0, 1, 0, 0.939621, 0, -0.342217, 0.0340206, 0, -0.405708 )
+
+[node name="body" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 10 )
+skeleton = NodePath("../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 13 )
+
+[node name="leg_f_l" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, -0.164 )
+
+[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body/leg_f_l"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 11 )
+skeleton = NodePath("../../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 13 )
+
+[node name="leg_f_r" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, -0.164 )
+
+[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body/leg_f_r"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 11 )
+skeleton = NodePath("../../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 13 )
+
+[node name="leg_b_l" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, 0.178365 )
+
+[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body/leg_b_l"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 11 )
+skeleton = NodePath("../../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 13 )
+
+[node name="leg_b_r" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, 0.178365 )
+
+[node name="leg" type="MeshInstance" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse/body/leg_b_r"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 11 )
+skeleton = NodePath("../../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 13 )
+
+[node name="infantry_member" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport" instance=ExtResource( 8 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0437853, 0 )
+is_dead = true
+
+[node name="DirectionalLight" type="DirectionalLight" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 0.181978, 0.983303, 0, -0.983303, 0.181978, 0, 0, 0 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer"]
 margin_left = 722.0

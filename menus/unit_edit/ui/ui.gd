@@ -3,11 +3,14 @@ extends Control
 onready var player_data :PlayerData = Global.player_data
 onready var setting :SettingData = Global.setting_data
 onready var orbital_camera_ui = $CanvasLayer/orbital_camera_ui
-onready var movable_camera = $CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/movable_camera
-onready var infantry_member = $CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/infantry_member
 onready var squad_holder = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/squad_holder
-onready var horse = $CanvasLayer/Control/Control/VBoxContainer/ViewportContainer/Viewport/horse
 onready var squad_name = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/squad_name
+onready var viewport = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport
+onready var viewport_container = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer
+
+onready var horse = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse
+onready var movable_camera = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/movable_camera
+onready var infantry_member = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/infantry_member
 
 func _ready():
 	get_tree().set_quit_on_go_back(false)
@@ -23,6 +26,8 @@ func _ready():
 	Global.hide_transition()
 	display_current_squad()
 	_on_squad_card_pressed(Global.custom_squads[0])
+	
+	viewport.size = viewport_container.rect_size
 	
 func _notification(what):
 	match what:
