@@ -26,6 +26,11 @@ onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squ
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
 onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
 
+onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
+onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
+onready var selection_button_inf = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_inf
+onready var selection_button_rng = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_rng
+
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences
 var selected_squads :Array # refrences
@@ -170,18 +175,6 @@ func _on_back_pressed():
 func _on_dialog_menu_on_exit():
 	emit_signal("exit")
 
-func _on_selection_button_all_pressed():
-	select_all_squad(0)
-	
-func _on_selection_button_cav_pressed():
-	select_all_squad(1)
-
-func _on_selection_button_inf_pressed():
-	select_all_squad(2)
-
-func _on_selection_button_rng_pressed():
-	select_all_squad(3)
-	
 func _on_stop_button_pressed():
 	if selected_squads.empty():
 		return

@@ -408,10 +408,6 @@ visible = false
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all" to="." method="_on_selection_button_all_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav" to="." method="_on_selection_button_cav_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_inf" to="." method="_on_selection_button_inf_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_rng" to="." method="_on_selection_button_rng_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode" to="." method="_on_selection_mode_pressed"]

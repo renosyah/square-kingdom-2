@@ -82,6 +82,13 @@ const cav_charged = [
 	preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_1.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_2.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_3.wav"), preload("res://assets/sounds/unit/charge_impact/cav_charge_ok_4.wav")
 ]
 
+const selection_group = [
+	[],
+	[preload("res://assets/sounds/gameplay/mounted_group_select_1.wav"), preload("res://assets/sounds/gameplay/mounted_group_select_2.wav"), preload("res://assets/sounds/gameplay/mounted_group_select_3.wav"), preload("res://assets/sounds/gameplay/mounted_group_select_4.wav"), preload("res://assets/sounds/gameplay/mounted_group_select_5.wav"), preload("res://assets/sounds/gameplay/mounted_group_select_6.wav")],
+	[preload("res://assets/sounds/gameplay/infantry_group_select_1.wav"), preload("res://assets/sounds/gameplay/infantry_group_select_2.wav"), preload("res://assets/sounds/gameplay/infantry_group_select_3.wav"), preload("res://assets/sounds/gameplay/infantry_group_select_4.wav"), preload("res://assets/sounds/gameplay/infantry_group_select_5.wav")],
+	[preload("res://assets/sounds/gameplay/missile_group_select_1.wav"), preload("res://assets/sounds/gameplay/missile_group_select_2.wav"), preload("res://assets/sounds/gameplay/missile_group_select_3.wav")],
+]
+
 const announce_squad_killed = [
 	preload("res://assets/sounds/announcement/squad_kill_1.wav"), preload("res://assets/sounds/announcement/squad_kill_2.wav"), preload("res://assets/sounds/announcement/squad_kill_3.wav"), preload("res://assets/sounds/announcement/squad_kill_4.wav"), preload("res://assets/sounds/announcement/squad_kill_5.wav"), preload("res://assets/sounds/announcement/squad_kill_6.wav")
 ]
@@ -293,6 +300,15 @@ func setup_ui():
 	ui.minimap.load_data_map(current_tile_map_file_data)
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
 	
+	var selection_buttons = [
+		ui.selection_button_all,
+		ui.selection_button_cav,
+		ui.selection_button_inf,
+		ui.selection_button_rng
+	]
+	for idx in selection_buttons.size():
+		selection_buttons[idx].connect("pressed", self, "_on_selection_button_pressed", [idx])
+
 	var map_size :int = current_tile_map_manifest_data.map_size
 	ui.movable_camera_ui.target = movable_camera
 	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size)
@@ -323,6 +339,14 @@ func _on_ui_route_button_pressed():
 		
 	_move_squad_to(tile_map.get_tile(player_spawn_point), true)
 
+func _on_selection_button_pressed(idx :int):
+	# index 0 audio dont exist
+	if idx > 0 and selected_squads.empty():
+		unit_sound.stream = selection_group[idx].pick_random()
+		unit_sound.play()
+		
+	ui.select_all_squad(idx)
+	
 ########################################## squad  ############################################
 
 var player_squads :Array = []
