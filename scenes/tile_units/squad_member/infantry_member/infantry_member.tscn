@@ -751,6 +751,20 @@ tracks/11/keys = {
 "update": 0,
 "values": [ Vector3( 0.271757, -0.0415348, -0.0468231 ), Vector3( 0.215435, -0.0106742, -0.11036 ) ]
 }
+tracks/12/type = "method"
+tracks/12/path = NodePath(".")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_on_pulling_bow"
+} ]
+}
 
 [sub_resource type="Animation" id=44]
 resource_name = "shot_range_weapon"

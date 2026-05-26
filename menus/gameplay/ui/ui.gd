@@ -7,7 +7,10 @@ signal exit
 const icon_unknown_mode = preload("res://assets/user_interface/icons/question.png")
 const icon_normal_movement_mode = preload("res://assets/user_interface/icons/movement_mode.png")
 const icon_attack_move_mode = preload("res://assets/user_interface/icons/attack_move_mode.png")
+const icon_uncheck = preload("res://assets/user_interface/icons/uncheck.png")
+const icon_lock = preload("res://assets/user_interface/icons/locked.png")
 
+onready var setting :SettingData = Global.setting_data
 onready var ui_color :Color = EntityIndex.player_colors[Global.current_player.color_idx]
 onready var overlay_ui = $CanvasLayer/Control/overlay_ui
 onready var movable_camera_ui = $CanvasLayer/Control/movable_camera_ui
@@ -21,6 +24,7 @@ onready var squad_command_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2
 onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode
 onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
+onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
 
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences
@@ -34,6 +38,8 @@ func _ready():
 	
 	minimap.set_color(ui_color)
 	nine_patch_rect.modulate = ui_color
+	
+	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
 	
 func selected_squads_updated():
 	squad_command_ui.visible = not selected_squads.empty()
@@ -121,6 +127,8 @@ func select_all_squad(squad_role :int = 0):
 	if squad_role != 0 and not temp_dup.empty():
 		for i in temp_dup:
 			i.click() # unselect
+			
+		return
 		
 	# unselect all from selected_squads
 	if selected_squad_size == player_squad_size:
@@ -183,6 +191,10 @@ func _on_stop_button_pressed():
 		i.move_to(tile)
 		i.stop(false)
 	
+func _on_selection_mode_pressed():
+	setting.unselect_on_command = not setting.unselect_on_command
+	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
+
 
 
 

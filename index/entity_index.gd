@@ -46,15 +46,15 @@ const equipment = [
 	
 ]
 const squad_icon = [
-	preload("res://assets/user_interface/icons/pitch_fork.png"), #0
-	preload("res://assets/user_interface/icons/spear.png"), #1
-	preload("res://assets/user_interface/icons/melee.png"), #2
-	preload("res://assets/user_interface/icons/range.png"), #3
-	preload("res://assets/user_interface/icons/axe.png"), #4
-	preload("res://assets/user_interface/icons/special.png"), #5
-	preload("res://assets/user_interface/icons/commander.png"),#6
-	preload("res://assets/user_interface/icons/javeline.png"), #7
-	preload("res://assets/user_interface/icons/crossbow.png")  #8
+	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0
+	preload("res://assets/user_interface/icons/squad/spear.png"), #1
+	preload("res://assets/user_interface/icons/squad/melee.png"), #2
+	preload("res://assets/user_interface/icons/squad/range.png"), #3
+	preload("res://assets/user_interface/icons/squad/axe.png"), #4
+	preload("res://assets/user_interface/icons/squad/special.png"), #5
+	preload("res://assets/user_interface/icons/squad/commander.png"),#6
+	preload("res://assets/user_interface/icons/squad/javeline.png"), #7
+	preload("res://assets/user_interface/icons/squad/crossbow.png")  #8
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0

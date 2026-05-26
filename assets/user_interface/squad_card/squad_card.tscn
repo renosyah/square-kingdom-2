@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/user_interface/icons/horse.png" type="Texture" id=1]
+[ext_resource path="res://assets/user_interface/icons/squad/horse.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/squad_card/squad_card.gd" type="Script" id=2]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
 
 [node name="squad_card" type="MarginContainer"]
@@ -15,6 +16,7 @@ script = ExtResource( 2 )
 margin_right = 70.0
 margin_bottom = 100.0
 mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
 
 [node name="overlay" type="ColorRect" parent="."]
 visible = false
@@ -40,6 +42,14 @@ margin_bottom = 98.0
 mouse_filter = 2
 expand = true
 stretch_mode = 7
+
+[node name="hurt_color_stats" type="ColorRect" parent="MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 68.0
+margin_bottom = 98.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 2.0
@@ -122,17 +132,34 @@ size_flags_vertical = 4
 texture = ExtResource( 1 )
 expand = true
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 2.0
-margin_top = 76.0
+margin_top = 2.0
 margin_right = 68.0
 margin_bottom = 98.0
+mouse_filter = 2
+custom_constants/separation = 0
+alignment = 2
+
+[node name="charge_amount" type="Label" parent="MarginContainer/VBoxContainer2"]
+margin_top = 46.0
+margin_right = 66.0
+margin_bottom = 74.0
+custom_fonts/font = ExtResource( 3 )
+align = 1
+valign = 1
+uppercase = true
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer2"]
+margin_top = 74.0
+margin_right = 66.0
+margin_bottom = 96.0
 rect_min_size = Vector2( 0, 22 )
 mouse_filter = 2
 size_flags_vertical = 8
 color = Color( 0, 0, 0, 0.709804 )
 
-[node name="Label" type="Label" parent="MarginContainer/ColorRect"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/ColorRect"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0

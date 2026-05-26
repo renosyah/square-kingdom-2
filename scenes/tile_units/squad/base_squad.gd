@@ -1,6 +1,7 @@
 extends BaseTileUnit
 class_name BaseSquad
 
+signal on_squad_member_ready(squad, members)
 signal on_squad_member_resurect(squad, member)
 signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
@@ -41,7 +42,8 @@ const death_sounds = [
 export var member_scene :PackedScene
 export var can_attack :bool
 export var turning_speed :float = 8
-export var attack_speed :float = 0.8
+export var melee_attack_speed :float = 0.8
+export var range_attack_speed :float = 0.8
 export var formation_density :float = 0.35
 
 export var member_headgear :PackedScene
@@ -60,6 +62,7 @@ export var squad_role :int
 var member_alive :int
 
 export var show_move_indicator:bool = false
+export var enable_blood :bool
 
 # MUST SET
 var camera :Camera
@@ -74,32 +77,45 @@ var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
 
-var _attack_timer :Timer
+var _melee_attack_timer :Timer
+var _range_attack_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
-var _path_indicator2 :Spatial
+#var _path_indicator2 :Spatial
 
 var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
 var _combat_audio :AudioStreamPlayer3D
 var _unit_audio :AudioStreamPlayer3D
+var _blood_particle :CPUParticles
 
 var attacked_by :NodePath
 
 onready var _has_shield :bool = member_shield != null
 onready var _has_range_weapon :bool = member_range_weapon != null
 var _member_spawned :bool = false
+var _range_engagement :bool
 
 func _ready():
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	
-	_attack_timer = Timer.new()
-	_attack_timer.one_shot = true
-	_attack_timer.autostart = false
-	_attack_timer.wait_time = attack_speed
-	add_child(_attack_timer)
+	_blood_particle = preload("res://assets/blood_particle/blood_particle.tscn").instance()
+	_blood_particle.set_as_toplevel(true)
+	add_child(_blood_particle)
+	
+	_melee_attack_timer = Timer.new()
+	_melee_attack_timer.one_shot = true
+	_melee_attack_timer.autostart = false
+	_melee_attack_timer.wait_time = melee_attack_speed
+	add_child(_melee_attack_timer)
+	
+	_range_attack_timer = Timer.new()
+	_range_attack_timer.one_shot = true
+	_range_attack_timer.autostart = false
+	_range_attack_timer.wait_time = range_attack_speed
+	add_child(_range_attack_timer)
 	
 	_walk_timer = Timer.new()
 	_walk_timer.one_shot = true
@@ -132,7 +148,7 @@ func _ready():
 	_path_indicator.material = member_material
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
-	_path_indicator.visible = show_move_indicator
+	_path_indicator.visible = false
 		
 #	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
 #	add_child(_path_indicator2)
@@ -146,11 +162,13 @@ func _ready():
 	_member_spawned = true
 	
 	if show_move_indicator:
+		_path_indicator.visible = true
 		_path_indicator.translation = global_position
 	
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
+	enable_blood = d.enable_blood
 	
 func _init_formations():
 	pass
@@ -185,6 +203,8 @@ func _spawn_members():
 		member.set_as_toplevel(true)
 		member.translation = _formation_positions[idx]
 		_members.append(member)
+		
+	emit_signal("on_squad_member_ready", self, _members)
 
 func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
@@ -227,6 +247,10 @@ func _on_member_dead(member :SquadMember):
 	if _members.has(member):
 		member_alive -= 1
 		
+		if not _blood_particle.emitting and visible and enable_blood:
+			_blood_particle.translation = member.global_position
+			_blood_particle.emitting = true
+			
 		if not _unit_audio.playing:
 			_unit_audio.stream = death_sounds[randi() % 4]
 		
@@ -234,6 +258,7 @@ func _on_member_dead(member :SquadMember):
 				_unit_audio.stream = death_sounds[5] # wilhem
 		
 			_unit_audio.play()
+		
 		
 		emit_signal("on_squad_member_dead", self, member)
 		
@@ -471,11 +496,23 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, fro
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
+	attacked_by = from
+	
 	if _is_master and not _heal_interupt:
 		_heal_interupt = true
 		
-	attacked_by = from
-	
+		# if on range engagement
+		# and getting clap by melee enemy
+		# change attention to them
+		if _range_engagement:
+			var s = get_node_or_null(attacked_by)
+			if is_instance_valid(s):
+				if _is_in_melee_range(s):
+					enemy = s
+					_has_enemy = true
+					_on_enemy_set()
+					_range_engagement = false
+					
 	var m :SquadMember = _members[member_idx]
 	m.hp = hp_remain
 	

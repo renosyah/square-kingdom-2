@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -6,8 +6,16 @@
 [ext_resource path="res://assets/user_interface/icons/question.png" type="Texture" id=4]
 [ext_resource path="res://assets/user_interface/squad_detail/squad_detail.gd" type="Script" id=5]
 [ext_resource path="res://assets/user_interface/icons/hp.png" type="Texture" id=6]
-[ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=7]
-[ext_resource path="res://assets/user_interface/icons/horse.png" type="Texture" id=9]
+[ext_resource path="res://assets/user_interface/icons/sword_attack.png" type="Texture" id=7]
+[ext_resource path="res://assets/user_interface/icons/team.png" type="Texture" id=8]
+[ext_resource path="res://assets/user_interface/icons/squad/horse.png" type="Texture" id=9]
+[ext_resource path="res://assets/user_interface/icons/info.png" type="Texture" id=10]
+[ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=11]
+[ext_resource path="res://assets/user_interface/icons/squad/special.png" type="Texture" id=12]
+[ext_resource path="res://assets/user_interface/icons/squad/axe.png" type="Texture" id=13]
+[ext_resource path="res://assets/user_interface/icons/squad/spear.png" type="Texture" id=14]
+[ext_resource path="res://assets/user_interface/icons/refresh.png" type="Texture" id=15]
+[ext_resource path="res://assets/user_interface/icons/squad/melee.png" type="Texture" id=16]
 
 [node name="info" type="MarginContainer"]
 margin_right = 552.0
@@ -16,92 +24,107 @@ size_flags_horizontal = 3
 script = ExtResource( 5 )
 
 [node name="ColorRect3" type="ColorRect" parent="."]
-margin_right = 552.0
+margin_right = 589.0
 margin_bottom = 220.0
 size_flags_horizontal = 3
-color = Color( 0.207843, 0.207843, 0.207843, 1 )
+color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 552.0
+margin_right = 589.0
 margin_bottom = 220.0
 
-[node name="Label2" type="Label" parent="VBoxContainer"]
-margin_right = 552.0
-margin_bottom = 46.0
-rect_min_size = Vector2( 0, 46 )
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 589.0
+margin_bottom = 40.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_top = 12.0
+margin_right = 545.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 8
 custom_fonts/font = ExtResource( 1 )
 text = "  Squad Info"
-valign = 2
+valign = 1
+
+[node name="info" type="Button" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 549.0
+margin_right = 589.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+icon = ExtResource( 10 )
+expand_icon = true
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 50.0
-margin_right = 552.0
-margin_bottom = 58.0
+margin_top = 44.0
+margin_right = 589.0
+margin_bottom = 52.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 62.0
-margin_right = 552.0
-margin_bottom = 188.0
+margin_top = 56.0
+margin_right = 589.0
+margin_bottom = 186.0
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 126.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_right = 112.0
-margin_bottom = 126.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="squad_card" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer3"]
 margin_right = 100.0
-margin_bottom = 126.0
-rect_min_size = Vector2( 100, 120 )
+margin_bottom = 130.0
+rect_min_size = Vector2( 100, 130 )
 mouse_filter = 2
 
 [node name="info_bg" type="ColorRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card"]
 margin_right = 100.0
-margin_bottom = 126.0
+margin_bottom = 130.0
 mouse_filter = 2
 color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card"]
-margin_right = 100.0
-margin_bottom = 126.0
-rect_min_size = Vector2( 96, 126 )
-mouse_filter = 2
-custom_constants/margin_right = 2
-custom_constants/margin_top = 2
-custom_constants/margin_left = 2
-custom_constants/margin_bottom = 2
-
-[node name="info_potrait" type="TextureRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 98.0
-margin_bottom = 124.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 96, 126 )
 mouse_filter = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="info_potrait" type="TextureRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card/MarginContainer"]
+margin_right = 96.0
+margin_bottom = 126.0
+mouse_filter = 2
+texture = ExtResource( 8 )
 expand = true
 stretch_mode = 7
 
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 116.0
 margin_right = 128.0
-margin_bottom = 126.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 132.0
-margin_right = 472.0
-margin_bottom = 126.0
+margin_right = 509.0
+margin_bottom = 130.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 340.0
+margin_right = 377.0
 margin_bottom = 53.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
@@ -123,27 +146,28 @@ text = "-"
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 52.0
-margin_right = 340.0
+margin_right = 377.0
 margin_bottom = 53.0
 rect_min_size = Vector2( 12, 0 )
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 57.0
-margin_right = 340.0
-margin_bottom = 70.0
+margin_right = 377.0
+margin_bottom = 74.0
 rect_min_size = Vector2( 0, 8 )
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 74.0
-margin_right = 340.0
-margin_bottom = 114.0
+margin_top = 78.0
+margin_right = 377.0
+margin_bottom = 118.0
 custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 44.0
+margin_right = 116.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 110, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
 margin_right = 40.0
@@ -157,14 +181,16 @@ expand = true
 [node name="hp" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 44.0
+margin_right = 116.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
+text = "HP | Regen"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 56.0
-margin_right = 100.0
+margin_left = 128.0
+margin_right = 265.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 110, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
 margin_right = 40.0
@@ -178,14 +204,16 @@ expand = true
 [node name="attack" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 44.0
+margin_right = 137.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
+text = "Melee | Range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 112.0
-margin_right = 156.0
+margin_left = 277.0
+margin_right = 377.0
 margin_bottom = 40.0
+rect_min_size = Vector2( 100, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
 margin_right = 40.0
@@ -199,26 +227,27 @@ expand = true
 [node name="speed" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 44.0
+margin_right = 83.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
+text = "Speed"
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 118.0
-margin_right = 340.0
-margin_bottom = 126.0
+margin_top = 122.0
+margin_right = 377.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 476.0
-margin_right = 484.0
-margin_bottom = 126.0
+margin_left = 513.0
+margin_right = 521.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 488.0
-margin_right = 540.0
-margin_bottom = 126.0
+margin_left = 525.0
+margin_right = 577.0
+margin_bottom = 130.0
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_right = 52.0
@@ -316,13 +345,311 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 544.0
-margin_right = 552.0
-margin_bottom = 126.0
+margin_left = 581.0
+margin_right = 589.0
+margin_bottom = 130.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 192.0
-margin_right = 552.0
-margin_bottom = 216.0
+margin_top = 190.0
+margin_right = 589.0
+margin_bottom = 214.0
 rect_min_size = Vector2( 0, 24 )
+
+[node name="info_layout" type="MarginContainer" parent="."]
+visible = false
+margin_right = 589.0
+margin_bottom = 220.0
+
+[node name="ColorRect4" type="ColorRect" parent="info_layout"]
+margin_right = 589.0
+margin_bottom = 220.0
+size_flags_horizontal = 3
+color = Color( 0.188235, 0.188235, 0.188235, 1 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="info_layout"]
+margin_right = 589.0
+margin_bottom = 220.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2"]
+margin_right = 572.0
+margin_bottom = 40.0
+
+[node name="Label2" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer2"]
+margin_top = 6.0
+margin_right = 528.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "  Info"
+
+[node name="close_info" type="Button" parent="info_layout/VBoxContainer2/HBoxContainer2"]
+margin_left = 532.0
+margin_right = 572.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+icon = ExtResource( 11 )
+expand_icon = true
+
+[node name="HBoxContainer4" type="ScrollContainer" parent="info_layout/VBoxContainer2"]
+margin_top = 44.0
+margin_right = 572.0
+margin_bottom = 220.0
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4"]
+margin_right = 487.0
+margin_bottom = 428.0
+mouse_filter = 2
+custom_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+margin_right = 487.0
+margin_bottom = 160.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer"]
+margin_right = 8.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 8, 0 )
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer"]
+margin_left = 12.0
+margin_right = 360.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_right = 348.0
+margin_bottom = 48.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 6 )
+expand = true
+
+[node name="hp" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer"]
+margin_left = 58.0
+margin_right = 347.0
+margin_bottom = 48.0
+size_flags_horizontal = 5
+text = "HP | Regen
+Amount of HP each individual in squad 
+and regen amount each 4 second out combat"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_top = 60.0
+margin_right = 348.0
+margin_bottom = 108.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="attack" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+margin_left = 58.0
+margin_right = 289.0
+margin_bottom = 48.0
+size_flags_horizontal = 5
+text = "Melee | Range
+DPS of melee damage per individual
+and DPS range damage each volley"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
+margin_top = 120.0
+margin_right = 348.0
+margin_bottom = 160.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 3 )
+expand = true
+
+[node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer3"]
+margin_left = 58.0
+margin_top = 4.0
+margin_right = 348.0
+margin_bottom = 35.0
+size_flags_horizontal = 5
+text = "Speed
+Squads move at a speed of X tiles per second"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+margin_top = 172.0
+margin_right = 487.0
+margin_bottom = 316.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+margin_right = 8.0
+margin_bottom = 144.0
+rect_min_size = Vector2( 8, 0 )
+mouse_filter = 2
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+margin_left = 12.0
+margin_right = 487.0
+margin_bottom = 144.0
+mouse_filter = 2
+custom_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+margin_right = 475.0
+margin_bottom = 40.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2"]
+margin_right = 90.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/separation = 8
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2/HBoxContainer2"]
+margin_left = 48.0
+margin_right = 88.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 9 )
+expand = true
+
+[node name="attack" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 475.0
+margin_bottom = 35.0
+size_flags_horizontal = 5
+text = "Spears are effective against cavalry.
+Cavalry armed with spears are also strong against enemy cavalry."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+margin_top = 52.0
+margin_right = 475.0
+margin_bottom = 92.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer"]
+margin_right = 90.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/separation = 8
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer/HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 16 )
+expand = true
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer/HBoxContainer"]
+margin_left = 48.0
+margin_right = 88.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 13 )
+expand = true
+
+[node name="hp" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 459.0
+margin_bottom = 35.0
+size_flags_horizontal = 5
+text = "Swords and axes are effective against infantry.
+This also applies to cavalry armed with swords or axes."
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+margin_top = 104.0
+margin_right = 475.0
+margin_bottom = 144.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3"]
+margin_right = 90.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/separation = 8
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 12 )
+expand = true
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3/HBoxContainer2"]
+margin_left = 48.0
+margin_right = 88.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 15 )
+expand = true
+
+[node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3"]
+margin_left = 108.0
+margin_top = 4.0
+margin_right = 463.0
+margin_bottom = 35.0
+size_flags_horizontal = 5
+text = "Special squads are often hybrid units that excel in both melee
+and ranged combat. Some are considered the best all-round units."
+
+[node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+margin_top = 328.0
+margin_right = 487.0
+margin_bottom = 428.0
+rect_min_size = Vector2( 0, 100 )
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/info" to="." method="_on_info_pressed"]
+[connection signal="pressed" from="info_layout/VBoxContainer2/HBoxContainer2/close_info" to="." method="_on_close_info_pressed"]

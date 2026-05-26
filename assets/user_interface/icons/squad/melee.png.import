@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/commander.png-70f79fce5c4b66d5e931d59e8bc2ffb1.stex"
+path="res://.import/melee.png-a21902ab3f44e44bb2ceafa54e1a9e9a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/commander.png"
-dest_files=[ "res://.import/commander.png-70f79fce5c4b66d5e931d59e8bc2ffb1.stex" ]
+source_file="res://assets/user_interface/icons/squad/melee.png"
+dest_files=[ "res://.import/melee.png-a21902ab3f44e44bb2ceafa54e1a9e9a.stex" ]
 
 [params]
 

@@ -13,6 +13,7 @@ onready var shadows_option = {
 
 onready var ts = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer/ts
 onready var fog = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2/fog
+onready var blood = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3/blood
 
 onready var setting_data = Global.setting_data
 onready var light_label = $VBoxContainer/VBoxContainer/HBoxContainer3/light_label
@@ -25,7 +26,7 @@ func _ready():
 	for key in shadows_option.keys():
 		shadows_option[key].connect("pressed", self, "_on_shadow_option_pressed", [key])
 	
-	for btn in [ts, fog]:
+	for btn in [ts, fog, blood]:
 		btn.connect("pressed", self, "_on_check_option_pressed", [ btn ])
 	
 func _apply_setting():
@@ -34,6 +35,7 @@ func _apply_setting():
 		
 	ts.icon = check if setting_data.enable_tilt_shift else uncheck
 	fog.icon = check if setting_data.enable_fog else uncheck
+	blood.icon = check if setting_data.enable_blood else uncheck
 	
 	light_label.text = "%s%s" % [(setting_data.light * max_value),"%"]
 	
@@ -43,6 +45,9 @@ func _on_check_option_pressed(btn):
 		
 	elif btn == fog:
 		setting_data.enable_fog = not setting_data.enable_fog
+		
+	elif btn == blood:
+		setting_data.enable_blood = not setting_data.enable_blood
 		
 	_apply_setting()
 	
@@ -60,8 +65,11 @@ func _on_reset_button_pressed():
 	setting_data.enable_fog = n.enable_fog
 	setting_data.enable_tilt_shift = n.enable_tilt_shift
 	setting_data.light = n.light
+	setting_data.enable_blood = n.enable_blood
 	
 	_apply_setting()
+
+
 
 
 

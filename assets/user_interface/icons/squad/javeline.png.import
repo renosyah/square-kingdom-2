@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/horse.png-36f4b158fdd0e1ddde5abfbe6f76c04f.stex"
+path="res://.import/javeline.png-693e7b48029e54ded5da6adde59ff523.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/horse.png"
-dest_files=[ "res://.import/horse.png-36f4b158fdd0e1ddde5abfbe6f76c04f.stex" ]
+source_file="res://assets/user_interface/icons/squad/javeline.png"
+dest_files=[ "res://.import/javeline.png-693e7b48029e54ded5da6adde59ff523.stex" ]
 
 [params]
 

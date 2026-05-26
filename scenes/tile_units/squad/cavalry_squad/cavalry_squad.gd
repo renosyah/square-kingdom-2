@@ -1,6 +1,7 @@
 extends BaseSquad
 class_name CavalrySquad
 
+signal on_cav_charge_buildup(squad, amount)
 signal on_cav_charge(squad)
 
 const horse_dead = [
@@ -65,6 +66,8 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
+	emit_signal("on_squad_member_ready", self, _members)
+	
 func _on_member_dead(member :SquadMember):
 	._on_member_dead(member)
 	
@@ -90,6 +93,13 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 		return
 		
 	_charges = 0
+	emit_signal("on_cav_charge_buildup", self, _charges)
+	
+remote func _stop():
+	._stop()
+	
+	_charges = 0
+	emit_signal("on_cav_charge_buildup", self, _charges)
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
@@ -101,6 +111,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	# and cav travel more than enough
 	if is_instance_valid(chase_enemy):
 		_charges += 1
+		emit_signal("on_cav_charge_buildup", self, _charges)
 		
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	._on_finish_travel(from_id, to_id)
@@ -169,6 +180,9 @@ func _ajust_formation(pos :Vector3, delta :float):
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	
+	if not can_attack:
+		return
+		
 	if not _is_moving:
 		# align Y
 		var look :Vector3 = enemy_pos
@@ -178,60 +192,60 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		var t:Transform = transform.looking_at(look, Vector3.UP)
 		transform = transform.interpolate_with(t, turning_speed * delta)
 	
-	if not can_attack:
-		return
-		
-	if not _attack_timer.is_stopped():
-		return
-	
-	_attack_timer.wait_time = attack_speed
-	_attack_timer.start()
-	
-	# assign the target of enemy squad member
-	var iddles :Array = get_iddle_members()
-	
 	if _is_in_melee_range(enemy):
-		
-		for i in _members:
-			i.prepare_melee_weapon()
-		
-		if iddles.empty():
-			return
+		if _melee_attack_timer.is_stopped():
+			_melee_attack_timer.start()
 			
-		# tell to attack 
-		# use melee weapon
-		var m :SquadMember = iddles.pick_random()
-		var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
-		var target_idx :int = enemy.get_member_index(enemy_member)
-		if target_idx == -1:
-			return
-		
-		m.target_idx = target_idx
-		m.enemy = enemy_member
-		m.melee_attack()
-		
-		# force stop enemy if on same tile as your squad
-		if enemy.current_tile == current_tile and enemy.is_moving():
-			enemy.stop()
-		
+			var iddles :Array = get_iddle_members()
+			if iddles.empty():
+				return
+				
+			for i in _members:
+				i.prepare_melee_weapon()
+				
+			# tell to attack 
+			# use melee weapon
+			var m :SquadMember = iddles.pick_random()
+			var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
+			var target_idx :int = enemy.get_member_index(enemy_member)
+			if target_idx == -1:
+				return
+			
+			m.target_idx = target_idx
+			m.enemy = enemy_member
+			m.melee_attack()
+			
+			# force stop enemy if on same tile as your squad
+			if enemy.current_tile == current_tile and enemy.is_moving():
+				enemy.stop()
+			
 		return
 		
 	if _has_range_weapon:
-		
-		for i in _members:
-			i.prepare_range_weapon()
+		if _range_attack_timer.is_stopped():
+			_range_attack_timer.start()
+			_range_engagement = true
 			
-		for i in iddles:
-			var enemy_member :SquadMember = enemy.pick_member(false)
-			var target_idx :int = enemy.get_member_index(enemy_member)
-			if target_idx == -1:
-				continue
+			var iddles :Array = get_iddle_members()
+			if iddles.empty():
+				return
 				
-			var m :SquadMember = i
-			m.target_idx = target_idx
-			m.enemy = enemy_member
-			m.range_attack()
+			for i in _members:
+				i.prepare_range_weapon()
+				
+			for i in iddles:
+				var enemy_member :SquadMember = enemy.pick_member(false)
+				var target_idx :int = enemy.get_member_index(enemy_member)
+				if target_idx == -1:
+					continue
+					
+				var m :SquadMember = i
+				m.target_idx = target_idx
+				m.enemy = enemy_member
+				m.range_attack()
+				
 			
+		
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	

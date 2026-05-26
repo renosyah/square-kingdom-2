@@ -42,7 +42,7 @@ func _ready():
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	
-	yield(get_tree().create_timer(0.8),"timeout")
+	yield(squad,"on_squad_member_ready")
 	_update_bar()
 	visible = true
 	

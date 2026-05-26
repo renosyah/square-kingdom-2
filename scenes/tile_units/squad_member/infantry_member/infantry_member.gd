@@ -182,7 +182,8 @@ func _on_melee_attack_performed():
 		yield(tween,"tween_completed")
 	
 	if is_instance_valid(enemy):
-		emit_signal("on_set_damage_to_target", self, enemy, target_idx, _melee_weapon.attack_damage)
+		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_role)
+		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)
 	
 	iddle = true
 	enemy = null
@@ -204,16 +205,6 @@ func range_attack():
 	body_animation_state.travel(_range_weapon.attack_animation)
 	auto_iddle_timer.start()
 	
-func _look_at(pos :Vector3):
-	var _pos = pos
-	_pos.y = global_position.y
-	
-	var _dir = global_position.direction_to(_pos)
-	if _dir.length() > 0.001:
-		var dot = abs(_dir.dot(Vector3.UP))
-		if dot < 0.999:
-			look_at(_pos, Vector3.UP)
-			
 func _on_pulling_bow():
 	_range_weapon.pull()
 	

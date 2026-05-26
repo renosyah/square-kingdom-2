@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
 [ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
-[ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=12]
+[ext_resource path="res://assets/user_interface/icons/sword_attack.png" type="Texture" id=12]
 [ext_resource path="res://assets/user_interface/icons/base.png" type="Texture" id=13]
 
 [node name="ui" type="Control"]
@@ -27,11 +27,8 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -512.0
-margin_right = 512.0
-margin_bottom = 490.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true
