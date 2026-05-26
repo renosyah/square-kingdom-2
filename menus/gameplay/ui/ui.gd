@@ -124,7 +124,6 @@ func select_all_squad(squad_role :int = 0):
 		
 	# unselect all from selected_squads
 	if selected_squad_size == player_squad_size:
-		
 		for i in dup:
 			if (i.squad_role == squad_role or squad_role == 0):
 				i.click()

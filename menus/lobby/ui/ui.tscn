@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=6]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=7]
 [ext_resource path="res://scenes/minimap/minimap.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/background/round_table.png" type="Texture" id=9]
 [ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
 
 [node name="ui" type="Control"]
@@ -24,9 +25,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/bg"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0, 0, 0, 1 )
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/bg"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 7
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 anchor_right = 1.0
@@ -122,7 +132,7 @@ script = ExtResource( 4 )
 margin_right = 440.0
 margin_bottom = 408.0
 size_flags_horizontal = 3
-color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 440.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://assets/user_interface/squad_detail/squad_detail.gd" type="Script" id=5]
 [ext_resource path="res://assets/user_interface/icons/hp.png" type="Texture" id=6]
 [ext_resource path="res://assets/user_interface/icons/melee.png" type="Texture" id=7]
-[ext_resource path="res://assets/user_interface/icons/team.png" type="Texture" id=8]
 [ext_resource path="res://assets/user_interface/icons/horse.png" type="Texture" id=9]
 
 [node name="info" type="MarginContainer"]
@@ -17,17 +16,17 @@ size_flags_horizontal = 3
 script = ExtResource( 5 )
 
 [node name="ColorRect3" type="ColorRect" parent="."]
-margin_right = 572.0
+margin_right = 552.0
 margin_bottom = 220.0
 size_flags_horizontal = 3
-color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 572.0
+margin_right = 552.0
 margin_bottom = 220.0
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
-margin_right = 572.0
+margin_right = 552.0
 margin_bottom = 46.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 1 )
@@ -36,72 +35,73 @@ valign = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 50.0
-margin_right = 572.0
+margin_right = 552.0
 margin_bottom = 58.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 62.0
-margin_right = 572.0
-margin_bottom = 192.0
+margin_right = 552.0
+margin_bottom = 188.0
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 130.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_right = 112.0
-margin_bottom = 130.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 0, 12 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="squad_card" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer3"]
 margin_right = 100.0
-margin_bottom = 130.0
-rect_min_size = Vector2( 100, 130 )
+margin_bottom = 126.0
+rect_min_size = Vector2( 100, 120 )
 mouse_filter = 2
 
 [node name="info_bg" type="ColorRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card"]
 margin_right = 100.0
-margin_bottom = 130.0
+margin_bottom = 126.0
 mouse_filter = 2
 color = Color( 0.141176, 0.141176, 0.141176, 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card"]
+margin_right = 100.0
+margin_bottom = 126.0
+rect_min_size = Vector2( 96, 126 )
+mouse_filter = 2
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="info_potrait" type="TextureRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card/MarginContainer"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 98.0
-margin_bottom = 128.0
-rect_min_size = Vector2( 96, 126 )
+margin_bottom = 124.0
 mouse_filter = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="info_potrait" type="TextureRect" parent="VBoxContainer/HBoxContainer/MarginContainer3/squad_card/MarginContainer"]
-margin_right = 96.0
-margin_bottom = 126.0
-mouse_filter = 2
-texture = ExtResource( 8 )
 expand = true
 stretch_mode = 7
 
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 116.0
 margin_right = 128.0
-margin_bottom = 130.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 132.0
-margin_right = 492.0
-margin_bottom = 130.0
+margin_right = 472.0
+margin_bottom = 126.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 360.0
+margin_right = 340.0
 margin_bottom = 53.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
@@ -123,26 +123,26 @@ text = "-"
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 52.0
-margin_right = 360.0
+margin_right = 340.0
 margin_bottom = 53.0
 rect_min_size = Vector2( 12, 0 )
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 57.0
-margin_right = 360.0
-margin_bottom = 74.0
+margin_right = 340.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 0, 8 )
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 78.0
-margin_right = 360.0
-margin_bottom = 118.0
+margin_top = 74.0
+margin_right = 340.0
+margin_bottom = 114.0
 custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 116.0
+margin_right = 44.0
 margin_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
@@ -157,14 +157,13 @@ expand = true
 [node name="hp" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 116.0
+margin_right = 44.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
-text = "HP | Regen"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 128.0
-margin_right = 265.0
+margin_left = 56.0
+margin_right = 100.0
 margin_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
@@ -179,14 +178,13 @@ expand = true
 [node name="attack" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 137.0
+margin_right = 44.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
-text = "Melee | Range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 277.0
-margin_right = 360.0
+margin_left = 112.0
+margin_right = 156.0
 margin_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
@@ -201,27 +199,26 @@ expand = true
 [node name="speed" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
 margin_left = 44.0
 margin_top = 13.0
-margin_right = 83.0
+margin_right = 44.0
 margin_bottom = 27.0
 size_flags_horizontal = 5
-text = "Speed"
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 122.0
-margin_right = 360.0
-margin_bottom = 130.0
+margin_top = 118.0
+margin_right = 340.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 496.0
-margin_right = 504.0
-margin_bottom = 130.0
+margin_left = 476.0
+margin_right = 484.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 508.0
-margin_right = 560.0
-margin_bottom = 130.0
+margin_left = 488.0
+margin_right = 540.0
+margin_bottom = 126.0
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_right = 52.0
@@ -319,13 +316,13 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 564.0
-margin_right = 572.0
-margin_bottom = 130.0
+margin_left = 544.0
+margin_right = 552.0
+margin_bottom = 126.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 196.0
-margin_right = 572.0
-margin_bottom = 220.0
+margin_top = 192.0
+margin_right = 552.0
+margin_bottom = 216.0
 rect_min_size = Vector2( 0, 24 )

@@ -13,6 +13,7 @@ onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/Marg
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
 var player_map_data_received :Array = []
+var idx_bg = [1, 2]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -139,10 +140,10 @@ func _on_back_pressed():
 	on_back_pressed()
 	
 func _on_host_ready():
-	Global.change_scene("res://menus/gameplay/client/client.tscn", true)
+	Global.change_scene("res://menus/gameplay/client/client.tscn", true, idx_bg.pick_random())
 	
 func _on_battle_pressed():
-	Global.change_scene("res://menus/gameplay/host/host.tscn", true)
+	Global.change_scene("res://menus/gameplay/host/host.tscn", true, idx_bg.pick_random())
 
 
 

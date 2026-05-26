@@ -5,6 +5,8 @@ onready var _texture_rect = $transision_screen/TextureRect
 
 const bgs = [
 	preload("res://assets/background/splash.png"),
+	preload("res://assets/background/siege_1.png"),
+	preload("res://assets/background/siege_2.png")
 ]
 
 var _has_session :bool = false

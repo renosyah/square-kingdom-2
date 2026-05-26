@@ -27,8 +27,11 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -512.0
+margin_right = 512.0
+margin_bottom = 490.0
 mouse_filter = 2
 texture = ExtResource( 3 )
 expand = true

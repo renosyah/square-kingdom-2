@@ -4,7 +4,7 @@ const dragable_card_scene = preload("res://assets/dragable_card/dragable_card.ts
 
 onready var army_label = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/Label2
 
-onready var squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/squad_holder
+onready var squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/squad_holder
 onready var army_squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer/army_squad_holder_holder
 
 onready var army_container = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container
@@ -16,7 +16,7 @@ onready var army_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxCont
 onready var squad_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/highlight
 
 onready var dragable_item = $CanvasLayer/Control/dragable_item
-onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/squad_holder/add_button_squad
+onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/squad_holder/add_button_squad
 
 onready var info = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
 onready var snack_bar = $CanvasLayer/Control/snack_bar
