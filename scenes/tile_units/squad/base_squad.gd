@@ -68,6 +68,7 @@ export var enable_blood :bool
 var camera :Camera
 var floating_info :FloatingSquadInfo
 
+
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
 puppet var _puppet_is_moving :bool
@@ -160,11 +161,11 @@ func _ready():
 	yield(get_tree().create_timer(0.5),"timeout")
 	_spawn_members()
 	_member_spawned = true
-	
+
 	if show_move_indicator:
 		_path_indicator.visible = true
 		_path_indicator.translation = global_position
-	
+		
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
@@ -223,6 +224,10 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 		
 	var enemy_squad = unit_positions.pick_random()
 	if not is_instance_valid(enemy_squad):
+		return
+		
+	# 50 % chance of doing no damage if moving
+	if enemy_squad.is_moving() and randf() < 0.50:
 		return
 		
 	var members :Array = enemy_squad.get_members()
@@ -292,7 +297,10 @@ func sync_update() -> void:
 			
 		else:
 			rset_unreliable("_puppet_enemy", NodePath(""))
-		
+			
+func has_range_weapon() -> bool:
+	return _has_range_weapon
+	
 func moving(delta :float) -> void:
 	.moving(delta)
 	
@@ -302,7 +310,7 @@ func moving(delta :float) -> void:
 	var pos :Vector3 = global_position
 	
 	_ajust_formation(pos, delta)
-	_set_floating_info_pos(_get_avg_member_pos(pos), delta)
+	_set_floating_info_pos(pos, delta)
 	_attack_enemy_proccess(pos, delta)
 	
 func _ajust_formation(pos :Vector3, delta :float):
@@ -361,8 +369,23 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 	if camera.is_position_behind(_pos):
 		return
 		
+	var offset_v2 = Vector2.ZERO
 	var screen_pos = camera.unproject_position(_pos)
-	_floating_info.rect_global_position = screen_pos - _floating_info.rect_pivot_offset
+	if unit_position.has(current_tile):
+		var size = unit_position[current_tile].size()
+		if size > 1:
+			var idx = unit_position[current_tile].find(self)
+			var offset_x = ((idx % 3) - 1) * 80
+			var offset_y = (idx / 3) * 55
+			offset_v2 = Vector2(offset_x, offset_y)
+			var rows = int(ceil(size / 3.0))
+			var grid_height = rows * 25
+			offset_v2.y -= grid_height
+			
+		else:
+			_pos = _get_avg_member_pos(pos) + Vector3(0, 0.75, 0)
+	
+	_floating_info.rect_global_position = (screen_pos - _floating_info.rect_pivot_offset) + offset_v2
 	
 func get_member_index(m :SquadMember) -> int:
 	return _members.find(m)

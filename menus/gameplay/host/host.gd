@@ -1,8 +1,18 @@
 extends BaseGameplay
 
-var bot_squads :Array
-
+const enemy_phases = [[0,1,2,3,4,5,12],[0,1,2,3,4,5,6,7,8,12,13],[6,7,8,9,10,11,12,13]]
 onready var bot_spawner_timer = $bot_spawner_timer
+var bot_squads :Array
+var dup :Array
+
+var current_match = 1
+var match_per_pahse = 5
+var phase :int = 0
+
+func _ready():
+	dup = Global.custom_squads.duplicate()
+	dup.pop_back() # remove anoying ass horse archer
+	dup.pop_back() # remove op unit
 
 func _on_all_player_ready():
 	._on_all_player_ready()
@@ -16,8 +26,13 @@ func bot_attack_command(squad :BaseSquad, enemies :Array):
 	if is_instance_valid(squad.enemy):
 		return
 		
-	squad.attack_move = true
-	squad.move_to(enemies.pick_random().current_tile)
+	if squad is CavalrySquad:
+		squad.chase_enemy = enemies.pick_random()
+		squad.chase_target()
+		
+	else:
+		squad.attack_move = true
+		squad.move_to(enemies.pick_random().current_tile)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
@@ -45,6 +60,17 @@ func _on_unit_dead(squad, data):
 	if squad.player_id == "bot":
 		bot_squads.erase(squad)
 		
+		# progress
+		if bot_squads.empty():
+			if current_match >= match_per_pahse:
+				current_match = 0
+				
+				if phase < enemy_phases.size() - 1:
+					phase += 1
+			
+			current_match += 1
+		
+		
 func _on_bot_spawner_timer_timeout():
 	bot_spawner_timer.start()
 	
@@ -60,8 +86,9 @@ func _on_bot_spawner_timer_timeout():
 	# limit harashment
 	if bot_squads.size() >= Global.players.size():
 		return
-	
-	var data :SquadData = Global.custom_squads.pick_random().duplicate()
+		
+	var enemy_idx = enemy_phases[phase].pick_random()
+	var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
 	data.network_id = 1
 	data.player_id = "bot"
 	data.node_name = Utils.create_unique_id()

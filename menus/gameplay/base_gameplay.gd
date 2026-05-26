@@ -541,8 +541,9 @@ func _on_unit_dead(squad :BaseSquad, data :SquadData):
 	squad.floating_info.queue_free()
 	squad.queue_free()
 	
-func _on_cav_charge(squad):
-	unit_charged_impact(true)
+func _on_cav_charge(squad :CavalrySquad):
+	if squad.player_id == current_player.player_id:
+		unit_charged_impact(true)
 
 
 
