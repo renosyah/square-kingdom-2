@@ -1,8 +1,13 @@
 extends Node
 class_name TilePositionManager
 
+export var uses_pending :bool = false
 var _pending_update :Array = [] # [ Vector2(from), Vector2(to), BaseTileUnit, 0 ]
 var _tile_map_unit_positions :Dictionary = {} # {Vector2:[ BaseTileUnit ] }
+var _unit_indexing :Dictionary = {} #{unit:int}
+
+func _ready():
+	set_process(not uses_pending)
 
 func _process(delta):
 	if _pending_update.empty():
@@ -19,19 +24,32 @@ func _process(delta):
 		
 	_pending_update.clear()
 	
+# register 
 func add_to_position(unit, current_tile:Vector2):
-	#_pending_update.append([unit, Vector2.ZERO, current_tile, 1])
+	if uses_pending:
+		_pending_update.append([unit, Vector2.ZERO, current_tile, 1])
+		return
+		
 	_add_to_position(unit, current_tile)
 	
 func update_position(unit, from:Vector2, to:Vector2):
-	#_pending_update.append([unit, from, to, 2])
+	if uses_pending:
+		_pending_update.append([unit, from, to, 2])
+		return
+		
 	_update_position(unit, from, to)
 	
+# remove permanent
 func remove_from_position(unit, current_tile:Vector2):
-	#_pending_update.append([unit, current_tile, Vector2.ZERO, 3])
+	if uses_pending:
+		_pending_update.append([unit, current_tile, Vector2.ZERO, 3])
+		return
+		
+	_unit_indexing.erase(unit)
 	_remove_from_position(unit, current_tile)
 	
 func _add_to_position(unit, current_tile:Vector2):
+	_unit_indexing[unit] = _tile_map_unit_positions[current_tile].size()
 	_tile_map_unit_positions[current_tile].append(unit)
 	
 func _update_position(unit, from:Vector2, to:Vector2):
@@ -39,13 +57,17 @@ func _update_position(unit, from:Vector2, to:Vector2):
 	_add_to_position(unit, to)
 	
 func _remove_from_position(unit, current_tile:Vector2):
-	if not _tile_map_unit_positions[current_tile].has(unit):
-		print("cannot Fking remove %s_%s (%s) is from array %s" % [unit.unit_name, unit.team, unit.current_tile, current_tile])
-		
 	_tile_map_unit_positions[current_tile].erase(unit)
 	
+	for current_size in _tile_map_unit_positions[current_tile].size():
+		var u = _tile_map_unit_positions[current_tile][current_size]
+		_unit_indexing[u] = current_size
+		
 func get_positions() -> Dictionary:
 	return _tile_map_unit_positions
+	
+func get_unit_indexing() -> Dictionary:
+	return _unit_indexing
 
 func init_position(size :int):
 	# initiated empty positions

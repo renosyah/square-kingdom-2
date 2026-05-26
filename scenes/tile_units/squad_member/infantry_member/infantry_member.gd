@@ -48,17 +48,6 @@ var _last_pos :Vector3
 
 func _ready():
 	apply_equipment()
-	
-	if range_weapon:
-		prepare_range_weapon()
-		
-	else:
-		prepare_melee_weapon()
-	
-	for i in uniforms:
-		var m :MeshInstance = i
-		m.set_surface_material(0, material)
-		
 	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
 	
 func resurect():
@@ -115,7 +104,20 @@ func apply_equipment():
 			range_storage_holder.add_child(w.duplicate())
 			
 		_range_weapon = w
+		
+	for i in uniforms:
+		var m :MeshInstance = i
+		m.set_surface_material(0, material)
 	
+	if range_weapon:
+		prepare_range_weapon()
+		body_animation_state.travel(_range_weapon.ready_animation)
+		return
+		
+	if melee_weapon:
+		prepare_melee_weapon()
+		body_animation_state.travel(_melee_weapon.ready_animation)
+		
 func prepare_melee_weapon():
 	.prepare_melee_weapon()
 	

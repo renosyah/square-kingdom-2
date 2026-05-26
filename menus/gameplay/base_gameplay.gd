@@ -33,11 +33,11 @@ func _ready():
 func _notification(what):
 	match what:
 		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-			on_back_pressed()
+			#on_back_pressed()
 			return
 			
 		MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST: 
-			on_back_pressed()
+			#on_back_pressed()
 			return
 			
 func on_back_pressed():
@@ -53,6 +53,9 @@ func _on_all_player_ready():
 ########################################## proccess  ############################################
 
 func _process(delta):
+	if ui.orbital_camera_ui.visible:
+		movable_camera.translation = orbital_camera.translation
+		
 	var pos = movable_camera.translation * Vector3(1,0,1)
 	tile_map.update_camera_location(Vector2(pos.x, pos.z))
 	
@@ -247,6 +250,7 @@ func setup_players_spawn_points():
 	
 ########################################## camera  ############################################
 var movable_camera :MovableCamera
+var orbital_camera :MovableCamera
 
 func spawn_movable_camera():
 	movable_camera = preload("res://assets/camera/movable_camera.tscn").instance()
@@ -254,6 +258,12 @@ func spawn_movable_camera():
 	add_child(movable_camera)
 	movable_camera.translation = Vector3(0, 3, 0)
 	movable_camera.rotation_degrees.y = 45
+	
+	orbital_camera = preload("res://assets/camera/orbital_camera.tscn").instance()
+	orbital_camera.name = "orbital_camera"
+	add_child(orbital_camera)
+	
+	movable_camera.camera.current = true
 	
 ##########################################  floor interaction  ############################################
 var enviroment :Node
@@ -272,6 +282,9 @@ func setup_clickable_floor():
 	add_child(clickable_floor)
 
 func _on_floor_clicked(pos :Vector3):
+	if not ui.movable_camera_ui.visible:
+		return
+		
 	var tile = tile_map.get_closes_tile(pos)
 	_move_squad_to(tile, setting.unselect_on_command)
 	
@@ -313,18 +326,24 @@ func setup_ui():
 	ui.movable_camera_ui.target = movable_camera
 	ui.movable_camera_ui.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_ui.center_pos = tile_map.global_position
-	ui.movable_camera_ui.detect_in_out = false
-	
 	ui.movable_camera_ui.move_speed = setting.camera_move_speed
 	ui.movable_camera_ui.zoom_speed = setting.camera_zoom_speed
+	
+	ui.orbital_camera_ui.rotate_speed = setting.camera_rotation_speed
+	ui.orbital_camera_ui.zoom_speed= setting.camera_zoom_speed
+	ui.orbital_camera_ui.orbit_pivot = orbital_camera
+	ui.orbital_camera_ui.camera = orbital_camera.camera
+	ui.orbital_camera_ui.camera.translation.z = 2.5
 	
 	ui.movable_camera_minimap.target = movable_camera
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.center_pos = tile_map.global_position
-	ui.movable_camera_minimap.detect_in_out = false
 	
 func _on_setting_updated(d :SettingData):
 	ui.movable_camera_ui.move_speed = d.camera_move_speed
+	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
+	
+	ui.orbital_camera_ui.rotate_speed = d.camera_rotation_speed
 	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
 	
 func _on_ui_reset_camera():
@@ -409,6 +428,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	# for floating info
 	squad.camera = movable_camera.camera
+	squad.unit_indexing = tile_position_manager.get_unit_indexing()
 
 	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")

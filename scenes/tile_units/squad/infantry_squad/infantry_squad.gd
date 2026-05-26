@@ -30,17 +30,20 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		return
 		
 	# align Y
+	var is_align :bool = true
 	var look :Vector3 = enemy_pos
 	look.y = pos.y
 	
-	# look at enemy position
-	var t:Transform = transform.looking_at(look, Vector3.UP)
-	transform = transform.interpolate_with(t, turning_speed * delta)
-	
 	var dir_to :Vector3 = pos.direction_to(look)
-	var foward_dir :Vector3 = (-global_transform.basis.z)
-	var is_align :bool = foward_dir.dot(dir_to) > 0.85
 	
+	# look at enemy position
+	if _can_look_at(pos, look, dir_to):
+		var t:Transform = transform.looking_at(look, Vector3.UP)
+		transform = transform.interpolate_with(t, turning_speed * delta)
+		
+		var foward_dir :Vector3 = (-global_transform.basis.z)
+		is_align = foward_dir.dot(dir_to) > 0.85
+		
 	if not is_align:
 		return
 		
@@ -96,8 +99,16 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 				m.enemy = enemy_member
 				m.range_attack()
 				
-			
-			
+func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
+	var _pos = pos
+	_pos.y = pos.y
+	
+	if dir.length() > 0.001:
+		var dot = abs(dir.dot(Vector3.UP))
+		return dot < 0.999
+		
+	return false
+	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	

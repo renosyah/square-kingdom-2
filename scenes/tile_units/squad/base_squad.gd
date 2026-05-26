@@ -67,7 +67,7 @@ export var enable_blood :bool
 # MUST SET
 var camera :Camera
 var floating_info :FloatingSquadInfo
-
+var unit_indexing :Dictionary
 
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
@@ -341,7 +341,7 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 	_has_enemy = false
 	enemy = null
 	
-func _get_avg_member_pos(pos :Vector3) -> Vector3:
+func get_avg_member_pos(pos :Vector3) -> Vector3:
 	var m :Array = get_members()
 	if m.empty():
 		return pos
@@ -379,7 +379,7 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 		
 		# 30 were limited so .find() is fine
 		if size > 1 and size < 30: 
-			var idx = tiles.find(self)
+			var idx = unit_indexing[self]
 			var offset_x = ((idx % 3) - 1) * 85
 			var offset_y = (idx / 3) * 55
 			_offset_v2 = Vector2(offset_x, offset_y)
@@ -389,7 +389,7 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 			_crowded = true
 			
 	if not _crowded:
-		_pos = _get_avg_member_pos(pos)
+		_pos = get_avg_member_pos(pos)
 		
 	var _screen_pos = camera.unproject_position(_pos + _h)
 	floating_info.rect_global_position = (_screen_pos - floating_info.rect_pivot_offset) + _offset_v2

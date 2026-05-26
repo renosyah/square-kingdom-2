@@ -1,7 +1,6 @@
 extends MarginContainer
 class_name SquadCard
 
-const color_trans = Color("#00ffffff")
 const color_red_trans = Color("#890000")
 const color_orange_trans = Color("#8fc05100")
 
@@ -71,7 +70,7 @@ func _get_hp_color(hp :int, max_hp: int) -> Color:
 	var ratio :float = float(hp) / float(max_hp)
 	if ratio > 0.5:
 		return color_orange_trans.linear_interpolate(
-			color_trans,
+			Color.transparent,
 			(ratio - 0.5) * 2.0
 		)
 		
@@ -104,6 +103,7 @@ func _on_unit_clicked(_unit):
 
 func _on_squad_member_updated(_squad, _member):
 	_label.text = "%s" % squad.member_alive
+	update_hurt_color_stats()
 
 func _on_Button_pressed():
 	if squad:

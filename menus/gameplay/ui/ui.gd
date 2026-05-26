@@ -25,6 +25,8 @@ onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/sq
 onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
 onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
+onready var control_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2
+onready var orbital_camera_ui = $CanvasLayer/Control/orbital_camera_ui
 
 onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
 onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
@@ -36,6 +38,8 @@ var player_squads :Array # refrences
 var selected_squads :Array # refrences
 
 func _ready():
+	orbital_camera_ui.visible = false
+	
 	minimap.tile_scenes = TileIndex.tiles2d
 	dialog_menu.visible = false
 	movement_mode.icon = icon_normal_movement_mode
@@ -45,6 +49,15 @@ func _ready():
 	nine_patch_rect.modulate = ui_color
 	
 	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
+	
+func _process(delta):
+	movable_camera_ui.detect_in_out = not selected_squads.empty()
+	if not movable_camera_ui.detect_in_out:
+		return
+		
+	if is_instance_valid(selected_squads[0]):
+		var pos = selected_squads[0].global_position
+		orbital_camera_ui.orbit_pivot.translation = selected_squads[0].get_avg_member_pos(pos)
 	
 func selected_squads_updated():
 	squad_command_ui.visible = not selected_squads.empty()
@@ -187,6 +200,38 @@ func _on_stop_button_pressed():
 func _on_selection_mode_pressed():
 	setting.unselect_on_command = not setting.unselect_on_command
 	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
+	
+
+func _on_cinematic_pressed():
+	if movable_camera_ui.visible and not selected_squads.empty():
+		movable_camera_ui.target.camera.current = false
+		orbital_camera_ui.camera.current = true
+		
+		orbital_camera_ui.visible = true
+		movable_camera_ui.visible = false
+		overlay_ui.visible = false
+		control_ui.visible = false
+		
+		var y = selected_squads[0].rotation.y
+		orbital_camera_ui.orbit_pivot.rotation.y = y
+		
+	else:
+		movable_camera_ui.target.translation.y = 3
+		orbital_camera_ui.camera.current = false
+		movable_camera_ui.target.camera.current = true
+		
+		movable_camera_ui.visible = true
+		orbital_camera_ui.visible = false
+		overlay_ui.visible = true
+		control_ui.visible = true
+
+
+
+
+
+
+
+
 
 
 

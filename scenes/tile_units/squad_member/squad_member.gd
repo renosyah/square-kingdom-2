@@ -22,7 +22,7 @@ var iddle :bool = true
 var target_idx :int 
 var enemy = null
 var enemy_assign :bool = false
-var is_dead :bool = false
+export var is_dead :bool = false
 
 var range_mode :bool
 var melee_mode :bool

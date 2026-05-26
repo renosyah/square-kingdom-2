@@ -1,6 +1,6 @@
 extends BaseGameplay
 
-const enemy_phases = [[0,1,2,3,4,5,12],[0,1,2,3,4,5,6,7,8,12,13],[6,7,8,9,10,11,12,13]]
+const enemy_phases = [[0,0,0],[0,1,2,3,4,5,12],[0,1,2,3,4,5,6,7,8,12,13],[6,7,8,9,10,11,12,13]]
 onready var bot_spawner_timer = $bot_spawner_timer
 var bot_squads :Array
 var dup :Array
@@ -20,7 +20,7 @@ func _on_all_player_ready():
 	yield(get_tree().create_timer(1),"timeout")
 	
 	spawn_squads(Global.prepare_army(player_spawn_point, tile_map))
-	#bot_spawner_timer.start()
+	bot_spawner_timer.start()
 	
 func bot_attack_command(squad :BaseSquad, enemies :Array):
 	if is_instance_valid(squad.enemy):

@@ -206,6 +206,10 @@ func _on_save_pressed():
 	snack_bar.text = "Army saved!"
 	snack_bar.show()
 
+func _on_add_button_squad_pressed():
+	Global.change_scene("res://menus/unit_edit/unit_edit.tscn", false)
+
+
 
 
 
