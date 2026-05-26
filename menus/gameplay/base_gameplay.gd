@@ -407,7 +407,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	_on_squad_spawned(squad, data)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
-	tile_position_manager.add_to_position(squad, data.current_tile)
+	tile_position_manager.add_to_position(squad, squad.current_tile)
 	
 	if squad.player_id == current_player.player_id:
 		# use current spawn tile as reinfoce tile

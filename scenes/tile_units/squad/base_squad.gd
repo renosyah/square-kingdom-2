@@ -308,7 +308,6 @@ func moving(delta :float) -> void:
 		return
 		
 	var pos :Vector3 = global_position
-	
 	_ajust_formation(pos, delta)
 	_set_floating_info_pos(pos, delta)
 	_attack_enemy_proccess(pos, delta)
@@ -357,35 +356,43 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 	if not _member_spawned:
 		return
 		
-	var _floating_info = floating_info
-	if not _floating_info:
+	if not floating_info:
 		return
 		
-	_floating_info.visible = _current_visible
-	if not _floating_info.visible:
+	floating_info.visible = _current_visible
+	if not floating_info.visible:
 		return
 		
-	var _pos = pos + Vector3(0, 0.75, 0)
-	if camera.is_position_behind(_pos):
+	# validate and must not behind cam
+	var _h = Vector3(0, 0.75, 0)
+	if camera.is_position_behind(pos + _h):
 		return
 		
-	var offset_v2 = Vector2.ZERO
-	var screen_pos = camera.unproject_position(_pos)
+	 #  default pos by tilemap nav pos
+	var _pos :Vector3 = nav.get_pos_v3(current_tile)
+	var _offset_v2 = Vector2.ZERO
+	var _crowded :bool = false
+	
 	if unit_position.has(current_tile):
-		var size = unit_position[current_tile].size()
-		if size > 1:
-			var idx = unit_position[current_tile].find(self)
-			var offset_x = ((idx % 3) - 1) * 80
+		var tiles = unit_position[current_tile]
+		var size = tiles.size()
+		
+		# 30 were limited so .find() is fine
+		if size > 1 and size < 30: 
+			var idx = tiles.find(self)
+			var offset_x = ((idx % 3) - 1) * 85
 			var offset_y = (idx / 3) * 55
-			offset_v2 = Vector2(offset_x, offset_y)
+			_offset_v2 = Vector2(offset_x, offset_y)
 			var rows = int(ceil(size / 3.0))
 			var grid_height = rows * 25
-			offset_v2.y -= grid_height
+			_offset_v2.y -= grid_height
+			_crowded = true
 			
-		else:
-			_pos = _get_avg_member_pos(pos) + Vector3(0, 0.75, 0)
-	
-	_floating_info.rect_global_position = (screen_pos - _floating_info.rect_pivot_offset) + offset_v2
+	if not _crowded:
+		_pos = _get_avg_member_pos(pos)
+		
+	var _screen_pos = camera.unproject_position(_pos + _h)
+	floating_info.rect_global_position = (_screen_pos - floating_info.rect_pivot_offset) + _offset_v2
 	
 func get_member_index(m :SquadMember) -> int:
 	return _members.find(m)

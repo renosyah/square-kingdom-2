@@ -20,7 +20,7 @@ func _on_all_player_ready():
 	yield(get_tree().create_timer(1),"timeout")
 	
 	spawn_squads(Global.prepare_army(player_spawn_point, tile_map))
-	bot_spawner_timer.start()
+	#bot_spawner_timer.start()
 	
 func bot_attack_command(squad :BaseSquad, enemies :Array):
 	if is_instance_valid(squad.enemy):
