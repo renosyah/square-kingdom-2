@@ -4,6 +4,7 @@ class_name BaseEntity
 # this is entity that can sync in network enviroment
 # only basic mechanic to setup & prepare as network entity
 export var network_id :int = 1
+export var notifier_max_distance :float = 20
 
 # performace
 var _visibility_notifier :VisibilityNotifier
@@ -54,7 +55,7 @@ func _ready() -> void:
 	_is_master = _is_network_master()
 	
 	_visibility_notifier = VisibilityNotifier.new()
-	_visibility_notifier.max_distance = 20
+	_visibility_notifier.max_distance = notifier_max_distance
 	_visibility_notifier.connect("camera_entered", self, "_on_camera_entered")
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)

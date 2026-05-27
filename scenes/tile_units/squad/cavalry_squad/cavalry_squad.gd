@@ -191,61 +191,60 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		# look at enemy position
 		var t:Transform = transform.looking_at(look, Vector3.UP)
 		transform = transform.interpolate_with(t, turning_speed * delta)
-	
+		
 	if _is_in_melee_range(enemy):
-		if _melee_attack_timer.is_stopped():
-			_melee_attack_timer.start()
+		_perform_melee_attack()
+		
+	else:
+		if _has_range_weapon:
+			_perform_range_attack()
+
+func _perform_melee_attack():
+	if _melee_attack_timer.is_stopped():
+		_melee_attack_timer.start()
+		
+		var iddles :Array = get_iddle_members()
+		if iddles.empty():
+			return
 			
-			var iddles :Array = get_iddle_members()
-			if iddles.empty():
-				return
-				
-			for i in _members:
-				i.prepare_melee_weapon()
-				
-			# tell to attack 
-			# use melee weapon
-			var m :SquadMember = iddles.pick_random()
-			var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
+		for i in _members:
+			i.prepare_melee_weapon()
+			
+		# tell to attack 
+		# use melee weapon
+		var m :SquadMember = iddles.pick_random()
+		var enemy_member :SquadMember = enemy.pick_closes(m.global_position, false)
+		var target_idx :int = enemy.get_member_index(enemy_member)
+		if target_idx == -1:
+			return
+		
+		m.target_idx = target_idx
+		m.enemy = enemy_member
+		m.melee_attack()
+		
+func _perform_range_attack():
+	if _range_attack_timer.is_stopped():
+		_range_attack_timer.start()
+		_range_engagement = true
+		
+		var iddles :Array = get_iddle_members()
+		if iddles.empty():
+			return
+			
+		for i in _members:
+			i.prepare_range_weapon()
+			
+		for i in iddles:
+			var enemy_member :SquadMember = enemy.pick_member(false)
 			var target_idx :int = enemy.get_member_index(enemy_member)
 			if target_idx == -1:
-				return
-			
+				continue
+				
+			var m :SquadMember = i
 			m.target_idx = target_idx
 			m.enemy = enemy_member
-			m.melee_attack()
-			
-			# force stop enemy if on same tile as your squad
-			if enemy.current_tile == current_tile and enemy.is_moving():
-				enemy.stop()
-			
-		return
-		
-	if _has_range_weapon:
-		if _range_attack_timer.is_stopped():
-			_range_attack_timer.start()
-			_range_engagement = true
-			
-			var iddles :Array = get_iddle_members()
-			if iddles.empty():
-				return
+			m.range_attack()
 				
-			for i in _members:
-				i.prepare_range_weapon()
-				
-			for i in iddles:
-				var enemy_member :SquadMember = enemy.pick_member(false)
-				var target_idx :int = enemy.get_member_index(enemy_member)
-				if target_idx == -1:
-					continue
-					
-				var m :SquadMember = i
-				m.target_idx = target_idx
-				m.enemy = enemy_member
-				m.range_attack()
-				
-			
-		
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	

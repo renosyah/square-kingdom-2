@@ -61,6 +61,9 @@ func _notification(what):
 			on_back_pressed()
 			return
 	
+func _on_sync_map_on_client_request_map(client_id):
+	battle.disabled = true
+	
 func _on_sync_map_on_map_received(client_id :int):
 	if is_server:
 		map_data_received(client_id)
@@ -75,10 +78,11 @@ func _on_sync_map_on_map_received(client_id :int):
 		map_size.text = "(%s x %s)" % [size, size]
 		
 func map_data_received(player_network_unique_id :int):
+	player_map_data_received.append(player_network_unique_id)
+	
 	var player_loading = false
 	for i in player_holder.get_children():
 		if i.player_network_unique_id == player_network_unique_id:
-			player_map_data_received.append(i.player_network_unique_id)
 			i.set_loading(false)
 		
 		if i.is_loading():
@@ -93,8 +97,8 @@ func _on_lobby_player_update(players :Array):
 		child.queue_free()
 		
 	Global.players.clear()
-		
-
+	
+	var player_loading = false
 	for i in players:
 		var player :NetworkPlayer = i
 		
@@ -119,13 +123,6 @@ func _on_lobby_player_update(players :Array):
 		if is_host:
 			item.set_loading(false)
 			
-
-		
-	# make sure host dont initiate play
-	# if player is more than 1 and not all ready
-	if NetworkLobbyManager.is_server():
-		battle.disabled = players.size() > 1
-		
 func _on_team_change(t :int):
 	current_player.team = t
 	NetworkLobbyManager.update_player_extra_data(current_player.to_dictionary())
@@ -144,6 +141,8 @@ func _on_host_ready():
 	
 func _on_battle_pressed():
 	Global.change_scene("res://menus/gameplay/host/host.tscn", true, idx_bg.pick_random())
+
+
 
 
 

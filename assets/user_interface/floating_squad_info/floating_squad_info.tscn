@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://assets/user_interface/icons/floating_squad_info/floating_squad_info.gd" type="Script" id=1]
-[ext_resource path="res://assets/user_interface/icons/squad/horse.png" type="Texture" id=2]
-[ext_resource path="res://assets/user_interface/icons/squad/range.png" type="Texture" id=3]
+[ext_resource path="res://assets/user_interface/floating_squad_info/floating_squad_info.gd" type="Script" id=1]
+[ext_resource path="res://assets/user_interface/icons/squad/range.png" type="Texture" id=2]
+[ext_resource path="res://assets/user_interface/icons/squad/horse.png" type="Texture" id=3]
 
 [node name="floating_unit_info" type="MarginContainer"]
 margin_right = 80.0
@@ -134,7 +134,7 @@ rect_min_size = Vector2( 24, 24 )
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 expand = true
 
 [node name="mounted" type="MarginContainer" parent="Control2/MarginContainer"]
@@ -162,7 +162,7 @@ rect_min_size = Vector2( 12, 12 )
 mouse_filter = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 expand = true
 
 [node name="hurt" type="ColorRect" parent="Control2/MarginContainer"]

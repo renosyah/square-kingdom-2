@@ -1,5 +1,6 @@
 extends Node
 
+signal on_client_request_map(client_id)
 signal on_map_received(client_id)
 
 var manifest :TileMapFileManifest
@@ -19,6 +20,7 @@ func request_map_data():
 
 # HOST
 remote func _request_map_data(from_id : int):
+	emit_signal("on_client_request_map", from_id)
 	rpc_id(from_id, "_receive_map_manifest", var2bytes(manifest.to_dictionary()))
 	
 	var bytes : PoolByteArray = var2bytes(map_data.to_dictionary())

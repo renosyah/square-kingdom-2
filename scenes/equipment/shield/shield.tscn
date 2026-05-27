@@ -13,5 +13,5 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0
 cast_shadow = 0
 mesh = ExtResource( 1 )
 software_skinning_transform_normals = false
-material/0 = ExtResource( 4 )
-material/1 = ExtResource( 3 )
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )

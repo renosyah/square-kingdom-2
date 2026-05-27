@@ -1,8 +1,8 @@
 extends MarginContainer
 class_name SquadCard
 
-const color_red_trans = Color("#890000")
-const color_orange_trans = Color("#8fc05100")
+const color_red_trans = Color(0.537255,0,0,0.2)
+const color_orange_trans = Color(1,0.647059,0,0.2)
 
 var data:SquadData
 var selected_squads :Array # refrences

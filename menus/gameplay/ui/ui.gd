@@ -9,6 +9,8 @@ const icon_normal_movement_mode = preload("res://assets/user_interface/icons/mov
 const icon_attack_move_mode = preload("res://assets/user_interface/icons/attack_move_mode.png")
 const icon_uncheck = preload("res://assets/user_interface/icons/uncheck.png")
 const icon_lock = preload("res://assets/user_interface/icons/locked.png")
+const floating_squad_info_scene = preload("res://assets/user_interface/floating_squad_info/floating_squad_info.tscn")
+const squad_card_scene = preload("res://assets/user_interface/squad_card/squad_card.tscn")
 
 onready var setting :SettingData = Global.setting_data
 onready var ui_color :Color = EntityIndex.player_colors[Global.current_player.color_idx]
@@ -92,7 +94,7 @@ func _check_movement_mode():
 		
 	
 func add_squad_card(squad :BaseSquad, data :SquadData):
-	var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
+	var card = squad_card_scene.instance()
 	card.data = data
 	card.squad = squad
 	card.selected_squads = selected_squads
@@ -106,7 +108,7 @@ func remove_squad_card(squad :BaseSquad):
 			break
 			
 func add_squad_floating_info(squad :BaseSquad, data :SquadData, p :PlayerData):
-	var _floating_info :FloatingSquadInfo= preload("res://assets/user_interface/icons/floating_squad_info/floating_squad_info.tscn").instance()
+	var _floating_info :FloatingSquadInfo = floating_squad_info_scene.instance()
 	_floating_info.selected_squads = selected_squads
 	_floating_info.squad = squad
 	_floating_info.name = "info_%s" % name

@@ -563,7 +563,7 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, fro
 	if not _unit_audio.playing and amount > 0:
 		_unit_audio.stream = hurt_sounds.pick_random()
 		_unit_audio.play()
-	
+		
 	emit_signal("on_squad_taking_damage", self, amount)
 	
 func puppet_moving(delta :float) -> void:

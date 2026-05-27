@@ -12,7 +12,7 @@ bonus_damage = 2
 attack_animation = "weapon_slash_attack"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.15, 0 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.111, 0 )
 cast_shadow = 0
 mesh = ExtResource( 1 )
 software_skinning_transform_normals = false

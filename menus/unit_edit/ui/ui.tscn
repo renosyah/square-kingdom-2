@@ -379,6 +379,10 @@ render_target_update_mode = 3
 [node name="movable_camera" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.35, 0 )
 
+[node name="DirectionalLight" type="DirectionalLight" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/movable_camera"]
+transform = Transform( 1, 0, 0, 0, 0.516159, -0.856492, 0, 0.856492, 0.516159, 0, -0.338074, -0.0905867 )
+light_energy = 0.7
+
 [node name="horse" type="Spatial" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport"]
 transform = Transform( 0.99231, 0, -0.123775, 0, 1, 0, 0.123775, 0, 0.99231, -0.0640824, 0.300111, 0.239429 )
 
@@ -440,9 +444,6 @@ material/0 = ExtResource( 13 )
 [node name="infantry_member" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport" instance=ExtResource( 8 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0437853, 0 )
 is_dead = true
-
-[node name="DirectionalLight" type="DirectionalLight" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 0.181978, 0.983303, 0, -0.983303, 0.181978, 0, 0, 0 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer"]
 margin_left = 700.0
@@ -675,18 +676,27 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 14 )
 expand = true
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer5/holder"]
+[node name="TextureRect6" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer5/holder"]
 margin_top = 84.0
 margin_right = 80.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 80, 80 )
+texture = ExtResource( 14 )
+expand = true
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer5/holder"]
+margin_left = 84.0
+margin_top = 84.0
+margin_right = 164.0
 margin_bottom = 164.0
 rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 19 )
 expand = true
 
 [node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer5/holder"]
-margin_left = 84.0
+margin_left = 168.0
 margin_top = 84.0
-margin_right = 164.0
+margin_right = 248.0
 margin_bottom = 164.0
 rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 16 )
