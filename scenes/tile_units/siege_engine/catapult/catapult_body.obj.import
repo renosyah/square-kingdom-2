@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/catapult_body.obj-b5decad3f0831f2ea4dfe516bb085222.mesh"
+
+[deps]
+
+files=[ "res://.import/catapult_body.obj-b5decad3f0831f2ea4dfe516bb085222.mesh" ]
+
+source_file="res://scenes/tile_units/siege_engine/catapult/catapult_body.obj"
+dest_files=[ "res://.import/catapult_body.obj-b5decad3f0831f2ea4dfe516bb085222.mesh", "res://.import/catapult_body.obj-b5decad3f0831f2ea4dfe516bb085222.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

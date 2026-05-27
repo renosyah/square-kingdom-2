@@ -471,10 +471,11 @@ color = Color( 0.537255, 0.537255, 0.537255, 0.792157 )
 margin_right = 312.0
 margin_bottom = 524.0
 mouse_filter = 2
+custom_constants/margin_bottom = 20
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2"]
 margin_right = 312.0
-margin_bottom = 524.0
+margin_bottom = 504.0
 mouse_filter = 1
 theme = SubResource( 2 )
 scroll_horizontal_enabled = false

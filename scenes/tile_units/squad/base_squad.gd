@@ -227,10 +227,6 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 	if not is_instance_valid(enemy_squad):
 		return
 		
-	# 50 % chance of doing no damage if moving
-	if enemy_squad.is_moving() and randf() < 0.50:
-		return
-		
 	var members :Array = enemy_squad.get_members()
 	if members.empty():
 		return
@@ -551,7 +547,7 @@ remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, fro
 		if _range_engagement:
 			var s = get_node_or_null(attacked_by)
 			if is_instance_valid(s):
-				if _is_in_melee_range(s):
+				if _is_in_melee_range(s) and s.team != team:
 					enemy = s
 					_has_enemy = true
 					_on_enemy_set()

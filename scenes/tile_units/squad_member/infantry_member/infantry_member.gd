@@ -56,7 +56,6 @@ func resurect():
 	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
 	body_animation_state.start("iddle")
 	
-	
 func apply_equipment():
 	# remove currently equiped
 	var current = [_headgear, _melee_weapon, _shield, _armor, _range_weapon]
@@ -217,16 +216,13 @@ func _on_release_bow():
 	_combat_sound.stream = bow_sounds.pick_random()
 	_combat_sound.play()
 	
-	if not is_instance_valid(enemy):
-		return
+	var target_tile = enemy.squad.current_tile
+	
+	if is_instance_valid(enemy):
+		_range_weapon.shot_projectile(enemy.global_position)
+		yield(_range_weapon,"on_hit")
 		
-	_range_weapon.shot_projectile(enemy.global_position)
-	yield(_range_weapon,"on_hit")
-	
-	if not is_instance_valid(enemy):
-		return
-	
-	emit_signal("on_set_damage_to_tile", self, enemy.squad.current_tile, _range_weapon.attack_damage)
+	emit_signal("on_set_damage_to_tile", self, target_tile, _range_weapon.attack_damage)
 	
 func _on_range_attack_performed():
 	iddle = true

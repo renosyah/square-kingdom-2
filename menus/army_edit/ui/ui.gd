@@ -16,7 +16,6 @@ onready var army_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxCont
 onready var squad_highlight = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/highlight
 
 onready var dragable_item = $CanvasLayer/Control/dragable_item
-onready var add_button_squad = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/squad_holder/add_button_squad
 
 onready var info = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
 onready var snack_bar = $CanvasLayer/Control/snack_bar
@@ -49,8 +48,6 @@ func _process(delta):
 		areas[key].visible = _is_point_inside_area(key, pos)
 	
 func display_current_squad():
-	squad_holder.remove_child(add_button_squad)
-	
 	for i in squad_holder.get_children():
 		squad_holder.remove_child(i)
 		i.queue_free()
@@ -75,8 +72,6 @@ func display_current_squad():
 		dragable.add_child(c)
 		
 		idx += 1
-		
-	squad_holder.add_child(add_button_squad)
 	
 func display_current_army():
 	for i in army_squad_holder.get_children():

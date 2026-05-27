@@ -5,9 +5,9 @@ onready var bot_spawner_timer = $bot_spawner_timer
 var bot_squads :Array
 var dup :Array
 
-var current_match = 1
-var match_per_pahse = 5
-var phase :int = 0
+var wave_per_stage = 5
+var current_wave = 1
+var enemy_type_idx :int = 0
 
 func _ready():
 	dup = Global.custom_squads.duplicate()
@@ -46,16 +46,13 @@ func _on_unit_dead(squad, data):
 	if squad.player_id == "bot":
 		bot_squads.erase(squad)
 		
-		# progress
-		if bot_squads.empty():
-			if current_match >= match_per_pahse:
-				current_match = 0
-				
-				if phase < enemy_phases.size() - 1:
-					phase += 1
-			
-			current_match += 1
+	# progress
+	if bot_squads.empty():
+		current_wave += 1
 		
+		if current_wave == wave_per_stage:
+			enemy_type_idx = int(clamp(enemy_type_idx + 1, 0, enemy_phases.size() - 1))
+			current_wave = 0
 		
 func _on_bot_spawner_timer_timeout():
 	bot_spawner_timer.start()
@@ -73,7 +70,7 @@ func _on_bot_spawner_timer_timeout():
 	if bot_squads.size() >= Global.players.size():
 		return
 		
-	var enemy_idx = enemy_phases[phase].pick_random()
+	var enemy_idx = enemy_phases[enemy_type_idx].pick_random()
 	var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
 	data.network_id = 1
 	data.player_id = "bot"

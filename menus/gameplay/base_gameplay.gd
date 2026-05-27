@@ -4,6 +4,8 @@ class_name BaseGameplay
 onready var is_server = NetworkLobbyManager.is_server()
 
 func _ready():
+	Global.current_root = self
+	
 	self.name = "gameplay"
 	
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
@@ -44,12 +46,12 @@ func on_back_pressed():
 	NetworkLobbyManager.leave()
 	
 func _on_leave():
+	Global.current_root = null
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 	
 func _on_all_player_ready():
 	Global.hide_transition()
 	
-
 ########################################## proccess  ############################################
 
 func _process(delta):

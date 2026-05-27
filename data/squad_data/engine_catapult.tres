@@ -1,0 +1,39 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Catapult"
+description = "Range siege engine"
+scene_idx = 2
+node_name = ""
+current_tile = Vector2( 0, 0 )
+pos = Vector3( 0, 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+speed = 1.5
+spotting_range = 8
+sort_order = 51
+squad_role = 4
+member_scene_idx = 0
+can_attack = true
+turning_speed = 2.0
+melee_attack_speed = 2.8
+range_attack_speed = 8.8
+formation_density = 0.55
+icon_idx = 9
+potrait_idx = 16
+is_mounted = false
+member_headgear_idx = 3
+member_armor_idx = 0
+member_shield_idx = 0
+member_melee_weapon_idx = 1
+member_range_weapon_idx = 0
+member_hp = 45
+member_max_hp = 45
+total_member = 2
+heal_amount = 7

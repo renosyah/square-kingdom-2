@@ -49,6 +49,11 @@ func display_current_squad():
 		
 	var idx = 0
 	for data in Global.custom_squads:
+		
+		# only accept infantry & cav
+		if not data.scene_idx in [0,1]: 
+			continue
+			
 		var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
 		data.color_idx = Global.player_data.color_idx
 		card.data = data

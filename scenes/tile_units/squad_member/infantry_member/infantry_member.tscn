@@ -1103,7 +1103,7 @@ tracks/12/keys = {
 
 [sub_resource type="Animation" id=57]
 resource_name = "throw_range_weapon"
-length = 0.4
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/body:translation")
 tracks/0/interp = 1

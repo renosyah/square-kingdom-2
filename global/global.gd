@@ -249,7 +249,8 @@ const template_squads = [
 	preload("res://data/squad_data/cavalry_spear.tres"),
 	preload("res://data/squad_data/cavalry_sword.tres"),
 	preload("res://data/squad_data/cavalry_archer.tres"),
-	preload("res://data/squad_data/cavalry_household.tres")
+	preload("res://data/squad_data/cavalry_household.tres"),#15
+	preload("res://data/squad_data/engine_catapult.tres")
 ]
 onready var custom_squads :Array = []
 
@@ -285,6 +286,9 @@ func save_custom_squad():
 	SaveLoad.save(custom_squads_filepath, data, true)
 	
 ##########################################  lobby & gameplay  ############################################
+var current_root :Node
+
+
 var current_player :PlayerData # specific for game session
 var players :Array = [] # list of players in MP
 

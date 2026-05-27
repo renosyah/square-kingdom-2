@@ -40,13 +40,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="fps_ping_displayer" parent="CanvasLayer/Control" instance=ExtResource( 3 )]
-margin_bottom = 70.0
-mouse_filter = 2
-
 [node name="log_event" parent="CanvasLayer/Control" instance=ExtResource( 26 )]
 margin_right = 589.0
 margin_bottom = 178.0
+
+[node name="fps_ping_displayer" parent="CanvasLayer/Control" instance=ExtResource( 3 )]
+margin_bottom = 70.0
+mouse_filter = 2
 
 [node name="overlay_ui" type="Control" parent="CanvasLayer/Control"]
 anchor_right = 1.0

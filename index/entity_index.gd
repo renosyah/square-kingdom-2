@@ -2,8 +2,11 @@ extends Node
 class_name EntityIndex
 
 const squads = [
-	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn"),
-	preload("res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.tscn")
+	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn"),#0
+	preload("res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.tscn"),#1
+	
+	# temporary
+	preload("res://scenes/tile_units/squad/siege_engine_squad/catapult_squad.tscn")#2
 ]
 const members = [
 	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"),
@@ -54,7 +57,8 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/special.png"), #5
 	preload("res://assets/user_interface/icons/squad/commander.png"),#6
 	preload("res://assets/user_interface/icons/squad/javeline.png"), #7
-	preload("res://assets/user_interface/icons/squad/crossbow.png")  #8
+	preload("res://assets/user_interface/icons/squad/crossbow.png"),  #8
+	preload("res://assets/user_interface/icons/squad/catapult.png"), #9
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0
@@ -70,9 +74,16 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_2.png"), #10
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_3.png"), #11
 	preload("res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"), #12
+	
 	preload("res://assets/user_interface/squad_potrait/cavalry/sword_cav.png"), #13
 	preload("res://assets/user_interface/squad_potrait/cavalry/archer_cav.png"), #14
 	preload("res://assets/user_interface/squad_potrait/cavalry/royal_cav.png"), #15
+	
+	preload("res://assets/user_interface/squad_potrait/siege_engine/catapult.png"),#16
+	preload("res://assets/user_interface/squad_potrait/siege_engine/balista.png"),#17
+	preload("res://assets/user_interface/squad_potrait/siege_engine/ram.png"),#18
+	preload("res://assets/user_interface/squad_potrait/siege_engine/siege_tower.png"),#19
+	preload("res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png")#20
 	
 ]
 

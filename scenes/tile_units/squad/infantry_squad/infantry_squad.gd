@@ -4,7 +4,6 @@ class_name InfantrySquad
 func _init_formations():
 	._init_formations()
 	
-	# flag carrier were center
 	_formation_offsets = [
 		Vector3.ZERO, Vector3.ZERO + Vector3.LEFT,  Vector3.ZERO + Vector3.RIGHT,
 		Vector3.FORWARD + Vector3.LEFT, Vector3.FORWARD, Vector3.FORWARD + Vector3.RIGHT,
@@ -51,9 +50,8 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		_perform_melee_attack()
 		
 	else:
-		if _has_range_weapon:
-			_perform_range_attack()
-			
+		_perform_range_attack()
+		
 func _perform_melee_attack():
 	if _melee_attack_timer.is_stopped():
 		_melee_attack_timer.start()
@@ -78,6 +76,9 @@ func _perform_melee_attack():
 		m.melee_attack()
 		
 func _perform_range_attack():
+	if not _has_range_weapon:
+		return
+		
 	if _range_attack_timer.is_stopped():
 		_range_attack_timer.start()
 		_range_engagement = true

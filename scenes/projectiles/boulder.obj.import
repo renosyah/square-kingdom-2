@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/boulder.obj-cd8aa9810881848f0c97eafb8841fe13.mesh"
+
+[deps]
+
+files=[ "res://.import/boulder.obj-cd8aa9810881848f0c97eafb8841fe13.mesh" ]
+
+source_file="res://scenes/projectiles/boulder.obj"
+dest_files=[ "res://.import/boulder.obj-cd8aa9810881848f0c97eafb8841fe13.mesh", "res://.import/boulder.obj-cd8aa9810881848f0c97eafb8841fe13.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
