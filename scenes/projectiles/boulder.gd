@@ -10,13 +10,20 @@ onready var spatial = $Spatial
 onready var audio_stream_player_3d = $AudioStreamPlayer3D
 onready var animation_player = $AnimationPlayer
 onready var mesh_instance_2 = $MeshInstance2
+onready var trail_render = $TrailRender
+onready var setting_data = Global.setting_data
 
+func _ready():
+	trail_render.render = setting_data.extra_effect
+	
 func _process(delta):
 	spatial.rotate_x(-5 * delta)
 	
 func on_stop():
 	rotation = Vector3(0, 0, 0)
-	animation_player.play("bam")
+	
+	if setting_data.extra_effect:
+		animation_player.play("bam")
 	
 	audio_stream_player_3d.stream = explode.pick_random()
 	audio_stream_player_3d.play()

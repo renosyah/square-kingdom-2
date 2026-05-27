@@ -244,7 +244,7 @@ margin_bottom = 268.0
 custom_constants/separation = 24
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
-margin_right = 265.0
+margin_right = 207.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 
@@ -256,20 +256,20 @@ rect_min_size = Vector2( 12, 0 )
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
 margin_left = 16.0
 margin_top = 18.0
-margin_right = 181.0
+margin_right = 123.0
 margin_bottom = 46.0
 custom_fonts/font = ExtResource( 2 )
-text = "Auto Unselect"
+text = "No micro"
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
-margin_left = 185.0
-margin_right = 197.0
+margin_left = 127.0
+margin_right = 139.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="auto_unselect" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
-margin_left = 201.0
-margin_right = 265.0
+margin_left = 143.0
+margin_right = 207.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 size_flags_vertical = 4
@@ -278,8 +278,8 @@ icon = ExtResource( 6 )
 expand_icon = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
-margin_left = 289.0
-margin_right = 486.0
+margin_left = 231.0
+margin_right = 428.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 
@@ -305,6 +305,41 @@ rect_min_size = Vector2( 12, 0 )
 [node name="unit_tile" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5"]
 margin_left = 133.0
 margin_right = 197.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+icon = ExtResource( 6 )
+expand_icon = true
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
+margin_left = 452.0
+margin_right = 609.0
+margin_bottom = 64.0
+size_flags_horizontal = 0
+
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
+margin_right = 12.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
+margin_left = 16.0
+margin_top = 18.0
+margin_right = 73.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 2 )
+text = "Feed"
+
+[node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
+margin_left = 77.0
+margin_right = 89.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="feed" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
+margin_left = 93.0
+margin_right = 157.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 size_flags_vertical = 4
@@ -352,4 +387,5 @@ mouse_filter = 2
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_slider" to="." method="_on_rot_speed_slider_value_changed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/auto_unselect" to="." method="_on_auto_unselect_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5/unit_tile" to="." method="_on_unit_tile_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7/feed" to="." method="_on_feed_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer5/reset_button" to="." method="_on_reset_button_pressed"]

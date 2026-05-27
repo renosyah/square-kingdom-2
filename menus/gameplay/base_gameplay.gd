@@ -423,7 +423,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_role = data.squad_role
 	
 	squad.show_move_indicator = setting.show_unit_tile
-	squad.enable_blood = setting.enable_blood
+	squad.enable_blood = setting.extra_effect
 	
 	# for floating info
 	squad.camera = movable_camera.camera
@@ -505,10 +505,12 @@ func _move_squad_to(tile :TileMapData, then_unselect :bool):
 		idx += 1
 		
 func _on_squad_taking_damage(squad :BaseSquad, amount :int):
-	ui.log_event.add_log_damage(squad, amount)
+	if setting.show_feed:
+		ui.log_event.add_log_damage(squad, amount)
 	
 func _on_squad_member_dead(squad :BaseSquad, member):
-	ui.log_event.add_log_member_lost(squad)
+	if setting.show_feed:
+		ui.log_event.add_log_member_lost(squad)
 
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
@@ -555,11 +557,12 @@ func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
 func _on_unit_dead(squad :BaseSquad, data :SquadData):
-	ui.log_event.add_log_squad_dead(squad)
 	ui.minimap.remove_object(squad)
-	
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
 	squads.erase(squad)
+	
+	if setting.show_feed:
+		ui.log_event.add_log_squad_dead(squad)
 	
 	var is_commander :bool = (data.icon_idx == 6)
 	

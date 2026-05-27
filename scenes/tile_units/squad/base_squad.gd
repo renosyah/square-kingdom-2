@@ -170,7 +170,7 @@ func _ready():
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
-	enable_blood = d.enable_blood
+	enable_blood = d.extra_effect
 	
 func _init_formations():
 	pass

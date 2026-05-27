@@ -244,7 +244,7 @@ scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer"]
 margin_right = 274.0
-margin_bottom = 232.0
+margin_bottom = 172.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
@@ -272,8 +272,8 @@ columns = 3
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 margin_top = 12.0
 margin_right = 274.0
-margin_bottom = 232.0
-rect_min_size = Vector2( 0, 220 )
+margin_bottom = 172.0
+rect_min_size = Vector2( 0, 160 )
 mouse_filter = 2
 size_flags_horizontal = 3
 

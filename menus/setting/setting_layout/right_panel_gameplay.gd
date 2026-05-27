@@ -13,6 +13,7 @@ onready var rot_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer/rot_spe
 
 onready var auto_unselect = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/auto_unselect
 onready var unit_tile = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5/unit_tile
+onready var feed = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7/feed
 
 
 onready var setting_data = Global.setting_data
@@ -30,8 +31,7 @@ func _ready():
 	zoom_speed_label.text = "%s%s" % [z,"%"]
 	rot_speed_label.text = "%s%s" % [r,"%"]
 	
-	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
-	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
+	_apply_check()
 	
 func _from_setting(value, min_value, max_value) -> int:
 	return int(((value - min_value) / (max_value - min_value)) * 100.0)
@@ -51,6 +51,11 @@ func _on_rot_speed_slider_value_changed(value):
 	rot_speed_label.text = "%s%s" % [value,"%"]
 	setting_data.camera_rotation_speed = _to_setting(value, 20, 90)
 
+func _apply_check():
+	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
+	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
+	feed.icon = check if setting_data.show_feed else uncheck
+	
 func _on_reset_button_pressed():
 	var n = SettingData.new()
 	
@@ -68,9 +73,9 @@ func _on_reset_button_pressed():
 	
 	setting_data.unselect_on_command = n.unselect_on_command
 	setting_data.show_unit_tile = n.show_unit_tile
+	setting_data.show_feed = n.show_feed
 	
-	auto_unselect.icon = check if n.unselect_on_command else uncheck
-	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
+	_apply_check()
 	
 func _on_auto_unselect_pressed():
 	setting_data.unselect_on_command = not setting_data.unselect_on_command
@@ -79,3 +84,7 @@ func _on_auto_unselect_pressed():
 func _on_unit_tile_pressed():
 	setting_data.show_unit_tile = not setting_data.show_unit_tile
 	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
+
+func _on_feed_pressed():
+	setting_data.show_feed = not setting_data.show_feed
+	feed.icon = check if setting_data.show_feed else uncheck

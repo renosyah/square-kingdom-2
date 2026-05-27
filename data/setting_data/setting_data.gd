@@ -7,6 +7,7 @@ export var camera_zoom_speed :float = 0.02 # 0.01 - 0.03
 export var camera_rotation_speed :float = 45.0 # 20 - 90
 export var unselect_on_command :bool = false
 export var show_unit_tile :bool = false
+export var show_feed :bool = false
 
 # volume
 export var music :float = 0.8
@@ -19,7 +20,7 @@ export var shadow_type :int = 1
 export var enable_fog :bool = true
 export var enable_tilt_shift :bool = true
 export var light :float = 1
-export var enable_blood :bool = true
+export var extra_effect :bool = true
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -36,7 +37,8 @@ func from_dictionary(_data : Dictionary):
 	camera_rotation_speed = _data["j"]
 	unselect_on_command = _data["k"]
 	show_unit_tile = _data["l"]
-	enable_blood = _data["m"]
+	extra_effect = _data["m"]
+	show_feed = _data["n"]
 
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -53,5 +55,6 @@ func to_dictionary() -> Dictionary :
 	_data["j"] = camera_rotation_speed
 	_data["k"] = unselect_on_command
 	_data["l"] = show_unit_tile
-	_data["m"] = enable_blood
+	_data["m"] = extra_effect
+	_data["n"] = show_feed
 	return _data
