@@ -2,7 +2,7 @@ extends Control
 
 const dragable_card_scene = preload("res://assets/dragable_card/dragable_card.tscn")
 
-onready var army_label = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/Label2
+onready var army_label = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/Label2
 
 onready var squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/squad_container/VBoxContainer/MarginContainer/ScrollContainer/VBoxContainer/MarginContainer/squad_holder
 onready var army_squad_holder = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer/army_squad_holder_holder
@@ -206,8 +206,20 @@ func _on_save_pressed():
 	snack_bar.text = "Army saved!"
 	snack_bar.show()
 
+func _on_rng_army_pressed():
+	temp_current_army.clear()
+	
+	for i in 9:
+		var idx = randi() % Global.custom_squads.size()
+		if temp_current_army.size() < Global.max_army_size:
+			temp_current_army.append(idx)
+		
+	display_current_army()
+	
 func _on_add_button_squad_pressed():
 	Global.change_scene("res://menus/unit_edit/unit_edit.tscn", false)
+
+
 
 
 

@@ -40,23 +40,9 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == "bot":
 		bot_squads.append(squad)
 		
-func _on_squad_member_dead(squad :BaseSquad, member):
-	._on_squad_member_dead(squad, member)
-	
-	var attacked_by =  get_node(squad.attacked_by)
-	ui.add_log("%s's (%s) member %s killed by %s (%s)" % [squad.unit_name, squad.player_id, member.name, attacked_by.unit_name, attacked_by.player_id])
-	
-func _on_squad_member_resurect(squad :BaseSquad, member):
-	._on_squad_member_resurect(squad, member)
-	
-	ui.add_log("%s's (%s) member %s resurected" % [squad.unit_name, squad.player_id, member.name])
-	
 func _on_unit_dead(squad, data):
 	._on_unit_dead(squad, data)
 	
-	var attacked_by = get_node(squad.attacked_by)
-	ui.add_log("squad %s (%s) wiped by %s (%s)" % [squad.unit_name, squad.player_id, attacked_by.unit_name, attacked_by.player_id])
-
 	if squad.player_id == "bot":
 		bot_squads.erase(squad)
 		

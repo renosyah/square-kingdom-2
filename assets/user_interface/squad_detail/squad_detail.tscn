@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -16,6 +16,8 @@
 [ext_resource path="res://assets/user_interface/icons/squad/spear.png" type="Texture" id=14]
 [ext_resource path="res://assets/user_interface/icons/refresh.png" type="Texture" id=15]
 [ext_resource path="res://assets/user_interface/icons/squad/melee.png" type="Texture" id=16]
+[ext_resource path="res://assets/user_interface/icons/attack_move_mode.png" type="Texture" id=17]
+[ext_resource path="res://assets/user_interface/icons/stop.png" type="Texture" id=18]
 
 [node name="info" type="MarginContainer"]
 margin_right = 552.0
@@ -357,7 +359,6 @@ margin_bottom = 214.0
 rect_min_size = Vector2( 0, 24 )
 
 [node name="info_layout" type="MarginContainer" parent="."]
-visible = false
 margin_right = 589.0
 margin_bottom = 220.0
 
@@ -372,20 +373,20 @@ margin_right = 589.0
 margin_bottom = 220.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2"]
-margin_right = 572.0
+margin_right = 589.0
 margin_bottom = 40.0
 
 [node name="Label2" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer2"]
 margin_top = 6.0
-margin_right = 528.0
+margin_right = 545.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "  Info"
 
 [node name="close_info" type="Button" parent="info_layout/VBoxContainer2/HBoxContainer2"]
-margin_left = 532.0
-margin_right = 572.0
+margin_left = 549.0
+margin_right = 589.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 size_flags_horizontal = 0
@@ -395,18 +396,19 @@ expand_icon = true
 
 [node name="HBoxContainer4" type="ScrollContainer" parent="info_layout/VBoxContainer2"]
 margin_top = 44.0
-margin_right = 572.0
+margin_right = 589.0
 margin_bottom = 220.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4"]
-margin_right = 543.0
-margin_bottom = 428.0
+margin_right = 577.0
+margin_bottom = 488.0
 mouse_filter = 2
+size_flags_horizontal = 3
 custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
-margin_right = 487.0
+margin_right = 577.0
 margin_bottom = 160.0
 mouse_filter = 2
 
@@ -501,25 +503,26 @@ Squads move at a speed of X tiles per second"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
 margin_top = 172.0
-margin_right = 487.0
-margin_bottom = 316.0
+margin_right = 577.0
+margin_bottom = 376.0
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 margin_right = 8.0
-margin_bottom = 144.0
+margin_bottom = 204.0
 rect_min_size = Vector2( 8, 0 )
 mouse_filter = 2
 
 [node name="HBoxContainer2" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 margin_left = 12.0
-margin_right = 487.0
-margin_bottom = 144.0
+margin_right = 565.0
+margin_bottom = 204.0
 mouse_filter = 2
+size_flags_horizontal = 3
 custom_constants/separation = 12
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_right = 475.0
+margin_right = 553.0
 margin_bottom = 40.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -547,21 +550,38 @@ rect_min_size = Vector2( 40, 40 )
 mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+texture = ExtResource( 18 )
+expand = true
+
+[node name="TextureRect3" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2/HBoxContainer2/TextureRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -12.0
+margin_top = -12.0
+margin_right = 12.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 24, 24 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 texture = ExtResource( 9 )
 expand = true
 
 [node name="attack" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2"]
 margin_left = 108.0
-margin_top = 4.0
-margin_right = 475.0
-margin_bottom = 35.0
-size_flags_horizontal = 5
-text = "Spears are effective against cavalry.
-Cavalry armed with spears are also strong against enemy cavalry."
+margin_right = 553.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Spears are effective against cavalry. Cavalry armed with spears
+are also strong against enemy cavalry."
+autowrap = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
 margin_top = 52.0
-margin_right = 475.0
+margin_right = 553.0
 margin_bottom = 92.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -595,16 +615,16 @@ expand = true
 
 [node name="hp" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer"]
 margin_left = 108.0
-margin_top = 4.0
-margin_right = 459.0
-margin_bottom = 35.0
-size_flags_horizontal = 5
-text = "Swords and axes are effective against infantry.
-This also applies to cavalry armed with swords or axes."
+margin_right = 553.0
+margin_bottom = 31.0
+size_flags_horizontal = 11
+size_flags_vertical = 0
+text = "Swords and axes are effective against infantry. This also applies to cavalry armed with swords or axes."
+autowrap = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
 margin_top = 104.0
-margin_right = 475.0
+margin_right = 553.0
 margin_bottom = 144.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -638,17 +658,67 @@ expand = true
 
 [node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3"]
 margin_left = 108.0
-margin_top = 4.0
-margin_right = 463.0
-margin_bottom = 35.0
-size_flags_horizontal = 5
-text = "Special squads are often hybrid units that excel in both melee
-and ranged combat. Some are considered the best all-round units."
+margin_right = 553.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Special squads are often hybrid units that excel in both melee and ranged combat. Some are considered the best all-round units."
+autowrap = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+margin_top = 156.0
+margin_right = 553.0
+margin_bottom = 204.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4"]
+margin_right = 90.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/separation = 8
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 9 )
+expand = true
+
+[node name="TextureRect" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4/HBoxContainer2"]
+margin_left = 48.0
+margin_right = 88.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 17 )
+expand = true
+
+[node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4"]
+margin_left = 108.0
+margin_right = 553.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Cavalry units greatest strength were their speed and ability to charge. using fire on the move mode it allow their rider to fire their range weapon on the move. their weakness is spear & low number"
+autowrap = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
+margin_left = 569.0
+margin_right = 577.0
+margin_bottom = 204.0
+rect_min_size = Vector2( 8, 0 )
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
-margin_top = 328.0
-margin_right = 487.0
-margin_bottom = 428.0
+margin_top = 388.0
+margin_right = 577.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 0, 100 )
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/info" to="." method="_on_info_pressed"]

@@ -27,12 +27,16 @@ onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/
 onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
 onready var control_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2
 onready var orbital_camera_ui = $CanvasLayer/Control/orbital_camera_ui
+onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer
+onready var cinematic = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic
+onready var log_event = $CanvasLayer/Control/log_event
 
 onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
 onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
 onready var selection_button_inf = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_inf
 onready var selection_button_rng = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_rng
 
+var on_cinematic_mode :bool
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences
 var selected_squads :Array # refrences
@@ -51,8 +55,11 @@ func _ready():
 	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
 	
 func _process(delta):
-	movable_camera_ui.detect_in_out = not selected_squads.empty()
-	if not movable_camera_ui.detect_in_out:
+	var on_select = not selected_squads.empty()
+	movable_camera_ui.detect_in_out = on_select
+	cinematic.visible = on_select or (on_cinematic_mode and not on_select)
+	
+	if not on_select:
 		return
 		
 	if is_instance_valid(selected_squads[0]):
@@ -111,17 +118,6 @@ func add_squad_floating_info(squad :BaseSquad, data :SquadData, p :PlayerData):
 	overlay_ui.add_child(_floating_info)
 	squad.floating_info = _floating_info
 	
-func add_log(v :String):
-	var l = Label.new()
-	l.autowrap = true
-	l.text = v
-	var list = $CanvasLayer/Control/VBoxContainer/Control/log_event/VBoxContainer
-	list.add_child(l)
-	if list.get_child_count() > 6:
-		var c = list.get_children().front()
-		list.remove_child(c)
-		c.queue_free()
-		
 func select_all_squad(squad_role :int = 0):
 	var player_squad_size :int = 0
 	for i in player_squads:
@@ -204,27 +200,24 @@ func _on_selection_mode_pressed():
 
 func _on_cinematic_pressed():
 	if movable_camera_ui.visible and not selected_squads.empty():
-		movable_camera_ui.target.camera.current = false
-		orbital_camera_ui.camera.current = true
-		
-		orbital_camera_ui.visible = true
-		movable_camera_ui.visible = false
-		overlay_ui.visible = false
-		control_ui.visible = false
-		
+		on_cinematic_mode = true
+
 		var y = selected_squads[0].rotation.y
 		orbital_camera_ui.orbit_pivot.rotation.y = y
 		
 	else:
+		on_cinematic_mode = false
 		movable_camera_ui.target.translation.y = 3
-		orbital_camera_ui.camera.current = false
-		movable_camera_ui.target.camera.current = true
 		
-		movable_camera_ui.visible = true
-		orbital_camera_ui.visible = false
-		overlay_ui.visible = true
-		control_ui.visible = true
-
+	orbital_camera_ui.camera.current = on_cinematic_mode
+	movable_camera_ui.target.camera.current = not on_cinematic_mode
+	
+	movable_camera_ui.visible = not on_cinematic_mode
+	orbital_camera_ui.visible = on_cinematic_mode
+	overlay_ui.visible = not on_cinematic_mode
+	control_ui.visible = not on_cinematic_mode
+	menu_buttons.visible = not on_cinematic_mode
+	log_event.visible = not on_cinematic_mode
 
 
 

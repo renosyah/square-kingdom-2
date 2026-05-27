@@ -4,8 +4,8 @@
 radiance_size = 0
 sky_top_color = Color( 0, 0.647059, 1, 1 )
 sky_horizon_color = Color( 0, 0.576471, 0.858824, 1 )
-ground_bottom_color = Color( 0.168627, 0.168627, 0.168627, 1 )
-ground_horizon_color = Color( 0, 0.411765, 0.552941, 1 )
+ground_bottom_color = Color( 0, 0.447059, 0.666667, 1 )
+ground_horizon_color = Color( 0, 0.576471, 0.858824, 1 )
 texture_size = 0
 
 [resource]
@@ -14,7 +14,9 @@ background_sky = SubResource( 2 )
 fog_enabled = true
 fog_color = Color( 0.152941, 0.47451, 0.792157, 1 )
 fog_sun_color = Color( 1, 0.901961, 0.701961, 1 )
-fog_depth_curve = 0.637279
+fog_depth_begin = 5.0
+fog_depth_end = 10.0
+fog_depth_curve = 2.37841
 dof_blur_far_enabled = true
 dof_blur_far_distance = 4.4
 dof_blur_far_transition = 0.12
@@ -23,3 +25,6 @@ dof_blur_far_quality = 0
 dof_blur_near_enabled = true
 dof_blur_near_transition = 0.7
 dof_blur_near_amount = 0.12
+adjustment_enabled = true
+adjustment_contrast = 1.05
+adjustment_saturation = 0.9

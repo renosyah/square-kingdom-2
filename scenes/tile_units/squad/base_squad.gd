@@ -77,6 +77,7 @@ var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
 var _melee_ranges :Array = []
+var _current_tile_v3 :Vector3
 
 var _melee_attack_timer :Timer
 var _range_attack_timer :Timer
@@ -246,7 +247,12 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 	if randf() < 0.15:
 		return
 		
-	target.squad.take_damage(attack_damage, target_member_idx, get_path())
+	# bonus damage if attack from flank
+	var dmg :int = attack_damage
+	if _is_on_flank_of(target.squad):
+		dmg = attack_damage * 2
+		
+	target.squad.take_damage(dmg, target_member_idx, get_path())
 	
 func _on_member_dead(member :SquadMember):
 	if _members.has(member):
@@ -272,6 +278,8 @@ func _on_member_dead(member :SquadMember):
 		
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
+	
+	_current_tile_v3 = nav.get_pos_v3(current_tile)
 	
 	if not show_move_indicator:
 		return
@@ -369,7 +377,7 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 		return
 		
 	 #  default pos by tilemap nav pos
-	var _pos :Vector3 = nav.get_pos_v3(current_tile)
+	var _pos :Vector3 = _current_tile_v3
 	var _offset_v2 = Vector2.ZERO
 	var _crowded :bool = false
 	
@@ -483,6 +491,12 @@ func _resurecting():
 
 func _is_in_melee_range(target):
 	return target.current_tile in _melee_ranges
+	
+func _is_on_flank_of(target) -> bool:
+	var dir = target.current_tile.direction_to(current_tile)
+	var forward = Vector2(-target.transform.basis.z.x,-target.transform.basis.z.z).normalized()
+	var dot = forward.dot(dir)
+	return !(dot > 0.5)
 	
 func take_damage(amount :int, member_idx :int, from :NodePath):
 	if is_dead:

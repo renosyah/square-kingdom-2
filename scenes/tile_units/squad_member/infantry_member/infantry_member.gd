@@ -167,7 +167,8 @@ func melee_attack():
 	_look_at(enemy.global_position)
 	
 	if not on_horse:
-		tween.interpolate_property(self, "translation", global_position, enemy.global_position, 0.8)
+		var offset = enemy.global_position.direction_to(global_position) * 0.35
+		tween.interpolate_property(self, "translation", global_position, enemy.global_position + offset, 0.8)
 		tween.start()
 		yield(tween,"tween_completed")
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://menus/gameplay/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://assets/user_interface/icons/hamburger.png" type="Texture" id=23]
 [ext_resource path="res://assets/camera/orbital_camera_ui.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/user_interface/icons/view.png" type="Texture" id=25]
+[ext_resource path="res://assets/log_event/log_event.tscn" type="PackedScene" id=26]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -38,6 +39,14 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+
+[node name="fps_ping_displayer" parent="CanvasLayer/Control" instance=ExtResource( 3 )]
+margin_bottom = 70.0
+mouse_filter = 2
+
+[node name="log_event" parent="CanvasLayer/Control" instance=ExtResource( 26 )]
+margin_right = 589.0
+margin_bottom = 178.0
 
 [node name="overlay_ui" type="Control" parent="CanvasLayer/Control"]
 anchor_right = 1.0
@@ -83,19 +92,15 @@ rect_min_size = Vector2( 60, 60 )
 mouse_filter = 2
 custom_constants/separation = 24
 
-[node name="fps_ping_displayer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource( 3 )]
-margin_bottom = 70.0
-mouse_filter = 2
-
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 122.0
-margin_right = 687.0
+margin_right = 791.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 24, 0 )
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="cinematic" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
 margin_left = 711.0
 margin_right = 791.0
 margin_bottom = 70.0
@@ -104,18 +109,24 @@ icon = ExtResource( 25 )
 icon_align = 1
 expand_icon = true
 
-[node name="score" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 815.0
-margin_right = 895.0
+margin_right = 999.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+custom_constants/separation = 24
+
+[node name="score" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+margin_right = 80.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 80, 60 )
 icon = ExtResource( 4 )
 icon_align = 1
 expand_icon = true
 
-[node name="back" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 919.0
-margin_right = 999.0
+[node name="back" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+margin_left = 104.0
+margin_right = 184.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 80, 60 )
 icon = ExtResource( 23 )
@@ -135,23 +146,6 @@ margin_right = 1024.0
 margin_bottom = 342.0
 mouse_filter = 2
 size_flags_vertical = 3
-
-[node name="log_event" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
-visible = false
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -125.0
-margin_right = 400.0
-margin_bottom = 125.0
-rect_min_size = Vector2( 400, 250 )
-mouse_filter = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/log_event"]
-margin_right = 400.0
-margin_bottom = 250.0
-mouse_filter = 2
-size_flags_vertical = 3
-custom_constants/separation = 8
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]
 margin_top = 346.0
@@ -425,7 +419,7 @@ texture = ExtResource( 17 )
 visible = false
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic" to="." method="_on_cinematic_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]

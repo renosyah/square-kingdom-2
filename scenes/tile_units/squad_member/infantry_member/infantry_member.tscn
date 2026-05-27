@@ -438,10 +438,10 @@ tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0.196861, 0.00170654, 0.00404906 ) ]
+"values": [ Vector3( 0.221525, -0.0041241, 0.00404906 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/body/hand_r/range_weapon_holder:rotation_degrees")
@@ -450,7 +450,7 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( -12.9531, -91.264, 89.9084 ) ]
@@ -2446,7 +2446,7 @@ software_skinning_transform_normals = false
 material/1 = ExtResource( 6 )
 
 [node name="range_weapon_holder" type="Spatial" parent="pivot/body/hand_r"]
-transform = Transform( 0.224064, 0.0224175, -0.97432, 0.974556, 0.00155811, 0.224154, 0.00654307, -0.999749, -0.021498, 0.196861, 0.00170654, 0.00404906 )
+transform = Transform( 0.224064, 0.0224175, -0.974321, 0.974557, 0.00155811, 0.224154, 0.00654308, -0.999749, -0.021498, 0.196861, 0.00170654, 0.00404906 )
 __meta__ = {
 "_editor_description_": ""
 }

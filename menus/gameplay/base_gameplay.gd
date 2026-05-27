@@ -53,7 +53,7 @@ func _on_all_player_ready():
 ########################################## proccess  ############################################
 
 func _process(delta):
-	if ui.orbital_camera_ui.visible:
+	if ui.on_cinematic_mode:
 		movable_camera.translation = orbital_camera.translation
 		
 	var pos = movable_camera.translation * Vector3(1,0,1)
@@ -282,11 +282,8 @@ func setup_clickable_floor():
 	add_child(clickable_floor)
 
 func _on_floor_clicked(pos :Vector3):
-	if not ui.movable_camera_ui.visible:
-		return
-		
 	var tile = tile_map.get_closes_tile(pos)
-	_move_squad_to(tile, setting.unselect_on_command)
+	_move_squad_to(tile, setting.unselect_on_command and not ui.on_cinematic_mode)
 	
 ########################################## Tap  ############################################
 var tap :TapIndicator
@@ -430,7 +427,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.camera = movable_camera.camera
 	squad.unit_indexing = tile_position_manager.get_unit_indexing()
 
-	#squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
+	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
 	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
@@ -505,12 +502,12 @@ func _move_squad_to(tile :TileMapData, then_unselect :bool):
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
 		idx += 1
 		
-func _on_squad_taking_damage(squad, amount):
-	pass
+func _on_squad_taking_damage(squad :BaseSquad, amount :int):
+	ui.log_event.add_log_damage(squad, amount)
 	
 func _on_squad_member_dead(squad :BaseSquad, member):
-	pass
-	
+	ui.log_event.add_log_member_lost(squad)
+
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
 	
@@ -556,6 +553,7 @@ func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
 func _on_unit_dead(squad :BaseSquad, data :SquadData):
+	ui.log_event.add_log_squad_dead(squad)
 	ui.minimap.remove_object(squad)
 	
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
