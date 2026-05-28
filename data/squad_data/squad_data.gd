@@ -55,6 +55,13 @@ export var member_max_hp :int = 100
 export var total_member :int = 9
 export var heal_amount :int = 10
 
+
+# this is for siege engine
+# because i cant get the stats of the engines
+# this is just simple holder and not do anything outside data
+export var siege_engine_attack_damage :int
+
+
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
 	scene_idx = _data["a"]
@@ -90,6 +97,7 @@ func from_dictionary(_data : Dictionary):
 	total_member = _data["t"]
 	heal_amount = _data["u"]
 	is_mounted = _data["v"]
+	siege_engine_attack_damage = _data["v1"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -126,6 +134,7 @@ func to_dictionary() -> Dictionary :
 	_data["t"] = total_member
 	_data["u"] = heal_amount
 	_data["v"] = is_mounted
+	_data["v1"] = siege_engine_attack_damage
 	return _data
 	
 

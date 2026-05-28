@@ -37,6 +37,7 @@ func _on_walking(delta :float):
 		_step_audio.stream = walk_sounds.pick_random()
 		_step_audio.play()
 		
+	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	

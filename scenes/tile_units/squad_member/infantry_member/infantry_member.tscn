@@ -1271,7 +1271,6 @@ tracks/12/keys = {
 
 [sub_resource type="Animation" id=14]
 resource_name = "walk"
-length = 0.6
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/body:rotation_degrees")
@@ -1280,10 +1279,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 13.25, 0 ), Vector3( 0, -13.25, 0 ) ]
+"values": [ Vector3( 0, -13.25, 0 ), Vector3( 0, 13.25, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("pivot/body:translation")
@@ -1292,7 +1291,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
@@ -1304,10 +1303,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 41.3232, 4.5199, 71.9486 ), Vector3( -41.323, 4.52, 71.949 ) ]
+"values": [ Vector3( -41.323, 4.52, 71.949 ), Vector3( 41.3232, 4.5199, 71.9486 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("pivot/body/hand_l:translation")
@@ -1328,10 +1327,10 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( -42.6274, 4.90024, -72.5172 ), Vector3( 42.627, 4.9, -72.517 ) ]
+"values": [ Vector3( 42.627, 4.9, -72.517 ), Vector3( -42.6274, 4.90024, -72.5172 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("pivot/body/hand_r:translation")
@@ -1376,7 +1375,7 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0.196861, 0.00170654, 0.00404906 ) ]
@@ -1388,7 +1387,7 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( -12.9531, -91.264, 89.9084 ) ]
@@ -1396,7 +1395,6 @@ tracks/9/keys = {
 
 [sub_resource type="Animation" id=19]
 resource_name = "walk_weapon_hold"
-length = 0.6
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/body:rotation_degrees")
@@ -1405,10 +1403,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 13.25, 0 ), Vector3( 0, -13.25, 0 ) ]
+"values": [ Vector3( 0, -13.25, 0 ), Vector3( 0, 13.25, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("pivot/body:translation")
@@ -1417,7 +1415,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
@@ -1429,10 +1427,10 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 41.3232, 4.5199, 71.9486 ), Vector3( -41.323, 4.52, 71.949 ) ]
+"values": [ Vector3( -41.323, 4.52, 71.949 ), Vector3( 41.3232, 4.5199, 71.9486 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("pivot/body/hand_l:translation")
@@ -1501,7 +1499,7 @@ tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0.196861, 0.00170654, 0.00404906 ) ]
@@ -1513,7 +1511,7 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( -12.9531, -91.264, 89.9084 ) ]
@@ -2199,7 +2197,6 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "walk"
-length = 0.6
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/leg_l:translation")
@@ -2220,7 +2217,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 41.236, 0, 0 ), Vector3( -51.946, 0, 0 ) ]
@@ -2232,7 +2229,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( -38.782, 0, 0 ), Vector3( 44.719, 0, 0 ) ]
@@ -2244,7 +2241,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0.05, -0.1, 0 ), Vector3( 0.05, -0.1, 0 ) ]

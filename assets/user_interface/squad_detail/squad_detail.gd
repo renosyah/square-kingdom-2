@@ -46,6 +46,10 @@ func _get_attack_values(data :SquadData) -> Array:
 		s[1] = calculate_dps(w.attack_damage * data.total_member, data.range_attack_speed) 
 		w.queue_free()
 		
+	# siege engine if not 0 or 1
+	if not data.scene_idx in [0,1]:
+		s[1] = data.siege_engine_attack_damage
+		
 	return s
 	
 func calculate_dps(damage: int, duration: float) -> int:

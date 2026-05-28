@@ -1,6 +1,6 @@
 extends BaseGameplay
 
-const enemy_phases = [[0,0,0],[0,1,2,3,4,5,12],[0,1,2,3,4,5,6,7,8,12,13],[6,7,8,9,10,11,12,13]]
+const enemy_phases = [[0,0,0],[01,2,3],[1,2,3],[1,2,3,4,5],[0,1,2,3,4,5,6,7,8,12],[6,7,8,9,10,11,12,13]]
 onready var bot_spawner_timer = $bot_spawner_timer
 var bot_squads :Array
 var dup :Array
