@@ -3,8 +3,6 @@ extends SiegeEngine
 const boulder_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
 const arm_swing_audio = preload("res://assets/sounds/unit/swing/swing.wav")
 
-export var attack_damage :int = 32
-
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var ammo = $pivot/arm/ammo
 

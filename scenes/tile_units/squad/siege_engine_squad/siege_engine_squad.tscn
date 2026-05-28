@@ -2,5 +2,5 @@
 
 [ext_resource path="res://scenes/tile_units/squad/siege_engine_squad/siege_engine_squad.gd" type="Script" id=1]
 
-[node name="infantry_squad" type="Spatial"]
+[node name="siege_engine_squad" type="Spatial"]
 script = ExtResource( 1 )

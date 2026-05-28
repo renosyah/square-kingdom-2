@@ -3,6 +3,8 @@ class_name SiegeEngine
 
 signal on_set_damage_to_tile(engine, tile, amount)
 
+export var attack_damage :int = 32
+
 var squad
 
 var iddle :bool = true

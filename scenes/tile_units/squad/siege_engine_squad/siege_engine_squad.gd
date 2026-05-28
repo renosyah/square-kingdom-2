@@ -92,6 +92,7 @@ func _perform_range_attack():
 	if not can_attack:
 		return
 		
+	# too close
 	# cant do shit
 	if enemy.current_tile in _minimum_range_tiles:
 		return

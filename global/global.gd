@@ -250,7 +250,8 @@ const template_squads = [
 	preload("res://data/squad_data/cavalry_sword.tres"),
 	preload("res://data/squad_data/cavalry_archer.tres"),
 	preload("res://data/squad_data/cavalry_household.tres"),#15
-	preload("res://data/squad_data/engine_catapult.tres")
+	preload("res://data/squad_data/engine_catapult.tres"),
+	preload("res://data/squad_data/engine_balista.tres")
 ]
 onready var custom_squads :Array = []
 

@@ -5,8 +5,9 @@ const squads = [
 	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn"),#0
 	preload("res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.tscn"),#1
 	
-	# temporary
-	preload("res://scenes/tile_units/squad/siege_engine_squad/catapult_squad.tscn")#2
+	# siege engines
+	preload("res://scenes/tile_units/squad/siege_engine_squad/catapult_squad.tscn"),#2
+	preload("res://scenes/tile_units/squad/siege_engine_squad/balista_squad.tscn")#3
 ]
 const members = [
 	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"),
@@ -59,6 +60,7 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/javeline.png"), #7
 	preload("res://assets/user_interface/icons/squad/crossbow.png"),  #8
 	preload("res://assets/user_interface/icons/squad/catapult.png"), #9
+	preload("res://assets/user_interface/icons/squad/balista.png"),#10
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0

@@ -1,18 +1,23 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
-[ext_resource path="res://scenes/projectiles/boulder.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult_arm.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/projectiles/arrow.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://scenes/tile_units/siege_engine/balista/balista_body.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
-[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=5]
-[ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult_body.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://scenes/tile_units/siege_engine/balista/balista_turret_pull.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://scenes/tile_units/siege_engine/balista/balista_turret.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult_wheel.obj" type="ArrayMesh" id=7]
-[ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult.gd" type="Script" id=8]
+[ext_resource path="res://scenes/tile_units/siege_engine/balista/balista.gd" type="Script" id=8]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+albedo_color = Color( 0.686275, 0.686275, 0.686275, 1 )
 
 [sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("pivot/arm:translation")
+tracks/0/path = NodePath("pivot/wheel_f:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -21,10 +26,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.0812018, 0 ) ]
+"values": [ Vector3( 0, 0, -0.280655 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("pivot/arm:rotation_degrees")
+tracks/1/path = NodePath("pivot/wheel_f:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -33,10 +38,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 1.533, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("pivot/wheel_f:translation")
+tracks/2/path = NodePath("pivot/wheel_b:translation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -45,10 +50,10 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.280655 ) ]
+"values": [ Vector3( 0, 0, 0.398396 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("pivot/wheel_f:rotation_degrees")
+tracks/3/path = NodePath("pivot/wheel_b:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -60,7 +65,7 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("pivot/wheel_b:translation")
+tracks/4/path = NodePath("pivot/Spatial/body:translation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -69,10 +74,10 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.398396 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("pivot/wheel_b:rotation_degrees")
+tracks/5/path = NodePath("pivot/Spatial/body:rotation_degrees")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -81,10 +86,10 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 180, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("pivot/Spatial/body:translation")
+tracks/6/path = NodePath("pivot/Spatial:translation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -96,7 +101,7 @@ tracks/6/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("pivot/Spatial/body:rotation_degrees")
+tracks/7/path = NodePath("pivot/Spatial:rotation_degrees")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -105,10 +110,10 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 180, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("pivot/Spatial:translation")
+tracks/8/path = NodePath("pivot/Spatial/arm/ammo:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -116,11 +121,11 @@ tracks/8/enabled = true
 tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"update": 1,
+"values": [ true ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("pivot/Spatial:rotation_degrees")
+tracks/9/path = NodePath("pivot/Spatial/arm/body2:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -128,11 +133,11 @@ tracks/9/enabled = true
 tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("pivot/arm/ammo:visible")
+tracks/10/path = NodePath("pivot/Spatial/arm/body3:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
@@ -148,7 +153,7 @@ tracks/10/keys = {
 resource_name = "iddle"
 length = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath("pivot/arm:translation")
+tracks/0/path = NodePath("pivot/wheel_f:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -157,10 +162,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.0812018, 0 ) ]
+"values": [ Vector3( 0, 0, -0.280655 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("pivot/arm:rotation_degrees")
+tracks/1/path = NodePath("pivot/wheel_f:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -169,10 +174,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 1.533, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("pivot/wheel_f:translation")
+tracks/2/path = NodePath("pivot/wheel_b:translation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -181,10 +186,10 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.280655 ) ]
+"values": [ Vector3( 0, 0, 0.398396 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("pivot/wheel_f:rotation_degrees")
+tracks/3/path = NodePath("pivot/wheel_b:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -196,7 +201,7 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("pivot/wheel_b:translation")
+tracks/4/path = NodePath("pivot/Spatial:translation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -205,10 +210,10 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.398396 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("pivot/wheel_b:rotation_degrees")
+tracks/5/path = NodePath("pivot/Spatial:rotation_degrees")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -220,7 +225,7 @@ tracks/5/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("pivot/Spatial:translation")
+tracks/6/path = NodePath("pivot/Spatial/arm/ammo:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -228,11 +233,11 @@ tracks/6/enabled = true
 tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"update": 1,
+"values": [ true ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("pivot/Spatial:rotation_degrees")
+tracks/7/path = NodePath("pivot/Spatial/arm/body2:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -240,11 +245,11 @@ tracks/7/enabled = true
 tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"update": 1,
+"values": [ false ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("pivot/arm/ammo:visible")
+tracks/8/path = NodePath("pivot/Spatial/arm/body3:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -256,34 +261,34 @@ tracks/8/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "lob_boulder"
+[sub_resource type="Animation" id=15]
+resource_name = "shot_bolt"
 tracks/0/type = "value"
-tracks/0/path = NodePath("pivot/arm:translation")
+tracks/0/path = NodePath("pivot/wheel_f:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3, 0.4, 0.6, 0.7, 0.8, 1, 1.3, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ), Vector3( 0, 0.0812018, 0 ) ]
+"values": [ Vector3( 0, 0, -0.280655 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("pivot/arm:rotation_degrees")
+tracks/1/path = NodePath("pivot/wheel_f:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.4, 0.6, 0.7, 0.8, 1, 1.3, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 1.533, 0, 0 ), Vector3( 1.533, 0, 0 ), Vector3( -65.805, 0, 0 ), Vector3( -65.805, 0, 0 ), Vector3( -52, 0, 0 ), Vector3( -26.562, 0, 0 ), Vector3( 1.533, 0, 0 ), Vector3( 1.533, 0, 0 ), Vector3( 1.533, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("pivot/wheel_f:translation")
+tracks/2/path = NodePath("pivot/wheel_b:translation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -292,10 +297,10 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.280655 ) ]
+"values": [ Vector3( 0, 0, 0.398396 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("pivot/wheel_f:rotation_degrees")
+tracks/3/path = NodePath("pivot/wheel_b:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -307,64 +312,64 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("pivot/wheel_b:translation")
+tracks/4/path = NodePath("pivot/Spatial:translation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.398396 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.0584249, 0.00417304 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("pivot/wheel_b:rotation_degrees")
+tracks/5/path = NodePath("pivot/Spatial:rotation_degrees")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 6.279, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("pivot/Spatial:translation")
+tracks/6/path = NodePath("pivot/Spatial/arm/ammo:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.3, 0.4, 0.7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.0319455, 0.00319457 ), Vector3( 0, 0, 0 ) ]
+"times": PoolRealArray( 0, 0.3, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("pivot/Spatial:rotation_degrees")
+tracks/7/path = NodePath("pivot/Spatial/arm/body2:visible")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.3, 0.4, 0.7 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( -4.154, 0, 0 ), Vector3( 0, 0, 0 ) ]
+"update": 1,
+"values": [ false, false, true, false ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("pivot/arm/ammo:visible")
+tracks/8/path = NodePath("pivot/Spatial/arm/body3:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ true, false, true ]
+"values": [ true, true, false, true ]
 }
 tracks/9/type = "method"
 tracks/9/path = NodePath(".")
@@ -373,11 +378,11 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.3 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "_on_boulder_lob"
+"method": "_on_bolt_shot"
 } ]
 }
 
@@ -386,7 +391,7 @@ resource_name = "walk"
 length = 1.5
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("pivot/arm:translation")
+tracks/0/path = NodePath("pivot/wheel_f:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -395,22 +400,22 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.0812018, 0 ) ]
+"values": [ Vector3( 0, 0, -0.280655 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("pivot/arm:rotation_degrees")
+tracks/1/path = NodePath("pivot/wheel_f:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 1.1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 1.533, 0, 0 ), Vector3( 1.52944, 0.104479, 3.90839 ), Vector3( 1.52874, -0.102135, -3.82256 ) ]
+"values": [ Vector3( 360, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("pivot/wheel_f:translation")
+tracks/2/path = NodePath("pivot/wheel_b:translation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -419,10 +424,10 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.280655 ) ]
+"values": [ Vector3( 0, 0, 0.398396 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("pivot/wheel_f:rotation_degrees")
+tracks/3/path = NodePath("pivot/wheel_b:rotation_degrees")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -434,55 +439,55 @@ tracks/3/keys = {
 "values": [ Vector3( 360, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("pivot/wheel_b:translation")
+tracks/4/path = NodePath("pivot/Spatial:translation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0.398396 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("pivot/wheel_b:rotation_degrees")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0, 1.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector3( 360, 0, 0 ), Vector3( 0, 0, 0 ) ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("pivot/Spatial:translation")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
-tracks/7/type = "value"
-tracks/7/path = NodePath("pivot/Spatial:rotation_degrees")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/Spatial:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
 "times": PoolRealArray( 0, 0.5, 1.1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 3.838 ), Vector3( 0, 0, -2.8128 ) ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath("pivot/Spatial/arm/ammo:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("pivot/Spatial/arm/body3:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 tracks/8/type = "value"
-tracks/8/path = NodePath("pivot/arm/ammo:visible")
+tracks/8/path = NodePath("pivot/Spatial/arm/body2:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -491,43 +496,43 @@ tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ true ]
+"values": [ false ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=7]
 animation = "iddle"
 
-[sub_resource type="AnimationNodeAnimation" id=8]
-animation = "lob_boulder"
+[sub_resource type="AnimationNodeAnimation" id=16]
+animation = "shot_bolt"
 
 [sub_resource type="AnimationNodeAnimation" id=9]
 animation = "walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=10]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=11]
-switch_mode = 2
-auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=12]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=13]
 
-[sub_resource type="AnimationNodeStateMachine" id=1]
+[sub_resource type="AnimationNodeStateMachineTransition" id=17]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=18]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id=14]
 states/iddle/node = SubResource( 7 )
 states/iddle/position = Vector2( 199, 62 )
-states/lob_boulder/node = SubResource( 8 )
-states/lob_boulder/position = Vector2( 390, 62 )
+states/shot_bolt/node = SubResource( 16 )
+states/shot_bolt/position = Vector2( 370, 62 )
 states/walk/node = SubResource( 9 )
 states/walk/position = Vector2( 199, 159 )
-transitions = [ "iddle", "lob_boulder", SubResource( 10 ), "lob_boulder", "iddle", SubResource( 11 ), "walk", "iddle", SubResource( 12 ), "iddle", "walk", SubResource( 13 ) ]
+transitions = [ "walk", "iddle", SubResource( 12 ), "iddle", "walk", SubResource( 13 ), "iddle", "shot_bolt", SubResource( 17 ), "shot_bolt", "iddle", SubResource( 18 ) ]
 start_node = "iddle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
-[node name="catapult" type="Spatial"]
+[node name="balista" type="Spatial"]
 script = ExtResource( 8 )
-attack_damage = 24
+attack_damage = 36
 
 [node name="pivot" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113483, 0 )
@@ -536,37 +541,48 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.113483, 0 )
 
 [node name="body" type="MeshInstance" parent="pivot/Spatial"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-mesh = ExtResource( 6 )
-skeleton = NodePath("../..")
-software_skinning_transform_normals = false
-material/0 = ExtResource( 3 )
-material/1 = ExtResource( 4 )
-
-[node name="arm" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, 0.999642, -0.0267527, 0, 0.0267527, 0.999642, 0, 0.0812018, 0 )
-
-[node name="body2" type="MeshInstance" parent="pivot/arm"]
-transform = Transform( -1, 0, -8.74228e-08, -2.22045e-16, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
 mesh = ExtResource( 2 )
 skeleton = NodePath("../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 
-[node name="ammo" type="MeshInstance" parent="pivot/arm"]
-transform = Transform( -1, 0, -8.74228e-08, -8.74044e-08, 0.0204713, 0.99979, 1.78965e-09, 0.99979, -0.0204713, 0, 0.116578, 0.418403 )
+[node name="arm" type="Spatial" parent="pivot/Spatial"]
+transform = Transform( 1, 0, 0, 0, 0.927184, -0.374607, 0, 0.374607, 0.927184, 0, 0.3, 0 )
+
+[node name="body2" type="MeshInstance" parent="pivot/Spatial/arm"]
+transform = Transform( -1, 0, -8.74228e-08, -2.22045e-16, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+visible = false
+cast_shadow = 0
+mesh = ExtResource( 6 )
+skeleton = NodePath("../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
+
+[node name="body3" type="MeshInstance" parent="pivot/Spatial/arm"]
+transform = Transform( -1, 0, -8.74228e-08, -2.22045e-16, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 5 )
+skeleton = NodePath("../../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
+
+[node name="ammo" type="MeshInstance" parent="pivot/Spatial/arm"]
+transform = Transform( 1, 0, 0, 0, -0.0562969, 0.999604, 0, -1.99921, -0.0281484, 0, 0.0319752, -0.000855728 )
 cast_shadow = 0
 mesh = ExtResource( 1 )
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 software_skinning_transform_normals = false
-material/0 = ExtResource( 5 )
+material/0 = ExtResource( 4 )
+material/1 = SubResource( 1 )
 
 [node name="wheel_f" type="Spatial" parent="pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.280655 )
 
 [node name="w_f_l" type="MeshInstance" parent="pivot/wheel_f"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0 )
 cast_shadow = 0
 mesh = ExtResource( 7 )
 skeleton = NodePath("../..")
@@ -575,7 +591,7 @@ material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 
 [node name="w_f_r" type="MeshInstance" parent="pivot/wheel_f"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0 )
 cast_shadow = 0
 mesh = ExtResource( 7 )
 skeleton = NodePath("../..")
@@ -587,7 +603,7 @@ material/1 = ExtResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.398396 )
 
 [node name="w_b_l" type="MeshInstance" parent="pivot/wheel_b"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0 )
 cast_shadow = 0
 mesh = ExtResource( 7 )
 skeleton = NodePath("../..")
@@ -596,7 +612,7 @@ material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 
 [node name="w_b_r" type="MeshInstance" parent="pivot/wheel_b"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0 )
 cast_shadow = 0
 mesh = ExtResource( 7 )
 skeleton = NodePath("../..")
@@ -607,11 +623,11 @@ material/1 = ExtResource( 4 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
 anims/iddle = SubResource( 3 )
-anims/lob_boulder = SubResource( 6 )
+anims/shot_bolt = SubResource( 15 )
 anims/walk = SubResource( 5 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 1 )
+tree_root = SubResource( 14 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 2 )
