@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/tile_units/squad/siege_engine_squad/trebuchet_squad.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tile_units/siege_engine/trebuchet/trebuchet.tscn" type="PackedScene" id=2]
+
+[node name="trebuchet" type="Spatial"]
+script = ExtResource( 1 )
+siege_engine_scene = ExtResource( 2 )
+minimum_range = 3

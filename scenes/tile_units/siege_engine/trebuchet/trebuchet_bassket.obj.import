@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/trebuchet_bassket.obj-21fa7e204ef30f8232b2ef4402eb08ab.mesh"
+
+[deps]
+
+files=[ "res://.import/trebuchet_bassket.obj-21fa7e204ef30f8232b2ef4402eb08ab.mesh" ]
+
+source_file="res://scenes/tile_units/siege_engine/trebuchet/trebuchet_bassket.obj"
+dest_files=[ "res://.import/trebuchet_bassket.obj-21fa7e204ef30f8232b2ef4402eb08ab.mesh", "res://.import/trebuchet_bassket.obj-21fa7e204ef30f8232b2ef4402eb08ab.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

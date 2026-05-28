@@ -6,3 +6,4 @@
 [node name="balista_squad" type="Spatial"]
 script = ExtResource( 1 )
 siege_engine_scene = ExtResource( 2 )
+minimum_range = 1

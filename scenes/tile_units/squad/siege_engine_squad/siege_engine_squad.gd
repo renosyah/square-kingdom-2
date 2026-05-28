@@ -67,8 +67,12 @@ func _splash_damage(unit_positions:Array, dmg :int):
 			continue
 			
 		# set damage to random member
-		var idx :int = enemy_squad.get_member_index(members.pick_random())
-		enemy_squad.take_damage(dmg, idx, get_path())
+		var t = randi() % members.size()
+		t = int(clamp(t, 1, members.size()))
+		
+		for _i in t:
+			var idx :int = enemy_squad.get_member_index(members.pick_random())
+			enemy_squad.take_damage(dmg, idx, get_path())
 		
 func _on_walking(delta :float):
 	if _is_moving and _walk_timer.is_stopped():
