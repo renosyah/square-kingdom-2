@@ -57,7 +57,7 @@ func _on_all_player_ready():
 func _process(delta):
 	if ui.on_cinematic_mode:
 		movable_camera.translation = orbital_camera.translation
-		
+	
 	var pos = movable_camera.translation * Vector3(1,0,1)
 	tile_map.update_camera_location(Vector2(pos.x, pos.z))
 	
@@ -284,8 +284,11 @@ func setup_clickable_floor():
 	add_child(clickable_floor)
 
 func _on_floor_clicked(pos :Vector3):
+	if ui.on_cinematic_mode:
+		return
+		
 	var tile = tile_map.get_closes_tile(pos)
-	_move_squad_to(tile, setting.unselect_on_command and not ui.on_cinematic_mode)
+	_move_squad_to(tile, setting.unselect_on_command)
 	
 ########################################## Tap  ############################################
 var tap :TapIndicator

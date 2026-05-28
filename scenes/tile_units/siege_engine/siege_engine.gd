@@ -23,8 +23,7 @@ func attack():
 	pass
 	
 func moving(delta :float):
-	if iddle: # make this unit in formation
-		rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
+	rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
 	
 func _process(delta):
 	moving(delta)

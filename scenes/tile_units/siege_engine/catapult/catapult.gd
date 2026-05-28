@@ -13,7 +13,7 @@ func attack():
 	
 	if not iddle:
 		return
-		
+	
 	iddle = false
 	animation_state.travel("lob_boulder")
 	

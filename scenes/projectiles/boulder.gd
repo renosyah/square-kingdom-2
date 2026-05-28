@@ -12,6 +12,7 @@ onready var animation_player = $AnimationPlayer
 onready var mesh_instance_2 = $MeshInstance2
 onready var trail_render = $TrailRender
 onready var setting_data = Global.setting_data
+onready var blood_particle = $blood_particle
 
 func _ready():
 	trail_render.render = setting_data.extra_effect
@@ -24,13 +25,14 @@ func on_stop():
 	
 	if setting_data.extra_effect:
 		animation_player.play("bam")
+		blood_particle.emitting = true
 	
 	audio_stream_player_3d.stream = explode.pick_random()
 	audio_stream_player_3d.play()
 	
 	set_process(false)
 	_is_ready = true
-	#visible = false
+	spatial.visible = false
 	emit_signal("on_reach")
 	
 	yield(audio_stream_player_3d,"finished")

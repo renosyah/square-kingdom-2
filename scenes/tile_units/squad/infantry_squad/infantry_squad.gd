@@ -1,6 +1,14 @@
 extends BaseSquad
 class_name InfantrySquad
 
+const walk_sounds = [
+	preload("res://assets/sounds/walks/walk_1.wav"),
+	preload("res://assets/sounds/walks/walk_2.wav"),
+	preload("res://assets/sounds/walks/walk_3.wav")
+]
+
+export var align_threshold :float = 0.85
+
 func _init_formations():
 	._init_formations()
 	
@@ -22,6 +30,13 @@ func master_moving(delta :float) -> void:
 		
 	_follow_path_proccess(delta, global_position)
 	
+func _on_walking(delta :float):
+	if _is_moving and _walk_timer.is_stopped():
+		_walk_timer.wait_time = 0.43
+		_walk_timer.start()
+		_step_audio.stream = walk_sounds.pick_random()
+		_step_audio.play()
+		
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -41,7 +56,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		transform = transform.interpolate_with(t, turning_speed * delta)
 		
 		var foward_dir :Vector3 = (-global_transform.basis.z)
-		is_align = foward_dir.dot(dir_to) > 0.85
+		is_align = foward_dir.dot(dir_to) > align_threshold
 		
 	if not is_align:
 		return

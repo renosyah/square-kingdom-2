@@ -7,11 +7,7 @@ signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
 
-const walk_sounds = [
-	preload("res://assets/sounds/walks/walk_1.wav"),
-	preload("res://assets/sounds/walks/walk_2.wav"),
-	preload("res://assets/sounds/walks/walk_3.wav")
-]
+
 const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_1.wav"),
 	preload("res://assets/sounds/hurt/hurt_2.wav"),
@@ -28,7 +24,8 @@ const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_13.wav"),
 	preload("res://assets/sounds/hurt/hurt_14.wav"),
 	preload("res://assets/sounds/hurt/hurt_15.wav"),
-	preload("res://assets/sounds/hurt/hurt_16.wav")
+	preload("res://assets/sounds/hurt/hurt_16.wav"),
+	preload("res://assets/sounds/death/my_leg.wav")
 ]
 const death_sounds = [
 	preload("res://assets/sounds/death/dead_1.wav"),
@@ -36,7 +33,9 @@ const death_sounds = [
 	preload("res://assets/sounds/death/dead_3.wav"),
 	preload("res://assets/sounds/death/dead_4.wav"),
 	preload("res://assets/sounds/death/dead_5.wav"),
-	preload("res://assets/sounds/death/wilhem_scream.wav")
+	
+	preload("res://assets/sounds/death/wilhem_scream.wav"),
+	preload("res://assets/sounds/death/my_leg.wav")
 ]
 
 export var member_scene :PackedScene
@@ -81,11 +80,13 @@ var _current_tile_v3 :Vector3
 
 var _melee_attack_timer :Timer
 var _range_attack_timer :Timer
+var _taking_damage_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
 #var _path_indicator2 :Spatial
 
+var _taking_damages_pending :Array = [] # [[]]
 var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
@@ -122,7 +123,6 @@ func _ready():
 	_walk_timer = Timer.new()
 	_walk_timer.one_shot = true
 	_walk_timer.autostart = false
-	_walk_timer.wait_time = 0.43
 	add_child(_walk_timer)
 	
 	_heal_timer = Timer.new()
@@ -131,11 +131,17 @@ func _ready():
 	_heal_timer.wait_time = 5
 	_heal_timer.connect("timeout", self, "_on_heal_timer")
 	add_child(_heal_timer)
-	
 	_heal_timer.start()
+	
+	_taking_damage_timer = Timer.new()
+	_taking_damage_timer.one_shot = true
+	_taking_damage_timer.autostart = false
+	_taking_damage_timer.wait_time = 0.2
+	add_child(_taking_damage_timer)
 	
 	_step_audio = AudioStreamPlayer3D.new()
 	_step_audio.bus = Global.bus_sfx
+	_step_audio.unit_db = 3
 	add_child(_step_audio)
 	
 	_combat_audio = AudioStreamPlayer3D.new()
@@ -261,8 +267,10 @@ func _on_member_dead(member :SquadMember):
 		if not _unit_audio.playing:
 			_unit_audio.stream = death_sounds[randi() % 4]
 		
+			# funny
 			if randf() < 0.08:
-				_unit_audio.stream = death_sounds[5] # wilhem
+				var _l = [5, 6]
+				_unit_audio.stream = death_sounds[_l.pick_random()]
 		
 			_unit_audio.play()
 		
@@ -308,6 +316,15 @@ func has_range_weapon() -> bool:
 func moving(delta :float) -> void:
 	.moving(delta)
 	
+	_on_walking(delta)
+	
+	# prevent bursh of damage info send over network
+	# check all the pending and send all at once
+	if not _taking_damages_pending.empty() and _taking_damage_timer.is_stopped():
+		_taking_damage_timer.start()
+		rpc_unreliable("_taking_damages", _taking_damages_pending)
+		_taking_damages_pending.clear()
+		
 	if is_dead:
 		return
 		
@@ -315,6 +332,9 @@ func moving(delta :float) -> void:
 	_ajust_formation(pos, delta)
 	_set_floating_info_pos(pos, delta)
 	_attack_enemy_proccess(pos, delta)
+	
+func _on_walking(delta :float):
+	pass
 	
 func _ajust_formation(pos :Vector3, delta :float):
 	var basis :Basis = global_transform.basis
@@ -328,12 +348,7 @@ func _ajust_formation(pos :Vector3, delta :float):
 		var m = members[idx]
 		if m.iddle or m.range_mode:
 			m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
-		
-	if _is_moving and _walk_timer.is_stopped():
-		_walk_timer.start()
-		_step_audio.stream = walk_sounds.pick_random()
-		_step_audio.play()
-	
+
 func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
 	# must check via is_instance_valid enemy
@@ -511,8 +526,8 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	var m :SquadMember = _members[member_idx]
 	if amount > 0:
 		m.take_damage(amount)
-	
-	rpc_unreliable("_taking_damage", amount, m.hp, member_idx, from)
+		
+	_taking_damages_pending.append([amount, m.hp, member_idx, from])
 	
 remotesync func _resurect(member_idx :int):
 	if member_idx > _members.size() - 1 or member_idx == -1:
@@ -532,35 +547,45 @@ remotesync func _taking_heal(hp_remain :int, member_idx :int):
 	m.hp = hp_remain
 	emit_signal("on_squad_taking_heal", self)
 		
-remotesync func _taking_damage(amount :int, hp_remain :int, member_idx :int, from :NodePath):
-	if member_idx > _members.size() - 1 or member_idx == -1:
-		return
-		
-	attacked_by = from
+remotesync func _taking_damages(datas :Array):
+	var amount_total = 0
 	
-	if _is_master and not _heal_interupt:
-		_heal_interupt = true
+	for data in datas:
+		var amount :int = data[0]
+		var hp_remain :int = data[1]
+		var member_idx :int = data[2]
+		var from :NodePath = data[3]
 		
-		# if on range engagement
-		# and getting clap by melee enemy
-		# change attention to them
-		if _range_engagement:
-			var s = get_node_or_null(attacked_by)
-			if is_instance_valid(s):
-				if _is_in_melee_range(s) and s.team != team:
-					enemy = s
-					_has_enemy = true
-					_on_enemy_set()
-					_range_engagement = false
-					
-	var m :SquadMember = _members[member_idx]
-	m.hp = hp_remain
-	
-	if not _unit_audio.playing and amount > 0:
+		if member_idx > _members.size() - 1 or member_idx == -1:
+			continue
+			
+		attacked_by = from
+		
+		if _is_master and not _heal_interupt:
+			_heal_interupt = true
+			
+			# if on range engagement
+			# and getting clap by melee enemy
+			# change attention to them
+			if _range_engagement:
+				var s = get_node_or_null(attacked_by)
+				if is_instance_valid(s):
+					if _is_in_melee_range(s) and s.team != team:
+						enemy = s
+						_has_enemy = true
+						_on_enemy_set()
+						_range_engagement = false
+						
+		var m :SquadMember = _members[member_idx]
+		m.hp = hp_remain
+		
+		amount_total += amount
+		
+	if not _unit_audio.playing and amount_total > 0:
 		_unit_audio.stream = hurt_sounds.pick_random()
 		_unit_audio.play()
 		
-	emit_signal("on_squad_taking_damage", self, amount)
+	emit_signal("on_squad_taking_damage", self, amount_total)
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

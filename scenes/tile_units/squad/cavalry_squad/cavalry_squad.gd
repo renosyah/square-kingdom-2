@@ -4,6 +4,12 @@ class_name CavalrySquad
 signal on_cav_charge_buildup(squad, amount)
 signal on_cav_charge(squad)
 
+const walk_sounds = [
+	preload("res://assets/sounds/walks/horse_step_1.wav"),
+	preload("res://assets/sounds/walks/horse_step_2.wav"),
+	preload("res://assets/sounds/walks/horse_step_3.wav"),
+	preload("res://assets/sounds/walks/horse_step_4.wav")
+]
 const horse_dead = [
 	preload("res://assets/sounds/death/horse_dead_1.wav"),
 	preload("res://assets/sounds/death/horse_dead_2.wav"),
@@ -95,6 +101,13 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 	_charges = 0
 	emit_signal("on_cav_charge_buildup", self, _charges)
 	
+func _on_walking(delta :float):
+	if _is_moving and _walk_timer.is_stopped():
+		_walk_timer.wait_time = 0.2
+		_walk_timer.start()
+		_step_audio.stream = walk_sounds.pick_random()
+		_step_audio.play()
+		
 remote func _stop():
 	._stop()
 	
