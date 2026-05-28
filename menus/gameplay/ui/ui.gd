@@ -57,7 +57,7 @@ func _ready():
 	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
 	
 func _process(delta):
-	var on_select = not selected_squads.empty()
+	var on_select = selected_squads.size() == 1
 	movable_camera_ui.detect_in_out = on_select
 	cinematic.visible = on_select or (on_cinematic_mode and not on_select)
 	

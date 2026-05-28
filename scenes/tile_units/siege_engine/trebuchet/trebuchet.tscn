@@ -327,7 +327,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 44.096, 0, 0 ) ]
+"values": [ Vector3( 26, 0, 0 ) ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("pivot/Spatial/arm/couterweight:translation")
@@ -339,7 +339,7 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, -0.17333 ) ]
+"values": [ Vector3( 0, 1.19209e-07, -0.17333 ) ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("pivot/Spatial/arm/couterweight:rotation_degrees")
@@ -351,7 +351,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( -44.556, 0, 0 ) ]
+"values": [ Vector3( -26, 0, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/Spatial/arm/basket:translation")
@@ -512,7 +512,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.4, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 44.096, 0, 0 ), Vector3( -112.837, 0, 0 ), Vector3( -103.273, 0, 0 ), Vector3( 44.096, 0, 0 ) ]
+"values": [ Vector3( 26, 0, 0 ), Vector3( -112.837, 0, 0 ), Vector3( -103.273, 0, 0 ), Vector3( 26, 0, 0 ) ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("pivot/Spatial/arm:translation")
@@ -536,7 +536,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0, 0.4, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -44.556, 0, 0 ), Vector3( 103.081, 0, 0 ), Vector3( 109.591, 0, 0 ), Vector3( -44.556, 0, 0 ) ]
+"values": [ Vector3( -26, 0, 0 ), Vector3( 103.081, 0, 0 ), Vector3( 109.591, 0, 0 ), Vector3( -26, 0, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/Spatial/arm/couterweight:translation")
@@ -756,7 +756,7 @@ material/1 = ExtResource( 4 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.719321 )
 
 [node name="ammo" type="MeshInstance" parent="pivot/Spatial/arm/basket"]
-transform = Transform( -1, 0, -8.74228e-08, -8.74044e-08, 0.0204713, 0.99979, 1.78965e-09, 0.99979, -0.0204713, 0, -0.351414, -0.00409001 )
+transform = Transform( -1, 0, -8.74228e-08, -8.74044e-08, 0.0204713, 0.99979, 1.78965e-09, 0.99979, -0.0204713, 0, -0.33891, -0.00641748 )
 cast_shadow = 0
 mesh = ExtResource( 1 )
 skeleton = NodePath("../../../..")
