@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hidup_jokowi.wav-c8daab8a488fb791a89223ea3a51bdc6.sample"
+
+[deps]
+
+source_file="res://assets/sounds/death/hidup_jokowi.wav"
+dest_files=[ "res://.import/hidup_jokowi.wav-c8daab8a488fb791a89223ea3a51bdc6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

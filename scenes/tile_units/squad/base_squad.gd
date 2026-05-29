@@ -25,6 +25,8 @@ const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_14.wav"),
 	preload("res://assets/sounds/hurt/hurt_15.wav"),
 	preload("res://assets/sounds/hurt/hurt_16.wav"),
+	
+	preload("res://assets/sounds/death/jokowi_kaget.wav"),
 	preload("res://assets/sounds/death/my_leg.wav")
 ]
 const death_sounds = [
@@ -35,7 +37,9 @@ const death_sounds = [
 	preload("res://assets/sounds/death/dead_5.wav"),
 	
 	preload("res://assets/sounds/death/wilhem_scream.wav"),
+	preload("res://assets/sounds/death/hidup_jokowi.wav"),
 	preload("res://assets/sounds/death/my_leg.wav")
+	
 ]
 
 export var member_scene :PackedScene
@@ -332,7 +336,7 @@ func _on_member_dead(member :SquadMember):
 		
 			# funny
 			if randf() < 0.08:
-				var _l = [5, 6]
+				var _l = [5, 6, 7]
 				_unit_audio.stream = death_sounds[_l.pick_random()]
 		
 			_unit_audio.play()

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/all.png-c098d5a7d8a6fbffe791638f77ea7739.stex"
+path="res://.import/group_cavalry.png-ab0069cd22d676b5475b1839c4e26c4e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/all.png"
-dest_files=[ "res://.import/all.png-c098d5a7d8a6fbffe791638f77ea7739.stex" ]
+source_file="res://assets/user_interface/icons/group_cavalry.png"
+dest_files=[ "res://.import/group_cavalry.png-ab0069cd22d676b5475b1839c4e26c4e.stex" ]
 
 [params]
 

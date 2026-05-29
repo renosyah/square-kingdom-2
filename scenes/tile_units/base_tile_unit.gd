@@ -126,6 +126,8 @@ remote func _stop():
 	_paths.clear()
 	
 func sync_update() -> void:
+	.sync_update()
+	
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_translation", global_position)
 		rset_unreliable("_puppet_current_tile", current_tile)
