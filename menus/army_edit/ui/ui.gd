@@ -208,7 +208,8 @@ func _on_rng_army_pressed():
 		var idx = randi() % Global.custom_squads.size()
 		if temp_current_army.size() < Global.max_army_size:
 			temp_current_army.append(idx)
-		
+			
+	Global.sort_army(temp_current_army)
 	display_current_army()
 	
 func _on_add_button_squad_pressed():

@@ -230,8 +230,10 @@ func _on_tile_map_ready():
 onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
 
-var player_spawn_points = []
-var player_spawn_point :Vector2
+var player_spawn_points :Array = [] # all players
+
+var current_player_spawn_point :Vector2
+var current_player_spawn_points :Array
 
 func setup_players_spawn_points():
 	var map_size :int = current_tile_map_manifest_data.map_size
@@ -240,10 +242,14 @@ func setup_players_spawn_points():
 	for index in players.size():
 		var p :PlayerData = players[index]
 		if p.player_id == current_player.player_id:
-			player_spawn_point = player_spawn_points[index]
+			current_player_spawn_point = player_spawn_points[index]
 			break
+			
+	current_player_spawn_points = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), current_player_spawn_point, 2
+	) + [current_player_spawn_point]
 	
-	var tile :TileMapData = tile_map.get_tile(player_spawn_point)
+	var tile :TileMapData = tile_map.get_tile(current_player_spawn_point)
 	if tile == null:
 		return
 	
@@ -358,7 +364,7 @@ func _on_ui_route_button_pressed():
 	for i in selected_squads:
 		i.attack_move = false
 		
-	_move_squad_to(tile_map.get_tile(player_spawn_point), true)
+	_move_squad_to(tile_map.get_tile(current_player_spawn_point), true)
 
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
@@ -425,7 +431,9 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.heal_amount = data.heal_amount
 	squad.member_alive = data.total_member
 	squad.squad_role = data.squad_role
+	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	
+	squad.enable_move_indicator = squad.player_id == current_player.player_id
 	squad.show_move_indicator = setting.show_unit_tile
 	squad.enable_blood = setting.extra_effect
 	
@@ -461,7 +469,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	
 	if squad.player_id == current_player.player_id:
 		# use current spawn tile as reinfoce tile
-		squad.reinfoce_tiles = player_spawn_points
+		squad.reinfoce_tiles = current_player_spawn_points
 		
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)

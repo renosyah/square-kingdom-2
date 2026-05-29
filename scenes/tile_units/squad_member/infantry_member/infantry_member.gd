@@ -53,6 +53,12 @@ func _ready():
 func resurect():
 	.resurect()
 	
+	if _headgear:
+		_headgear.visible = true
+		
+	if _armor:
+		_armor.visible = true
+		
 	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
 	body_animation_state.start("iddle")
 	

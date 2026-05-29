@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/projectiles/arrow.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/tile_units/siege_engine/balista/balista_body.obj" type="ArrayMesh" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://scenes/tile_units/siege_engine/balista/balista_turret.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult_wheel.obj" type="ArrayMesh" id=7]
 [ext_resource path="res://scenes/tile_units/siege_engine/balista/balista.gd" type="Script" id=8]
+[ext_resource path="res://scenes/tiles/materials/road_material.tres" type="Material" id=9]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_unshaded = true
@@ -559,6 +560,7 @@ skeleton = NodePath("../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
+material/2 = ExtResource( 9 )
 
 [node name="body3" type="MeshInstance" parent="pivot/Spatial/arm"]
 transform = Transform( -1, 0, -8.74228e-08, -2.22045e-16, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
@@ -568,6 +570,7 @@ skeleton = NodePath("../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
+material/2 = ExtResource( 9 )
 
 [node name="ammo" type="MeshInstance" parent="pivot/Spatial/arm"]
 transform = Transform( 1, 0, 0, 0, -0.0562969, 0.999604, 0, -1.99921, -0.0281484, 0, 0.0319752, -0.000855728 )

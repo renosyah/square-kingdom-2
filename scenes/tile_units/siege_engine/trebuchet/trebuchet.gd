@@ -16,6 +16,9 @@ func attack():
 	animation_state.travel("lob_boulder")
 	
 func _on_boulder_lob():
+	if not Global.current_root:
+		return
+		
 	_combat_sound.stream = arm_swing_audio
 	_combat_sound.play()
 	

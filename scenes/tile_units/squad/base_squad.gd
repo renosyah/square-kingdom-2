@@ -61,14 +61,16 @@ export var member_max_hp :int = 100
 export var heal_amount :int = 10
 export var reinfoce_tiles :Array = []
 export var squad_role :int
+export var squad_icon :StreamTexture
 
 var member_alive :int
 
-export var show_move_indicator:bool = false
+export var enable_move_indicator :bool = false
 export var enable_blood :bool
 
-export var attack_range :int = 1
+var show_move_indicator:bool = false
 
+export var attack_range :int = 1
 var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
 var chase_enemy = null # cycle warning set to null
 var enemy = null # cycle warning set to null
@@ -99,7 +101,7 @@ var _taking_damage_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _path_indicator :Spatial
-#var _path_indicator2 :Spatial
+var _path_indicator_dest :Spatial
 
 var _taking_damages_pending :Array = [] # [[]]
 var _heal_interupt :bool = false
@@ -172,28 +174,36 @@ func _ready():
 	add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
 	_path_indicator.visible = false
-		
-#	_path_indicator2 = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-#	add_child(_path_indicator2)
-#	_path_indicator2.set_as_toplevel(true)
+	
+	_path_indicator_dest = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
+	_path_indicator_dest.material = member_material
+	_path_indicator_dest.squad_icon = squad_icon
+	add_child(_path_indicator_dest)
+	_path_indicator_dest.set_as_toplevel(true)
+	_path_indicator_dest.visible = false
 	
 	_init_formations()
 	
 	# add little bit of delay
 	yield(get_tree().create_timer(0.5),"timeout")
 	_spawn_members()
+	
 	_member_spawned = true
-
+	_current_tile_v3 = nav.get_pos_v3(current_tile)
 	_path_indicator.visible = show_move_indicator
-	_path_indicator.translation = global_position
-		
+	_path_indicator.translation = _current_tile_v3
+	
+	
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
 	enable_blood = d.extra_effect
 	
 	_path_indicator.visible = show_move_indicator
-	_path_indicator.translation = global_position
+	_path_indicator.translation = _current_tile_v3
+	
+	if enable_move_indicator:
+		_path_indicator_dest.visible = show_move_indicator
 	
 # set chase_enemy = UNIT
 # chase_target()
@@ -236,6 +246,7 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 		return
 		
 	_last_to = global_position
+	_path_indicator_dest.global_position = nav.get_pos_v3(tile_id)
 	
 	_is_moving = true
 	_paths.clear()
@@ -429,6 +440,12 @@ func moving(delta :float) -> void:
 	_set_floating_info_pos(pos, delta)
 	_attack_enemy_proccess(pos, delta)
 	
+func _follow_path_proccess(delta :float, pos :Vector3) -> void:
+	._follow_path_proccess(delta, pos)
+	
+	if enable_move_indicator:
+		_path_indicator_dest.visible = _is_moving and show_move_indicator
+	
 func _on_walking(delta :float):
 	pass
 	
@@ -576,6 +593,7 @@ func _on_heal_timer():
 
 func _healing():
 	# heal first
+	var datas :Array = []
 	for idx in _members.size():
 		var m = _members[idx]
 		if m.is_dead:
@@ -585,9 +603,11 @@ func _healing():
 			continue
 			
 		_members[idx].hp = int(clamp(_members[idx].hp + heal_amount, 0, member_max_hp))
-		rpc_unreliable("_taking_heal", _members[idx].hp, idx) # 0: healing
-		return
+		datas.append([ _members[idx].hp, idx])
 		
+	if not datas.empty():
+		rpc_unreliable("_taking_heal", datas)
+	
 func _resurecting():
 	if not (current_tile in reinfoce_tiles):
 		return
@@ -638,14 +658,18 @@ remotesync func _resurect(member_idx :int):
 	
 	emit_signal("on_squad_member_resurect", self, m)
 	
-remotesync func _taking_heal(hp_remain :int, member_idx :int):
-	if member_idx > _members.size() - 1 or member_idx == -1:
-		return
+remotesync func _taking_heal(datas :Array):
+	for i in datas:
+		var hp_remain :int = i[0]
+		var member_idx :int = i[1]
+		if member_idx > _members.size() - 1 or member_idx == -1:
+			continue
+			
+		var m :SquadMember = _members[member_idx]
+		m.hp = hp_remain
 		
-	var m :SquadMember = _members[member_idx]
-	m.hp = hp_remain
 	emit_signal("on_squad_taking_heal", self)
-		
+	
 remotesync func _taking_damages(datas :Array):
 	var amount_total = 0
 	
@@ -703,7 +727,7 @@ func update_spotting():
 	
 	_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, attack_range
-	)
+	) + [current_tile]
 
 func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
@@ -746,12 +770,14 @@ func _scan_area():
 		if unit_positions.empty():
 			continue
 			
-		if _check_enemy_in_position(unit_positions):
+		var e = _get_enemy_in_position(unit_positions)
+		if e[1]:
+			enemy = e[0]
 			_has_enemy = true
 			_on_enemy_set()
 			return
 			
-func _check_enemy_in_position(datas :Array) -> bool:
+func _get_enemy_in_position(datas :Array) -> Array:
 	for unit in datas:
 		if not is_instance_valid(unit):
 			continue
@@ -760,10 +786,9 @@ func _check_enemy_in_position(datas :Array) -> bool:
 			continue
 			
 		if unit.team != team:
-			enemy = unit
-			return true
+			return [unit, true]
 			
-	return false
+	return [null, false]
 
 func _is_in_attack_range(_unit) -> bool:
 	if _unit.is_dead:

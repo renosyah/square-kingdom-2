@@ -329,8 +329,11 @@ func prepare_squad(i :int,idx :int, tile :TileMapData) -> SquadData:
 	data.team = current_player.team
 	
 	# 1st position is commander
+	# twice HP
 	if i == 0:
 		data.icon_idx = 6
+		data.member_max_hp = data.member_max_hp * 2
+		data.member_hp = data.member_max_hp
 		
 	return data
 

@@ -315,7 +315,7 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.517458, 0.0428827 ) ]
+"values": [ Vector3( 0, 0.641261, 0.0428827 ) ]
 }
 tracks/8/type = "value"
 tracks/8/path = NodePath("pivot/Spatial/arm:rotation_degrees")
@@ -327,7 +327,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 26, 0, 0 ) ]
+"values": [ Vector3( 45, 0, 0 ) ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("pivot/Spatial/arm/couterweight:translation")
@@ -351,7 +351,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( -26, 0, 0 ) ]
+"values": [ Vector3( -45, 0, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/Spatial/arm/basket:translation")
@@ -512,7 +512,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 0.4, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 26, 0, 0 ), Vector3( -112.837, 0, 0 ), Vector3( -103.273, 0, 0 ), Vector3( 26, 0, 0 ) ]
+"values": [ Vector3( 45, 0, 0 ), Vector3( -112.837, 0, 0 ), Vector3( -103.273, 0, 0 ), Vector3( 45, 0, 0 ) ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("pivot/Spatial/arm:translation")
@@ -521,10 +521,10 @@ tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0, 0.4, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.517458, 0.0428827 ), Vector3( 0, 0.517458, 0.0428827 ), Vector3( 0, 0.517458, 0.0428827 ), Vector3( 0, 0.517458, 0.0428827 ) ]
+"values": [ Vector3( 0, 0.641, 0.043 ) ]
 }
 tracks/10/type = "value"
 tracks/10/path = NodePath("pivot/Spatial/arm/couterweight:rotation_degrees")
@@ -536,7 +536,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0, 0.4, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -26, 0, 0 ), Vector3( 103.081, 0, 0 ), Vector3( 109.591, 0, 0 ), Vector3( -26, 0, 0 ) ]
+"values": [ Vector3( -45, 0, 0 ), Vector3( 103.081, 0, 0 ), Vector3( 109.591, 0, 0 ), Vector3( -45, 0, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/Spatial/arm/couterweight:translation")

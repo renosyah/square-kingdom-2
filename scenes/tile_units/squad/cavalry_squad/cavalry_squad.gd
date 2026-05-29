@@ -129,11 +129,21 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 		return
 		
 	# if there are chases enemy
-	# and cav travel more than enough
-	if is_instance_valid(chase_enemy):
-		_charges += 1
-		emit_signal("on_cav_charge_buildup", self, _charges)
+	if not is_instance_valid(chase_enemy):
+		return
 		
+	if _is_charge_blocked(to_id):
+		if not _horse_audio.playing:
+			_horse_audio.stream = horse_dead.pick_random()
+			_horse_audio.play()
+		
+		chase_enemy = null
+		stop(false)
+		return
+		
+	_charges += 1
+	emit_signal("on_cav_charge_buildup", self, _charges)
+	
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	._on_finish_travel(from_id, to_id)
 	
@@ -148,10 +158,14 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 		
 	_charges = 0
 	
+# this function will check if next path 
+# is blocked by enemy unit, if it, stop cav
+# so charge mechanic still be use
+func _is_charge_blocked(tile_id :Vector2) -> bool:
+	var e :Array = _get_enemy_in_position(unit_position[tile_id])
+	return e[1] and _paths.size() > 2
+	
 func _cav_charge(tile_id :Vector2, attack_damage :int):
-	if not unit_position.has(tile_id):
-		return
-		
 	var unit_positions :Array = unit_position[tile_id]
 	if unit_positions.empty():
 		return
