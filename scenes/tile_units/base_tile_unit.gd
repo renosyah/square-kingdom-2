@@ -5,12 +5,10 @@ class_name BaseTileUnit
 # only basic sync of positioning & rotation state on y axis
 # because this is unit that using tile mechanic as its movement
 # current tile also getting tracked
-
 signal on_unit_spotted(unit)
 signal on_unit_clicked(unit)
 signal on_current_tile_updated(unit, from_id, to_id)
 signal on_finish_travel(unit, last_id, current_id)
-signal on_unit_dead(unit)
 
 class TileUnitPath:
 	var tile_id :Vector2
@@ -26,7 +24,6 @@ export var unit_name :String
 export var team :int = 0
 export var color :Color = Color.white
 export var speed :float = 1.4
-export var spotting_range :int = 1
 export var margin :float = 0.15
 
 var _is_moving :bool # block some function if this is true
@@ -41,21 +38,17 @@ var _spotted :bool # visible or not, but be overide by _hidden
 var _current_visible :bool # current state of visible, this dont set value to visible
 
 var current_tile :Vector2
-var is_dead :bool = false
+
 # for nav and targeting
 # unit_position is refrence
 # change value it also change the root variable value
 # for tracking purposes
 var nav_layer :int
 var nav :NavTileMap
-var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
 
-var chase_enemy = null # cycle warning set to null
-var enemy = null # cycle warning set to null
-var attack_move :bool
+export var spotting_range :int = 1
+export var enable_spotting :bool
 var spotting_area :Array
-
-var _has_enemy :bool # for easier
 
 # multiplayer data to sync
 puppet var _puppet_current_tile :Vector2
@@ -64,42 +57,13 @@ puppet var _puppet_translation :Vector3
 func _ready():
 	update_spotting()
 	Global.connect("on_global_tick", self, "_on_global_tick")
-
-# set chase_enemy = UNIT
-# chase_target()
-# move_to will set chase_enemy to NULL
-func chase_target():
-	if is_instance_valid(chase_enemy):
-		# give up the chase if
-		# diffrent nav layer
-		# no path to it
-		if chase_enemy.nav_layer != nav_layer:
-			chase_enemy = null
-			return
-			
-		if _is_in_range(chase_enemy):
-			enemy = chase_enemy
-			_has_enemy = true
-			_on_enemy_set()
-			return
-			
-		_move_to(chase_enemy.current_tile, false)
-		if _paths.empty():
-			chase_enemy = null
-			
+	
 func move_to(tile_id :Vector2):
-	chase_enemy = null
 	_move_to(tile_id, true)
 	
 func _move_to(tile_id :Vector2, use_safe :bool):
-	if is_dead:
-		return
-		
 	if not _is_master or not is_instance_valid(nav):
 		return
-		
-	_has_enemy = false
-	enemy = null
 	
 	var v :Array = _get_tile_path(tile_id, use_safe)
 	if v.empty():
@@ -111,10 +75,6 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 	_paths.clear()
 	_paths.append_array(v)
 	
-	if attack_move:
-		update_spotting()
-		_scan_area()
-		
 func is_moving() -> bool:
 	return _is_moving
 	
@@ -129,7 +89,7 @@ func _get_tile_path(to :Vector2, use_safe :bool) -> Array:
 	return paths
 	
 func click():
-	if not _is_selected:
+	if not _is_selected or _hidden:
 		return
 		
 	emit_signal("on_unit_clicked", self)
@@ -166,23 +126,20 @@ remote func _stop():
 	_paths.clear()
 	
 func sync_update() -> void:
-	if not is_dead:
-		.sync_update()
-	
-	if not is_dead and _is_master and _is_online:
+	if _is_master and _is_online:
 		rset_unreliable("_puppet_translation", global_position)
 		rset_unreliable("_puppet_current_tile", current_tile)
 		
 func last_sync_update() -> void:
 	.last_sync_update()
 	
-	if not is_dead and _is_master and _is_online:
+	if _is_master and _is_online:
 		rset("_puppet_translation", global_position)
 		rset("_puppet_current_tile", current_tile)
 		
 func _follow_path_proccess(delta :float, pos :Vector3):
 	# safeguard
-	if not _is_moving or is_dead:
+	if not _is_moving:
 		return
 		
 	if _paths.empty():
@@ -208,15 +165,9 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	translation += pos.direction_to(to) * speed * delta
 	
-func _on_enemy_in_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
-	pass
-	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	
-	if is_dead:
-		return
-		
 	translation = translation.linear_interpolate(_puppet_translation, 25 * delta) 
 	
 	# make sure only send updated
@@ -228,126 +179,22 @@ func puppet_moving(delta :float) -> void:
 	
 # for active enemy spotting
 func _on_global_tick():
-	if _is_master and not _is_moving:
-		
-		# have task to chase enemy
-		# go get them
-		if _chase_on_iddle():
-			return
-			
-		_scan_area()
+	pass
+	#update_spotting() <- performace concern
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_current_tile_updated", self, from_id, to_id)
-	
 	update_spotting()
-	
-	if not _is_master:
-		return
-		
-	if is_instance_valid(chase_enemy):
-		# stop the chase
-		# if chase_enemy is dead
-		if chase_enemy.is_dead:
-			chase_enemy = null
-			stop(false)
-			return
-			
-		if _is_in_range(chase_enemy):
-			enemy = chase_enemy
-			_has_enemy = true
-			_on_enemy_set()
-			return
-		
-	if attack_move:
-		_scan_area()
 	
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_finish_travel", self, from_id, to_id)
-	
 	update_spotting()
 	
-	if _is_master:
-		_scan_area()
-	
-func _chase_on_iddle() -> bool:
-	if is_instance_valid(chase_enemy):
-		# stop the chase
-		# continue scan area
-		if chase_enemy.is_dead:
-			chase_enemy = null
-			return false
-			
-		if not _is_in_range(chase_enemy):
-			chase_target()
-			return true
-			
-	return false
-	
 func update_spotting():
-	spotting_area = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.ARROW_DIRECTIONS, current_tile, spotting_range
-	) + [current_tile]
-	
-func _scan_area():
-	if unit_position.empty():
-		return
-		
-	if _has_enemy:
-		return
-		
-	for pos in spotting_area:
-		if not unit_position.has(pos):
-			continue
-			
-		var unit_positions :Array = unit_position[pos]
-		if unit_positions.empty():
-			continue
-			
-		if _check_enemy_in_position(unit_positions):
-			_has_enemy = true
-			_on_enemy_set()
-			return
-			
-func _check_enemy_in_position(datas :Array) -> bool:
-	for unit in datas:
-		if not is_instance_valid(unit):
-			continue
-			
-		if unit.is_dead or unit.nav_layer != nav_layer:
-			continue
-			
-		if unit.team != team:
-			enemy = unit
-			return true
-			
-	return false
-
-func _is_in_range(_unit) -> bool:
-	if _unit.is_dead:
-		return false
-		
-	return _unit.current_tile in spotting_area
-	
-func _on_enemy_set():
-	pass
-	
-func set_dead(use_rpc :bool = true):
-	if is_dead:
-		return
-	
-	if use_rpc:
-		rpc("_set_dead")
-	else:
-		_set_dead()
-	is_dead = true # safeguard, make faster
-	
-func on_dead():
-	emit_signal("on_unit_dead", self)
-
-remotesync func _set_dead():
-	is_dead = true
-	on_dead()
+	if enable_spotting:
+		spotting_area = TileMapUtils.get_adjacent_tiles(
+			TileMapUtils.ARROW_DIRECTIONS, current_tile, spotting_range
+		) + [current_tile]
 
 # just for decoration
 func clone_mesh() -> Spatial:

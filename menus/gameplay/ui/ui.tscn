@@ -47,6 +47,7 @@ margin_bottom = 178.0
 [node name="fps_ping_displayer" parent="CanvasLayer/Control" instance=ExtResource( 3 )]
 margin_bottom = 70.0
 mouse_filter = 2
+extend = true
 
 [node name="overlay_ui" type="Control" parent="CanvasLayer/Control"]
 anchor_right = 1.0

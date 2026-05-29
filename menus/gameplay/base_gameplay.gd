@@ -411,6 +411,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.range_attack_speed = data.range_attack_speed
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
+	squad.attack_range = data.attack_range
 
 	# squad member
 	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
@@ -439,13 +440,16 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
-	squad.connect("on_unit_dead", self, "_on_unit_dead", [data])
+	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
 	
 	if squad is CavalrySquad:
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
+		
+	#var my_team = (data.team == current_player.team)
+	#squad.enable_spotting = my_team
+	#squad.set_hidden(not my_team)
 	
 	squad.set_hidden(false)
-	
 	add_child(squad)
 	
 	squad.translation = data.pos
@@ -457,8 +461,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	
 	if squad.player_id == current_player.player_id:
 		# use current spawn tile as reinfoce tile
-		squad.reinfoce_tiles = [player_spawn_point]
-			
+		squad.reinfoce_tiles = player_spawn_points
+		
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		
@@ -518,7 +522,7 @@ func _on_squad_member_dead(squad :BaseSquad, member):
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
 	
-func _on_unit_spotted(squad):
+func _on_unit_spotted(squad :BaseSquad):
 	pass
 	
 func _on_unit_clicked(clicked_squad :BaseSquad):
@@ -553,13 +557,13 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			if setting.unselect_on_command:
 				s.click() # to unselect
 	
-func _on_current_tile_updated(squad, from_id, to_id):
+func _on_current_tile_updated(squad :BaseSquad, from_id :Vector2, to_id :Vector2):
 	tile_position_manager.update_position(squad, from_id, to_id)
 	
 func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
-func _on_unit_dead(squad :BaseSquad, data :SquadData):
+func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
 	squads.erase(squad)
@@ -567,6 +571,7 @@ func _on_unit_dead(squad :BaseSquad, data :SquadData):
 	if setting.show_feed:
 		ui.log_event.add_log_squad_dead(squad)
 	
+	# cheap ass way to detect commander
 	var is_commander :bool = (data.icon_idx == 6)
 	
 	# confirm the lost was yours

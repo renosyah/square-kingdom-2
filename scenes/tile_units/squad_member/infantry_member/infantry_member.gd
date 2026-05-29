@@ -228,8 +228,28 @@ func _on_range_attack_performed():
 	iddle = true
 	enemy = null
 	enemy_assign = false
+	
 	auto_iddle_timer.stop()
-
+	
+func take_damage(amount :int):
+	.take_damage(amount)
+	
+	if is_dead:
+		return
+		
+	# little bit mechanism of losing
+	# gear on damages
+	var ratio = float(hp) / float(max_hp)
+	if ratio > 0.5:
+		return
+		
+	if randf() < 0.6 and _headgear:
+		_headgear.visible = false
+		return
+		
+	if randf() < 0.4 and _armor:
+		_armor.visible = false
+		
 func moving(delta :float):
 	.moving(delta)
 	

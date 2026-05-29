@@ -40,8 +40,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == "bot":
 		bot_squads.append(squad)
 		
-func _on_unit_dead(squad, data):
-	._on_unit_dead(squad, data)
+func _on_squad_dead(squad, data):
+	._on_squad_dead(squad, data)
 	
 	if squad.player_id == "bot":
 		bot_squads.erase(squad)

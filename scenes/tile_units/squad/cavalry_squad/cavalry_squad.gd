@@ -92,6 +92,14 @@ func _init_formations():
 	]
 	_formation_positions = _formation_offsets.duplicate()
 	
+func master_moving(delta :float) -> void:
+	.master_moving(delta)
+	
+	if is_dead:
+		return
+		
+	_follow_path_proccess(delta, global_position)
+	
 func _move_to(tile_id :Vector2, use_safe :bool):
 	._move_to(tile_id, use_safe)
 	
@@ -258,13 +266,6 @@ func _perform_range_attack():
 			m.enemy = enemy_member
 			m.range_attack()
 				
-func master_moving(delta :float) -> void:
-	.master_moving(delta)
-	
-	if is_dead:
-		return
-		
-	_follow_path_proccess(delta, global_position)
 
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)

@@ -6,7 +6,7 @@ signal on_squad_member_resurect(squad, member)
 signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
-
+signal on_squad_dead(unit)
 
 const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_1.wav"),
@@ -63,6 +63,16 @@ var member_alive :int
 export var show_move_indicator:bool = false
 export var enable_blood :bool
 
+export var attack_range :int = 1
+
+var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
+var chase_enemy = null # cycle warning set to null
+var enemy = null # cycle warning set to null
+var attack_move :bool
+
+var is_dead :bool = false
+var _has_enemy :bool # for easier
+
 # MUST SET
 var camera :Camera
 var floating_info :FloatingSquadInfo
@@ -75,7 +85,8 @@ puppet var _puppet_is_moving :bool
 var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
-var _melee_ranges :Array = []
+var _attack_tile_ranges :Array = []
+var _melee_tile_ranges :Array = []
 var _current_tile_v3 :Vector3
 
 var _melee_attack_timer :Timer
@@ -169,14 +180,66 @@ func _ready():
 	_spawn_members()
 	_member_spawned = true
 
-	if show_move_indicator:
-		_path_indicator.visible = true
-		_path_indicator.translation = global_position
+	_path_indicator.visible = show_move_indicator
+	_path_indicator.translation = global_position
 		
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
 	_path_indicator.visible = d.show_unit_tile
 	enable_blood = d.extra_effect
+	
+	_path_indicator.visible = show_move_indicator
+	_path_indicator.translation = global_position
+	
+# set chase_enemy = UNIT
+# chase_target()
+# move_to will set chase_enemy to NULL
+func chase_target():
+	if is_instance_valid(chase_enemy):
+		# give up the chase if
+		# diffrent nav layer
+		# no path to it
+		if chase_enemy.nav_layer != nav_layer:
+			chase_enemy = null
+			return
+			
+		if _is_in_attack_range(chase_enemy):
+			enemy = chase_enemy
+			_has_enemy = true
+			_on_enemy_set()
+			return
+			
+		_move_to(chase_enemy.current_tile, false)
+		if _paths.empty():
+			chase_enemy = null
+			
+func move_to(tile_id :Vector2):
+	chase_enemy = null
+	_move_to(tile_id, true)
+	
+func _move_to(tile_id :Vector2, use_safe :bool):
+	if is_dead:
+		return
+		
+	if not _is_master or not is_instance_valid(nav):
+		return
+		
+	_has_enemy = false
+	enemy = null
+	
+	var v :Array = _get_tile_path(tile_id, use_safe)
+	if v.empty():
+		return
+		
+	_last_to = global_position
+	
+	_is_moving = true
+	_paths.clear()
+	_paths.append_array(v)
+	
+	if attack_move:
+		update_spotting()
+		_scan_area()
 	
 func _init_formations():
 	pass
@@ -284,23 +347,45 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
 	_current_tile_v3 = nav.get_pos_v3(current_tile)
+	_path_indicator.translation = _current_tile_v3
+	_path_indicator.visible = (nav != null) and show_move_indicator
 	
-	if not show_move_indicator:
+	#_path_indicator2.visible = (nav != null)
+	#_path_indicator2.translation = nav.get_pos_v3(from_id)
+		
+	if not _is_master:
 		return
 		
-	_path_indicator.visible = (nav != null)
-	#_path_indicator2.visible = (nav != null)
-	
-	if _path_indicator.visible:
-		_path_indicator.translation = nav.get_pos_v3(to_id)
+	if is_instance_valid(chase_enemy):
+		# stop the chase
+		# if chase_enemy is dead
+		if chase_enemy.is_dead:
+			chase_enemy = null
+			stop(false)
+			return
+			
+		if _is_in_attack_range(chase_enemy):
+			enemy = chase_enemy
+			_has_enemy = true
+			_on_enemy_set()
+			return
 		
-#	if _path_indicator2.visible:
-#		_path_indicator2.translation = nav.get_pos_v3(from_id)
+	if attack_move:
+		_scan_area()
+		
+func _on_finish_travel(from_id :Vector2, to_id :Vector2):
+	._on_finish_travel(from_id, to_id)
 	
+	if _is_master:
+		_scan_area()
+		
 func sync_update() -> void:
-	.sync_update()
-	
+	#.sync_update()
+
 	if not is_dead and _is_master and _is_online:
+		rset_unreliable("_puppet_translation", global_position)
+		rset_unreliable("_puppet_current_tile", current_tile)
+		
 		rset_unreliable("_puppet_is_moving", _is_moving)
 		rset_unreliable("_puppet_rotation_y", global_rotation.y)
 		
@@ -310,6 +395,13 @@ func sync_update() -> void:
 		else:
 			rset_unreliable("_puppet_enemy", NodePath(""))
 			
+func last_sync_update() -> void:
+	#.last_sync_update()
+	
+	if not is_dead and _is_master and _is_online:
+		rset("_puppet_translation", global_position)
+		rset("_puppet_current_tile", current_tile)
+		
 func has_range_weapon() -> bool:
 	return _has_range_weapon
 	
@@ -353,12 +445,15 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
 	# must check via is_instance_valid enemy
 	if is_instance_valid(enemy):
-		if _is_in_range(enemy):
+		if _is_in_attack_range(enemy):
 			_on_enemy_in_range(delta, pos, enemy.global_position)
 			return
 			
 	_has_enemy = false
 	enemy = null
+	
+func _on_enemy_in_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
+	pass
 	
 func get_avg_member_pos(pos :Vector3) -> Vector3:
 	var m :Array = get_members()
@@ -501,7 +596,7 @@ func _resurecting():
 			return
 
 func _is_in_melee_range(target):
-	return target.current_tile in _melee_ranges
+	return target.current_tile in _melee_tile_ranges
 	
 func _is_on_flank_of(target) -> bool:
 	var dir = target.current_tile.direction_to(current_tile)
@@ -598,8 +693,99 @@ func puppet_moving(delta :float) -> void:
 func update_spotting():
 	.update_spotting()
 	
-	_melee_ranges = TileMapUtils.get_adjacent_tiles(
+	_melee_tile_ranges = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
 	) + [current_tile]
+	
+	_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.ARROW_DIRECTIONS, current_tile, attack_range
+	)
+
+func _chase_on_iddle() -> bool:
+	if is_instance_valid(chase_enemy):
+		# stop the chase
+		# continue scan area
+		if chase_enemy.is_dead:
+			chase_enemy = null
+			return false
+			
+		if not _is_in_attack_range(chase_enemy):
+			chase_target()
+			return true
+			
+	return false
+# for active enemy spotting
+func _on_global_tick():
+	._on_global_tick()
+	
+	if _is_master and not _is_moving:
+		
+		# have task to chase enemy
+		# go get them
+		if _chase_on_iddle():
+			return
+			
+		_scan_area()
+		
+func _scan_area():
+	if unit_position.empty():
+		return
+		
+	if _has_enemy:
+		return
+		
+	for pos in _attack_tile_ranges:
+		if not unit_position.has(pos):
+			continue
+			
+		var unit_positions :Array = unit_position[pos]
+		if unit_positions.empty():
+			continue
+			
+		if _check_enemy_in_position(unit_positions):
+			_has_enemy = true
+			_on_enemy_set()
+			return
+			
+func _check_enemy_in_position(datas :Array) -> bool:
+	for unit in datas:
+		if not is_instance_valid(unit):
+			continue
+			
+		if unit.is_dead:
+			continue
+			
+		if unit.team != team:
+			enemy = unit
+			return true
+			
+	return false
+
+func _is_in_attack_range(_unit) -> bool:
+	if _unit.is_dead:
+		return false
+		
+	return _unit.current_tile in _attack_tile_ranges
+	
+func _on_enemy_set():
+	pass
+	
+func set_dead(use_rpc :bool = true):
+	if is_dead:
+		return
+	
+	if use_rpc:
+		rpc("_set_dead")
+	else:
+		_set_dead()
+		
+	is_dead = true # safeguard, make faster
+	
+func on_dead():
+	emit_signal("on_squad_dead", self)
+
+remotesync func _set_dead():
+	is_dead = true
+	on_dead()
 
 
