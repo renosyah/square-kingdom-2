@@ -234,6 +234,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/save_load/save_load_improve.gd"
 }, {
+"base": "MarginContainer",
+"class": "Scoreboard",
+"language": "GDScript",
+"path": "res://assets/scoreboard/scoreboard.gd"
+}, {
 "base": "Node",
 "class": "ServerAdvertiser",
 "language": "GDScript",
@@ -365,6 +370,7 @@ _global_script_class_icons={
 "RangeWeapon": "",
 "SaveLoad": "",
 "SaveLoadImproved": "",
+"Scoreboard": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
 "SettingData": "",

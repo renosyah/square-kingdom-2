@@ -32,6 +32,7 @@ onready var orbital_camera_ui = $CanvasLayer/Control/orbital_camera_ui
 onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer
 onready var cinematic = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic
 onready var log_event = $CanvasLayer/Control/log_event
+onready var scoreboard = $CanvasLayer/Control/scoreboard
 
 onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
 onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
@@ -45,6 +46,7 @@ var selected_squads :Array # refrences
 
 func _ready():
 	orbital_camera_ui.visible = false
+	scoreboard.visible = false
 	
 	minimap.tile_scenes = TileIndex.tiles2d
 	dialog_menu.visible = false
@@ -183,6 +185,12 @@ func _on_cam_rot_reset_pressed():
 func _on_back_pressed():
 	dialog_menu.visible = true
 	
+func _on_score_pressed():
+	scoreboard.visible = true
+	
+func _on_scoreboard_close():
+	scoreboard.visible = false
+	
 func _on_dialog_menu_on_exit():
 	emit_signal("exit")
 
@@ -220,6 +228,10 @@ func _on_cinematic_pressed():
 	control_ui.visible = not on_cinematic_mode
 	menu_buttons.visible = not on_cinematic_mode
 	log_event.visible = not on_cinematic_mode
+
+
+
+
 
 
 

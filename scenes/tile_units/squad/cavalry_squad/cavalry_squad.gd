@@ -230,10 +230,9 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		
 	if _is_in_melee_range(enemy):
 		_perform_melee_attack()
+		return
 		
-	else:
-		if _has_range_weapon:
-			_perform_range_attack()
+	_perform_range_attack()
 
 func _perform_melee_attack():
 	if _melee_attack_timer.is_stopped():
@@ -259,6 +258,9 @@ func _perform_melee_attack():
 		m.melee_attack()
 		
 func _perform_range_attack():
+	if not _has_range_weapon:
+		return
+		
 	if _range_attack_timer.is_stopped():
 		_range_attack_timer.start()
 		_range_engagement = true

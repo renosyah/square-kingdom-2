@@ -229,6 +229,7 @@ func _on_tile_map_ready():
 ########################################## players spawn  ############################################
 onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
+onready var player_ids :Dictionary = {}
 
 var player_spawn_points :Array = [] # all players
 
@@ -241,6 +242,8 @@ func setup_players_spawn_points():
 	
 	for index in players.size():
 		var p :PlayerData = players[index]
+		player_ids[p.player_id] = p
+		
 		if p.player_id == current_player.player_id:
 			current_player_spawn_point = player_spawn_points[index]
 			break
@@ -318,6 +321,7 @@ func setup_ui():
 	
 	add_child(ui)
 	
+	ui.scoreboard.init_scoreboard(players)
 	ui.minimap.load_data_map(current_tile_map_file_data)
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
 	
@@ -381,6 +385,7 @@ func _on_selection_button_pressed(idx :int):
 var player_squads :Array = []
 var selected_squads :Array
 var squads :Array = []
+var squad_datas :Dictionary = {}
 
 func spawn_squads(squad_datas :Array):
 	var list_bytes :Array = []
@@ -444,7 +449,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.unit_indexing = tile_position_manager.get_unit_indexing()
 
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
-	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead")
+	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead", [data])
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
 	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
@@ -462,6 +467,8 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	squad.set_hidden(false)
 	add_child(squad)
+	
+	squad_datas[squad] = data
 	
 	squad.translation = data.pos
 	squads.append(squad)
@@ -526,9 +533,26 @@ func _on_squad_taking_damage(squad :BaseSquad, amount :int):
 	if setting.show_feed:
 		ui.log_event.add_log_damage(squad, amount)
 	
-func _on_squad_member_dead(squad :BaseSquad, member :SquadMember):
+func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
 	if setting.show_feed:
 		ui.log_event.add_log_member_lost(squad, member)
+		
+	if player_ids.has(squad.player_id):
+		ui.scoreboard.add_dead(player_ids[squad.player_id], data, 1)
+	
+	var from :BaseSquad = get_node_or_null(member.attacked_by)
+	if not is_instance_valid(from):
+		return
+		
+	if not player_ids.has(from.player_id):
+		return
+		
+	var from_player :PlayerData = player_ids[from.player_id]
+	var from_squad :SquadData = squad_datas[from]
+	ui.scoreboard.add_kill(from_player, from_squad, 1)
+	
+	if from.team == squad.team:
+		ui.scoreboard.add_friendly_fire(from_player, from_squad, 1)
 
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
@@ -578,6 +602,7 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
 	squads.erase(squad)
+	squad_datas.erase(squad)
 	
 	if setting.show_feed:
 		ui.log_event.add_log_squad_dead(squad)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://menus/gameplay/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://assets/camera/orbital_camera_ui.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/user_interface/icons/view.png" type="Texture" id=25]
 [ext_resource path="res://assets/log_event/log_event.tscn" type="PackedScene" id=26]
+[ext_resource path="res://assets/scoreboard/scoreboard.tscn" type="PackedScene" id=27]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -419,10 +420,15 @@ texture = ExtResource( 17 )
 [node name="dialog_menu" parent="CanvasLayer/Control" instance=ExtResource( 9 )]
 visible = false
 
+[node name="scoreboard" parent="CanvasLayer/Control" instance=ExtResource( 27 )]
+visible = false
+
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic" to="." method="_on_cinematic_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/score" to="." method="_on_score_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode" to="." method="_on_selection_mode_pressed"]
 [connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]
+[connection signal="close" from="CanvasLayer/Control/scoreboard" to="." method="_on_scoreboard_close"]

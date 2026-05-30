@@ -91,7 +91,7 @@ func _ajust_formation(pos :Vector3, delta :float):
 		_siege_engine.translation = _siege_engine.translation.linear_interpolate(pos, 5 * delta)
 		
 func _perform_range_attack():
-	._perform_range_attack()
+	#._perform_range_attack()
 	
 	if not can_attack:
 		return
