@@ -848,4 +848,12 @@ remotesync func _set_dead():
 	is_dead = true
 	on_dead()
 
-
+func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
+	var _pos = pos
+	_pos.y = pos.y
+	
+	if dir.length() > 0.001:
+		var dot = abs(dir.dot(Vector3.UP))
+		return dot < 0.999
+		
+	return false

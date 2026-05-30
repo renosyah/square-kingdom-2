@@ -9,6 +9,7 @@ onready var map_name = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/
 onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/map_size
 onready var sync_map = $sync_map
 onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4/Label_loading_host
+onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer/button_add_bot
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
@@ -29,6 +30,7 @@ func _ready():
 	minimap.tile_scenes = TileIndex.tiles2d
 	
 	if is_server:
+		button_add_bot.visible = true
 		label_loading_host.visible = false
 		battle.visible = true
 		var manif = Global.current_tile_map_manifest_data
@@ -41,6 +43,7 @@ func _ready():
 		minimap.load_data_map(Global.current_tile_map_file_data)
 		
 	else:
+		button_add_bot.visible = false
 		label_loading_host.visible = true
 		battle.visible = false
 		sync_map.request_map_data()
@@ -92,6 +95,8 @@ func map_data_received(player_network_unique_id :int):
 		battle.disabled = player_loading
 		
 func _on_lobby_player_update(players :Array):
+	player_holder.remove_child(button_add_bot)
+	
 	for child in player_holder.get_children():
 		player_holder.remove_child(child)
 		child.queue_free()
@@ -110,22 +115,81 @@ func _on_lobby_player_update(players :Array):
 		var has_map :bool = player_map_data_received.has(player.player_network_unique_id)
 		
 		var item = player_item_scene.instance()
-		item.local_player_id = current_player.player_id
 		item.player_network_unique_id = player.player_network_unique_id
 		item.player = player_data
+		item.can_kick = is_server and player.player_network_unique_id != 1
+		item.can_change_team = current_player.player_id == player_data.player_id
 		item.connect("team_change", self, "_on_team_change")
+		item.connect("remove", self, "_on_player_removed", [player])
 		
 		player_holder.add_child(item)
 		
-		if NetworkLobbyManager.is_server():
+		if is_server:
 			item.set_loading(not is_host and not has_map)
 		
 		if is_host:
 			item.set_loading(false)
 			
+	for idx in Global.bot_players.size():
+		var player_data :PlayerData = Global.bot_players[idx]
+		
+		var item = player_item_scene.instance()
+		item.player_network_unique_id = player_data.player_network_id
+		item.player = player_data
+		item.can_kick = is_server
+		item.can_change_team = is_server
+		
+		if is_server:
+			item.connect("team_change", self, "_on_bot_team_change", [idx])
+			item.connect("remove", self, "_on_bot_player_removed", [idx])
+			
+		player_holder.add_child(item)
+		
+	player_holder.add_child(button_add_bot)
+	
+func update_bot_player():
+	var data = []
+	for i in Global.bot_players:
+		data.append(i.to_dictionary())
+		
+	rpc("_update_bot_player", data, Global.bot_player_armies.duplicate())
+	
+remotesync func _update_bot_player(data :Array, armies :Dictionary):
+	var players = NetworkLobbyManager.get_players()
+	
+	Global.bot_player_armies.clear()
+	Global.bot_players.clear()
+	
+	var bot_slot = 4 - players.size()
+	for i in data:
+		if bot_slot > 0:
+			var p = PlayerData.new()
+			p.from_dictionary(i)
+			Global.bot_players.append(p)
+			Global.bot_player_armies[p.player_id] = armies[p.player_id]
+			
+		bot_slot -= 1
+		
+	if is_server:
+		var total_slot = 4 - (players.size() + Global.bot_players.size())
+		button_add_bot.visible = total_slot > 0
+		
+	_on_lobby_player_update(players)
+	
+func _on_bot_team_change(team :int, idx :int):
+	Global.bot_players[idx].team = team
+	update_bot_player()
+	
+func _on_bot_player_removed(idx :int):
+	Global.bot_players.remove(idx)
+	update_bot_player()
+	
 func _on_team_change(t :int):
 	current_player.team = t
 	NetworkLobbyManager.update_player_extra_data(current_player.to_dictionary())
+	
+func _on_player_removed(player :NetworkPlayer):
+	NetworkLobbyManager.kick_player(player.player_network_unique_id)
 	
 func on_back_pressed():
 	NetworkLobbyManager.leave()
@@ -141,6 +205,15 @@ func _on_host_ready():
 	
 func _on_battle_pressed():
 	Global.change_scene("res://menus/gameplay/host/host.tscn", true, idx_bg.pick_random())
+	
+func _on_button_add_bot_pressed():
+	var results = Global.create_bot_player()
+	var p: PlayerData = results[0]
+	
+	Global.bot_players.append(p)
+	Global.bot_player_armies[p.player_id] = results[1]
+	
+	update_bot_player()
 
 
 

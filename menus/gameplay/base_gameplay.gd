@@ -231,28 +231,28 @@ onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
 onready var player_ids :Dictionary = {}
 
-var player_spawn_points :Array = [] # all players
+var player_spawn_points :Dictionary = {} # {player_id:Vector2} all players
 
-var current_player_spawn_point :Vector2
-var current_player_spawn_points :Array
+onready var bot_players :Array = Global.bot_players
+var current_player_reinfoce_points :Array
 
 func setup_players_spawn_points():
 	var map_size :int = current_tile_map_manifest_data.map_size
-	player_spawn_points = TileIndex.get_spawn_points(map_size, 3)
+	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point
+	var all_players = players + bot_players
 	
-	for index in players.size():
-		var p :PlayerData = players[index]
+	# register player ids
+	for index in all_players.size():
+		var p :PlayerData = all_players[index]
 		player_ids[p.player_id] = p
+		player_spawn_points[p.player_id] = points[index]
 		
-		if p.player_id == current_player.player_id:
-			current_player_spawn_point = player_spawn_points[index]
-			break
-			
-	current_player_spawn_points = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), current_player_spawn_point, 2
-	) + [current_player_spawn_point]
+	var current_spawn_point = player_spawn_points[current_player.player_id]
+	current_player_reinfoce_points = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), current_spawn_point, 2
+	) + [current_spawn_point]
 	
-	var tile :TileMapData = tile_map.get_tile(current_player_spawn_point)
+	var tile :TileMapData = tile_map.get_tile(current_spawn_point)
 	if tile == null:
 		return
 	
@@ -321,7 +321,7 @@ func setup_ui():
 	
 	add_child(ui)
 	
-	ui.scoreboard.init_scoreboard(players)
+	ui.scoreboard.init_scoreboard(players + bot_players)
 	ui.minimap.load_data_map(current_tile_map_file_data)
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
 	
@@ -370,7 +370,7 @@ func _on_ui_route_button_pressed():
 	for i in selected_squads:
 		i.attack_move = false
 		
-	_move_squad_to(tile_map.get_tile(current_player_spawn_point), true)
+	_move_squad_to(tile_map.get_tile(player_spawn_points[current_player.player_id]), true)
 
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
@@ -479,7 +479,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	
 	if squad.player_id == current_player.player_id:
 		# use current spawn tile as reinfoce tile
-		squad.reinfoce_tiles = current_player_spawn_points
+		squad.reinfoce_tiles = current_player_reinfoce_points
 		
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)

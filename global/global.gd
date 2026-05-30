@@ -292,7 +292,6 @@ func save_custom_squad():
 ##########################################  lobby & gameplay  ############################################
 var current_root :Node
 
-
 var current_player :PlayerData # specific for game session
 var players :Array = [] # list of players in MP
 
@@ -302,14 +301,18 @@ var players :Array = [] # list of players in MP
 var current_army :Array = []
 var max_army_size :int = 9
 
-func prepare_army(spawn_pos :Vector2, map :EditableTileMap) -> Array:
+var bot_players :Array = []
+var bot_player_armies :Dictionary = {} # {player_id:[int]}
+
+func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, map :EditableTileMap, in_bytes :bool = false) -> Array:
 	var datas = []
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.get_directions(), spawn_pos, 1
 	)
-	for idx in current_army.size():
+	for idx in army.size():
 		var tile_id = tiles[idx]
-		datas.append(prepare_squad(idx, current_army[idx], map.get_tile(tile_id)))
+		var squad :SquadData = prepare_squad(idx, army[idx], player, map.get_tile(tile_id))
+		datas.append(squad.to_bytes() if in_bytes else squad)
 		
 	return datas
 	
@@ -320,15 +323,15 @@ func _sort_by_order(a, b):
 	return custom_squads[a].sort_order < custom_squads[b].sort_order
 
 # idx is from current_army
-func prepare_squad(i :int,idx :int, tile :TileMapData) -> SquadData:
+func prepare_squad(i :int, idx :int, player :PlayerData, tile :TileMapData) -> SquadData:
 	var data :SquadData = custom_squads[idx].duplicate()
-	data.network_id = current_player.player_network_id
-	data.player_id = current_player.player_id
-	data.node_name = Utils.create_unique_id()
+	data.network_id = player.player_network_id
+	data.player_id = player.player_id
+	data.node_name = "squad_%s_%s" % [player.player_id, Utils.create_unique_id()]
 	data.current_tile = tile.id
 	data.pos = tile.pos
-	data.color_idx = current_player.color_idx
-	data.team = current_player.team
+	data.color_idx = player.color_idx
+	data.team = player.team
 	
 	# 1st position is commander
 	# twice HP
@@ -339,8 +342,24 @@ func prepare_squad(i :int,idx :int, tile :TileMapData) -> SquadData:
 		
 	return data
 
+func create_bot_player() -> Array:
+	var p = PlayerData.new()
+	p.player_network_id = 1
+	p.player_id = "bot_%s" % Utils.create_unique_id()
+	p.player_name = "%s (bot)" % RandomNameGenerator.generate_name()
+	p.team = bot_players.size() + players.size() + 1
+	p.color_idx = randi() % EntityIndex.player_colors.size()
+	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
 
-
+	var _bot_player_armies = []
+		
+	for i in 9:
+		var idx = randi() % custom_squads.size()
+		if _bot_player_armies.size() < max_army_size:
+			_bot_player_armies.append(idx)
+			
+	sort_army(_bot_player_armies)
+	return [p, _bot_player_armies]
 
 
 

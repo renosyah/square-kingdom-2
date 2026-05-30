@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=7]
 [ext_resource path="res://scenes/minimap/minimap.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/background/round_table.png" type="Texture" id=9]
+[ext_resource path="res://assets/user_interface/icons/graphic_setting.png" type="Texture" id=10]
 [ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
 
 [node name="ui" type="Control"]
@@ -296,6 +297,15 @@ margin_right = 528.0
 margin_bottom = 314.0
 size_flags_horizontal = 3
 
+[node name="button_add_bot" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer"]
+margin_right = 500.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 80 )
+custom_fonts/font = ExtResource( 2 )
+text = "Add Bot"
+icon = ExtResource( 10 )
+expand_icon = true
+
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_left = 532.0
 margin_right = 556.0
@@ -403,4 +413,5 @@ rect_min_size = Vector2( 24, 0 )
 [connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="on_minimap_ready" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap" to="." method="_on_minimap_on_minimap_ready"]
+[connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer/button_add_bot" to="." method="_on_button_add_bot_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer5/battle" to="." method="_on_battle_pressed"]

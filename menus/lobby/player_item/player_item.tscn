@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://menus/lobby/player_item/player_item.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/user_interface/loading/loading.png" type="Texture" id=4]
 [ext_resource path="res://assets/user_interface/icons/shield_2.png" type="Texture" id=5]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=6]
+[ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=7]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -40,29 +41,29 @@ tracks/0/keys = {
 
 [node name="player_item" type="MarginContainer"]
 margin_right = 449.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 0, 100 )
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 80 )
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 449.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 color = Color( 0.137255, 0.137255, 0.137255, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 449.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 margin_right = 24.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="team" type="Button" parent="HBoxContainer"]
 margin_left = 28.0
-margin_top = 20.0
+margin_top = 10.0
 margin_right = 88.0
-margin_bottom = 80.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 60, 60 )
 focus_mode = 0
 size_flags_vertical = 4
@@ -91,14 +92,14 @@ valign = 1
 [node name="MarginContainer5" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 92.0
 margin_right = 96.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 4, 0 )
 
 [node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
 margin_left = 100.0
-margin_top = 20.0
+margin_top = 10.0
 margin_right = 160.0
-margin_bottom = 80.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 60, 60 )
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -117,29 +118,29 @@ stretch_mode = 6
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 164.0
 margin_right = 172.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="player_name" type="Label" parent="HBoxContainer"]
 margin_left = 176.0
-margin_top = 39.0
-margin_right = 381.0
-margin_bottom = 60.0
+margin_top = 29.0
+margin_right = 317.0
+margin_bottom = 50.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "Player"
 valign = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
-margin_left = 385.0
-margin_right = 393.0
-margin_bottom = 100.0
+margin_left = 321.0
+margin_right = 329.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="loading" type="Control" parent="HBoxContainer"]
-margin_left = 397.0
-margin_right = 437.0
-margin_bottom = 100.0
+margin_left = 333.0
+margin_right = 373.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 40, 40 )
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/loading"]
@@ -161,10 +162,22 @@ autoplay = "loading"
 anims/RESET = SubResource( 1 )
 anims/loading = SubResource( 2 )
 
+[node name="remove" type="Button" parent="HBoxContainer"]
+margin_left = 377.0
+margin_top = 10.0
+margin_right = 437.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 60, 60 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+icon = ExtResource( 7 )
+expand_icon = true
+
 [node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 441.0
 margin_right = 449.0
-margin_bottom = 100.0
+margin_bottom = 80.0
 rect_min_size = Vector2( 8, 0 )
 
 [connection signal="pressed" from="HBoxContainer/team" to="." method="_on_team_pressed"]
+[connection signal="pressed" from="HBoxContainer/remove" to="." method="_on_remove_pressed"]

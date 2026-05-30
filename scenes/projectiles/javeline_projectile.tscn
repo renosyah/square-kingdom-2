@@ -9,7 +9,6 @@
 script = ExtResource( 1 )
 speed = 8.0
 max_range = 2.0
-threshold = 0.12
 
 [node name="Spatial" type="Spatial" parent="."]
 

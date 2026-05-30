@@ -224,9 +224,12 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 		var look :Vector3 = enemy_pos
 		look.y = pos.y
 		
+		var dir_to :Vector3 = pos.direction_to(look)
+		
 		# look at enemy position
-		var t:Transform = transform.looking_at(look, Vector3.UP)
-		transform = transform.interpolate_with(t, turning_speed * delta)
+		if _can_look_at(pos, look, dir_to):
+			var t:Transform = transform.looking_at(look, Vector3.UP)
+			transform = transform.interpolate_with(t, turning_speed * delta)
 		
 	if _is_in_melee_range(enemy):
 		_perform_melee_attack()

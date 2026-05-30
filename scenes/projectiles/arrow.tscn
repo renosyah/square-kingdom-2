@@ -12,7 +12,6 @@ albedo_color = Color( 0.686275, 0.686275, 0.686275, 1 )
 [node name="arrow" type="Spatial"]
 script = ExtResource( 1 )
 speed = 8.0
-threshold = 0.15
 
 [node name="Spatial" type="Spatial" parent="."]
 

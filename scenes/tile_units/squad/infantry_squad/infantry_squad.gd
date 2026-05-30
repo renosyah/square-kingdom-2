@@ -118,16 +118,6 @@ func _perform_range_attack():
 			m.enemy = enemy_member
 			m.range_attack()
 		
-func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
-	var _pos = pos
-	_pos.y = pos.y
-	
-	if dir.length() > 0.001:
-		var dot = abs(dir.dot(Vector3.UP))
-		return dot < 0.999
-		
-	return false
-	
 func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	#._move_to_next_path(delta, pos, to)
 	
