@@ -261,77 +261,77 @@ margin_bottom = 408.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
 margin_right = 556.0
-margin_bottom = 72.0
+margin_bottom = 52.0
 
 [node name="Label2" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
-margin_top = 13.0
+margin_top = 3.0
 margin_right = 340.0
-margin_bottom = 59.0
+margin_bottom = 49.0
 rect_min_size = Vector2( 0, 46 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 3 )
 text = "  Players"
-valign = 2
+valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer"]
 margin_left = 344.0
 margin_right = 556.0
-margin_bottom = 72.0
+margin_bottom = 52.0
 custom_constants/margin_right = 12
 custom_constants/margin_top = 12
 
 [node name="button_add_bot" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_top = 12.0
 margin_right = 200.0
-margin_bottom = 72.0
-rect_min_size = Vector2( 200, 60 )
+margin_bottom = 52.0
+rect_min_size = Vector2( 200, 40 )
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 7 )
 text = "Add Bot"
 icon = ExtResource( 10 )
 expand_icon = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
-margin_top = 76.0
+margin_top = 56.0
 margin_right = 556.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 0, 12 )
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 8 )
 
 [node name="players" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
-margin_top = 92.0
+margin_top = 68.0
 margin_right = 556.0
-margin_bottom = 380.0
+margin_bottom = 396.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players"]
 margin_right = 556.0
-margin_bottom = 288.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_right = 24.0
-margin_bottom = 288.0
+margin_bottom = 328.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_left = 28.0
 margin_right = 528.0
-margin_bottom = 288.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_left = 532.0
 margin_right = 556.0
-margin_bottom = 288.0
+margin_bottom = 328.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
-margin_top = 384.0
+margin_top = 400.0
 margin_right = 556.0
 margin_bottom = 408.0
-rect_min_size = Vector2( 0, 24 )
+rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 1016.0

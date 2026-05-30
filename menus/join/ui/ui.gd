@@ -82,6 +82,7 @@ func _join(info):
 	var player_data = Global.player_data
 	player_data.player_id = Utils.create_unique_id()
 	Global.current_player = player_data
+	Global.current_player.team = 1
 	
 	var configuration = NetworkClient.new()
 	configuration.ip = info["ip"]

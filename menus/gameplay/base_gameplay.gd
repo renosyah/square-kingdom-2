@@ -295,6 +295,8 @@ func on_end(team :int):
 	ui.hide_ui()
 	
 	yield(get_tree().create_timer(1),"timeout")
+	
+	Global.current_root = null
 	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, idx_bg.pick_random())
 	
 ########################################## camera  ############################################
