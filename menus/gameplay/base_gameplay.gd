@@ -599,6 +599,9 @@ func _on_finish_travel(squad, last_id, current_id):
 	pass
 	
 func _on_squad_dead(squad :BaseSquad, data :SquadData):
+	if player_ids.has(squad.player_id):
+		ui.scoreboard.set_squad_dead(player_ids[squad.player_id], data)
+	
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
 	squads.erase(squad)
@@ -628,8 +631,8 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 				play_squad_killed(is_commander)
 				
 	squad.floating_info.visible = false
+	
 	yield(get_tree().create_timer(1),"timeout")
-	squad.floating_info.queue_free()
 	squad.queue_free()
 	
 func _on_cav_charge(squad : CavalrySquad):
