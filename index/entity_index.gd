@@ -101,7 +101,18 @@ const player_potraits = [
 	preload("res://assets/user_interface/potrait/6.png"),
 	preload("res://assets/user_interface/potrait/7.png"),
 	preload("res://assets/user_interface/potrait/8.png"),
-	preload("res://assets/user_interface/potrait/9.png")
+	preload("res://assets/user_interface/potrait/9.png"),
+	preload("res://assets/user_interface/potrait/10.png"),
+	preload("res://assets/user_interface/potrait/11.png"),
+	preload("res://assets/user_interface/potrait/12.png"),
+	preload("res://assets/user_interface/potrait/13.png"),
+	preload("res://assets/user_interface/potrait/14.png"),
+	preload("res://assets/user_interface/potrait/15.png"),
+	preload("res://assets/user_interface/potrait/16.png"),
+	preload("res://assets/user_interface/potrait/17.png"),
+	preload("res://assets/user_interface/potrait/18.png"),
+	preload("res://assets/user_interface/potrait/19.png"),
+	preload("res://assets/user_interface/potrait/20.png")
 ]
 
 const player_colors = [

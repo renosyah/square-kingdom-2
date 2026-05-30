@@ -9,7 +9,7 @@ onready var map_name = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/
 onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2/map_size
 onready var sync_map = $sync_map
 onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4/Label_loading_host
-onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer/VBoxContainer/button_add_bot
+onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer/button_add_bot
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
@@ -66,6 +66,7 @@ func _notification(what):
 	
 func _on_sync_map_on_client_request_map(client_id):
 	battle.disabled = true
+	update_bot_player()
 	
 func _on_sync_map_on_map_received(client_id :int):
 	if is_server:
@@ -95,7 +96,7 @@ func map_data_received(player_network_unique_id :int):
 		battle.disabled = player_loading
 		
 func _on_lobby_player_update(players :Array):
-	player_holder.remove_child(button_add_bot)
+	var teams :Dictionary = {}
 	
 	for child in player_holder.get_children():
 		player_holder.remove_child(child)
@@ -122,6 +123,8 @@ func _on_lobby_player_update(players :Array):
 		item.connect("team_change", self, "_on_team_change")
 		item.connect("remove", self, "_on_player_removed", [player])
 		
+		teams[player_data.team] = true
+		
 		player_holder.add_child(item)
 		
 		if is_server:
@@ -139,13 +142,15 @@ func _on_lobby_player_update(players :Array):
 		item.can_kick = is_server
 		item.can_change_team = is_server
 		
+		teams[player_data.team] = true
+		
 		if is_server:
 			item.connect("team_change", self, "_on_bot_team_change", [idx])
 			item.connect("remove", self, "_on_bot_player_removed", [idx])
 			
 		player_holder.add_child(item)
 		
-	player_holder.add_child(button_add_bot)
+	battle.disabled = (teams.size() == 1)
 	
 func update_bot_player():
 	var data = []

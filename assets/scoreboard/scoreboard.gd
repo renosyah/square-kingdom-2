@@ -38,21 +38,27 @@ class ScoreboardData:
 		return score_data
 	
 onready var list_score_holder = $Control/Control/VBoxContainer/SafeArea/MarginContainer/VBoxContainer/ScrollContainer/list_score_holder
-var pending_score_update :Array = []
-var scores :Dictionary = {} # {PlayerData:ScoreboardData}
+onready var scores :Dictionary = Global.scores # {PlayerData:ScoreboardData}
+
+var _pending_score_update :Array = []
+
+func _ready():
+	ui_update()
 
 func _process(delta):
-	if not pending_score_update.empty():
-		_update_score(pending_score_update.front())
-		pending_score_update.pop_front()
+	if not _pending_score_update.empty():
+		_update_score(_pending_score_update.front())
+		_pending_score_update.pop_front()
 
 func init_scoreboard(players :Array):
+	scores.clear()
+	
 	for p in players:
 		scores[p] = ScoreboardData.new()
 		scores[p].player_data = PlayerData.new()
 		scores[p].player_data.from_dictionary(p.to_dictionary())
 		
-	ui_update()
+	ui_update() 
 	
 func add_kill(p :PlayerData, s :SquadData, v :int):
 	if not scores.has(p):
@@ -67,7 +73,7 @@ func add_kill(p :PlayerData, s :SquadData, v :int):
 		scores[p].squads[s.node_name] = d
 		
 	scores[p].squads[s.node_name].kill += v
-	pending_score_update.append(p)
+	_pending_score_update.append(p)
 	
 func add_dead(p :PlayerData, s :SquadData, v :int):
 	if not scores.has(p):
@@ -76,7 +82,7 @@ func add_dead(p :PlayerData, s :SquadData, v :int):
 	_register_squad(p,s)
 	
 	scores[p].squads[s.node_name].dead += v
-	pending_score_update.append(p)
+	_pending_score_update.append(p)
 	
 func add_friendly_fire(p :PlayerData, s :SquadData, v :int):
 	if not scores.has(p):
@@ -85,7 +91,7 @@ func add_friendly_fire(p :PlayerData, s :SquadData, v :int):
 	_register_squad(p,s)
 	
 	scores[p].squads[s.node_name].friendly_fire += v
-	pending_score_update.append(p)
+	_pending_score_update.append(p)
 	
 func set_squad_dead(p :PlayerData, s :SquadData):
 	if not scores.has(p):
@@ -94,7 +100,7 @@ func set_squad_dead(p :PlayerData, s :SquadData):
 	_register_squad(p,s)
 	
 	scores[p].squads[s.node_name].is_dead = true
-	pending_score_update.append(p)
+	_pending_score_update.append(p)
 	
 func _register_squad(p,s):
 	if not scores[p].squads.has(s.node_name):
@@ -109,7 +115,7 @@ func _update_score(p):
 	scores[p].update_score()
 	ui_update(p.player_id)
 	
-func ui_update(player_id :String = "none"):
+func ui_update(player_id :String = "none"): # display score, just call this
 	var prev_item = get_node_or_null(
 		NodePath("%s/%s" % [list_score_holder.get_path(), player_id])
 	)

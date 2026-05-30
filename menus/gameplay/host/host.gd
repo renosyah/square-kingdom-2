@@ -23,14 +23,14 @@ func _on_all_player_ready():
 	yield(get_tree().create_timer(1),"timeout")
 	
 	spawn_squads(Global.prepare_army(
-		Global.current_army, player_spawn_points[current_player.player_id], current_player, tile_map
+		Global.current_army, player_spawn_points[current_player.player_id], current_player
 	))
 	
 	for p in bot_players:
 		var armies = Global.prepare_army(
 			Global.bot_player_armies[p.player_id],
 			player_spawn_points[p.player_id],
-			p, tile_map, true
+			p, true
 		)
 		for s in armies:
 			_spawn_squad(s)
@@ -38,17 +38,17 @@ func _on_all_player_ready():
 	bot_harasment_spawner_timer.start()
 	bot_action_timer.start()
 	
-func bot_attack_command(squad :BaseSquad, enemies :Array):
+func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
 	if is_instance_valid(squad.enemy):
 		return
 		
 	if squad is CavalrySquad:
-		squad.chase_enemy = enemies.pick_random()
+		squad.chase_enemy = enemy
 		squad.chase_target()
 		
 	else:
 		squad.attack_move = true
-		squad.move_to(enemies.pick_random().current_tile)
+		squad.move_to(enemy.current_tile)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
@@ -78,7 +78,17 @@ func _on_squad_dead(squad, data):
 		if current_wave == wave_per_stage:
 			enemy_type_idx = int(clamp(enemy_type_idx + 1, 0, enemy_phases.size() - 1))
 			current_wave = 0
+			
+func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
+	._on_squad_member_dead(squad, member, data)
+	
+	if randf() < 0.6:
+		return
 		
+	if squad.player_id in bot_player_ids:
+		squad.attack_move = false
+		squad.move_to(player_spawn_points[squad.player_id])
+	
 func _on_bot_spawner_timer_timeout():
 	bot_harasment_spawner_timer.start()
 	
@@ -90,7 +100,7 @@ func _on_bot_spawner_timer_timeout():
 	if not enemies.empty() and not bot_harasment_squads.empty():
 		var i = bot_harasment_squads.pick_random()
 		if not i.is_moving():
-			bot_attack_command(i, enemies)
+			bot_attack_command(i, enemies.pick_random())
 			
 	# limit harashment
 	if bot_harasment_squads.size() >= Global.players.size():
@@ -113,19 +123,25 @@ func _on_bot_action_timer_timeout():
 	if bot_squads.empty():
 		return
 	
-	var id = bot_player_ids.pick_random()
-	if bot_squads[id].empty():
+	var bot_player :PlayerData = bot_players.pick_random()
+	if bot_squads[bot_player.player_id].empty():
 		return
 		
 	var enemies = []
 	for i in squads:
-		if i.team != -1:
+		if i.team != bot_player.team:
 			enemies.append(i)
 			
-	if not enemies.empty() and not bot_squads[id].empty():
-		var i = bot_squads[id].pick_random()
+	if enemies.empty() or bot_squads[bot_player.player_id].empty():
+		return
+		
+	var count = int(rand_range(1, 6))
+	var e = enemies.pick_random()
+	var s = bot_squads[bot_player.player_id]
+	for _i in count:
+		var i = s.pick_random()
 		if not i.is_moving():
-			bot_attack_command(i, enemies)
+			bot_attack_command(i, e)
 	
 
 

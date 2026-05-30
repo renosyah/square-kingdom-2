@@ -485,13 +485,10 @@ func get_avg_member_pos(pos :Vector3) -> Vector3:
 	
 func _set_floating_info_pos(pos :Vector3, delta :float):
 	# track floating ui
-	if not _member_spawned:
+	if not _member_spawned or not floating_info:
 		return
 		
-	if not floating_info:
-		return
-		
-	floating_info.visible = _current_visible
+	floating_info.visible = visible and _current_visible
 	if not floating_info.visible:
 		return
 		

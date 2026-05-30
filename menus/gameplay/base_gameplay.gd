@@ -17,6 +17,7 @@ func _ready():
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
 	
+	setup_win_condition()
 	setup_ambient_audio()
 	setup_unit_position_manager()
 	spawn_tile_map()
@@ -227,6 +228,7 @@ func _on_tile_map_ready():
 	setup_players_spawn_points()
 	
 ########################################## players spawn  ############################################
+
 onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
 onready var player_ids :Dictionary = {}
@@ -234,7 +236,6 @@ onready var player_ids :Dictionary = {}
 var player_spawn_points :Dictionary = {} # {player_id:Vector2} all players
 
 onready var bot_players :Array = Global.bot_players
-var current_player_reinfoce_points :Array
 
 func setup_players_spawn_points():
 	var map_size :int = current_tile_map_manifest_data.map_size
@@ -246,18 +247,55 @@ func setup_players_spawn_points():
 		var p :PlayerData = all_players[index]
 		player_ids[p.player_id] = p
 		player_spawn_points[p.player_id] = points[index]
-		
-	var current_spawn_point = player_spawn_points[current_player.player_id]
-	current_player_reinfoce_points = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), current_spawn_point, 2
-	) + [current_spawn_point]
 	
-	var tile :TileMapData = tile_map.get_tile(current_spawn_point)
+	# ajustment to camera
+	var tile :TileMapData = tile_map.get_tile(player_spawn_points[current_player.player_id])
 	if tile == null:
 		return
 	
 	movable_camera.translation.x = tile.pos.x + 1
 	movable_camera.translation.z = tile.pos.z + 1
+	
+########################################## gameplay  ############################################
+# team spawned
+var teams :Dictionary = {} # {int:0}
+var _check_timer :Timer
+
+func setup_win_condition():
+	if is_server:
+		_check_timer = Timer.new()
+		_check_timer.wait_time = 10
+		_check_timer.autostart = false
+		_check_timer.one_shot = true
+		_check_timer.connect("timeout", self, "_check_timer_timeout")
+		add_child(_check_timer)
+		_check_timer.start()
+	
+func _check_timer_timeout():
+	teams.clear()
+	
+	for squad in squads:
+		if squad.team == -1: # exclude bot haraser
+			continue
+			
+		teams[squad.team] = true
+	
+	if teams.size() == 1:
+		rpc("_on_end", teams.keys().front())
+		return
+		
+	_check_timer.start()
+	
+remotesync func _on_end(team :int):
+	on_end(team)
+	
+func on_end(team :int):
+	var idx_bg = [1, 2]
+	Global.is_win = current_player.team == team
+	ui.hide_ui()
+	
+	yield(get_tree().create_timer(1),"timeout")
+	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, idx_bg.pick_random())
 	
 ########################################## camera  ############################################
 var movable_camera :MovableCamera
@@ -470,17 +508,21 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	squad_datas[squad] = data
 	
-	squad.translation = data.pos
+	squad.translation = nav.get_pos_v3(data.current_tile)
 	squads.append(squad)
 	_on_squad_spawned(squad, data)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	tile_position_manager.add_to_position(squad, squad.current_tile)
 	
+	# use current spawn tile as reinfoce tile
+	if player_spawn_points.has(squad.player_id):
+		var spawn_point = player_spawn_points[squad.player_id]
+		squad.reinfoce_tiles = TileMapUtils.get_adjacent_tiles(
+			TileMapUtils.get_directions(), spawn_point, 2
+		) + [spawn_point]
+	
 	if squad.player_id == current_player.player_id:
-		# use current spawn tile as reinfoce tile
-		squad.reinfoce_tiles = current_player_reinfoce_points
-		
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		
@@ -544,7 +586,7 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if not is_instance_valid(from):
 		return
 		
-	if not player_ids.has(from.player_id):
+	if not player_ids.has(from.player_id) or not squad_datas.has(from):
 		return
 		
 	var from_player :PlayerData = player_ids[from.player_id]

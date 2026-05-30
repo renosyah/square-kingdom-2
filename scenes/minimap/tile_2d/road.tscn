@@ -16,4 +16,4 @@ margin_right = 5.0
 margin_bottom = 5.0
 rect_min_size = Vector2( 10, 10 )
 mouse_filter = 2
-color = Color( 0.466667, 0.466667, 0.466667, 1 )
+color = Color( 0.423529, 0.286275, 0, 1 )

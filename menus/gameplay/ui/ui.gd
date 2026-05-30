@@ -207,7 +207,6 @@ func _on_selection_mode_pressed():
 	setting.unselect_on_command = not setting.unselect_on_command
 	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
 	
-
 func _on_cinematic_pressed():
 	if movable_camera_ui.visible and not selected_squads.empty():
 		on_cinematic_mode = true
@@ -229,8 +228,13 @@ func _on_cinematic_pressed():
 	menu_buttons.visible = not on_cinematic_mode
 	log_event.visible = not on_cinematic_mode
 
-
-
+func hide_ui():
+	movable_camera_ui.visible = false
+	overlay_ui.visible = false
+	control_ui.visible = false
+	menu_buttons.visible = false
+	log_event.visible = false
+	
 
 
 
