@@ -116,7 +116,7 @@ func _perform_range_attack():
 			m.target_idx = target_idx
 			m.enemy = enemy_member
 			m.range_attack()
-			
+		
 func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
 	var _pos = pos
 	_pos.y = pos.y

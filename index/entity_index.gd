@@ -77,18 +77,19 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_1.png"), #9
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_2.png"), #10
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_3.png"), #11
-	preload("res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"), #12
 	
+	preload("res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"), #12
 	preload("res://assets/user_interface/squad_potrait/cavalry/sword_cav.png"), #13
 	preload("res://assets/user_interface/squad_potrait/cavalry/archer_cav.png"), #14
-	preload("res://assets/user_interface/squad_potrait/cavalry/royal_cav.png"), #15
+	preload("res://assets/user_interface/squad_potrait/cavalry/heavy_spear_cav.png"),#15
+	preload("res://assets/user_interface/squad_potrait/cavalry/heavy_sword_cav.png"),#16
+	preload("res://assets/user_interface/squad_potrait/cavalry/royal_cav.png"), #17
 	
-	preload("res://assets/user_interface/squad_potrait/siege_engine/catapult.png"),#16
-	preload("res://assets/user_interface/squad_potrait/siege_engine/balista.png"),#17
-	preload("res://assets/user_interface/squad_potrait/siege_engine/ram.png"),#18
-	preload("res://assets/user_interface/squad_potrait/siege_engine/siege_tower.png"),#19
-	preload("res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png")#20
-	
+	preload("res://assets/user_interface/squad_potrait/siege_engine/catapult.png"),#18
+	preload("res://assets/user_interface/squad_potrait/siege_engine/balista.png"),#19
+	preload("res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png"),#20
+	preload("res://assets/user_interface/squad_potrait/siege_engine/ram.png"),#21
+	preload("res://assets/user_interface/squad_potrait/siege_engine/siege_tower.png"),#22
 ]
 
 const player_potraits = [

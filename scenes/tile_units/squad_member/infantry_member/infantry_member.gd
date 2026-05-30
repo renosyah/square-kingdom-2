@@ -59,7 +59,7 @@ func resurect():
 	if _armor:
 		_armor.visible = true
 		
-	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
+	leg_animation_state.start("on_sadle" if on_horse else "iddle")
 	body_animation_state.start("iddle")
 	
 func apply_equipment():
@@ -270,8 +270,9 @@ func moving(delta :float):
 			)
 			
 		if melee_mode:
+			var attack_move = squad.attack_move
 			body_animation_state.travel(
-				_melee_weapon.walk_animation if _is_moving else _melee_weapon.ready_animation
+				_melee_weapon.walk_animation if (_is_moving and not attack_move) else _melee_weapon.ready_animation
 			)
 		
 	if not on_horse:
@@ -279,11 +280,11 @@ func moving(delta :float):
 			"walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
 		)
 
-func dead():
-	.dead()
+func set_dead():
+	.set_dead()
 	
-	body_animation_state.travel("die")
-	leg_animation_state.travel("die")
+	body_animation_state.start("die")
+	leg_animation_state.start("die")
 
 func _on_auto_iddle_timer_timeout():
 	iddle = true

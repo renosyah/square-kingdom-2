@@ -24,6 +24,7 @@ albedo_color = Color( 0.686275, 0.686275, 0.686275, 1 )
 script = ExtResource( 1 )
 speed = 14.0
 max_range = 4.0
+threshold = 0.1
 
 [node name="TrailRender" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.140432 )

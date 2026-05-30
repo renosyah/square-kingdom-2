@@ -38,4 +38,5 @@ member_hp = 120
 member_max_hp = 120
 total_member = 9
 heal_amount = 31
+charge_damage = 0
 siege_engine_attack_damage = 0

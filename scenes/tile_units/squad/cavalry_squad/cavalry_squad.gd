@@ -65,7 +65,7 @@ func _spawn_members():
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
-		member.connect("on_member_dead", self, "_on_member_dead")
+		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
 		
 		add_child(member)
 		member.set_as_toplevel(true)
@@ -186,7 +186,8 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 		squad_hit += 1
 			
 		for idx in members.size():
-			enemy_squad.take_damage(int(attack_damage * clamp(randf(), 0.5, 1)), idx, get_path())
+			if not members[idx].is_dead:
+				enemy_squad.take_damage(int(attack_damage * clamp(randf(), 0.5, 1)), idx, get_path())
 	
 	if squad_hit > 0:
 		if not _horse_audio.playing:

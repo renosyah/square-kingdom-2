@@ -363,7 +363,7 @@ tracks/11/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.719321 ) ]
+"values": [ Vector3( 0, -1.19209e-07, 0.719321 ) ]
 }
 tracks/12/type = "value"
 tracks/12/path = NodePath("pivot/Spatial/arm/basket:rotation_degrees")
@@ -375,7 +375,7 @@ tracks/12/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 56.448, 0, 0 ) ]
+"values": [ Vector3( 45, 0, 0 ) ]
 }
 tracks/13/type = "value"
 tracks/13/path = NodePath("pivot/wheel_f2:translation")
@@ -560,7 +560,7 @@ tracks/12/keys = {
 "times": PoolRealArray( 0, 0.4, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 56.448, 0, 0 ), Vector3( -76.156, 0, 0 ), Vector3( -173.598, 0, 0 ), Vector3( 56.448, 0, 0 ) ]
+"values": [ Vector3( 45, 0, 0 ), Vector3( -76.156, 0, 0 ), Vector3( -173.598, 0, 0 ), Vector3( 45, 0, 0 ) ]
 }
 tracks/13/type = "value"
 tracks/13/path = NodePath("pivot/Spatial/arm/basket:translation")

@@ -1,5 +1,7 @@
 extends MarginContainer
 
+var current_player :PlayerData
+
 onready var list = $VBoxContainer
 onready var temp = $temp
 onready var timer = $Timer
@@ -12,26 +14,27 @@ func add_log_damage(squad :BaseSquad, amount :int):
 	if not from:
 		return
 		
-	var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name, amount]
-	add_log("[DMG] [color=#%s]%s[/color] struck by [color=#%s]%s[/color] for [color=red]%s[/color] damage" % arr)
+	if current_player.player_id in [from.player_id, squad.player_id]:
+		var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name, amount]
+		add_log("[DMG] [color=#%s]%s[/color] struck by [color=#%s]%s[/color] for [color=red]%s[/color] damage" % arr)
 	
-func add_log_member_lost(squad :BaseSquad):
-
-	var from :BaseSquad = get_node_or_null(squad.attacked_by)
+func add_log_member_lost(squad :BaseSquad, member :SquadMember):
+	var from :BaseSquad = get_node_or_null(member.attacked_by)
 	if not from:
 		return
 		
-	var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name]
-	add_log("[LOSS] [color=#%s]%s[/color] lost 1 men from [color=#%s]%s[/color]" % arr)
+	if current_player.player_id in [from.player_id, squad.player_id]:
+		var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name]
+		add_log("[LOSS] [color=#%s]%s[/color] lost 1 men from [color=#%s]%s[/color]" % arr)
 	
 func add_log_squad_dead(squad :BaseSquad):
-
 	var from :BaseSquad = get_node_or_null(squad.attacked_by)
 	if not from:
 		return
 		
-	var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name]
-	add_log("[DESTROYED] [color=#%s]%s[/color] Destroyed by [color=#%s]%s[/color]" % arr)
+	if current_player.player_id in [from.player_id, squad.player_id]:
+		var arr = [squad.color.to_html(),squad.unit_name,from.color.to_html(),from.unit_name]
+		add_log("[DESTROYED] [color=#%s]%s[/color] Destroyed by [color=#%s]%s[/color]" % arr)
 
 func add_log(text :String):
 	var l :RichTextLabel = temp.duplicate()

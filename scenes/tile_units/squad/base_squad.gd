@@ -104,6 +104,7 @@ var _path_indicator :Spatial
 var _path_indicator_dest :Spatial
 
 var _taking_damages_pending :Array = [] # [[]]
+var _member_deads_pending :Array = [] # [[]]
 var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
@@ -120,6 +121,7 @@ var _range_engagement :bool
 
 func _ready():
 	Global.connect("on_setting_updated", self, "_on_setting_updated")
+	connect("tree_exiting", self, "_on_tree_exiting")
 	
 	_blood_particle = preload("res://assets/blood_particle/blood_particle.tscn").instance()
 	_blood_particle.set_as_toplevel(true)
@@ -171,14 +173,14 @@ func _ready():
 	
 	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
 	_path_indicator.material = member_material
-	add_child(_path_indicator)
+	Global.current_root.add_child(_path_indicator)
 	_path_indicator.set_as_toplevel(true)
 	_path_indicator.visible = false
 	
 	_path_indicator_dest = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
 	_path_indicator_dest.material = member_material
 	_path_indicator_dest.squad_icon = squad_icon
-	add_child(_path_indicator_dest)
+	Global.current_root.add_child(_path_indicator_dest)
 	_path_indicator_dest.set_as_toplevel(true)
 	_path_indicator_dest.visible = false
 	
@@ -193,6 +195,9 @@ func _ready():
 	_path_indicator.visible = show_move_indicator
 	_path_indicator.translation = _current_tile_v3
 	
+func _on_tree_exiting():
+	_path_indicator_dest.queue_free()
+	_path_indicator.queue_free()
 	
 func _on_setting_updated(d :SettingData):
 	show_move_indicator = d.show_unit_tile
@@ -283,7 +288,7 @@ func _spawn_members():
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
-		member.connect("on_member_dead", self, "_on_member_dead")
+		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
 		
 		add_child(member)
 		member.set_as_toplevel(true)
@@ -334,30 +339,9 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 		
 	target.squad.take_damage(dmg, target_member_idx, get_path())
 	
-func _on_member_dead(member :SquadMember):
-	if _members.has(member):
-		member_alive -= 1
-		
-		if not _blood_particle.emitting and visible and enable_blood:
-			_blood_particle.translation = member.global_position
-			_blood_particle.emitting = true
-			
-		if not _unit_audio.playing:
-			_unit_audio.stream = death_sounds[randi() % 4]
-		
-			# funny
-			if randf() < 0.08:
-				var _l = [5, 6, 7]
-				_unit_audio.stream = death_sounds[_l.pick_random()]
-		
-			_unit_audio.play()
-		
-		
-		emit_signal("on_squad_member_dead", self, member)
-		
-	if member_alive <= 0:
-		set_dead(false)
-		
+func _on_local_member_die(member :SquadMember, idx :int):
+	_member_deads_pending.append([idx, member.attacked_by])
+	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
@@ -423,23 +407,36 @@ func has_range_weapon() -> bool:
 func moving(delta :float) -> void:
 	.moving(delta)
 	
-	_on_walking(delta)
+	_send_rpc_pending()
 	
-	# prevent bursh of damage info send over network
-	# check all the pending and send all at once
-	if not _taking_damages_pending.empty() and _taking_damage_timer.is_stopped():
-		_taking_damage_timer.start()
-		rpc_unreliable("_taking_damages", _taking_damages_pending)
-		_taking_damages_pending.clear()
-		
 	if is_dead:
 		return
 		
+	_on_walking(delta)
+	
 	var pos :Vector3 = global_position
 	_ajust_formation(pos, delta)
 	_set_floating_info_pos(pos, delta)
 	_attack_enemy_proccess(pos, delta)
 	
+# prevent bursh of damage info send over network
+# check all the pending and send all at once
+func _send_rpc_pending():
+	if not _taking_damage_timer.is_stopped():
+		return
+		
+	_taking_damage_timer.start()
+	
+	if not _taking_damages_pending.empty():
+		rpc_unreliable("_taking_damages", _taking_damages_pending)
+		_taking_damages_pending.clear()
+		return
+		
+	if not _member_deads_pending.empty():
+		rpc("_on_members_dead", _member_deads_pending)
+		_member_deads_pending.clear()
+		
+		
 func _follow_path_proccess(delta :float, pos :Vector3) -> void:
 	._follow_path_proccess(delta, pos)
 	
@@ -643,6 +640,8 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	attacked_by = from
 	
 	var m :SquadMember = _members[member_idx]
+	m.attacked_by = attacked_by
+	
 	if amount > 0:
 		m.take_damage(amount)
 		
@@ -710,6 +709,38 @@ remotesync func _taking_damages(datas :Array):
 		
 	emit_signal("on_squad_taking_damage", self, amount_total)
 	
+remotesync func _on_members_dead(datas :Array):
+	var pos = global_position
+	
+	for i in datas:
+		var member :SquadMember = _members[i[0]]
+		member.attacked_by = i[1]
+		member.set_dead()
+		
+		member_alive -= 1
+		pos = member.global_position
+		_on_member_dead(member)
+		
+	if not _blood_particle.emitting and visible and enable_blood:
+		_blood_particle.translation = pos
+		_blood_particle.emitting = true
+		
+	if not _unit_audio.playing:
+		_unit_audio.stream = death_sounds[randi() % 4]
+	
+		# funny
+		if randf() < 0.08:
+			var _l = [5, 6, 7]
+			_unit_audio.stream = death_sounds[_l.pick_random()]
+	
+		_unit_audio.play()
+		
+	if member_alive <= 0 and not is_dead:
+		set_dead(false)
+		
+func _on_member_dead(member :SquadMember):
+	emit_signal("on_squad_member_dead", self, member)
+
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	

@@ -56,6 +56,8 @@ export var member_max_hp :int = 100
 export var total_member :int = 9
 export var heal_amount :int = 10
 
+# for cav
+export var charge_damage :int
 
 # this is for siege engine
 # because i cant get the stats of the engines
@@ -100,6 +102,7 @@ func from_dictionary(_data : Dictionary):
 	heal_amount = _data["u"]
 	is_mounted = _data["v"]
 	siege_engine_attack_damage = _data["v1"]
+	charge_damage = _data["v2"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -138,6 +141,7 @@ func to_dictionary() -> Dictionary :
 	_data["u"] = heal_amount
 	_data["v"] = is_mounted
 	_data["v1"] = siege_engine_attack_damage
+	_data["v2"] = charge_damage
 	return _data
 	
 

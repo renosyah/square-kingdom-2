@@ -70,10 +70,10 @@ func range_attack():
 	_rider.range_attack()
 	iddle = _rider.iddle
 	
-func dead():
-	.dead()
+func set_dead():
+	.set_dead()
 	
-	_rider.dead()
+	_rider.set_dead()
 	animation_state.travel("dead")
 	
 func resurect():

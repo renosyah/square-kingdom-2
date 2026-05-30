@@ -1,18 +1,13 @@
 extends BaseGameplay
 
-const enemy_phases = [[12],[0,0,0],[01,2,3],[1,2,3],[1,2,3,4,5],[0,1,2,3,4,5,6,7,8,12],[6,7,8,9,10,11,12,13]]
-onready var bot_spawner_timer = $bot_spawner_timer
-var bot_squads :Array
-var dup :Array
+const enemy_phases = [[0,0,0],[01,2,3],[1,2,3],[1,2,3,4,5,17],[0,1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
 
+onready var bot_spawner_timer = $bot_spawner_timer
+
+var bot_squads :Array
 var wave_per_stage = 5
 var current_wave = 1
 var enemy_type_idx :int = 0
-
-func _ready():
-	dup = Global.custom_squads.duplicate()
-	dup.pop_back() # remove anoying ass horse archer
-	dup.pop_back() # remove op unit
 
 func _on_all_player_ready():
 	._on_all_player_ready()

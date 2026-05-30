@@ -17,6 +17,9 @@ func attack():
 	animation_state.travel("shot_bolt")
 	
 func _on_bolt_shot():
+	if not Global.current_root:
+		return
+		
 	_combat_sound.stream = arm_swing_audio
 	_combat_sound.play()
 	

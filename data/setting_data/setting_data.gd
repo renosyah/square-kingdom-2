@@ -5,9 +5,9 @@ class_name SettingData
 export var camera_move_speed :float = 0.018 # 0.008 - 0.040
 export var camera_zoom_speed :float = 0.02 # 0.01 - 0.03
 export var camera_rotation_speed :float = 45.0 # 20 - 90
-export var unselect_on_command :bool = false
-export var show_unit_tile :bool = false
-export var show_feed :bool = false
+export var unselect_on_command :bool = true
+export var show_unit_tile :bool = true
+export var show_feed :bool = true
 
 # volume
 export var music :float = 0.8

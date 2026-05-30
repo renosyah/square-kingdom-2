@@ -347,6 +347,8 @@ func setup_ui():
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.center_pos = tile_map.global_position
 	
+	ui.log_event.current_player = current_player
+	
 func _on_setting_updated(d :SettingData):
 	ui.movable_camera_ui.move_speed = d.camera_move_speed
 	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
@@ -451,6 +453,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
 	
 	if squad is CavalrySquad:
+		squad.charge_damage = data.charge_damage
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
 		
 	#var my_team = (data.team == current_player.team)
@@ -523,9 +526,9 @@ func _on_squad_taking_damage(squad :BaseSquad, amount :int):
 	if setting.show_feed:
 		ui.log_event.add_log_damage(squad, amount)
 	
-func _on_squad_member_dead(squad :BaseSquad, member):
+func _on_squad_member_dead(squad :BaseSquad, member :SquadMember):
 	if setting.show_feed:
-		ui.log_event.add_log_member_lost(squad)
+		ui.log_event.add_log_member_lost(squad, member)
 
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
@@ -604,7 +607,7 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	squad.floating_info.queue_free()
 	squad.queue_free()
 	
-func _on_cav_charge(squad :CavalrySquad):
+func _on_cav_charge(squad : CavalrySquad):
 	if squad.player_id == current_player.player_id:
 		unit_charged_impact(true)
 

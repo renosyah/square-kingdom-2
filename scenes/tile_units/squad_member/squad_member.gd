@@ -17,6 +17,7 @@ export var hp :int = 100
 export var max_hp :int = 100
 
 var squad
+var attacked_by :NodePath
 
 var iddle :bool = true
 var target_idx :int 
@@ -46,16 +47,6 @@ func resurect():
 func set_dead():
 	set_process(false)
 	is_dead = true
-	
-	rpc("_on_member_dead")
-	
-remotesync func _on_member_dead():
-	dead()
-	
-func dead():
-	set_process(false)
-	is_dead = true
-	emit_signal("on_member_dead", self)
 	
 func prepare_melee_weapon():
 	pass
@@ -96,7 +87,9 @@ func take_damage(amount :int):
 	hp = int(clamp(hp - amount, 0, max_hp))
 	
 	if hp <= 0:
-		set_dead()
+		is_dead = true # safe guard
+		# set_dead() <- dont set, this will be called later via RPC on squad
+		emit_signal("on_member_dead", self)
 
 
 

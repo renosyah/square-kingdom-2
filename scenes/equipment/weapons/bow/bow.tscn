@@ -34,6 +34,7 @@ material/0 = ExtResource( 7 )
 
 [node name="MeshInstance" type="MeshInstance" parent="MeshInstance2"]
 transform = Transform( 1, 0, 3.82137e-15, 3.82137e-15, 4.37114e-08, -1, 0, 1, 4.37114e-08, 9.48914e-09, 0, -0.108543 )
+cast_shadow = 0
 mesh = ExtResource( 5 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
