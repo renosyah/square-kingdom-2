@@ -306,7 +306,7 @@ var max_army_size :int = 9
 var bot_players :Array = []
 var bot_player_armies :Dictionary = {} # {player_id:[int]}
 
-func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, in_bytes :bool = false) -> Array:
+func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.get_directions(), spawn_pos, 1
@@ -314,7 +314,7 @@ func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, in_bytes 
 	for idx in army.size():
 		var tile_id = tiles[idx]
 		var squad :SquadData = prepare_squad(idx, army[idx], player, tile_id)
-		datas.append(squad.to_bytes() if in_bytes else squad)
+		datas.append(squad)
 		
 	return datas
 	
@@ -338,8 +338,8 @@ func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> Sq
 	# twice HP
 	if i == 0:
 		data.icon_idx = 6
-		data.member_max_hp = data.member_max_hp * 2
-		data.member_hp = data.member_max_hp
+		data.member_hp = data.member_hp * 2
+		data.spawn_time = 5
 		
 	return data
 

@@ -87,7 +87,35 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	_perform_range_attack()
 
 
-
+func _perform_range_attack():
+	if not _has_range_weapon:
+		return
+		
+	if _range_attack_timer.is_stopped():
+		_range_attack_timer.start()
+		_range_engagement = true
+		
+		var iddles :Array = get_iddle_members()
+		if iddles.empty():
+			return
+			
+		for i in _members:
+			i.prepare_range_weapon()
+			
+		for i in iddles:
+			var enemy_member :SquadMember = enemy.pick_member(false)
+			var target_idx :int = enemy.get_member_index(enemy_member)
+			if target_idx == -1:
+				continue
+				
+			var m :SquadMember = i
+			if not m.iddle:
+				continue
+				
+			m.target_idx = target_idx
+			m.enemy = enemy_member
+			m.range_attack()
+			return
 
 
 

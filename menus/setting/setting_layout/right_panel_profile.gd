@@ -24,9 +24,6 @@ func _apply():
 	player_color_display.color = EntityIndex.player_colors[player_data.color_idx]
 	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
 
-func _on_button_edit_name_pressed():
-	edit_player_name.editable = not edit_player_name.editable
-	
 func _color_btn_pressed(idx):
 	player_data.color_idx = idx
 	_apply()
@@ -42,4 +39,7 @@ func _on_change_potrait_pressed():
 		
 	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
 
-
+func _on_button_random_name_pressed():
+	player_data.player_name = RandomNameGenerator.generate_name()
+	edit_player_name.text = player_data.player_name
+	

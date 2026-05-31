@@ -24,7 +24,7 @@ func display_info(data :SquadData):
 	_info_description.text = data.description
 	_info_icon_color.color = EntityIndex.player_colors[data.color_idx]
 	_info_icon.texture = EntityIndex.squad_icon[data.icon_idx]
-	_hp.text = "%s | %s" % [data.member_max_hp,data.heal_amount]
+	_hp.text = "%s | %s" % [data.member_hp,data.heal_amount]
 	_attack.text = "%s | %s" % _get_attack_values(data)
 	_speed.text = "%s" % data.speed
 	_mounted.visible = data.is_mounted

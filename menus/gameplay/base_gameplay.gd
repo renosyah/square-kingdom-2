@@ -17,7 +17,6 @@ func _ready():
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
 	
-	setup_win_condition()
 	setup_ambient_audio()
 	setup_unit_position_manager()
 	spawn_tile_map()
@@ -26,12 +25,6 @@ func _ready():
 	setup_clickable_floor()
 	setup_ui()
 	set_tap()
-	
-	# usualy call this after doing some shady work
-	# because we dont generate and prepare shit anymore
-	# just tell everybody to join
-	if NetworkLobbyManager.is_server():
-		NetworkLobbyManager.set_host_ready()
 	
 func _notification(what):
 	match what:
@@ -51,6 +44,10 @@ func _on_leave():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 	
 func _on_all_player_ready():
+	if is_server:
+		spawn_squads(tower_datas)
+		
+	yield(get_tree().create_timer(2), "timeout")
 	Global.hide_transition()
 	
 ########################################## proccess  ############################################
@@ -106,6 +103,9 @@ const announce_commander_killed = [
 ]
 const announce_commander_lost = [
 	preload("res://assets/sounds/announcement/commander_lost_1.wav"), preload("res://assets/sounds/announcement/commander_lost_2.wav"), preload("res://assets/sounds/announcement/commander_lost_3.wav"), preload("res://assets/sounds/announcement/commander_lost_4.wav"), preload("res://assets/sounds/announcement/commander_lost_5.wav"), preload("res://assets/sounds/announcement/commander_lost_6.wav")
+]
+const announce_squad_spawned = [
+	preload("res://assets/sounds/announcement/reinforcement_1.wav"), preload("res://assets/sounds/announcement/reinforcement_2.wav"), preload("res://assets/sounds/announcement/reinforcement_3.wav"), preload("res://assets/sounds/announcement/reinforcement_4.wav"), preload("res://assets/sounds/announcement/reinforcement_5.wav"), preload("res://assets/sounds/announcement/reinforcement_6.wav")
 ]
 
 var ui_sound :AudioStreamPlayer
@@ -193,6 +193,11 @@ func play_squad_killed(is_commander :bool):
 	
 	announce_killed_idx += 1
 	
+func play_squad_spawn():
+	if not annoucer_sound.playing:
+		annoucer_sound.stream = announce_squad_spawned.pick_random()
+		annoucer_sound.play()
+		
 ########################################## position manager ############################################
 var tile_position_manager :TilePositionManager
 
@@ -221,15 +226,33 @@ func spawn_tile_map():
 	
 func _on_tile_map_ready():
 	nav = tile_map.get_nav_tile_map()
-	NetworkLobbyManager.set_ready()
 	
 	# this function only be called
 	# if tile map is ready and setup properly
 	setup_players_spawn_points()
+	start_spawn_army()
 	
+	if is_server:
+		NetworkLobbyManager.set_host_ready()
+		yield(get_tree().create_timer(3), "timeout")
+		
+	NetworkLobbyManager.set_ready()
+	
+########################################## players army spawn mechanism  ############################################
+
+func start_spawn_army():
+	ui.squad_spawner.add_spawn_queue(Global.prepare_army(
+		Global.current_army, player_spawn_points[current_player.player_id], current_player
+	))
+
+func _on_squad_spawner_squads_ready(squads :Array):
+	spawn_squads(squads)
+
 ########################################## players spawn  ############################################
+var bot_bandit :PlayerData # bandit ai
 
 onready var current_player :PlayerData = Global.current_player
+
 onready var players :Array = Global.players # [PlayerData]
 onready var player_ids :Dictionary = {}
 onready var bot_players :Array = Global.bot_players
@@ -237,7 +260,21 @@ onready var bot_players :Array = Global.bot_players
 var player_spawn_points :Dictionary = {} # {player_id:Vector2} all players
 var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 
+var tower_datas :Array = [] # servers spawn only
+
 func setup_players_spawn_points():
+	# this is for bot bandit
+	bot_bandit = PlayerData.new()
+	bot_bandit.player_network_id = 1
+	bot_bandit.player_id = "bot_bandit" 
+	bot_bandit.team = -1
+	bot_bandit.color_idx = 10
+	
+	# this is for bot bandit
+	setup_base(bot_bandit, Vector2.ZERO)
+	player_spawn_points[bot_bandit.player_id] = Vector2.ZERO
+	player_reinfoce_tiles[bot_bandit.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 2) + [Vector2.ZERO]
+	
 	var map_size :int = current_tile_map_manifest_data.map_size
 	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point
 	var all_players = players + bot_players
@@ -249,14 +286,6 @@ func setup_players_spawn_points():
 		player_spawn_points[p.player_id] = points[index]
 		player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), points[index], 2) + [points]
 		setup_base(p, points[index])
-		
-	# this is for bot haraser bases
-	var bot_harasment = PlayerData.new()
-	bot_harasment.player_network_id = 1
-	bot_harasment.player_id = "bot_harasment_TOWER" 
-	bot_harasment.team = -1
-	bot_harasment.color_idx = 10
-	setup_base(bot_harasment, Vector2.ZERO)
 		
 	# this for current player only
 	# ajustment to camera
@@ -324,39 +353,25 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 		tile_map.get_tile_instance(tile).add_child(w)
 		w.rotation_degrees.y = wall_corner_orientation[idx]
 		
-		var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
-		guard_tower.network_id = 1
-		guard_tower.player_id = p.player_id
-		guard_tower.node_name = "tower_%s" % Utils.create_unique_id()
-		guard_tower.current_tile = tile
-		guard_tower.color_idx = p.color_idx
-		guard_tower.team = p.team
+		if is_server:
+			var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
+			guard_tower.network_id = 1
+			guard_tower.player_id = p.player_id
+			guard_tower.node_name = "tower_%s_%s" % [p.player_id, idx]
+			guard_tower.current_tile = tile
+			guard_tower.color_idx = p.color_idx
+			guard_tower.team = p.team
+			tower_datas.append(guard_tower)
 		
-		_spawn_squad(guard_tower.to_bytes())
 		
-#	for i in wall_positions:
-#		var t = preload("res://scenes/tiles/wall.tscn").instance()
-#		add_child(t)
-#		t.translation = i
-		
-########################################## gameplay  ############################################
-# team spawned
-var teams :Dictionary = {} # {int:0}
-var _check_timer :Timer
+########################################## gameplay win condition  ############################################
+var is_end :bool = false
 
-func setup_win_condition():
-	if is_server:
-		_check_timer = Timer.new()
-		_check_timer.wait_time = 10
-		_check_timer.autostart = false
-		_check_timer.one_shot = true
-		_check_timer.connect("timeout", self, "_check_timer_timeout")
-		add_child(_check_timer)
-		_check_timer.start()
-	
-func _check_timer_timeout():
-	teams.clear()
-	
+func _check_wining_team():
+	if not is_server or is_end:
+		return
+		
+	var teams :Dictionary = {} # {int:0}
 	for squad in squads:
 		if squad.team == -1: # exclude bot haraser
 			continue
@@ -364,10 +379,9 @@ func _check_timer_timeout():
 		teams[squad.team] = true
 	
 	if teams.size() == 1:
+		is_end = true
 		rpc("_on_end", teams.keys().front())
 		return
-		
-	_check_timer.start()
 	
 remotesync func _on_end(team :int):
 	on_end(team)
@@ -445,6 +459,8 @@ func setup_ui():
 	
 	ui.scoreboard.init_scoreboard(players + bot_players)
 	ui.minimap.load_data_map(current_tile_map_file_data)
+	
+	ui.squad_spawner.connect("on_squads_ready", self, "_on_squad_spawner_squads_ready")
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
 	
 	var selection_buttons = [
@@ -509,6 +525,8 @@ var selected_squads :Array
 var squads :Array = []
 var squad_datas :Dictionary = {}
 
+var player_debuf :Array = []
+
 func spawn_squads(squad_datas :Array):
 	var list_bytes :Array = []
 	for i in squad_datas:
@@ -540,13 +558,18 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
-	squad.can_attack = data.can_attack
+	squad.can_attack = true
 	squad.turning_speed = data.turning_speed
 	squad.melee_attack_speed = data.melee_attack_speed
 	squad.range_attack_speed = data.range_attack_speed
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
 	squad.attack_range = data.attack_range
+	
+	# apply debuf, 50% slower attack speed
+	if player_debuf.has(data.player_id):
+		squad.melee_attack_speed += data.melee_attack_speed
+		squad.range_attack_speed += data.range_attack_speed
 
 	# squad member
 	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
@@ -556,7 +579,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_range_weapon = EntityIndex.weapons[data.member_range_weapon_idx]
 	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = data.member_hp
-	squad.member_max_hp = data.member_max_hp
+	squad.member_max_hp = data.member_hp
 	squad.heal_amount = data.heal_amount
 	squad.member_alive = data.total_member
 	squad.squad_role = data.squad_role
@@ -619,6 +642,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
+		play_squad_spawn()
 	
 func _move_squad_to(tile :TileMapData, then_unselect :bool):
 	if selected_squads.empty():
@@ -738,12 +762,22 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 		
 	if squad_datas.has(squad):
 		squad_datas.erase(squad)
+		
+	_check_wining_team()
 	
 	if setting.show_feed:
 		ui.log_event.add_log_squad_dead(squad)
 	
 	# cheap ass way to detect commander
 	var is_commander :bool = (data.icon_idx == 6)
+
+	# apply debuf, 50% slower attack speed
+	if is_commander and not player_debuf.has(squad.player_id):
+		player_debuf.append(squad.player_id)
+		for s in squads:
+			if s.player_id == squad.player_id:
+				s.melee_attack_speed += s.melee_attack_speed
+				s.range_attack_speed += s.range_attack_speed
 	
 	# confirm the lost was yours
 	if squad.player_id == current_player.player_id:

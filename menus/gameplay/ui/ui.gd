@@ -33,6 +33,8 @@ onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/MarginContainer/HB
 onready var cinematic = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic
 onready var log_event = $CanvasLayer/Control/log_event
 onready var scoreboard = $CanvasLayer/Control/scoreboard
+onready var squad_spawner = $squad_spawner
+onready var squad_spawner_ui = $CanvasLayer/Control/VBoxContainer/Control/squad_spawner_ui
 
 onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
 onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
@@ -102,6 +104,11 @@ func add_squad_card(squad :BaseSquad, data :SquadData):
 	card.selected_squads = selected_squads
 	squad_holder.add_child(card)
 	
+	var children = squad_holder.get_children()
+	children.sort_custom(self, "_sort_squad_by_order")
+	for i in range(children.size()):
+		squad_holder.move_child(children[i], i)
+		
 func remove_squad_card(squad :BaseSquad):
 	for c in squad_holder.get_children():
 		if c.squad == squad:
@@ -109,6 +116,9 @@ func remove_squad_card(squad :BaseSquad):
 			c.queue_free()
 			break
 			
+func _sort_squad_by_order(a, b) -> bool:
+	return a.data.sort_order < b.data.sort_order
+	
 func add_squad_floating_info(squad :BaseSquad, data :SquadData, p :PlayerData):
 	var _floating_info :FloatingSquadInfo = floating_squad_info_scene.instance()
 	_floating_info.selected_squads = selected_squads
@@ -227,13 +237,15 @@ func _on_cinematic_pressed():
 	control_ui.visible = not on_cinematic_mode
 	menu_buttons.visible = not on_cinematic_mode
 	log_event.visible = not on_cinematic_mode
-
+	squad_spawner_ui.visible = not on_cinematic_mode
+	
 func hide_ui():
 	movable_camera_ui.visible = false
 	overlay_ui.visible = false
 	control_ui.visible = false
 	menu_buttons.visible = false
 	log_event.visible = false
+	squad_spawner_ui.visible = false
 	
 
 

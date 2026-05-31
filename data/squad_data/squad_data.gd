@@ -10,7 +10,6 @@ export var description :String
 export var scene_idx :int
 export var node_name :String
 export var current_tile :Vector2
-export var pos :Vector3
 
 # tile unit data
 export var network_id :int
@@ -32,11 +31,11 @@ export var sort_order :int
 # 1 :cavalry
 # 2 :infantry melee
 # 3 :archer
+# 4 :siege engine
 export var squad_role :int
 
 # squad data
 export var member_scene_idx :int
-export var can_attack :bool = true
 export var turning_speed :float = 8
 export var melee_attack_speed :float = 0.8
 export var range_attack_speed :float = 0.8
@@ -44,6 +43,7 @@ export var formation_density :float = 0.35
 export var icon_idx :int
 export var potrait_idx :int
 export var is_mounted :bool = false
+export var spawn_time :int = 100
 
 # squad member
 export var member_headgear_idx :int
@@ -52,7 +52,6 @@ export var member_shield_idx :int
 export var member_melee_weapon_idx :int
 export var member_range_weapon_idx :int
 export var member_hp :int = 100
-export var member_max_hp :int = 100
 export var total_member :int = 9
 export var heal_amount :int = 10
 
@@ -70,7 +69,6 @@ func from_dictionary(_data : Dictionary):
 	scene_idx = _data["a"]
 	node_name = _data["a2"]
 	current_tile = _data["a3"]
-	pos = _data["a4"]
 	squad_id = _data["a5"]
 	squad_name = _data["a6"]
 	description = _data["a7"]
@@ -84,7 +82,6 @@ func from_dictionary(_data : Dictionary):
 	squad_role = _data["f3"]
 	attack_range = _data["f4"]
 	member_scene_idx = _data["g"]
-	can_attack = _data["i"]
 	turning_speed = _data["j"]
 	melee_attack_speed = _data["k1"]
 	range_attack_speed = _data["k2"]
@@ -97,19 +94,18 @@ func from_dictionary(_data : Dictionary):
 	member_melee_weapon_idx = _data["p"]
 	member_range_weapon_idx = _data["q"]
 	member_hp = _data["r"]
-	member_max_hp = _data["s"]
 	total_member = _data["t"]
 	heal_amount = _data["u"]
 	is_mounted = _data["v"]
 	siege_engine_attack_damage = _data["v1"]
 	charge_damage = _data["v2"]
+	spawn_time = _data["v3"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
 	_data["a"] = scene_idx
 	_data["a2"] = node_name
 	_data["a3"] = current_tile
-	_data["a4"] = pos
 	_data["a5"] = squad_id
 	_data["a6"] = squad_name
 	_data["a7"] = description
@@ -123,7 +119,6 @@ func to_dictionary() -> Dictionary :
 	_data["f3"] = squad_role
 	_data["f4"] = attack_range
 	_data["g"] = member_scene_idx
-	_data["i"] = can_attack
 	_data["j"] = turning_speed
 	_data["k1"] = melee_attack_speed
 	_data["k2"] = range_attack_speed
@@ -136,12 +131,12 @@ func to_dictionary() -> Dictionary :
 	_data["p"] = member_melee_weapon_idx
 	_data["q"] = member_range_weapon_idx
 	_data["r"] = member_hp
-	_data["s"] = member_max_hp
 	_data["t"] = total_member
 	_data["u"] = heal_amount
 	_data["v"] = is_mounted
 	_data["v1"] = siege_engine_attack_damage
 	_data["v2"] = charge_damage
+	_data["v3"] = spawn_time
 	return _data
 	
 

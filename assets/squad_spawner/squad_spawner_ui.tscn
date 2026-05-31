@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/squad_spawner/squad_spawner_ui.gd" type="Script" id=1]
+
+[node name="squad_spawner_ui" type="MarginContainer"]
+margin_right = 90.0
+margin_bottom = 339.0
+rect_min_size = Vector2( 90, 0 )
+script = ExtResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 90.0
+margin_bottom = 339.0
+custom_constants/margin_right = 24
+custom_constants/margin_left = 8
+
+[node name="holder" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 8.0
+margin_right = 66.0
+margin_bottom = 339.0
+alignment = 1

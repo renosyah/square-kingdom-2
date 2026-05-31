@@ -1,0 +1,63 @@
+extends Node
+class_name SquadSpawner
+
+signal on_queue_update
+signal on_squads_ready(datas)
+
+export var max_batch :int = 2
+export var increment_per_batch :float = 15
+var _increment = 0
+
+onready var pending_timer = $pending_timer
+
+var queue :Dictionary = {} # {SquadData:Timer}
+var _pending :Array = []
+var _datas :Array = []
+
+func add_spawn_queue(armies :Array):
+	_datas.append_array(armies)
+	_datas.sort_custom(self, "_sort_by_spawn_time")
+	
+func _add_queue(batchs :Array):
+	for i in batchs:
+		var s :SquadData = i
+		var timer = Timer.new()
+		timer.wait_time = float(s.spawn_time)
+		timer.autostart = false
+		timer.one_shot = true
+		timer.connect("timeout", self, "_on_timer_timeout", [s])
+		add_child(timer)
+		
+		queue[s] = timer
+		timer.start()
+		
+	emit_signal("on_queue_update")
+	
+func _sort_by_spawn_time(a :SquadData, b:SquadData):
+	return a.spawn_time < b.spawn_time
+	
+func _process(delta):
+	if not _datas.empty() and queue.empty():
+		var batchs :Array = []
+		while (not _datas.empty() and batchs.size() < max_batch):
+			var d = _datas.front()
+			d.spawn_time += _increment
+			batchs.append(d)
+			_datas.pop_front()
+			
+		_add_queue(batchs)
+		_increment += increment_per_batch
+		
+	if not _pending.empty() and pending_timer.is_stopped():
+		pending_timer.start()
+		
+		for s in _pending:
+			queue[s].queue_free()
+			queue.erase(s)
+		
+		emit_signal("on_squads_ready", _pending.duplicate())
+		_pending.clear()
+		
+func _on_timer_timeout(s :SquadData):
+	_pending.append(s)
+

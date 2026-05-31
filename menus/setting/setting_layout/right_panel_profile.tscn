@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/user_interface/potrait/1.png" type="Texture" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=3]
 [ext_resource path="res://menus/setting/setting_layout/right_panel_profile.gd" type="Script" id=4]
-[ext_resource path="res://assets/user_interface/icons/edit.png" type="Texture" id=5]
+[ext_resource path="res://assets/user_interface/icons/dice.png" type="Texture" id=5]
 [ext_resource path="res://assets/user_interface/icons/refresh.png" type="Texture" id=6]
 
 [node name="right_panel_profile" type="MarginContainer"]
@@ -128,8 +128,7 @@ custom_fonts/font = ExtResource( 3 )
 max_length = 32
 placeholder_text = "Player Name"
 
-[node name="button_edit_name" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
-visible = false
+[node name="button_random_name" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
 margin_left = 244.0
 margin_right = 304.0
 margin_bottom = 60.0
@@ -175,4 +174,4 @@ mouse_filter = 2
 
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer4/change_potrait" to="." method="_on_change_potrait_pressed"]
 [connection signal="text_changed" from="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/edit_player_name" to="." method="_on_edit_player_name_text_changed"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/button_edit_name" to="." method="_on_button_edit_name_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer/button_random_name" to="." method="_on_button_random_name_pressed"]

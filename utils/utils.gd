@@ -110,3 +110,8 @@ static func format_number(n: int):
 		return "%.1fK" % (n / 1000.0)
 	else:
 		return str(n)
+
+static func format_time(n :int) -> String:
+	var minutes = n / 60
+	var seconds = n % 60
+	return "%02d:%02d" % [minutes, seconds]
