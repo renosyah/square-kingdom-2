@@ -185,6 +185,12 @@ margin_bottom = 100.0
 mouse_filter = 2
 color = Color( 0, 1, 0.133333, 0 )
 
+[node name="not_on_screen" type="ColorRect" parent="."]
+margin_right = 70.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.309804 )
+
 [node name="Button" type="Button" parent="."]
 margin_right = 70.0
 margin_bottom = 100.0

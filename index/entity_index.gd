@@ -8,7 +8,10 @@ const squads = [
 	# siege engines
 	preload("res://scenes/tile_units/squad/siege_engine_squad/catapult_squad.tscn"),#2
 	preload("res://scenes/tile_units/squad/siege_engine_squad/balista_squad.tscn"),#3
-	preload("res://scenes/tile_units/squad/siege_engine_squad/trebuchet_squad.tscn")#4
+	preload("res://scenes/tile_units/squad/siege_engine_squad/trebuchet_squad.tscn"),#4
+	
+	# tower
+	preload("res://scenes/tile_units/squad/guard_tower_squad/guard_tower_squad.tscn")#5
 ]
 const members = [
 	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"),
@@ -125,5 +128,6 @@ const player_colors = [
 	Color("#B8541B"),
 	Color("#B14C7E"),
 	Color("#585F69"),
-	Color.black
+	Color.black,
+	Color("#652d00")
 ]

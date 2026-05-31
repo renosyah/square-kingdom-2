@@ -1,0 +1,42 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Guard tower"
+description = "Static missile unit"
+scene_idx = 5
+node_name = ""
+current_tile = Vector2( 0, 0 )
+pos = Vector3( 0, 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+speed = 0.0
+spotting_range = 6
+attack_range = 6
+sort_order = 42
+squad_role = 3
+member_scene_idx = 0
+can_attack = true
+turning_speed = 8.0
+melee_attack_speed = 0.8
+range_attack_speed = 1.4
+formation_density = 0.25
+icon_idx = 3
+potrait_idx = 2
+is_mounted = false
+member_headgear_idx = 3
+member_armor_idx = 0
+member_shield_idx = 0
+member_melee_weapon_idx = 1
+member_range_weapon_idx = 11
+member_hp = 45
+member_max_hp = 45
+total_member = 4
+heal_amount = 125
+charge_damage = 0
+siege_engine_attack_damage = 0

@@ -4,7 +4,7 @@ class_name NavTileMap
 var _navigation_datas :Array # as refrences
 
 # faster way to get id
-var _navigation_ids :Dictionary = {} # {int:[ Vector2:int ]}
+var _navigation_ids :Dictionary = {} # {(index as LAYER_ID):{ Vector2:int }
 var _navigation_pos :Dictionary = {} # {Vector2:Vector3}
 
 # int as key is LAYER of naviagtion
@@ -173,7 +173,29 @@ func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 			var nex_nav_id :int = _navigation_ids[layer_id][next_id]
 			if nav.has_point(nex_nav_id):
 				nav.connect_points(x.navigation_id, nex_nav_id, false)
+				
+func reconnect_point(tile_id: Vector2, new_neighbors: Array, layer_id:int) -> void:
+	var nav :AStar2D = _navigations[layer_id]
+	var point_id :int = _navigation_ids[layer_id][tile_id]
+	
+	if !nav.has_point(point_id):
+		return
 		
+	# Remove old links
+	for conn in nav.get_point_connections(point_id):
+		nav.disconnect_points(point_id, conn)
+		
+	#print("connect %s with %s" %[tile_id, new_neighbors])
+	
+	# Add new links
+	for neighbor_tile in new_neighbors:
+		var neighbor_id :int = _navigation_ids[layer_id][neighbor_tile]
+		if neighbor_id == point_id:
+			continue
+			
+		if nav.has_point(neighbor_id):
+			nav.connect_points(point_id, neighbor_id)
+			
 func _set_obstacle(nav :AStar2D, data :Array):
 	for i in data:
 		var x :NavigationData = i

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/tower.obj-4fa051d3ac29b139af9348c40f294dbd.mesh"
+
+[deps]
+
+files=[ "res://.import/tower.obj-4fa051d3ac29b139af9348c40f294dbd.mesh" ]
+
+source_file="res://scenes/tile_units/squad/guard_tower_squad/tower.obj"
+dest_files=[ "res://.import/tower.obj-4fa051d3ac29b139af9348c40f294dbd.mesh", "res://.import/tower.obj-4fa051d3ac29b139af9348c40f294dbd.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

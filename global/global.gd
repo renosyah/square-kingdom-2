@@ -50,7 +50,7 @@ func load_player_data():
 		player_data.player_id = Utils.create_unique_id()
 		player_data.player_name = OS.get_name()
 		player_data.team = 1
-		player_data.color_idx = randi() % EntityIndex.player_colors.size()
+		player_data.color_idx = randi() % EntityIndex.player_colors.size()  # exlude last
 		player_data.potrait_idx = randi() % EntityIndex.player_potraits.size()
 		save_player_data()
 		
@@ -349,7 +349,7 @@ func create_bot_player() -> Array:
 	p.player_id = "bot_%s" % Utils.create_unique_id()
 	p.player_name = "%s (bot)" % RandomNameGenerator.generate_name()
 	p.team = bot_players.size() + players.size() + 1
-	p.color_idx = randi() % EntityIndex.player_colors.size()
+	p.color_idx = randi() % EntityIndex.player_colors.size() - 1 # exlude last
 	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
 
 	var _bot_player_armies = []

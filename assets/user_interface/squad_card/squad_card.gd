@@ -22,11 +22,14 @@ onready var _hurt_color_stats = $MarginContainer/hurt_color_stats
 onready var _heal = $heal
 onready var _hurt = $hurt
 onready var _button = $Button
+onready var _not_on_screen = $not_on_screen
+
 
 var _members :Array = []
 var _total_hp :int = 0
 
 func _ready():
+	_not_on_screen.visible = false
 	_mounted.visible = data.is_mounted
 	_charge_amount.visible = data.is_mounted
 	_bg.color = EntityIndex.player_colors[data.color_idx]
@@ -80,6 +83,7 @@ func _get_hp_color(hp :int, max_hp: int) -> Color:
 	)
 	
 func _process(delta):
+	_not_on_screen.visible = not squad.visible
 	_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 	_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)
 	

@@ -232,10 +232,10 @@ func _on_tile_map_ready():
 onready var current_player :PlayerData = Global.current_player
 onready var players :Array = Global.players # [PlayerData]
 onready var player_ids :Dictionary = {}
+onready var bot_players :Array = Global.bot_players
 
 var player_spawn_points :Dictionary = {} # {player_id:Vector2} all players
-
-onready var bot_players :Array = Global.bot_players
+var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 
 func setup_players_spawn_points():
 	var map_size :int = current_tile_map_manifest_data.map_size
@@ -247,7 +247,18 @@ func setup_players_spawn_points():
 		var p :PlayerData = all_players[index]
 		player_ids[p.player_id] = p
 		player_spawn_points[p.player_id] = points[index]
-	
+		player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), points[index], 2) + [points]
+		setup_base(p, points[index])
+		
+	# this is for bot haraser bases
+	var bot_harasment = PlayerData.new()
+	bot_harasment.player_network_id = 1
+	bot_harasment.player_id = "bot_harasment_TOWER" 
+	bot_harasment.team = -1
+	bot_harasment.color_idx = 10
+	setup_base(bot_harasment, Vector2.ZERO)
+		
+	# this for current player only
 	# ajustment to camera
 	var tile :TileMapData = tile_map.get_tile(player_spawn_points[current_player.player_id])
 	if tile == null:
@@ -256,6 +267,78 @@ func setup_players_spawn_points():
 	movable_camera.translation.x = tile.pos.x + 1
 	movable_camera.translation.z = tile.pos.z + 1
 	
+func setup_base(p :PlayerData, tile_id :Vector2):
+	var wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
+	var wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
+	
+	var corners = [
+		Vector2.UP + Vector2.RIGHT, # top - right
+		Vector2.UP + Vector2.LEFT, # top - left
+		Vector2.DOWN + Vector2.RIGHT, # down - right
+		Vector2.DOWN + Vector2.LEFT, # down - left
+	]
+	var walls = [
+		corners[0] * 2 + Vector2.LEFT, corners[0] * 2 + Vector2.DOWN,
+		corners[1] * 2 + Vector2.RIGHT, corners[1] * 2 + Vector2.DOWN,
+		corners[2] * 2 + Vector2.LEFT, corners[2] * 2 + Vector2.UP,
+		corners[3] * 2 + Vector2.RIGHT, corners[3] * 2 + Vector2.UP
+	]
+	var wall_orientation = [
+		0, -90,
+		0, 90,
+		180, -90,
+		180, 90
+	]
+	var wall_nav_reassign = {
+		walls[0] : [Vector2.DOWN,Vector2.LEFT], walls[1] : [Vector2.DOWN, Vector2.LEFT],
+		walls[2] : [Vector2.DOWN,Vector2.RIGHT], walls[3] : [Vector2.DOWN, Vector2.RIGHT],
+		walls[4] : [Vector2.UP,Vector2.LEFT], walls[5] : [Vector2.UP, Vector2.LEFT],
+		walls[6] : [Vector2.UP,Vector2.RIGHT], walls[7] : [Vector2.UP, Vector2.RIGHT],
+	}
+	
+	for key in wall_nav_reassign.keys():
+		var points = []
+		for i in wall_nav_reassign[key]:
+			points.append(tile_id + i + key)
+			
+		nav.reconnect_point(tile_id + key, points, 0)
+		
+	for idx in walls.size():
+		var tile :Vector2 = tile_id + walls[idx]
+		var w = wall_scene.instance()
+		w.material = Global.player_materials[p.color_idx]
+		tile_map.get_tile_instance(tile).add_child(w)
+		w.rotation_degrees.y = wall_orientation[idx]
+		
+	var wall_corner_orientation = [
+		-90, 0,
+		180, 90
+	]
+	
+	for idx in corners.size():
+		var tile :Vector2 = tile_id + (corners[idx] * 2)
+		nav.enable_nav_tile(0, tile, false)
+		
+		var w = wall_corner_scene.instance()
+		w.material = Global.player_materials[p.color_idx]
+		tile_map.get_tile_instance(tile).add_child(w)
+		w.rotation_degrees.y = wall_corner_orientation[idx]
+		
+		var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
+		guard_tower.network_id = 1
+		guard_tower.player_id = p.player_id
+		guard_tower.node_name = "tower_%s" % Utils.create_unique_id()
+		guard_tower.current_tile = tile
+		guard_tower.color_idx = p.color_idx
+		guard_tower.team = p.team
+		
+		_spawn_squad(guard_tower.to_bytes())
+		
+#	for i in wall_positions:
+#		var t = preload("res://scenes/tiles/wall.tscn").instance()
+#		add_child(t)
+#		t.translation = i
+		
 ########################################## gameplay  ############################################
 # team spawned
 var teams :Dictionary = {} # {int:0}
@@ -290,14 +373,13 @@ remotesync func _on_end(team :int):
 	on_end(team)
 	
 func on_end(team :int):
-	var idx_bg = [1, 2]
 	Global.is_win = current_player.team == team
 	ui.hide_ui()
 	
 	yield(get_tree().create_timer(1),"timeout")
 	
 	Global.current_root = null
-	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, idx_bg.pick_random())
+	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, 3 if Global.is_win else 4)
 	
 ########################################## camera  ############################################
 var movable_camera :MovableCamera
@@ -507,35 +589,36 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	squad.set_hidden(false)
 	add_child(squad)
-	
-	squad_datas[squad] = data
-	
 	squad.translation = nav.get_pos_v3(data.current_tile)
-	squads.append(squad)
+	
 	_on_squad_spawned(squad, data)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	tile_position_manager.add_to_position(squad, squad.current_tile)
 	
-	# use current spawn tile as reinfoce tile
-	if player_spawn_points.has(squad.player_id):
-		var spawn_point = player_spawn_points[squad.player_id]
-		squad.reinfoce_tiles = TileMapUtils.get_adjacent_tiles(
-			TileMapUtils.get_directions(), spawn_point, 2
-		) + [spawn_point]
-	
-	if squad.player_id == current_player.player_id:
-		player_squads.append(squad)
-		ui.add_squad_card(squad, data)
-		
 	 # default layer
 	squad.nav_layer = 0
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
 	squad.update_spotting()
-	
 	ui.minimap.add_object(squad, squad.color)
+	
+	if squad is GuardTowerSquad:
+		squad.nav_layer = 1 # build diffrent
+		return
+		
+	squad_datas[squad] = data
+	squads.append(squad)
+	
 	ui.add_squad_floating_info(squad, data, current_player)
+	
+	# use current spawn tile as reinfoce tile
+	if player_reinfoce_tiles.has(squad.player_id):
+		squad.reinfoce_tiles = player_reinfoce_tiles[squad.player_id]
+	
+	if squad.player_id == current_player.player_id:
+		player_squads.append(squad)
+		ui.add_squad_card(squad, data)
 	
 func _move_squad_to(tile :TileMapData, then_unselect :bool):
 	if selected_squads.empty():
@@ -630,6 +713,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 		var dup = selected_squads.duplicate() # must use dup pointer
 		for s in dup:
 			tap.tap(tile_map.get_tile(clicked_squad.current_tile).pos, 1)
+			s.attack_move = false
 			s.chase_enemy = clicked_squad
 			s.chase_target()
 			
@@ -648,8 +732,12 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	
 	ui.minimap.remove_object(squad)
 	tile_position_manager.remove_from_position(squad, squad.current_tile)
-	squads.erase(squad)
-	squad_datas.erase(squad)
+	
+	if squads.has(squad):
+		squads.erase(squad)
+		
+	if squad_datas.has(squad):
+		squad_datas.erase(squad)
 	
 	if setting.show_feed:
 		ui.log_event.add_log_squad_dead(squad)
@@ -674,7 +762,8 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 			if attacked_by.player_id == current_player.player_id:
 				play_squad_killed(is_commander)
 				
-	squad.floating_info.visible = false
+	if squad.floating_info:
+		squad.floating_info.visible = false
 	
 	yield(get_tree().create_timer(1),"timeout")
 	squad.queue_free()

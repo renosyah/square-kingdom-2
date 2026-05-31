@@ -157,12 +157,10 @@ func update_bot_player():
 	for i in Global.bot_players:
 		data.append(i.to_dictionary())
 		
-	rpc("_update_bot_player", data, Global.bot_player_armies.duplicate())
+	rpc("_update_bot_player", data)
 	
-remotesync func _update_bot_player(data :Array, armies :Dictionary):
+remotesync func _update_bot_player(data :Array):
 	var players = NetworkLobbyManager.get_players()
-	
-	Global.bot_player_armies.clear()
 	Global.bot_players.clear()
 	
 	var bot_slot = 4 - players.size()
@@ -171,11 +169,28 @@ remotesync func _update_bot_player(data :Array, armies :Dictionary):
 			var p = PlayerData.new()
 			p.from_dictionary(i)
 			Global.bot_players.append(p)
-			Global.bot_player_armies[p.player_id] = armies[p.player_id]
 			
 		bot_slot -= 1
 		
 	if is_server:
+		# dup
+		var army_dup = {}
+		for key in Global.bot_player_armies.keys():
+			army_dup[key] = Global.bot_player_armies[key].duplicate()
+			Global.bot_player_armies[key].clear()
+			
+		Global.bot_player_armies.clear()
+		
+		for i in Global.bot_players:
+			var p : PlayerData = i
+			Global.bot_player_armies[p.player_id] = army_dup[p.player_id].duplicate()
+			
+		# clean
+		for key in army_dup.keys():
+			army_dup[key].clear()
+			
+		army_dup.clear()
+		
 		var total_slot = 4 - (players.size() + Global.bot_players.size())
 		button_add_bot.visible = total_slot > 0
 		
@@ -186,6 +201,8 @@ func _on_bot_team_change(team :int, idx :int):
 	update_bot_player()
 	
 func _on_bot_player_removed(idx :int):
+	var bot :PlayerData = Global.bot_players[idx]
+	Global.bot_player_armies.erase(bot.player_id)
 	Global.bot_players.remove(idx)
 	update_bot_player()
 	

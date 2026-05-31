@@ -12,7 +12,7 @@ var player_data :PlayerData = Global.player_data
 func _ready():
 	_apply()
 	
-	for idx in EntityIndex.player_colors.size():
+	for idx in EntityIndex.player_colors.size() - 1: # exlude last:
 		var btn :Button = color_btn_temp.duplicate()
 		btn.visible = true
 		btn.connect("pressed", self, "_color_btn_pressed", [idx])

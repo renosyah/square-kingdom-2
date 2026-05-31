@@ -8,12 +8,3 @@ func _on_all_player_ready():
 	spawn_squads(Global.prepare_army(
 		Global.current_army, player_spawn_points[current_player.player_id], current_player
 	))
-	
-	for p in bot_players:
-		var armies = Global.prepare_army(
-			Global.bot_player_armies[p.player_id],
-			player_spawn_points[p.player_id],
-			p, true
-		)
-		for s in armies:
-			_spawn_squad(s)

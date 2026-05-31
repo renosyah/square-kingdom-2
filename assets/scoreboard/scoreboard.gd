@@ -34,8 +34,11 @@ class ScoreboardData:
 			score_data.dead += squads[s].dead
 			score_data.friendly_fire += squads[s].friendly_fire
 			score_data.total += squads[s].get_total()
-		
+			
 		return score_data
+		
+	func get_total_score() -> int:
+		return score_data.get_total()
 	
 onready var list_score_holder = $Control/Control/VBoxContainer/SafeArea/MarginContainer/VBoxContainer/ScrollContainer/list_score_holder
 onready var scores :Dictionary = Global.scores # {PlayerData:ScoreboardData}
@@ -121,6 +124,7 @@ func ui_update(player_id :String = "none"): # display score, just call this
 	)
 	if prev_item != null:
 		prev_item.update_ui()
+		sort_score()
 		return
 	
 	for i in list_score_holder.get_children():
@@ -132,6 +136,17 @@ func ui_update(player_id :String = "none"): # display score, just call this
 		item.name = p.player_id
 		item.data = scores[p]
 		list_score_holder.add_child(item)
-
+		
+	sort_score()
+	
+func sort_score():
+	var children = list_score_holder.get_children()
+	children.sort_custom(self, "_compare_by_total")
+	for i in range(children.size()):
+		list_score_holder.move_child(children[i], i)
+		
+func _compare_by_total(a, b) -> bool:
+	return a.data.get_total_score() > b.data.get_total_score()
+		
 func _on_back_pressed():
 	emit_signal("close")

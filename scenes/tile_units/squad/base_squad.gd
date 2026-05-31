@@ -612,8 +612,11 @@ func _resurecting():
 		if m.is_dead:
 			rpc("_resurect", idx)
 			return
-
+	
 func _is_in_melee_range(target):
+	if target.nav_layer != nav_layer:
+		return false
+		
 	return target.current_tile in _melee_tile_ranges
 	
 func _is_on_flank_of(target) -> bool:

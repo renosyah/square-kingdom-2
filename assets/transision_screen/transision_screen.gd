@@ -4,9 +4,12 @@ onready var _animation_player = $AnimationPlayer
 onready var _texture_rect = $transision_screen/TextureRect
 
 const bgs = [
-	preload("res://assets/background/splash.png"),
-	preload("res://assets/background/siege_1.png"),
-	preload("res://assets/background/siege_2.png")
+	preload("res://assets/background/splash.png"),#0
+	preload("res://assets/background/siege_1.png"),#1
+	preload("res://assets/background/siege_2.png"),#2
+	preload("res://assets/background/victory.png"),#3
+	preload("res://assets/background/lost.png"),#4
+
 ]
 
 var _has_session :bool = false

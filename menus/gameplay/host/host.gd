@@ -22,18 +22,17 @@ func _on_all_player_ready():
 	
 	yield(get_tree().create_timer(1),"timeout")
 	
-	spawn_squads(Global.prepare_army(
+	# spawn host squad and all bots squads
+	var squads = Global.prepare_army(
 		Global.current_army, player_spawn_points[current_player.player_id], current_player
-	))
-	
+	)
 	for p in bot_players:
-		var armies = Global.prepare_army(
+		squads.append_array(Global.prepare_army(
 			Global.bot_player_armies[p.player_id],
-			player_spawn_points[p.player_id],
-			p, true
-		)
-		for s in armies:
-			_spawn_squad(s)
+			player_spawn_points[p.player_id], p
+		))
+		
+	spawn_squads(squads)
 
 	bot_harasment_spawner_timer.start()
 	bot_action_timer.start()
@@ -79,6 +78,9 @@ func _on_squad_dead(squad, data):
 			enemy_type_idx = int(clamp(enemy_type_idx + 1, 0, enemy_phases.size() - 1))
 			current_wave = 0
 			
+		bot_harasment_spawner_timer.start()
+		
+		
 func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
 	._on_squad_member_dead(squad, member, data)
 	
@@ -90,36 +92,45 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		squad.move_to(player_spawn_points[squad.player_id])
 	
 func _on_bot_spawner_timer_timeout():
-	bot_harasment_spawner_timer.start()
+	var squads = []
+	for i in (players.size() + bot_players.size()):
+		var enemy_idx = enemy_phases[enemy_type_idx].pick_random()
+		var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
+		data.network_id = 1
+		data.player_id = "bot_harasment"
+		data.node_name = Utils.create_unique_id()
+		data.current_tile = Vector2.ZERO
+		data.pos = Vector3.ZERO
+		data.color_idx = 10
+		data.team = -1
+		squads.append(data)
+		
+	spawn_squads(squads)
+
+func _on_bot_action_timer_timeout():
+	bot_action_timer.start()
 	
+	_bot_harasher_action()
+	_bot_players_action()
+	
+func _bot_harasher_action():
 	var enemies = []
 	for i in squads:
 		if i.team != -1:
 			enemies.append(i)
 			
-	if not enemies.empty() and not bot_harasment_squads.empty():
-		var i = bot_harasment_squads.pick_random()
-		if not i.is_moving():
-			bot_attack_command(i, enemies.pick_random())
-			
-	# limit harashment
-	if bot_harasment_squads.size() >= Global.players.size():
+	if enemies.empty() or bot_harasment_squads.empty():
 		return
 		
-	var enemy_idx = enemy_phases[enemy_type_idx].pick_random()
-	var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
-	data.network_id = 1
-	data.player_id = "bot_harasment"
-	data.node_name = Utils.create_unique_id()
-	data.current_tile = Vector2.ZERO
-	data.pos = Vector3.ZERO
-	data.color_idx = 1
-	data.team = -1
-	spawn_squad(data)
-
-func _on_bot_action_timer_timeout():
-	bot_action_timer.start()
+	var count = int(rand_range(1, 6))
+	var e = enemies.pick_random()
 	
+	for _i in count:
+		var s = bot_harasment_squads.pick_random()
+		if not s.is_moving():
+			bot_attack_command(s, e)
+	
+func _bot_players_action():
 	if bot_squads.empty():
 		return
 	
@@ -136,14 +147,16 @@ func _on_bot_action_timer_timeout():
 		return
 		
 	var count = int(rand_range(1, 6))
-	var e = enemies.pick_random()
+	
 	var s = bot_squads[bot_player.player_id]
 	for _i in count:
+		var e = enemies.pick_random()
+		if e.current_tile in e.reinfoce_tiles:
+			continue
+		
 		var i = s.pick_random()
 		if not i.is_moving():
 			bot_attack_command(i, e)
-	
-
 
 
 
