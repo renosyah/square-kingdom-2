@@ -1,16 +1,19 @@
 extends BaseGameplay
 
-const bandit_troops = [[0,0,0],[01,2,3],[1,2,3],[1,2,3,4,5,17],[0,1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
+const bandit_troops = [[0,0,1],[0,1,2,3],[1,2,3],[1,2,3,4,5,17],[0,1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
 
 onready var bot_bandit_spawner_timer = $bot_bandit_spawner_timer
 onready var bot_action_timer = $bot_action_timer
 onready var bot_squad_spawner = $bot_squad_spawner
 
 onready var spawn_pos = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions())
+
 var bot_bandit_squads :Array
 var wave_per_stage = 5
 var current_wave = 1
 var enemy_type_idx :int = 0
+var bandit_killed :int = 0
+var killed_treshold :int = 5
 
 var bot_player_ids :Array
 var bot_squads :Dictionary = {} # {bot_id:[BaseSquad]}
@@ -78,9 +81,11 @@ func _on_squad_dead(squad, data):
 	
 	if squad.player_id == bot_bandit.player_id:
 		bot_bandit_squads.erase(squad)
+		bandit_killed += 1
 		
-	# progress
-	if bot_bandit_squads.empty():
+	# up progress, facing more formidable bandit
+	if bandit_killed > killed_treshold:
+		bandit_killed = 0
 		current_wave += 1
 		
 		if current_wave == wave_per_stage:
@@ -93,10 +98,15 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if squad is GuardTowerSquad:
 		return
 		
-	if randf() < 0.6:
-		return
-		
-	if squad.player_id in bot_player_ids:
+	var conditions = [
+		randf() < 0.6,
+		squad.member_alive > 2,
+	]
+	
+	var is_bot = squad.player_id in bot_player_ids or squad.player_id == bot_bandit.player_id
+	
+	# retreaat!
+	if conditions.has(true) and is_bot:
 		squad.attack_move = false
 		squad.move_to(player_spawn_points[squad.player_id])
 	
