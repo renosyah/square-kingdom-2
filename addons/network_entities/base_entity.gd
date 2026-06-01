@@ -40,6 +40,7 @@ func sync_update() -> void:
 func last_sync_update() -> void:
 	
 	pass
+	
 func _on_camera_entered(_camera: Camera):
 	visible = true
 	

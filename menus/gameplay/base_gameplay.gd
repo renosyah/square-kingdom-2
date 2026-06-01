@@ -47,8 +47,8 @@ func _on_all_player_ready():
 	if is_server:
 		spawn_squads(tower_datas)
 		
-	yield(get_tree().create_timer(2), "timeout")
 	Global.hide_transition()
+	start_spawn_army()
 	
 ########################################## proccess  ############################################
 
@@ -106,6 +106,9 @@ const announce_commander_lost = [
 ]
 const announce_squad_spawned = [
 	preload("res://assets/sounds/announcement/reinforcement_1.wav"), preload("res://assets/sounds/announcement/reinforcement_2.wav"), preload("res://assets/sounds/announcement/reinforcement_3.wav"), preload("res://assets/sounds/announcement/reinforcement_4.wav"), preload("res://assets/sounds/announcement/reinforcement_5.wav"), preload("res://assets/sounds/announcement/reinforcement_6.wav")
+]
+const announce_commander_spawned = [
+	preload("res://assets/sounds/announcement/commander_arrive _1.wav"), preload("res://assets/sounds/announcement/commander_arrive _2.wav"), preload("res://assets/sounds/announcement/commander_arrive _3.wav"), preload("res://assets/sounds/announcement/commander_arrive _4.wav"), preload("res://assets/sounds/announcement/commander_arrive _5.wav"), preload("res://assets/sounds/announcement/commander_arrive _6.wav")
 ]
 
 var ui_sound :AudioStreamPlayer
@@ -193,9 +196,9 @@ func play_squad_killed(is_commander :bool):
 	
 	announce_killed_idx += 1
 	
-func play_squad_spawn():
+func play_squad_spawn(is_commander :bool):
 	if not annoucer_sound.playing:
-		annoucer_sound.stream = announce_squad_spawned.pick_random()
+		annoucer_sound.stream = announce_commander_spawned.pick_random() if is_commander else announce_squad_spawned.pick_random()
 		annoucer_sound.play()
 		
 ########################################## position manager ############################################
@@ -230,7 +233,6 @@ func _on_tile_map_ready():
 	# this function only be called
 	# if tile map is ready and setup properly
 	setup_players_spawn_points()
-	start_spawn_army()
 	
 	if is_server:
 		NetworkLobbyManager.set_host_ready()
@@ -438,7 +440,7 @@ func _on_floor_clicked(pos :Vector3):
 		return
 		
 	var tile = tile_map.get_closes_tile(pos)
-	_move_squad_to(tile, setting.unselect_on_command)
+	_move_squad_to(tile, setting.lock_command)
 	
 ########################################## Tap  ############################################
 var tap :TapIndicator
@@ -513,7 +515,7 @@ func _on_ui_route_button_pressed():
 	for i in selected_squads:
 		i.attack_move = false
 		
-	_move_squad_to(tile_map.get_tile(player_spawn_points[current_player.player_id]), true)
+	_move_squad_to(tile_map.get_tile(player_spawn_points[current_player.player_id]), false)
 
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
@@ -591,10 +593,11 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	
-	squad.enable_move_indicator = squad.player_id == current_player.player_id
-	squad.show_move_indicator = setting.show_unit_tile
+	# extra ui
 	squad.enable_blood = setting.extra_effect
-	
+	squad.enable_squad_tile_indicator = setting.show_unit_tile
+	squad.show_move_to_indicator = squad.player_id == current_player.player_id
+
 	# for floating info
 	squad.camera = movable_camera.camera
 	squad.unit_indexing = tile_position_manager.get_unit_indexing()
@@ -613,12 +616,13 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
 		
 	#var my_team = (data.team == current_player.team)
-	#squad.enable_spotting = my_team
+	squad.enable_spotting = false
 	#squad.set_hidden(not my_team)
 	
 	squad.set_hidden(false)
 	add_child(squad)
 	squad.translation = nav.get_pos_v3(data.current_tile)
+	squad.look_at(Vector3.ZERO, Vector3.UP)
 	
 	_on_squad_spawned(squad, data)
 	
@@ -646,11 +650,12 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		squad.reinfoce_tiles = player_reinfoce_tiles[squad.player_id]
 	
 	if squad.player_id == current_player.player_id:
+		var is_commander :bool = (data.icon_idx == 6)
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
-		play_squad_spawn()
+		play_squad_spawn(is_commander)
 	
-func _move_squad_to(tile :TileMapData, then_unselect :bool):
+func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():
 		return
 		
@@ -680,7 +685,7 @@ func _move_squad_to(tile :TileMapData, then_unselect :bool):
 			tile_id = tiles[idx]
 			
 		squad.move_to(tile_id)
-		if then_unselect:
+		if not lock_command:
 			squad.click() # to unselect
 			
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
@@ -747,7 +752,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			s.chase_enemy = clicked_squad
 			s.chase_target()
 			
-			if setting.unselect_on_command:
+			if not setting.lock_command:
 				s.click() # to unselect
 	
 func _on_current_tile_updated(squad :BaseSquad, from_id :Vector2, to_id :Vector2):

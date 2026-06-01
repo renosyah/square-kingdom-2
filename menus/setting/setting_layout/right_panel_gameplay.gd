@@ -11,10 +11,9 @@ onready var cam_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer3/cam_sp
 onready var zoom_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_label
 onready var rot_speed_label = $VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_label
 
-onready var auto_unselect = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/auto_unselect
+onready var lock_command = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/lock_command
 onready var unit_tile = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5/unit_tile
 onready var feed = $VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7/feed
-
 
 onready var setting_data = Global.setting_data
 
@@ -52,7 +51,7 @@ func _on_rot_speed_slider_value_changed(value):
 	setting_data.camera_rotation_speed = _to_setting(value, 20, 90)
 
 func _apply_check():
-	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
+	lock_command.icon = check if setting_data.lock_command else uncheck
 	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
 	feed.icon = check if setting_data.show_feed else uncheck
 	
@@ -71,16 +70,12 @@ func _on_reset_button_pressed():
 	_on_zoom_speed_slider_value_changed(z)
 	_on_rot_speed_slider_value_changed(r)
 	
-	setting_data.unselect_on_command = n.unselect_on_command
+	setting_data.lock_command = n.lock_command
 	setting_data.show_unit_tile = n.show_unit_tile
 	setting_data.show_feed = n.show_feed
 	
 	_apply_check()
 	
-func _on_auto_unselect_pressed():
-	setting_data.unselect_on_command = not setting_data.unselect_on_command
-	auto_unselect.icon = check if setting_data.unselect_on_command else uncheck
-
 func _on_unit_tile_pressed():
 	setting_data.show_unit_tile = not setting_data.show_unit_tile
 	unit_tile.icon = check if setting_data.show_unit_tile else uncheck
@@ -88,3 +83,7 @@ func _on_unit_tile_pressed():
 func _on_feed_pressed():
 	setting_data.show_feed = not setting_data.show_feed
 	feed.icon = check if setting_data.show_feed else uncheck
+
+func _on_lock_command_pressed():
+	setting_data.lock_command = not setting_data.lock_command
+	lock_command.icon = check if setting_data.lock_command else uncheck

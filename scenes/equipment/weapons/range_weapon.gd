@@ -28,7 +28,7 @@ func _prepare_pool():
 
 func _get_pool() -> BaseProjectile:
 	for i in _pools:
-		if not i.visible:
+		if i.is_ready():
 			return i
 			
 	var arrow :BaseProjectile = projectile.instance()
@@ -39,8 +39,6 @@ func _get_pool() -> BaseProjectile:
 
 func _on_projectile_reach(arrow):
 	emit_signal("on_hit", arrow.global_position)
-	yield(get_tree().create_timer(1),"timeout")
-	arrow.visible = false
 	
 func _on_tree_exiting():
 	for i in _pools:
@@ -52,8 +50,9 @@ func pull():
 func release():
 	pass
 	
-func shot_projectile(to :Vector3):
+func shot_projectile(to :Vector3, v :bool):
 	var arrow = _get_pool()
+	arrow.visible = v
 	arrow.translation = global_position
 	arrow.to = to + Vector3.ONE * rand_range(-0.5,0.5)
 	arrow.launch()

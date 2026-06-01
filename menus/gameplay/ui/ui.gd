@@ -58,7 +58,7 @@ func _ready():
 	minimap.set_color(ui_color)
 	nine_patch_rect.modulate = ui_color
 	
-	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
+	selection_mode.icon = icon_lock if setting.lock_command else icon_uncheck
 	
 func _process(delta):
 	var on_select = selected_squads.size() == 1
@@ -214,8 +214,8 @@ func _on_stop_button_pressed():
 		i.stop(false)
 	
 func _on_selection_mode_pressed():
-	setting.unselect_on_command = not setting.unselect_on_command
-	selection_mode.icon = icon_uncheck if setting.unselect_on_command else icon_lock
+	setting.lock_command = not setting.lock_command
+	selection_mode.icon = icon_lock if setting.lock_command else icon_uncheck
 	
 func _on_cinematic_pressed():
 	if movable_camera_ui.visible and not selected_squads.empty():

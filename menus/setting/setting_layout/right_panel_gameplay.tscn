@@ -244,7 +244,7 @@ margin_bottom = 268.0
 custom_constants/separation = 24
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
-margin_right = 207.0
+margin_right = 234.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 
@@ -256,20 +256,20 @@ rect_min_size = Vector2( 12, 0 )
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
 margin_left = 16.0
 margin_top = 18.0
-margin_right = 123.0
+margin_right = 150.0
 margin_bottom = 46.0
 custom_fonts/font = ExtResource( 2 )
-text = "No micro"
+text = "Lock Select"
 
 [node name="MarginContainer6" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
-margin_left = 127.0
-margin_right = 139.0
+margin_left = 154.0
+margin_right = 166.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
 
-[node name="auto_unselect" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
-margin_left = 143.0
-margin_right = 207.0
+[node name="lock_command" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
+margin_left = 170.0
+margin_right = 234.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 size_flags_vertical = 4
@@ -278,8 +278,8 @@ icon = ExtResource( 6 )
 expand_icon = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
-margin_left = 231.0
-margin_right = 428.0
+margin_left = 258.0
+margin_right = 455.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 
@@ -313,8 +313,8 @@ icon = ExtResource( 6 )
 expand_icon = true
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
-margin_left = 452.0
-margin_right = 609.0
+margin_left = 479.0
+margin_right = 636.0
 margin_bottom = 64.0
 size_flags_horizontal = 0
 
@@ -385,7 +385,7 @@ mouse_filter = 2
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer3/cam_speed_slider" to="." method="_on_cam_speed_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer2/zoom_speed_slider" to="." method="_on_zoom_speed_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/VBoxContainer/HBoxContainer/rot_speed_slider" to="." method="_on_rot_speed_slider_value_changed"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/auto_unselect" to="." method="_on_auto_unselect_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4/lock_command" to="." method="_on_lock_command_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5/unit_tile" to="." method="_on_unit_tile_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7/feed" to="." method="_on_feed_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer5/reset_button" to="." method="_on_reset_button_pressed"]

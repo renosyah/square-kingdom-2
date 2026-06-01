@@ -65,10 +65,9 @@ export var squad_icon :StreamTexture
 
 var member_alive :int
 
-export var enable_move_indicator :bool = false
-export var enable_blood :bool
-
-var show_move_indicator:bool = false
+export var enable_blood :bool # influence by setting
+export var enable_squad_tile_indicator :bool = false # influence by setting
+export var show_move_to_indicator :bool = false # gameplay
 
 export var attack_range :int = 1
 var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
@@ -100,8 +99,8 @@ var _range_attack_timer :Timer
 var _taking_damage_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
-var _path_indicator :Spatial
-var _path_indicator_dest :Spatial
+var _tile_indicator :Spatial
+var _move_to_indicator :Spatial
 
 var _taking_damages_pending :Array = [] # [[]]
 var _member_deads_pending :Array = [] # [[]]
@@ -171,19 +170,19 @@ func _ready():
 	_unit_audio.bus = Global.bus_sfx
 	add_child(_unit_audio)
 	
-	if Global.current_root:
-		_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-		_path_indicator.material = member_material
-		Global.current_root.add_child(_path_indicator)
-		_path_indicator.set_as_toplevel(true)
-		_path_indicator.visible = false
+	_tile_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+	_tile_indicator.material = member_material
+	add_child(_tile_indicator)
+	_tile_indicator.set_as_toplevel(true)
+	_tile_indicator.visible = false
 		
-		_path_indicator_dest = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
-		_path_indicator_dest.material = member_material
-		_path_indicator_dest.squad_icon = squad_icon
-		Global.current_root.add_child(_path_indicator_dest)
-		_path_indicator_dest.set_as_toplevel(true)
-		_path_indicator_dest.visible = false
+	if Global.current_root:
+		_move_to_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
+		_move_to_indicator.material = member_material
+		_move_to_indicator.squad_icon = squad_icon
+		Global.current_root.add_child(_move_to_indicator)
+		_move_to_indicator.set_as_toplevel(true)
+		_move_to_indicator.visible = false
 	
 	_init_formations()
 	
@@ -193,23 +192,21 @@ func _ready():
 	
 	_member_spawned = true
 	_current_tile_v3 = nav.get_pos_v3(current_tile)
-	_path_indicator.visible = show_move_indicator
-	_path_indicator.translation = _current_tile_v3
+	_tile_indicator.visible = enable_squad_tile_indicator
+	_tile_indicator.translation = _current_tile_v3
 	
 func _on_tree_exiting():
-	_path_indicator_dest.queue_free()
-	_path_indicator.queue_free()
+	_move_to_indicator.queue_free()
 	
 func _on_setting_updated(d :SettingData):
-	show_move_indicator = d.show_unit_tile
-	_path_indicator.visible = d.show_unit_tile
+	enable_squad_tile_indicator = d.show_unit_tile
 	enable_blood = d.extra_effect
 	
-	_path_indicator.visible = show_move_indicator
-	_path_indicator.translation = _current_tile_v3
+	_tile_indicator.visible = enable_squad_tile_indicator
+	_tile_indicator.translation = _current_tile_v3
 	
-	if enable_move_indicator:
-		_path_indicator_dest.visible = show_move_indicator
+	if _is_moving:
+		_move_to_indicator.visible = enable_squad_tile_indicator and show_move_to_indicator
 	
 # set chase_enemy = UNIT
 # chase_target()
@@ -252,7 +249,8 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 		return
 		
 	_last_to = global_position
-	_path_indicator_dest.global_position = nav.get_pos_v3(tile_id)
+	_move_to_indicator.global_position = nav.get_pos_v3(tile_id)
+	_move_to_indicator.visible = enable_squad_tile_indicator and show_move_to_indicator
 	
 	_is_moving = true
 	_paths.clear()
@@ -347,12 +345,8 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	._on_current_tile_updated(from_id, to_id)
 	
 	_current_tile_v3 = nav.get_pos_v3(current_tile)
-	_path_indicator.translation = _current_tile_v3
-	_path_indicator.visible = (nav != null) and show_move_indicator
+	_tile_indicator.translation = _current_tile_v3
 	
-	#_path_indicator2.visible = (nav != null)
-	#_path_indicator2.translation = nav.get_pos_v3(from_id)
-		
 	if not _is_master:
 		return
 		
@@ -375,6 +369,8 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 		
 func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 	._on_finish_travel(from_id, to_id)
+	
+	_move_to_indicator.visible = false
 	
 	if _is_master:
 		_scan_area()
@@ -438,12 +434,6 @@ func _send_rpc_pending():
 		_member_deads_pending.clear()
 		
 		
-func _follow_path_proccess(delta :float, pos :Vector3) -> void:
-	._follow_path_proccess(delta, pos)
-	
-	if enable_move_indicator:
-		_path_indicator_dest.visible = _is_moving and show_move_indicator
-	
 func _on_walking(delta :float):
 	pass
 	

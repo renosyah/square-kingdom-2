@@ -55,10 +55,6 @@ func _ajust_formation(pos :Vector3, delta :float):
 	mesh_instance.translation.x = pos.x
 	mesh_instance.translation.z = pos.z
 	
-func _follow_path_proccess(delta :float, pos :Vector3) -> void:
-	#._follow_path_proccess(delta, pos)
-	_path_indicator.translation.y = -10
-	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)
 	
@@ -117,7 +113,12 @@ func _perform_range_attack():
 			m.range_attack()
 			return
 
-
+func update_spotting():
+	#.update_spotting()
+	
+	_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), current_tile, attack_range
+	) + [current_tile]
 
 
 

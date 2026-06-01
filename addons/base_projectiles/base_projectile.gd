@@ -7,6 +7,7 @@ export var to :Vector3
 export var speed :float = 12.0
 export var max_range :float = 5.0
 export var is_master :bool
+export var notifier_max_distance :int = 5
 
 var _dir :Vector3
 var _travel_distance :float = 0
@@ -16,6 +17,9 @@ func _ready():
 	visible = false
 	set_process(false)
 	set_as_toplevel(true)
+	
+func is_ready() -> bool:
+	return _is_ready
 
 func launch():
 	visible = true

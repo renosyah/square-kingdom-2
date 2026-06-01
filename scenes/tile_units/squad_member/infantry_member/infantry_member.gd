@@ -225,7 +225,7 @@ func _on_release_bow():
 	var target_tile = enemy.squad.current_tile
 	
 	if is_instance_valid(enemy):
-		_range_weapon.shot_projectile(enemy.global_position)
+		_range_weapon.shot_projectile(enemy.global_position, enemy.visible or squad.visible)
 		yield(_range_weapon,"on_hit")
 		
 	emit_signal("on_set_damage_to_tile", self, target_tile, _range_weapon.attack_damage)
