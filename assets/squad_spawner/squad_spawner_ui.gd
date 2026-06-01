@@ -5,7 +5,7 @@ const item = preload("res://assets/squad_spawner/item/item.tscn")
 export var spawner :NodePath
 
 onready var _spawner :SquadSpawner = get_node_or_null(spawner)
-onready var holder = $MarginContainer/holder
+onready var holder = $HBoxContainer/holder
 
 func _ready():
 	var ok = spawner != null

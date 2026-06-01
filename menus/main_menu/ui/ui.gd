@@ -75,7 +75,6 @@ func _on_host_pressed():
 	list_map.set_title("Select map")
 
 func _on_join_pressed():
-	# test
 	var player_data = Global.player_data
 	player_data.player_id = Utils.create_unique_id()
 	player_data.team = 2

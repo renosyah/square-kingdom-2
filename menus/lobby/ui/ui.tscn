@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/minimap/minimap.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/background/round_table.png" type="Texture" id=9]
 [ext_resource path="res://assets/user_interface/icons/graphic_setting.png" type="Texture" id=10]
+[ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
 
 [node name="ui" type="Control"]
@@ -423,6 +424,8 @@ margin_left = 1000.0
 margin_right = 1024.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
+
+[node name="confirm_popup" parent="CanvasLayer" instance=ExtResource( 11 )]
 
 [connection signal="on_client_request_map" from="sync_map" to="." method="_on_sync_map_on_client_request_map"]
 [connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]

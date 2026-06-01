@@ -34,7 +34,7 @@ onready var cinematic = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxC
 onready var log_event = $CanvasLayer/Control/log_event
 onready var scoreboard = $CanvasLayer/Control/scoreboard
 onready var squad_spawner = $squad_spawner
-onready var squad_spawner_ui = $CanvasLayer/Control/VBoxContainer/Control/squad_spawner_ui
+onready var squad_spawner_ui = $CanvasLayer/Control/VBoxContainer/Control/MarginContainer/squad_spawner_ui
 
 onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
 onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav

@@ -10,10 +10,10 @@ onready var map_size = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/
 onready var sync_map = $sync_map
 onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4/Label_loading_host
 onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer/button_add_bot
+onready var confirm_popup = $CanvasLayer/confirm_popup
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
-var player_map_data_received :Array = []
 var idx_bg = [1, 2]
 
 # Called when the node enters the scene tree for the first time.
@@ -28,27 +28,37 @@ func _ready():
 	get_tree().set_auto_accept_quit(false)
 	
 	minimap.tile_scenes = TileIndex.tiles2d
+	confirm_popup.visible = false
 	
 	if is_server:
 		button_add_bot.visible = true
 		label_loading_host.visible = false
 		battle.visible = true
-		var manif = Global.current_tile_map_manifest_data
-		var size = manif.map_size * 2 + 1
-		map_name.text = "%s" % manif.map_name
-		map_size.text = "(%s x %s)" % [size, size]
+		
+		load_map()
 		
 		sync_map.manifest = Global.current_tile_map_manifest_data
 		sync_map.map_data = Global.current_tile_map_file_data
-		minimap.load_data_map(Global.current_tile_map_file_data)
 		
 	else:
 		button_add_bot.visible = false
 		label_loading_host.visible = true
 		battle.visible = false
-		sync_map.request_map_data()
+		
+		if Global.current_tile_map_file_data == null:
+			sync_map.request_map_data()
+			return
+			
+		load_map()
 		
 	Global.current_player.player_network_id = NetworkLobbyManager.get_id()
+	
+func load_map():
+	var manif = Global.current_tile_map_manifest_data
+	var size = manif.map_size * 2 + 1
+	map_name.text = "%s" % manif.map_name
+	map_size.text = "(%s x %s)" % [size, size]
+	minimap.load_data_map(Global.current_tile_map_file_data)
 	
 func _on_minimap_on_minimap_ready():
 	_on_lobby_player_update(NetworkLobbyManager.get_players())
@@ -75,14 +85,11 @@ func _on_sync_map_on_map_received(client_id :int):
 	else:
 		Global.current_tile_map_manifest_data = sync_map.manifest
 		Global.current_tile_map_file_data = sync_map.map_data
-	
-		minimap.load_data_map(sync_map.map_data)
-		var size = sync_map.manifest.map_size * 2 + 1
-		map_name.text = "%s" % sync_map.manifest.map_name
-		map_size.text = "(%s x %s)" % [size, size]
+		
+		load_map()
 		
 func map_data_received(player_network_unique_id :int):
-	player_map_data_received.append(player_network_unique_id)
+	Global.player_map_data_received.append(player_network_unique_id)
 	
 	var player_loading = false
 	for i in player_holder.get_children():
@@ -113,7 +120,7 @@ func _on_lobby_player_update(players :Array):
 		Global.players.append(player_data)
 		
 		var is_host :bool = player.player_network_unique_id == NetworkLobbyManager.host_id
-		var has_map :bool = player_map_data_received.has(player.player_network_unique_id)
+		var has_map :bool = Global.player_map_data_received.has(player.player_network_unique_id)
 		
 		var item = player_item_scene.instance()
 		item.player_network_unique_id = player.player_network_unique_id
@@ -214,7 +221,14 @@ func _on_player_removed(player :NetworkPlayer):
 	NetworkLobbyManager.kick_player(player.player_network_unique_id)
 	
 func on_back_pressed():
-	NetworkLobbyManager.leave()
+	confirm_popup.visible = true
+	confirm_popup.show_popup("Leave", "Are you sure\nwant to leave lobby?")
+	var r = yield(confirm_popup,"confirmed")
+	confirm_popup.visible = false
+	
+	if r:
+		Global.player_map_data_received.clear()
+		NetworkLobbyManager.leave()
 	
 func _on_leave():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)

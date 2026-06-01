@@ -171,18 +171,19 @@ func _ready():
 	_unit_audio.bus = Global.bus_sfx
 	add_child(_unit_audio)
 	
-	_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
-	_path_indicator.material = member_material
-	Global.current_root.add_child(_path_indicator)
-	_path_indicator.set_as_toplevel(true)
-	_path_indicator.visible = false
-	
-	_path_indicator_dest = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
-	_path_indicator_dest.material = member_material
-	_path_indicator_dest.squad_icon = squad_icon
-	Global.current_root.add_child(_path_indicator_dest)
-	_path_indicator_dest.set_as_toplevel(true)
-	_path_indicator_dest.visible = false
+	if Global.current_root:
+		_path_indicator = preload("res://assets/squad_path_indicator/squad_path_indicator.tscn").instance()
+		_path_indicator.material = member_material
+		Global.current_root.add_child(_path_indicator)
+		_path_indicator.set_as_toplevel(true)
+		_path_indicator.visible = false
+		
+		_path_indicator_dest = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
+		_path_indicator_dest.material = member_material
+		_path_indicator_dest.squad_icon = squad_icon
+		Global.current_root.add_child(_path_indicator_dest)
+		_path_indicator_dest.set_as_toplevel(true)
+		_path_indicator_dest.visible = false
 	
 	_init_formations()
 	
@@ -488,7 +489,7 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 	if not _member_spawned or not floating_info:
 		return
 		
-	floating_info.visible = visible and _current_visible
+	floating_info.visible = visible# and _current_visible
 	if not floating_info.visible:
 		return
 		

@@ -293,6 +293,7 @@ func save_custom_squad():
 var current_root :Node
 var scores :Dictionary = {}
 var is_win :bool
+var player_map_data_received :Array = []
 
 var current_player :PlayerData # specific for game session
 var players :Array = [] # list of players in MP
@@ -353,7 +354,7 @@ func create_bot_player() -> Array:
 	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
 
 	var _bot_player_armies = []
-	var count = int(rand_range(3, 9))
+	var count = current_army.size() #int(rand_range(3, 9))
 		
 	for i in count:
 		var idx = randi() % custom_squads.size()

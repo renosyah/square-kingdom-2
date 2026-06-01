@@ -241,10 +241,13 @@ func _on_tile_map_ready():
 ########################################## players army spawn mechanism  ############################################
 
 func start_spawn_army():
-	ui.squad_spawner.add_spawn_queue(Global.prepare_army(
-		Global.current_army, player_spawn_points[current_player.player_id], current_player
-	))
-
+	var armies :Array = Global.prepare_army(
+		Global.current_army, 
+		player_spawn_points[current_player.player_id], 
+		current_player
+	)
+	ui.squad_spawner.add_spawn_queue(armies)
+	
 func _on_squad_spawner_squads_ready(squads :Array):
 	spawn_squads(squads)
 
@@ -282,10 +285,11 @@ func setup_players_spawn_points():
 	# register player ids
 	for index in all_players.size():
 		var p :PlayerData = all_players[index]
+		var point :Vector2 = points[index]
 		player_ids[p.player_id] = p
-		player_spawn_points[p.player_id] = points[index]
-		player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), points[index], 2) + [points]
-		setup_base(p, points[index])
+		player_spawn_points[p.player_id] = point
+		player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, 2) + [point]
+		setup_base(p, point)
 		
 	# this for current player only
 	# ajustment to camera
@@ -384,6 +388,7 @@ func _check_wining_team():
 		return
 	
 remotesync func _on_end(team :int):
+	is_end = true
 	on_end(team)
 	
 func on_end(team :int):
@@ -525,7 +530,8 @@ var selected_squads :Array
 var squads :Array = []
 var squad_datas :Dictionary = {}
 
-var player_debuf :Array = []
+# list of player got screw of their commander ded
+var player_debuf :Array = [] 
 
 func spawn_squads(squad_datas :Array):
 	var list_bytes :Array = []

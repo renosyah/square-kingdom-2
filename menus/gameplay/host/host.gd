@@ -142,12 +142,10 @@ func _bot_bandit_action():
 		return
 		
 	var count = int(rand_range(1, 6))
-	var e = enemies.pick_random()
-	
 	for _i in count:
 		var s = bot_bandit_squads.pick_random()
 		if not s.is_moving():
-			bot_attack_command(s, e)
+			bot_attack_command(s, enemies.pick_random())
 	
 func _bot_players_action():
 	if bot_squads.empty():

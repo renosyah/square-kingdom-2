@@ -18,12 +18,11 @@ onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
 onready var _charge_amount = $MarginContainer/VBoxContainer2/charge_amount
 onready var _hurt_color_stats = $MarginContainer/hurt_color_stats
+onready var _button = $Button
 
 onready var _heal = $heal
 onready var _hurt = $hurt
-onready var _button = $Button
 onready var _not_on_screen = $not_on_screen
-
 
 var _members :Array = []
 var _total_hp :int = 0
