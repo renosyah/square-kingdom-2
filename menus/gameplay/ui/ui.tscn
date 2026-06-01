@@ -159,12 +159,11 @@ mouse_filter = 2
 alignment = 2
 
 [node name="squad_spawner_ui" parent="CanvasLayer/Control/VBoxContainer/Control/MarginContainer" instance=ExtResource( 29 )]
-margin_left = 928.0
-margin_top = 128.0
+margin_left = 872.0
+margin_top = 186.0
 margin_right = 1024.0
-margin_bottom = 128.0
-size_flags_horizontal = 8
-size_flags_vertical = 4
+margin_bottom = 256.0
+size_flags_vertical = 8
 spawner = NodePath("../../../../../../squad_spawner")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer"]

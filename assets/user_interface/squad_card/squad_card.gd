@@ -42,7 +42,7 @@ func _ready():
 	_button.mouse_filter = MOUSE_FILTER_STOP if squad != null else MOUSE_FILTER_IGNORE
 	
 	if squad:
-		_total_hp = squad.member_max_hp * squad.member_alive
+		_total_hp = squad.member_max_hp * squad.total_member
 		squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 		squad.connect("on_squad_member_dead", self, "_on_squad_member_updated")
 		squad.connect("on_squad_member_resurect", self, "_on_squad_member_updated")

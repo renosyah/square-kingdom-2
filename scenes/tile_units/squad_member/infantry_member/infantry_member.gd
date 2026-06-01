@@ -181,8 +181,9 @@ func melee_attack():
 	auto_iddle_timer.start()
 	
 func _on_melee_attack_performed():
-	_combat_sound.stream = sword_sounds.pick_random()
-	_combat_sound.play()
+	if squad.visible:
+		_combat_sound.stream = sword_sounds.pick_random()
+		_combat_sound.play()
 	
 	if not on_horse:
 		tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
@@ -219,8 +220,9 @@ func _on_pulling_bow():
 func _on_release_bow():
 	_range_weapon.release()
 	
-	_combat_sound.stream = bow_sounds.pick_random()
-	_combat_sound.play()
+	if squad.visible:
+		_combat_sound.stream = bow_sounds.pick_random()
+		_combat_sound.play()
 	
 	var target_tile = enemy.squad.current_tile
 	

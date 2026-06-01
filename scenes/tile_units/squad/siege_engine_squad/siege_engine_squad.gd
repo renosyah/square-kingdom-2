@@ -9,12 +9,26 @@ const push_siege_engine = [
 	preload("res://assets/sounds/walks/engine_walk_5.wav")
 ]
 
+const siege_break = [
+	preload("res://assets/sounds/sfx/siege_break_1.wav"),
+	preload("res://assets/sounds/sfx/siege_break_2.wav"),
+	preload("res://assets/sounds/sfx/siege_break_3.wav"),
+	preload("res://assets/sounds/sfx/siege_break_4.wav"),
+	preload("res://assets/sounds/sfx/siege_break_5.wav")
+]
+
 export var siege_engine_scene :PackedScene
 export var minimum_range :int = 2
 
 var _minimum_range_tiles :Array = []
 var _siege_engine :SiegeEngine
+var _siege_engine_audio :AudioStreamPlayer3D
 
+func _ready():
+	_siege_engine_audio = AudioStreamPlayer3D.new()
+	_siege_engine_audio.bus = Global.bus_sfx
+	add_child(_siege_engine_audio)
+	
 func _init_formations():
 	#._init_formations()
 	
@@ -75,7 +89,7 @@ func _splash_damage(unit_positions:Array, dmg :int):
 			enemy_squad.take_damage(dmg, idx, get_path())
 		
 func _on_walking(delta :float):
-	if _is_moving and _walk_timer.is_stopped():
+	if visible and _is_moving and _walk_timer.is_stopped():
 		_walk_timer.wait_time = 0.5
 		_walk_timer.start()
 		_step_audio.stream = push_siege_engine.pick_random()
@@ -115,9 +129,13 @@ func update_spotting():
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, minimum_range
 	)
 
-
-
-
+func on_dead():
+	if visible:
+		_siege_engine_audio.stream = siege_break.pick_random()
+		_siege_engine_audio.play()
+		yield(_siege_engine_audio,"finished")
+		
+	.on_dead()
 
 
 

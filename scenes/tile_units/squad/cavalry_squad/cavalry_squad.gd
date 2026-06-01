@@ -36,6 +36,8 @@ func _ready():
 func _spawn_members():
 	#._spawn_members()
 	
+	member_alive = total_member
+	
 	# use network id so it persistence
 	var _rng = RandomNumberGenerator.new()
 	_rng.seed = network_id + member_max_hp
@@ -43,7 +45,7 @@ func _spawn_members():
 	var pos :Vector3 = global_position
 	var basis :Basis = global_transform.basis
 	
-	for idx in member_alive:
+	for idx in total_member:
 		var offset :Vector3 = _formation_offsets[idx] * formation_density
 		_formation_positions[idx] = (pos + basis.xform(offset))
 		
@@ -77,7 +79,7 @@ func _spawn_members():
 func _on_member_dead(member :SquadMember):
 	._on_member_dead(member)
 	
-	if not _horse_audio.playing:
+	if visible and not _horse_audio.playing:
 		_horse_audio.stream = horse_dead.pick_random()
 		_horse_audio.play()
 	
@@ -110,7 +112,7 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 	emit_signal("on_cav_charge_buildup", self, _charges)
 	
 func _on_walking(delta :float):
-	if _is_moving and _walk_timer.is_stopped():
+	if visible and _is_moving and _walk_timer.is_stopped():
 		_walk_timer.wait_time = 0.2
 		_walk_timer.start()
 		_step_audio.stream = walk_sounds.pick_random()

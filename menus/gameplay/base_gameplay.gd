@@ -589,7 +589,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_hp = data.member_hp
 	squad.member_max_hp = data.member_hp
 	squad.heal_amount = data.heal_amount
-	squad.member_alive = data.total_member
+	squad.total_member = data.total_member
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	

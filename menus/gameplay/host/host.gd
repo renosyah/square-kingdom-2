@@ -47,13 +47,13 @@ func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
 	if is_instance_valid(squad.enemy):
 		return
 		
-	if squad is CavalrySquad:
+	if squad is CavalrySquad and randf() < 0.4:
 		squad.chase_enemy = enemy
 		squad.chase_target()
+		return
 		
-	else:
-		squad.attack_move = true
-		squad.move_to(enemy.current_tile)
+	squad.attack_move = true
+	squad.move_to(enemy.current_tile)
 	
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)

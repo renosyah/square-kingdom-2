@@ -20,6 +20,7 @@ onready var dragable_item = $CanvasLayer/Control/dragable_item
 onready var info = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
 onready var snack_bar = $CanvasLayer/Control/snack_bar
 onready var confirm_popup = $CanvasLayer/Control/confirm_popup
+onready var save_button = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/save
 
 onready var areas = {
 	trash_area:trash_highlight,
@@ -168,6 +169,8 @@ func _on_card_on_release(card, pos, idx, type_drag):
 			
 	Global.sort_army(temp_current_army)
 	display_current_army()
+	
+	save_button.disabled = temp_current_army.size() < 4
 	
 	for key in areas.keys():
 		areas[key].visible = false

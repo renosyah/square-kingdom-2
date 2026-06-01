@@ -56,6 +56,7 @@ export var member_melee_weapon :PackedScene
 export var member_range_weapon :PackedScene
 export var member_material :SpatialMaterial
 
+export var total_member :int
 export var member_hp :int = 100
 export var member_max_hp :int = 100
 export var heal_amount :int = 10
@@ -267,7 +268,9 @@ func _spawn_members():
 	var pos :Vector3 = global_position
 	var basis :Basis = global_transform.basis
 	
-	for idx in member_alive:
+	member_alive = total_member
+	
+	for idx in total_member:
 		var offset :Vector3 = _formation_offsets[idx] * formation_density
 		_formation_positions[idx] = (pos + basis.xform(offset))
 		
@@ -479,13 +482,14 @@ func _set_floating_info_pos(pos :Vector3, delta :float):
 	if not _member_spawned or not floating_info:
 		return
 		
-	floating_info.visible = visible# and _current_visible
+	floating_info.visible = visible # and _current_visible
 	if not floating_info.visible:
 		return
 		
 	# validate and must not behind cam
 	var _h = Vector3(0, 0.75, 0)
 	if camera.is_position_behind(pos + _h):
+		floating_info.visible = false
 		return
 		
 	 #  default pos by tilemap nav pos
@@ -644,7 +648,7 @@ remotesync func _resurect(member_idx :int):
 		
 	var m :SquadMember = _members[member_idx]
 	m.resurect()
-	member_alive += 1
+	member_alive = int(clamp(member_alive + 1, 0, total_member))
 	
 	emit_signal("on_squad_member_resurect", self, m)
 	
@@ -694,7 +698,7 @@ remotesync func _taking_damages(datas :Array):
 		
 		amount_total += amount
 		
-	if not _unit_audio.playing and amount_total > 0:
+	if visible and not _unit_audio.playing and amount_total > 0:
 		_unit_audio.stream = hurt_sounds.pick_random()
 		_unit_audio.play()
 		
@@ -708,7 +712,7 @@ remotesync func _on_members_dead(datas :Array):
 		member.attacked_by = i[1]
 		member.set_dead()
 		
-		member_alive -= 1
+		member_alive = int(clamp(member_alive - 1, 0, total_member))
 		pos = member.global_position
 		_on_member_dead(member)
 		
@@ -716,7 +720,7 @@ remotesync func _on_members_dead(datas :Array):
 		_blood_particle.translation = pos
 		_blood_particle.emitting = true
 		
-	if not _unit_audio.playing:
+	if visible and not _unit_audio.playing:
 		_unit_audio.stream = death_sounds[randi() % 4]
 	
 		# funny

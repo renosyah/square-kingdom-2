@@ -31,7 +31,7 @@ func master_moving(delta :float) -> void:
 	_follow_path_proccess(delta, global_position)
 	
 func _on_walking(delta :float):
-	if _is_moving and _walk_timer.is_stopped():
+	if visible and _is_moving and _walk_timer.is_stopped():
 		_walk_timer.wait_time = 0.43
 		_walk_timer.start()
 		_step_audio.stream = walk_sounds.pick_random()

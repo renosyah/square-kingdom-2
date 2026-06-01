@@ -5,7 +5,8 @@ const item = preload("res://assets/squad_spawner/item/item.tscn")
 export var spawner :NodePath
 
 onready var _spawner :SquadSpawner = get_node_or_null(spawner)
-onready var holder = $HBoxContainer/holder
+onready var holder = $MarginContainer/VBoxContainer/holder
+onready var margin_container = $MarginContainer
 
 func _ready():
 	var ok = spawner != null
@@ -25,6 +26,8 @@ func _on_squads_ready(_s):
 	_on_queue_update()
 	
 func _on_queue_update():
+	margin_container.visible = not _spawner.queue.empty()
+	
 	for i in holder.get_children():
 		holder.remove_child(i)
 		i.queue_free()
