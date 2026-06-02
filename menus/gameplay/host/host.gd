@@ -1,6 +1,7 @@
 extends BaseGameplay
 
-const bandit_troops = [[0,0,1],[0,1,2,3],[1,2,3],[1,2,3,4,5,17],[0,1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
+const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Poacher"]
+const bandit_troops = [[1,2,3],[1,2,3],[1,2,3,4,5,17],[1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
 
 onready var bot_bandit_spawner_timer = $bot_bandit_spawner_timer
 onready var bot_action_timer = $bot_action_timer
@@ -40,7 +41,7 @@ func _on_all_player_ready():
 	bot_bandit_spawner_timer.start()
 	bot_action_timer.start()
 	
-func _on_bot_squad_spawner_on_squads_ready(datas):
+func _on_bot_squad_spawner_on_squads_ready(datas :Array):
 	spawn_squads(datas)
 	
 func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
@@ -119,6 +120,10 @@ func _on_bot_bandit_spawner_timer_timeout():
 	var enemy_idx = bandit_troops[enemy_type_idx].pick_random()
 	var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
 	data.network_id = 1
+	
+	if data.scene_idx in [0,1]:
+		data.squad_name = bandit_names.pick_random()
+		
 	data.player_id = bot_bandit.player_id
 	data.node_name = Utils.create_unique_id()
 	data.current_tile = spawn_pos.pick_random()

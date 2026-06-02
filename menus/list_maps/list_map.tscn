@@ -4,7 +4,7 @@
 [ext_resource path="res://menus/list_maps/item/add_map_button.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=4]
-[ext_resource path="res://assets/text_input_popup/text_input_popup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/user_interface/text_input_popup/text_input_popup.tscn" type="PackedScene" id=5]
 
 [node name="list_map" type="MarginContainer"]
 margin_right = 831.0

@@ -89,7 +89,6 @@ func _perform_range_attack():
 		
 	if _range_attack_timer.is_stopped():
 		_range_attack_timer.start()
-		_range_engagement = true
 		
 		var iddles :Array = get_iddle_members()
 		if iddles.empty():

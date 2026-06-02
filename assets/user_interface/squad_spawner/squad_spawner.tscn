@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/user_interface/squad_spawner/squad_spawner.gd" type="Script" id=1]
+
+[node name="squad_spawner" type="Node"]
+script = ExtResource( 1 )
+
+[node name="pending_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true

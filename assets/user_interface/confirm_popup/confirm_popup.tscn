@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.gd" type="Script" id=3]
+
+[node name="confirm_popup" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.67451 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -116.0
+margin_right = 150.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 300, 200 )
+
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer"]
+margin_right = 300.0
+margin_bottom = 232.0
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 300.0
+margin_bottom = 232.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 8.0
+rect_min_size = Vector2( 0, 8 )
+
+[node name="title" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_top = 12.0
+margin_right = 300.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 60 )
+custom_fonts/font = ExtResource( 1 )
+text = "Confirm"
+align = 1
+valign = 1
+
+[node name="desc" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 300.0
+margin_bottom = 156.0
+rect_min_size = Vector2( 0, 80 )
+custom_fonts/font = ExtResource( 2 )
+text = "Delete this ?"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_left = 22.0
+margin_top = 160.0
+margin_right = 278.0
+margin_bottom = 220.0
+size_flags_horizontal = 4
+
+[node name="yes" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 120.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
+custom_fonts/font = ExtResource( 1 )
+text = "Yes"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 124.0
+margin_right = 132.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="no" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 136.0
+margin_right = 256.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 120, 60 )
+custom_fonts/font = ExtResource( 1 )
+text = "No"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 224.0
+margin_right = 300.0
+margin_bottom = 232.0
+rect_min_size = Vector2( 0, 8 )
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/yes" to="." method="_on_yes_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/no" to="." method="_on_no_pressed"]

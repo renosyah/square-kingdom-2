@@ -117,6 +117,7 @@ var attacked_by :NodePath
 onready var _has_shield :bool = member_shield != null
 onready var _has_range_weapon :bool = member_range_weapon != null
 var _member_spawned :bool = false
+var _melee_engagement :bool
 var _range_engagement :bool
 
 func _ready():
@@ -197,7 +198,8 @@ func _ready():
 	_tile_indicator.translation = _current_tile_v3
 	
 func _on_tree_exiting():
-	_move_to_indicator.queue_free()
+	if _move_to_indicator:
+		_move_to_indicator.queue_free()
 	
 func _on_setting_updated(d :SettingData):
 	enable_squad_tile_indicator = d.show_unit_tile
@@ -208,6 +210,12 @@ func _on_setting_updated(d :SettingData):
 	
 	if _is_moving:
 		_move_to_indicator.visible = enable_squad_tile_indicator and show_move_to_indicator
+	
+func in_melee_engagement() -> bool:
+	return _melee_engagement and _has_enemy
+	
+func in_range_engagement() -> bool:
+	return _range_engagement and _has_enemy
 	
 # set chase_enemy = UNIT
 # chase_target()
@@ -242,6 +250,8 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 	if not _is_master or not is_instance_valid(nav):
 		return
 		
+	_melee_engagement = false
+	_range_engagement = false
 	_has_enemy = false
 	enemy = null
 	

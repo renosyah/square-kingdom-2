@@ -160,14 +160,38 @@ mouse_filter = 2
 size_flags_vertical = 8
 color = Color( 0, 0, 0, 0.709804 )
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/ColorRect"]
-anchor_left = 1.0
-anchor_top = 0.5
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer2/ColorRect"]
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -22.0
-margin_top = -11.0
-margin_bottom = 11.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer2/ColorRect/HBoxContainer"]
+margin_right = 2.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 2, 0 )
+
+[node name="status" type="TextureRect" parent="MarginContainer/VBoxContainer2/ColorRect/HBoxContainer"]
+margin_left = 2.0
+margin_top = 3.0
+margin_right = 18.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 16, 16 )
+size_flags_horizontal = 0
+size_flags_vertical = 4
+expand = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer2/ColorRect/HBoxContainer"]
+margin_left = 18.0
+margin_right = 44.0
+margin_bottom = 22.0
+mouse_filter = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/ColorRect/HBoxContainer"]
+margin_left = 44.0
+margin_right = 66.0
+margin_bottom = 21.0
 rect_min_size = Vector2( 22, 0 )
 custom_fonts/font = ExtResource( 4 )
 text = "0"

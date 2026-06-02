@@ -32,20 +32,20 @@ const tiles = [
 ]
 
 const tiles2d = [
-	preload("res://scenes/minimap/tile_2d/ground.tscn"),
-	preload("res://scenes/minimap/tile_2d/mud.tscn"),
-	preload("res://scenes/minimap/tile_2d/road.tscn"),
-	preload("res://scenes/minimap/tile_2d/sand.tscn"),
-	preload("res://scenes/minimap/tile_2d/sea.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/ground.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/mud.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/road.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/sand.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/sea.tscn"),
 	
-	preload("res://scenes/minimap/tile_2d/tree.tscn"),
-	preload("res://scenes/minimap/tile_2d/tree.tscn"),
-	preload("res://scenes/minimap/tile_2d/tree.tscn"),
-	preload("res://scenes/minimap/tile_2d/tree.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/tree.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/tree.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/tree.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/tree.tscn"),
 	
-	preload("res://scenes/minimap/tile_2d/rock.tscn"),
-	preload("res://scenes/minimap/tile_2d/rock.tscn"),
-	preload("res://scenes/minimap/tile_2d/rock.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
+	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
 ]
 
 # will return center position of 

@@ -1,6 +1,6 @@
 extends Control
 
-const dragable_card_scene = preload("res://assets/dragable_card/dragable_card.tscn")
+const dragable_card_scene = preload("res://assets/user_interface/dragable_card/dragable_card.tscn")
 
 onready var army_label = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/Label2
 

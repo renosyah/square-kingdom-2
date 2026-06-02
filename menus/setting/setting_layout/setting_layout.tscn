@@ -1,10 +1,10 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://assets/confirm_popup/confirm_popup.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=2]
 [ext_resource path="res://menus/setting/setting_layout/setting_layout.gd" type="Script" id=3]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=4]
-[ext_resource path="res://assets/snack_bar/snack_bar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/user_interface/snack_bar/snack_bar.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=6]
 [ext_resource path="res://assets/user_interface/icons/profile_setting.png" type="Texture" id=7]
 [ext_resource path="res://assets/user_interface/icons/audio_setting.png" type="Texture" id=8]

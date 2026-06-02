@@ -77,6 +77,7 @@ func _process(delta):
 		
 ########################################## ambient sound  ############################################
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
+const saya_akan_lawan = preload("res://assets/sounds/gameplay/saya_akan_lawan.wav")
 
 const attack = [
 	preload("res://assets/sounds/unit/attack/attack_1_1.wav"), preload("res://assets/sounds/unit/attack/attack_1_2.wav"), preload("res://assets/sounds/unit/attack/attack_1_3.wav"), preload("res://assets/sounds/unit/attack/attack_1_4.wav")
@@ -660,6 +661,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		play_squad_spawn(is_commander)
+		
+		
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():
@@ -747,6 +750,9 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			
 		if not ui_sound.playing:
 			ui_sound.stream = attack_sfx
+			if randi() < 0.03: # 0.03% chance of pria solo
+				ui_sound.stream = saya_akan_lawan
+				
 			ui_sound.play()
 			
 		unit_attacking_response()

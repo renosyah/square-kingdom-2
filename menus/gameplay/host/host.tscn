@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://menus/gameplay/host/host.gd" type="Script" id=1]
-[ext_resource path="res://assets/squad_spawner/squad_spawner.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/user_interface/squad_spawner/squad_spawner.tscn" type="PackedScene" id=2]
 
 [node name="gameplay" type="Node"]
 script = ExtResource( 1 )

@@ -244,6 +244,9 @@ func _perform_melee_attack():
 		_melee_attack_timer.wait_time = melee_attack_speed
 		_melee_attack_timer.start()
 		
+		_melee_engagement = true
+		_range_engagement = false
+		
 		var iddles :Array = get_iddle_members()
 		if iddles.empty():
 			return
@@ -272,6 +275,7 @@ func _perform_range_attack():
 		_range_attack_timer.start()
 		
 		_range_engagement = true
+		_melee_engagement = false
 		
 		var iddles :Array = get_iddle_members()
 		if iddles.empty():

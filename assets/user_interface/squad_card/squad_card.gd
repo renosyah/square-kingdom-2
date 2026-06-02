@@ -1,6 +1,12 @@
 extends MarginContainer
 class_name SquadCard
 
+const icon_status = [
+	preload("res://assets/user_interface/icons/sword_attack.png"), # melee
+	preload("res://assets/user_interface/icons/attack.png"), # range
+	preload("res://assets/user_interface/icons/movement_mode.png") # moving
+]
+
 const color_red_trans = Color(0.537255,0,0,0.6)
 const color_orange_trans = Color(1,0.647059,0,0.4)
 
@@ -13,12 +19,13 @@ onready var _bg = $bg
 onready var _texture_rect = $MarginContainer/TextureRect
 onready var _color = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/color
 onready var _icon = $MarginContainer/VBoxContainer/MarginContainer/MarginContainer/MarginContainer2/icon
-onready var _label = $MarginContainer/VBoxContainer2/ColorRect/Label
+onready var _label = $MarginContainer/VBoxContainer2/ColorRect/HBoxContainer/Label
 onready var _color2 = $MarginContainer/VBoxContainer/mounted/color
 onready var _mounted = $MarginContainer/VBoxContainer/mounted
 onready var _charge_amount = $MarginContainer/VBoxContainer2/charge_amount
 onready var _hurt_color_stats = $MarginContainer/hurt_color_stats
 onready var _button = $Button
+onready var _status = $MarginContainer/VBoxContainer2/ColorRect/HBoxContainer/status
 
 onready var _heal = $heal
 onready var _hurt = $hurt
@@ -82,6 +89,15 @@ func _get_hp_color(hp :int, max_hp: int) -> Color:
 	)
 	
 func _process(delta):
+	_status.texture = null
+	
+	if squad.in_melee_engagement():
+		_status.texture = icon_status[0]
+	if squad.in_range_engagement():
+		_status.texture = icon_status[1]
+	if squad.is_moving():
+		_status.texture = icon_status[2]
+		
 	_not_on_screen.visible = not squad.visible
 	_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
 	_heal.color.a = lerp(_heal.color.a, 0, 2 * delta)

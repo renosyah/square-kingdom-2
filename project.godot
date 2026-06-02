@@ -82,7 +82,7 @@ _global_script_classes=[ {
 "base": "MarginContainer",
 "class": "DragableCard",
 "language": "GDScript",
-"path": "res://assets/dragable_card/dragable_card.gd"
+"path": "res://assets/user_interface/dragable_card/dragable_card.gd"
 }, {
 "base": "Spatial",
 "class": "EditableTileMap",
@@ -167,7 +167,7 @@ _global_script_classes=[ {
 "base": "Control",
 "class": "MiniMap",
 "language": "GDScript",
-"path": "res://scenes/minimap/minimap.gd"
+"path": "res://assets/user_interface/minimap/minimap.gd"
 }, {
 "base": "Spatial",
 "class": "MovableCamera",
@@ -242,7 +242,7 @@ _global_script_classes=[ {
 "base": "MarginContainer",
 "class": "Scoreboard",
 "language": "GDScript",
-"path": "res://assets/scoreboard/scoreboard.gd"
+"path": "res://assets/user_interface/scoreboard/scoreboard.gd"
 }, {
 "base": "Node",
 "class": "ServerAdvertiser",
@@ -287,7 +287,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "SquadSpawner",
 "language": "GDScript",
-"path": "res://assets/squad_spawner/squad_spawner.gd"
+"path": "res://assets/user_interface/squad_spawner/squad_spawner.gd"
 }, {
 "base": "Spatial",
 "class": "TapIndicator",
@@ -297,7 +297,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Tile2D",
 "language": "GDScript",
-"path": "res://scenes/minimap/tile_2d/tile_2d.gd"
+"path": "res://assets/user_interface/minimap/tile_2d/tile_2d.gd"
 }, {
 "base": "Node",
 "class": "TileIndex",

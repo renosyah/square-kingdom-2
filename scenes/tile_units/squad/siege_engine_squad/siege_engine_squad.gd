@@ -98,7 +98,7 @@ func _on_walking(delta :float):
 func _ajust_formation(pos :Vector3, delta :float):
 	._ajust_formation(pos, delta)
 	
-	if not _member_spawned:
+	if is_dead or not _member_spawned:
 		return
 		
 	if _siege_engine.iddle:
@@ -107,7 +107,10 @@ func _ajust_formation(pos :Vector3, delta :float):
 func _perform_range_attack():
 	#._perform_range_attack()
 	
-	if not can_attack:
+	if is_dead or not _member_spawned:
+		return
+		
+	if not can_attack or not _has_enemy:
 		return
 		
 	# too close
@@ -117,6 +120,9 @@ func _perform_range_attack():
 	
 	if _range_attack_timer.is_stopped():
 		_range_attack_timer.start()
+		
+		_range_engagement = true
+		_melee_engagement = false
 		
 		_siege_engine.tile_target = enemy.current_tile
 		_siege_engine.target_position = enemy.global_position

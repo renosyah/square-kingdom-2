@@ -58,11 +58,10 @@ func display_the_best():
 		
 	var datas = _get_most_results()
 	for data in datas:
-		var p :PlayerData = data["datas"][0]
-		var s :Scoreboard.ScoreData = data["datas"][1]
 		var item = most_result_item_scene.instance()
 		item.most_type = data["type"]
-		item.player = p
+		item.player = data["player"]
+		item.value = data["value"]
 		holders.add_child(item)
 
 func _get_most_results() -> Array:
@@ -80,13 +79,13 @@ func _get_most_results() -> Array:
 	var ff = _dup_score_data(scores)
 	
 	var datas = [
-		{"type":0, "value":best[1].get_total_score(), "datas":best},
-		{"type":1, "value":kill[1].kill, "datas":kill},
-		{"type":2, "value":lost[1].dead, "datas":lost},
-		{"type":3, "value":ff[1].friendly_fire, "datas":ff}
+		{"type":0, "value":best[1].get_total(), "player":best[0]},
+		{"type":1, "value":kill[1].kill, "player":kill[0]},
+		{"type":2, "value":lost[1].dead, "player":lost[0]},
+		{"type":3, "value":ff[1].friendly_fire, "player":ff[0]}
 	]
 	datas.sort_custom(self, "_compare_value_desc")
-	return datas.slice(0, 3)
+	return datas.slice(0, 2)
 	
 func _compare_value_desc(a, b):
 	return a.value > b.value
@@ -94,7 +93,6 @@ func _compare_value_desc(a, b):
 func _dup_score_data(datas) -> Array:
 	var a = PlayerData.new()
 	a.from_dictionary(datas[0].player_data.to_dictionary())
-	
 	var s :Scoreboard.ScoreData = datas[0].score_data
 	var b = Scoreboard.ScoreData.new()
 	b.kill = s.kill

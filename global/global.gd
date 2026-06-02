@@ -221,7 +221,7 @@ func save_setting():
 var transition :CanvasLayer
 
 func setup_transition():
-	transition = preload("res://assets/transision_screen/transision_screen.tscn").instance()
+	transition = preload("res://assets/user_interface/transision_screen/transision_screen.tscn").instance()
 	add_child(transition)
 	
 func change_scene(scene :String, use :bool = false, bg_idx :int = 0):
@@ -359,9 +359,8 @@ func create_bot_player() -> Array:
 		
 	for i in count:
 		var idx = randi() % custom_squads.size()
-		if _bot_player_armies.size() < max_army_size:
-			_bot_player_armies.append(idx)
-			
+		_bot_player_armies.append(idx)
+		
 	sort_army(_bot_player_armies)
 	return [p, _bot_player_armies]
 

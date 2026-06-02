@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/background/best_player.png" type="Texture" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -6,23 +6,24 @@
 [ext_resource path="res://assets/user_interface/potrait/1.png" type="Texture" id=4]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=5]
 [ext_resource path="res://assets/user_interface/icons/shield_2.png" type="Texture" id=6]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=7]
 
 [node name="most_result_item" type="MarginContainer"]
 margin_right = 300.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 300, 0 )
+margin_bottom = 240.0
+rect_min_size = Vector2( 300, 240 )
 script = ExtResource( 3 )
 
 [node name="img" type="TextureRect" parent="."]
 margin_right = 300.0
-margin_bottom = 220.0
+margin_bottom = 240.0
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 7
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 300.0
-margin_bottom = 220.0
+margin_bottom = 240.0
 alignment = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
@@ -35,31 +36,57 @@ margin_right = 300.0
 margin_bottom = 40.0
 color = Color( 0, 0, 0, 0.556863 )
 
-[node name="title" type="Label" parent="VBoxContainer/MarginContainer2"]
-margin_top = 6.0
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer2"]
 margin_right = 300.0
+margin_bottom = 40.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="title" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 16.0
+margin_top = 6.0
+margin_right = 261.0
 margin_bottom = 34.0
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
-text = "MOST ..."
+text = "MOST KILL"
+valign = 1
+
+[node name="value" type="Label" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 265.0
+margin_top = 2.0
+margin_right = 284.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 7 )
+text = "0"
 align = 1
 valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 288.0
+margin_right = 300.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 12, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 44.0
 margin_right = 300.0
-margin_bottom = 140.0
+margin_bottom = 160.0
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 144.0
+margin_top = 164.0
 margin_right = 300.0
-margin_bottom = 220.0
+margin_bottom = 240.0
 rect_min_size = Vector2( 0, 60 )
 
 [node name="ColorRect" type="ColorRect" parent="VBoxContainer/MarginContainer"]
 margin_right = 300.0
 margin_bottom = 76.0
-color = Color( 0, 0, 0, 0.894118 )
+color = Color( 0, 0, 0, 0.792157 )
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer"]
 margin_right = 300.0
