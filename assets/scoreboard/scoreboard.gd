@@ -40,14 +40,19 @@ class ScoreboardData:
 	func get_total_score() -> int:
 		return score_data.get_total()
 	
+export var show_battle_time :bool
+	
 onready var list_score_holder = $Control/Control/VBoxContainer/SafeArea/MarginContainer/VBoxContainer/ScrollContainer/list_score_holder
 onready var scores :Dictionary = Global.scores # {PlayerData:ScoreboardData}
+onready var battle_time = $Control/Control/VBoxContainer/MarginContainer/HBoxContainer/battle_time
 
 var _pending_score_update :Array = []
 
 func _ready():
+	battle_time.visible = show_battle_time
+	battle_time.text = Utils.format_time_full(Global.battle_time)
 	ui_update()
-
+	
 func _process(delta):
 	if not _pending_score_update.empty():
 		_update_score(_pending_score_update.front())

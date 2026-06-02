@@ -291,6 +291,7 @@ func save_custom_squad():
 	
 ##########################################  lobby & gameplay  ############################################
 var current_root :Node
+var battle_time :int
 var scores :Dictionary = {}
 var is_win :bool
 var player_map_data_received :Array = []

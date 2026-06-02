@@ -47,8 +47,14 @@ func _on_all_player_ready():
 	if is_server:
 		spawn_squads(tower_datas)
 		
+	Global.battle_time = 0
 	Global.hide_transition()
+	Global.connect("on_global_tick", self, "_on_global_tick")
 	start_spawn_army()
+	
+func _on_global_tick():
+	if not is_end:
+		Global.battle_time += 1
 	
 ########################################## proccess  ############################################
 

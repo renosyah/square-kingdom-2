@@ -35,7 +35,19 @@ func update_ui():
 		item.data = data.squads[s]
 		sub_item_holder.add_child(item)
 		
+	sort_score()
+	
 	total_kill.text = "%s" % data.score_data.kill
 	total_dead.text = "%s" % data.score_data.dead
 	total_ff.text = "%s" % data.score_data.friendly_fire
 	total_all.text = "%s" % data.score_data.get_total()
+	
+func sort_score():
+	var children = sub_item_holder.get_children()
+	children.sort_custom(self, "_compare_by_total")
+	for i in range(children.size()):
+		sub_item_holder.move_child(children[i], i)
+		
+func _compare_by_total(a, b) -> bool:
+	return a.data.get_total() > b.data.get_total()
+		

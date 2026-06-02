@@ -37,10 +37,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Control" type="Control" parent="CanvasLayer2/Control/VBoxContainer"]
+[node name="Control" type="MarginContainer" parent="CanvasLayer2/Control/VBoxContainer"]
 margin_right = 1024.0
 margin_bottom = 476.0
 size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer2/Control/VBoxContainer/Control"]
+margin_top = 178.0
+margin_right = 1024.0
+margin_bottom = 298.0
+rect_min_size = Vector2( 0, 120 )
+size_flags_vertical = 4
+alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer2/Control/VBoxContainer"]
 margin_top = 480.0
@@ -165,6 +173,7 @@ rect_min_size = Vector2( 24, 0 )
 
 [node name="scoreboard" parent="CanvasLayer2/Control" instance=ExtResource( 4 )]
 visible = false
+show_battle_time = true
 
 [connection signal="pressed" from="CanvasLayer2/Control/VBoxContainer/MarginContainer2/MarginContainer4/HBoxContainer/MarginContainer5/to_lobby" to="." method="_on_to_lobby_pressed"]
 [connection signal="pressed" from="CanvasLayer2/Control/VBoxContainer/MarginContainer2/MarginContainer4/HBoxContainer/MarginContainer7/scoreboard" to="." method="_on_scoreboard_pressed"]

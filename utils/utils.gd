@@ -115,3 +115,13 @@ static func format_time(n :int) -> String:
 	var minutes = n / 60
 	var seconds = n % 60
 	return "%02d:%02d" % [minutes, seconds]
+
+static func format_time_full(n :int) -> String:
+	var hours: int = n / 3600
+	var minutes: int = (n % 3600) / 60
+	var seconds: int = n % 60
+	return "%02d:%02d:%02d" % [hours, minutes, seconds]
+
+
+
+
