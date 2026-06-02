@@ -4,7 +4,7 @@ class_name BaseEntity
 # this is entity that can sync in network enviroment
 # only basic mechanic to setup & prepare as network entity
 export var network_id :int = 1
-export var notifier_max_distance :float = 20
+export var notifier_max_distance :float = 8
 
 # performace
 var _visibility_notifier :VisibilityNotifier
@@ -56,6 +56,7 @@ func _ready() -> void:
 	_is_master = _is_network_master()
 	
 	_visibility_notifier = VisibilityNotifier.new()
+	_visibility_notifier.aabb = AABB(Vector3.ONE * -0.5, Vector3.ONE)
 	_visibility_notifier.max_distance = notifier_max_distance
 	_visibility_notifier.connect("camera_entered", self, "_on_camera_entered")
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
@@ -64,7 +65,12 @@ func _ready() -> void:
 	# add little delay
 	# just in case all its puppet created in time
 	yield(get_tree().create_timer(1),"timeout")
-	_setup_network_timer()
+	
+	# dont make sense to send update
+	# if only 1 singular player : HOST
+	# active on networked game session
+	if NetworkLobbyManager.get_players().size() > 1:
+		_setup_network_timer()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta :float) -> void:

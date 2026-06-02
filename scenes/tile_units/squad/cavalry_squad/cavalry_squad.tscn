@@ -4,5 +4,4 @@
 
 [node name="cavalry_squad" type="Spatial"]
 script = ExtResource( 1 )
-notifier_max_distance = 10.0
 speed = 1.8
