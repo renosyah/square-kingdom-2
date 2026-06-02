@@ -21,6 +21,7 @@ func _process(delta):
 	spatial.rotate_x(-5 * delta)
 	
 func on_stop():
+	_age = 0
 	rotation = Vector3(0, 0, 0)
 	
 	if setting_data.extra_effect:

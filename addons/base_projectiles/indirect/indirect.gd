@@ -10,6 +10,7 @@ export var threshold :float = 0.3
 # override
 func launch():
 	#.launch()
+	_age = 0
 	_top_down_point = to + Vector3(0, max_range, 0)
 	visible = true
 	_dir = global_position.direction_to(_top_down_point)
@@ -22,7 +23,7 @@ func launch():
 func on_travel(delta):
 	#.on_travel(delta)
 	var dist = global_position.distance_to(to)
-	if dist < threshold:
+	if dist < threshold or _age > lifetime:
 		on_stop()
 		return
 	
@@ -32,6 +33,7 @@ func on_travel(delta):
 	
 	_dir = global_position.direction_to(_top_down_point)
 	translation += _dir * vel
+	_age += delta
 	
 	if _dir.length() > 0.001:
 		var dot = abs(_dir.dot(Vector3.UP))

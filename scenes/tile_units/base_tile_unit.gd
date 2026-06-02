@@ -84,8 +84,9 @@ func _get_tile_path(to :Vector2, use_safe :bool) -> Array:
 	for id in p:
 		paths.append(TileUnitPath.new(id, nav.get_pos_v3(id)))
 		
-	paths.pop_front()
-	
+	if paths.size() >= 2:
+		paths.pop_front()
+	 
 	return paths
 	
 func click():

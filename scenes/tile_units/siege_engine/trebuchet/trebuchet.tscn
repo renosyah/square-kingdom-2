@@ -495,11 +495,14 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0.4 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0.4, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [  ],
 "method": "_on_boulder_lob"
+}, {
+"args": [  ],
+"method": "_on_projectile_launched"
 } ]
 }
 tracks/8/type = "value"

@@ -11,6 +11,7 @@ func _process(delta):
 	spatial.rotate_z(-55 * delta)
 	
 func on_stop():
+	_age = 0
 	set_process(false)
 	_is_ready = true
 	emit_signal("on_reach")

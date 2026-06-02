@@ -1,6 +1,7 @@
 extends IndirectProjectile
 
 func on_stop():
+	_age = 0
 	set_process(false)
 	emit_signal("on_reach")
 	

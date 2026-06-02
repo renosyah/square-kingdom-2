@@ -30,9 +30,11 @@ func _on_bolt_shot():
 	bolt.to = target_position + Vector3.ONE * rand_range(-0.5,0.5)
 	bolt.launch()
 	
+func _on_projectile_launched():
+	iddle = true
+	
 func _on_projectile_reach(boulder):
 	emit_signal("on_set_damage_to_tile", self, tile_target, attack_damage)
-	iddle = true
 	
 func moving(delta :float):
 	.moving(delta)
