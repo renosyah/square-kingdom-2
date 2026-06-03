@@ -76,13 +76,15 @@ func set_dead():
 	.set_dead()
 	
 	_rider.set_dead()
-	animation_state.travel("dead")
+	_current_anim_walk = "dead"
+	animation_state.travel(_current_anim_walk)
 	
 func resurect():
 	.resurect()
 	
 	_rider.resurect()
-	animation_state.start("iddle")
+	_current_anim_walk = "iddle"
+	animation_state.start(_current_anim_walk)
 	
 func moving(delta :float):
 	#.moving(delta)

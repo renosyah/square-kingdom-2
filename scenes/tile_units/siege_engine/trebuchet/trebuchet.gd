@@ -13,7 +13,8 @@ func attack():
 		return
 	
 	iddle = false
-	animation_state.travel("lob_boulder")
+	_current_anim_walk = "lob_boulder"
+	animation_state.travel(_current_anim_walk)
 	
 func _on_boulder_lob():
 	if not Global.current_root:

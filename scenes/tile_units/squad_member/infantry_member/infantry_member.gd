@@ -45,12 +45,13 @@ onready var uniforms = [
 ]
 
 var _last_pos :Vector3
-var _current_anim_body_walk :String
+var _current_anim_body :String
 var _current_anim_walk :String
 
 func _ready():
 	apply_equipment()
-	leg_animation_state.travel("on_sadle" if on_horse else "iddle")
+	_current_anim_walk = "on_sadle" if on_horse else "iddle"
+	leg_animation_state.travel(_current_anim_walk)
 	
 func resurect():
 	.resurect()
@@ -61,8 +62,12 @@ func resurect():
 	if _armor:
 		_armor.visible = true
 		
-	leg_animation_state.start("on_sadle" if on_horse else "iddle")
-	body_animation_state.start("iddle")
+		
+	_current_anim_body = "iddle"
+	_current_anim_walk = "on_sadle" if on_horse else "iddle"
+	
+	body_animation_state.start(_current_anim_body)
+	leg_animation_state.start(_current_anim_walk)
 	
 func apply_equipment():
 	# remove currently equiped
@@ -118,12 +123,14 @@ func apply_equipment():
 	
 	if range_weapon:
 		prepare_range_weapon()
-		body_animation_state.travel(_range_weapon.ready_animation)
+		_current_anim_body = _range_weapon.ready_animation
+		body_animation_state.travel(_current_anim_body)
 		return
 		
 	if melee_weapon:
 		prepare_melee_weapon()
-		body_animation_state.travel(_melee_weapon.ready_animation)
+		_current_anim_body = _melee_weapon.ready_animation
+		body_animation_state.travel(_current_anim_body)
 		
 func prepare_melee_weapon():
 	.prepare_melee_weapon()
@@ -178,8 +185,9 @@ func melee_attack():
 		tween.interpolate_property(self, "translation", global_position, enemy.global_position + offset, 0.8)
 		tween.start()
 		yield(tween,"tween_completed")
-	
-	body_animation_state.travel(_melee_weapon.attack_animation)
+		
+	_current_anim_body = _melee_weapon.attack_animation
+	body_animation_state.travel(_current_anim_body)
 	auto_iddle_timer.start()
 	
 func _on_melee_attack_performed():
@@ -213,7 +221,8 @@ func range_attack():
 	prepare_range_weapon()
 	_look_at(enemy.global_position)
 	
-	body_animation_state.travel(_range_weapon.attack_animation)
+	_current_anim_body = _range_weapon.attack_animation
+	body_animation_state.travel(_current_anim_body)
 	auto_iddle_timer.start()
 	
 func _on_pulling_bow():
@@ -270,16 +279,16 @@ func moving(delta :float):
 	if iddle:
 		if range_mode:
 			var anim = _range_weapon.walk_animation if _is_moving else _range_weapon.ready_animation
-			if _current_anim_body_walk != anim:
-				_current_anim_body_walk = anim
-				body_animation_state.travel(_current_anim_body_walk)
+			if _current_anim_body != anim:
+				_current_anim_body = anim
+				body_animation_state.travel(_current_anim_body)
 			
 		if melee_mode:
 			var attack_move = squad.attack_move
 			var anim = _melee_weapon.walk_animation if (_is_moving and not attack_move) else _melee_weapon.ready_animation
-			if _current_anim_body_walk != anim:
-				_current_anim_body_walk = anim
-				body_animation_state.travel(_current_anim_body_walk)
+			if _current_anim_body != anim:
+				_current_anim_body = anim
+				body_animation_state.travel(_current_anim_body)
 		
 	if not on_horse:
 		var anim = "walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
@@ -291,8 +300,11 @@ func moving(delta :float):
 func set_dead():
 	.set_dead()
 	
-	body_animation_state.start("die")
-	leg_animation_state.start("die")
+	_current_anim_body = "die"
+	_current_anim_walk = "die"
+	
+	body_animation_state.start(_current_anim_body)
+	leg_animation_state.start(_current_anim_walk)
 
 func _on_auto_iddle_timer_timeout():
 	iddle = true
