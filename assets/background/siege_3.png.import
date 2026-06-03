@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/battle.png-a8c5234468cc271f186117d7f6354ff7.stex"
+path="res://.import/siege_3.png-7a600e469e7e30b5f5536676a935644a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/battle.png"
-dest_files=[ "res://.import/battle.png-a8c5234468cc271f186117d7f6354ff7.stex" ]
+source_file="res://assets/background/siege_3.png"
+dest_files=[ "res://.import/siege_3.png-7a600e469e7e30b5f5536676a935644a.stex" ]
 
 [params]
 

@@ -14,7 +14,7 @@ onready var confirm_popup = $CanvasLayer/confirm_popup
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
-var idx_bg = [1, 2]
+var idx_bg = [1, 2, 3, 4]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

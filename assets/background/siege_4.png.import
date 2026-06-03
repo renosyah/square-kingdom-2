@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/join.png-c66502ec10e90f969cd294640ae2f278.stex"
+path="res://.import/siege_4.png-c08096f6b331f8b09c0babcf28616a3e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/join.png"
-dest_files=[ "res://.import/join.png-c66502ec10e90f969cd294640ae2f278.stex" ]
+source_file="res://assets/background/siege_4.png"
+dest_files=[ "res://.import/siege_4.png-c08096f6b331f8b09c0babcf28616a3e.stex" ]
 
 [params]
 

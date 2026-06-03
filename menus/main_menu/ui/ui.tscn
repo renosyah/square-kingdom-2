@@ -5,8 +5,8 @@
 [ext_resource path="res://assets/background/splash.png" type="Texture" id=3]
 [ext_resource path="res://menus/list_maps/list_map.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=5]
-[ext_resource path="res://assets/background/battle.png" type="Texture" id=6]
-[ext_resource path="res://assets/background/join.png" type="Texture" id=7]
+[ext_resource path="res://assets/background/round_table.png" type="Texture" id=6]
+[ext_resource path="res://assets/background/siege_3.png" type="Texture" id=7]
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
 [ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
@@ -53,7 +53,6 @@ margin_bottom = 0.0
 size_flags_vertical = 3
 
 [node name="play" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
@@ -99,8 +98,9 @@ custom_fonts/font = ExtResource( 5 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 expand = true
+stretch_mode = 7
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/host"]
 anchor_right = 1.0
@@ -143,8 +143,9 @@ custom_fonts/font = ExtResource( 5 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-texture = ExtResource( 7 )
+texture = ExtResource( 6 )
 expand = true
+stretch_mode = 7
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/join"]
 anchor_right = 1.0
