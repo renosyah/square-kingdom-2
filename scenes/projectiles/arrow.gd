@@ -1,11 +1,5 @@
 extends IndirectProjectile
 
-onready var spatial = $Spatial
-
-func _process(delta):
-	if visible:
-		spatial.rotate_z(45 * delta)
-	
 func on_stop():
 	_age = 0
 	set_process(false)

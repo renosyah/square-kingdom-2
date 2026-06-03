@@ -576,22 +576,22 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.unit_name = data.squad_name
 	squad.team = data.team
 	squad.color = EntityIndex.player_colors[data.color_idx]
-	squad.speed = data.speed
+	squad.speed = data.speed()
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
 	squad.can_attack = true
 	squad.turning_speed = data.turning_speed
-	squad.melee_attack_speed = data.melee_attack_speed
-	squad.range_attack_speed = data.range_attack_speed
+	squad.melee_attack_speed = data.melee_attack_speed()
+	squad.range_attack_speed = data.range_attack_speed()
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
-	squad.attack_range = data.attack_range
+	squad.attack_range = data.attack_range()
 	
 	# apply debuf, 50% slower attack speed
 	if player_debuf.has(data.player_id):
-		squad.melee_attack_speed += data.melee_attack_speed
-		squad.range_attack_speed += data.range_attack_speed
+		squad.melee_attack_speed += data.melee_attack_speed()
+		squad.range_attack_speed += data.range_attack_speed()
 
 	# squad member
 	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
@@ -600,8 +600,8 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_melee_weapon = EntityIndex.weapons[data.member_melee_weapon_idx]
 	squad.member_range_weapon = EntityIndex.weapons[data.member_range_weapon_idx]
 	squad.member_material = Global.player_materials[data.color_idx]
-	squad.member_hp = data.member_hp
-	squad.member_max_hp = data.member_hp
+	squad.member_hp = data.member_hp()
+	squad.member_max_hp = data.member_hp()
 	squad.heal_amount = data.heal_amount
 	squad.total_member = data.total_member
 	squad.squad_role = data.squad_role
@@ -628,6 +628,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	if squad is CavalrySquad:
 		squad.charge_damage = data.charge_damage
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
+		
+	if squad is SiegeEngineSquad:
+		squad.attack_range = data.siege_engine_attack_range
+		squad.range_attack_speed = data.siege_engine_attack_speed
 		
 	#var my_team = (data.team == current_player.team)
 	squad.enable_spotting = false

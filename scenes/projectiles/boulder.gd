@@ -17,10 +17,6 @@ onready var blood_particle = $blood_particle
 func _ready():
 	trail_render.render = setting_data.extra_effect
 	
-func _process(delta):
-	if visible:
-		spatial.rotate_x(-5 * delta)
-	
 func on_stop():
 	_age = 0
 	rotation = Vector3(0, 0, 0)

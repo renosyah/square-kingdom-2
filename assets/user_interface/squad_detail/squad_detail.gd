@@ -24,9 +24,9 @@ func display_info(data :SquadData):
 	_info_description.text = data.description
 	_info_icon_color.color = EntityIndex.player_colors[data.color_idx]
 	_info_icon.texture = EntityIndex.squad_icon[data.icon_idx]
-	_hp.text = "%s | %s" % [data.member_hp,data.heal_amount]
+	_hp.text = "%s | %s" % [data.member_hp(),data.heal_amount]
 	_attack.text = "%s | %s" % _get_attack_values(data)
-	_speed.text = "%s" % data.speed
+	_speed.text = "%s" % data.speed()
 	_mounted.visible = data.is_mounted
 	_info_icon_color2.color = EntityIndex.player_colors[data.color_idx]
 	
@@ -36,14 +36,14 @@ func _get_attack_values(data :SquadData) -> Array:
 	if m:
 		var w :MeleeWeapon = m.instance()
 		add_child(w)
-		s[0] = calculate_dps(w.attack_damage, data.melee_attack_speed)
+		s[0] = calculate_dps(w.attack_damage, data.melee_attack_speed())
 		w.queue_free()
 		
 	var r :PackedScene = EntityIndex.weapons[data.member_range_weapon_idx]
 	if r:
 		var w :RangeWeapon = r.instance()
 		add_child(w)
-		s[1] = calculate_dps(w.attack_damage * data.total_member, data.range_attack_speed) 
+		s[1] = calculate_dps(w.attack_damage * data.total_member, data.range_attack_speed()) 
 		w.queue_free()
 		
 	# siege engine if not 0 or 1

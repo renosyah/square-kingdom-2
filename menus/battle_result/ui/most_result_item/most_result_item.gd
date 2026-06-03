@@ -17,7 +17,7 @@ const imgs = [
 const texts = [
 	"Best Player",
 	"Most Kills",
-	"Most Lost",
+	"Most Losses",
 	"Most Friendly Fire"
 ]
 

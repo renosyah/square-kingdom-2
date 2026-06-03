@@ -37,6 +37,21 @@ func _on_walking(delta :float):
 		_step_audio.stream = walk_sounds.pick_random()
 		_step_audio.play()
 		
+func _on_enemy_in_melee_range(delta :float, pos :Vector3, enemy_pos :Vector3):
+	._on_enemy_in_melee_range(delta, pos, enemy_pos)
+	
+	if not can_attack:
+		return
+		
+	var dir_to :Vector3 = pos.direction_to(enemy_pos)
+	_rotate_to_look(delta, pos, enemy_pos, dir_to)
+	
+	var foward_dir :Vector3 = (-global_transform.basis.z)
+	var is_align = foward_dir.dot(dir_to) > align_threshold
+	if not is_align:
+		return
+		
+	_perform_melee_attack()
 	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
@@ -44,31 +59,16 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	if not can_attack:
 		return
 		
-	# align Y
-	var is_align :bool = true
-	var look :Vector3 = enemy_pos
-	look.y = pos.y
+	var dir_to :Vector3 = pos.direction_to(enemy_pos)
+	_rotate_to_look(delta, pos, enemy_pos, dir_to)
 	
-	var dir_to :Vector3 = pos.direction_to(look)
-	
-	# look at enemy position
-	if _can_look_at(pos, look, dir_to):
-		var t:Transform = transform.looking_at(look, Vector3.UP)
-		transform = transform.interpolate_with(t, turning_speed * delta)
-		
-		var foward_dir :Vector3 = (-global_transform.basis.z)
-		is_align = foward_dir.dot(dir_to) > align_threshold
-		
+	var foward_dir :Vector3 = (-global_transform.basis.z)
+	var is_align = foward_dir.dot(dir_to) > align_threshold
 	if not is_align:
 		return
 		
-	if _is_in_melee_range(enemy):
-		
-		_perform_melee_attack()
-		return
-		
 	_perform_range_attack()
-
+	
 func _perform_melee_attack():
 	if _melee_attack_timer.is_stopped():
 		_melee_attack_timer.wait_time = melee_attack_speed

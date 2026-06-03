@@ -107,17 +107,10 @@ func _ajust_formation(pos :Vector3, delta :float):
 func _perform_range_attack():
 	#._perform_range_attack()
 	
-	if is_dead or not _member_spawned:
+	var conditions = [is_dead, not _member_spawned, not can_attack, not _has_enemy]
+	if  conditions.has(true):
 		return
 		
-	if not can_attack or not _has_enemy:
-		return
-		
-	# too close
-	# cant do shit
-	if enemy.current_tile in _minimum_range_tiles:
-		return
-	
 	if _range_attack_timer.is_stopped():
 		_range_attack_timer.start()
 		
@@ -134,7 +127,13 @@ func update_spotting():
 	_minimum_range_tiles = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, minimum_range
 	)
-
+	
+	# too close
+	# cant do shit
+	# remove min ramge from ranges
+	for id in _minimum_range_tiles:
+		_attack_tile_ranges.erase(id)
+		
 func on_dead():
 	if visible:
 		_siege_engine_audio.stream = siege_break.pick_random()

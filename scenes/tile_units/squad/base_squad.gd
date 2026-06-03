@@ -474,12 +474,23 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
 	# must check via is_instance_valid enemy
 	if is_instance_valid(enemy):
+		
+		var look :Vector3 =  enemy.global_position
+		look.y = pos.y
+		
+		if _is_in_melee_range(enemy):
+			_on_enemy_in_melee_range(delta, pos, look)
+			return
+			
 		if _is_in_attack_range(enemy):
-			_on_enemy_in_range(delta, pos, enemy.global_position)
+			_on_enemy_in_range(delta, pos, look)
 			return
 			
 	_has_enemy = false
 	enemy = null
+	
+func _on_enemy_in_melee_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
+	pass
 	
 func _on_enemy_in_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
 	pass
@@ -774,6 +785,10 @@ func update_spotting():
 	_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, attack_range
 	) + [current_tile]
+	
+	# remove melee from ranges
+	for id in _melee_tile_ranges:
+		_attack_tile_ranges.erase(id)
 
 func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
@@ -808,7 +823,13 @@ func _scan_area():
 	if _has_enemy:
 		return
 		
-	for pos in _attack_tile_ranges:
+	# find in melee range first
+	# then normal range
+	if not _find_in_ranges(_melee_tile_ranges):
+		_find_in_ranges(_attack_tile_ranges)
+	
+func _find_in_ranges(ranges :Array) -> bool:
+	for pos in ranges:
 		if not unit_position.has(pos):
 			continue
 			
@@ -821,8 +842,10 @@ func _scan_area():
 			enemy = e[0]
 			_has_enemy = true
 			_on_enemy_set()
-			return
+			return true
 			
+	return false
+	
 func _get_enemy_in_position(datas :Array) -> Array:
 	for unit in datas:
 		if not is_instance_valid(unit):
@@ -862,7 +885,13 @@ func on_dead():
 remotesync func _set_dead():
 	is_dead = true
 	on_dead()
-
+	
+func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
+	# look at enemy position
+	if _can_look_at(pos, to, dir_to):
+		var t:Transform = transform.looking_at(to, Vector3.UP)
+		transform = transform.interpolate_with(t, turning_speed * delta)
+		
 func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
 	var _pos = pos
 	_pos.y = pos.y

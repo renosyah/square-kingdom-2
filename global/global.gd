@@ -337,10 +337,8 @@ func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> Sq
 	data.team = player.team
 	
 	# 1st position is commander
-	# twice HP
 	if i == 0:
 		data.icon_idx = 6
-		data.member_hp = data.member_hp * 2
 		data.spawn_time = 5
 		
 	return data

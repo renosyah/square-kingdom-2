@@ -61,33 +61,20 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	if not can_attack:
 		return
 		
-	# align Y
-	var is_align :bool = true
-	var look :Vector3 = enemy_pos
-	look.y = pos.y
+	var dir_to :Vector3 = pos.direction_to(enemy_pos)
+	_rotate_to_look(delta, pos, enemy_pos, dir_to)
 	
-	var dir_to :Vector3 = pos.direction_to(look)
-	
-	# look at enemy position
-	if _can_look_at(pos, look, dir_to):
-		var t:Transform = transform.looking_at(look, Vector3.UP)
-		transform = transform.interpolate_with(t, turning_speed * delta)
-		
-		var foward_dir :Vector3 = (-global_transform.basis.z)
-		is_align = foward_dir.dot(dir_to) > align_threshold
-		
-	if not is_align:
-		return
-		
 	# range attack only
 	_perform_range_attack()
 
-
+# custom range attack
+# making rapid fire mode
 func _perform_range_attack():
 	if not _has_range_weapon:
 		return
 		
 	if _range_attack_timer.is_stopped():
+		_range_attack_timer.wait_time = 0.4
 		_range_attack_timer.start()
 		
 		var iddles :Array = get_iddle_members()
