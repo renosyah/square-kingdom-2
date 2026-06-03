@@ -1,7 +1,16 @@
 extends BaseGameplay
 
-const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Poacher"]
-const bandit_troops = [[1,2,3],[1,2,3],[1,2,3,4,5,17],[1,2,3,4,5,6,7,8,12,16,17],[6,7,8,9,10,11,12,13,16,17,18]]
+const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Raider"]
+const bandit_troops = [
+	[1,2,3],
+	[1,2,3,4],
+	[1,2,3,4,5],
+	[1,2,3,4,5,8],
+	[3,4,5,8,9,10,11],
+	[3,4,5,8,9,10,11,12,13,14],
+	[3,4,5,8,9,10,11,12,13,14,18],
+	[3,4,5,8,9,10,11,12,13,14,18,19,20]
+]
 
 onready var bot_bandit_spawner_timer = $bot_bandit_spawner_timer
 onready var bot_action_timer = $bot_action_timer
@@ -179,7 +188,10 @@ func _bot_players_action():
 		if e.current_tile in e.reinfoce_tiles:
 			continue
 		
-		var i = s.pick_random()
+		var i :BaseSquad = s.pick_random()
+		if randf() < 0.5 and i.member_alive < i.total_member:
+			continue
+			
 		if not i.is_moving():
 			bot_attack_command(i, e)
 

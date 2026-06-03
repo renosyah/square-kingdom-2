@@ -91,6 +91,7 @@ puppet var _puppet_is_moving :bool
 var _formation_offsets :Array = [] # [Vector3]
 var _formation_positions :Array = [] # [Vector3]
 var _members :Array = [] # [SquadMember]
+var _alive_members :Array = [] # [SquadMember]
 var _attack_tile_ranges :Array = []
 var _melee_tile_ranges :Array = []
 var _current_tile_v3 :Vector3
@@ -112,6 +113,7 @@ var _combat_audio :AudioStreamPlayer3D
 var _unit_audio :AudioStreamPlayer3D
 var _blood_particle :CPUParticles
 
+var _visible_state :bool
 var attacked_by :NodePath
 
 onready var _has_shield :bool = member_shield != null
@@ -307,6 +309,7 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
+	_alive_members.append_array(_members)
 	emit_signal("on_squad_member_ready", self, _members)
 
 func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
@@ -451,17 +454,21 @@ func _on_walking(delta :float):
 	pass
 	
 func _ajust_formation(pos :Vector3, delta :float):
-	var basis :Basis = global_transform.basis
+	var members = get_members()
 	
+	var basis :Basis = global_transform.basis
 	for i in _formation_offsets.size():
 		var offset :Vector3 = _formation_offsets[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
-	var members = get_members()
 	for idx in members.size():
 		var m = members[idx]
 		if m.iddle or m.range_mode:
-			m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
+			if visible:
+				m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
+				
+			else:
+				m.translation = _formation_positions[idx]
 
 func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
@@ -566,12 +573,9 @@ func get_iddle_members() -> Array:
 	return iddles
 	
 func get_members(all :bool = false) -> Array:
-	var alives = []
-	for i in _members:
-		if not i.is_dead or all:
-			alives.append(i)
-			
-	return alives
+	if not all:
+		return _alive_members
+	return _members
 	
 func _on_heal_timer():
 	if not _is_master or is_dead:
@@ -658,7 +662,11 @@ remotesync func _resurect(member_idx :int):
 		
 	var m :SquadMember = _members[member_idx]
 	m.resurect()
-	member_alive = int(clamp(member_alive + 1, 0, total_member))
+	
+	if not _alive_members.has(m):
+		_alive_members.append(m)
+		
+	member_alive = _alive_members.size()
 	
 	emit_signal("on_squad_member_resurect", self, m)
 	
@@ -722,10 +730,12 @@ remotesync func _on_members_dead(datas :Array):
 		member.attacked_by = i[1]
 		member.set_dead()
 		
-		member_alive = int(clamp(member_alive - 1, 0, total_member))
+		_alive_members.erase(member)
 		pos = member.global_position
 		_on_member_dead(member)
 		
+	member_alive = _alive_members.size()
+	
 	if not _blood_particle.emitting and visible and enable_blood:
 		_blood_particle.translation = pos
 		_blood_particle.emitting = true

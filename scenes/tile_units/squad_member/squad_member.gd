@@ -71,7 +71,7 @@ func _look_at(pos :Vector3):
 			look_at(_pos, Vector3.UP)
 			
 func moving(delta :float):
-	if is_dead:
+	if is_dead or not squad.visible:
 		return
 		
 	if iddle: # make this unit in formation

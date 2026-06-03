@@ -12,6 +12,8 @@ onready var horse = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/Ma
 onready var movable_camera = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/movable_camera
 onready var infantry_member = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/infantry_member
 
+onready var save = $CanvasLayer/Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save
+
 func _ready():
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
@@ -67,6 +69,9 @@ func display_current_squad():
 		idx += 1
 
 func _on_squad_card_pressed(squad :SquadData):
+	 # 0 mean this is squad template and cannot be modified
+	save.visible = (squad.squad_id != 0)
+	
 	infantry_member.headgear = EntityIndex.equipment[squad.member_headgear_idx]
 	infantry_member.armor = EntityIndex.equipment[squad.member_armor_idx]
 	infantry_member.shield = EntityIndex.equipment[squad.member_shield_idx]

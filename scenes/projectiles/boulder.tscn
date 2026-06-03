@@ -110,7 +110,7 @@ speed = 9.0
 [node name="TrailRender" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.140432 )
 width_curve = SubResource( 1 )
-max_points = 25
+max_points = 15
 material = SubResource( 2 )
 
 [node name="blood_particle" parent="." instance=ExtResource( 5 )]

@@ -41,6 +41,6 @@ func moving(delta :float):
 	
 	#arm.rotation.y = lerp_angle(arm.rotation.y, rotation.y - squad.rotation.y, 25 * delta)
 	
-	if iddle:
+	if iddle and squad.visible:
 		var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy))
 		animation_state.travel("walk" if _is_moving else "iddle")

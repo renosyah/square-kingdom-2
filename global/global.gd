@@ -351,7 +351,7 @@ func create_bot_player() -> Array:
 	p.player_id = "bot_%s" % Utils.create_unique_id()
 	p.player_name = "%s (bot)" % RandomNameGenerator.generate_name()
 	p.team = bot_players.size() + players.size() + 1
-	p.color_idx = randi() % EntityIndex.player_colors.size() - 1 # exlude last
+	p.color_idx = randi() % (EntityIndex.player_colors.size() - 1) # exlude last
 	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
 
 	var _bot_player_armies = []

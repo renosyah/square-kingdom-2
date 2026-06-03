@@ -25,7 +25,8 @@ func attack():
 	pass
 	
 func moving(delta :float):
-	rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
+	if squad.visible:
+		rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
 	
 func _process(delta):
 	moving(delta)

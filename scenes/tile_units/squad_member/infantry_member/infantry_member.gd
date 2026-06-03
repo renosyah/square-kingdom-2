@@ -261,7 +261,7 @@ func take_damage(amount :int):
 func moving(delta :float):
 	.moving(delta)
 	
-	if is_dead:
+	if is_dead or not squad.visible:
 		return
 		
 	var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy)) and not on_horse
