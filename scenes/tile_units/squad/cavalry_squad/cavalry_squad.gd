@@ -74,6 +74,7 @@ func _spawn_members():
 		member.translation = _formation_positions[idx]
 		_members.append(member)
 		
+	_alive_members.append_array(_members)
 	emit_signal("on_squad_member_ready", self, _members)
 	
 func _on_member_dead(member :SquadMember):
@@ -199,21 +200,20 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 		emit_signal("on_cav_charge", self)
 
 func _ajust_formation(pos :Vector3, delta :float):
-	var basis :Basis = global_transform.basis
+	var members = get_members()
 	
+	var basis :Basis = global_transform.basis
 	for i in _formation_offsets.size():
 		var offset :Vector3 = _formation_offsets[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
-	var members = get_members()
 	for idx in members.size():
 		var m = members[idx]
-		m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
-		
-	if _is_moving and _walk_timer.is_stopped():
-		_walk_timer.start()
-		_step_audio.stream = walk_sounds.pick_random()
-		_step_audio.play()
+		if visible:
+			m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
+			
+		else:
+			m.translation = _formation_positions[idx]
 		
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	._on_enemy_in_range(delta, pos, enemy_pos)
