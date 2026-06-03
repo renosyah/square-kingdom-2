@@ -18,7 +18,8 @@ func _ready():
 	trail_render.render = setting_data.extra_effect
 	
 func _process(delta):
-	spatial.rotate_x(-5 * delta)
+	if visible:
+		spatial.rotate_x(-5 * delta)
 	
 func on_stop():
 	_age = 0

@@ -18,6 +18,8 @@ onready var meshes = [
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var rider_holder = $rider_holder
 
+var _current_anim_walk :String
+
 func _ready():
 	_rider = rider_scene.instance()
 	_rider.squad = squad
@@ -92,7 +94,11 @@ func moving(delta :float):
 		return
 		
 	rotation.y = lerp_angle(rotation.y, squad.rotation.y, 5 * delta)
-	animation_state.travel("walk" if squad.is_moving() else "iddle")
+	
+	var anim = "walk" if squad.is_moving() else "iddle"
+	if _current_anim_walk != anim:
+		_current_anim_walk = anim
+		animation_state.travel(_current_anim_walk)
 
 
 

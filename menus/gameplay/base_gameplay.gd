@@ -386,11 +386,18 @@ func _check_wining_team():
 		
 	var teams :Dictionary = {} # {int:0}
 	for squad in squads:
-		if squad.team == -1: # exclude bot haraser
+		if squad.team == -1: # exclude bot bandit
 			continue
 			
 		teams[squad.team] = true
+		
+	# nobody win
+	if teams.empty():
+		is_end = true
+		rpc("_on_end", -1)
+		return
 	
+	# one team win
 	if teams.size() == 1:
 		is_end = true
 		rpc("_on_end", teams.keys().front())
@@ -401,10 +408,10 @@ remotesync func _on_end(team :int):
 	on_end(team)
 	
 func on_end(team :int):
-	Global.is_win = current_player.team == team
+	Global.is_win = (current_player.team == team)
 	ui.hide_ui()
 	
-	yield(get_tree().create_timer(1),"timeout")
+	yield(get_tree().create_timer(5),"timeout")
 	
 	Global.current_root = null
 	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, 3 if Global.is_win else 4)

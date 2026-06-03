@@ -12,6 +12,7 @@ var tile_target :Vector2
 var target_position :Vector3
 
 var _combat_sound :AudioStreamPlayer3D
+var _current_anim_walk :String
 
 func _ready():
 	_combat_sound = AudioStreamPlayer3D.new()

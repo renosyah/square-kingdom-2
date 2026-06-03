@@ -45,6 +45,8 @@ onready var uniforms = [
 ]
 
 var _last_pos :Vector3
+var _current_anim_body_walk :String
+var _current_anim_walk :String
 
 func _ready():
 	apply_equipment()
@@ -267,20 +269,24 @@ func moving(delta :float):
 	var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy)) and not on_horse
 	if iddle:
 		if range_mode:
-			body_animation_state.travel(
-				_range_weapon.walk_animation if _is_moving else _range_weapon.ready_animation
-			)
+			var anim = _range_weapon.walk_animation if _is_moving else _range_weapon.ready_animation
+			if _current_anim_body_walk != anim:
+				_current_anim_body_walk = anim
+				body_animation_state.travel(_current_anim_body_walk)
 			
 		if melee_mode:
 			var attack_move = squad.attack_move
-			body_animation_state.travel(
-				_melee_weapon.walk_animation if (_is_moving and not attack_move) else _melee_weapon.ready_animation
-			)
+			var anim = _melee_weapon.walk_animation if (_is_moving and not attack_move) else _melee_weapon.ready_animation
+			if _current_anim_body_walk != anim:
+				_current_anim_body_walk = anim
+				body_animation_state.travel(_current_anim_body_walk)
 		
 	if not on_horse:
-		leg_animation_state.travel(
-			"walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
-		)
+		var anim = "walk" if _is_moving or (enemy_assign and melee_mode) else "iddle"
+		if _current_anim_walk != anim:
+			_current_anim_walk = anim
+			leg_animation_state.travel(_current_anim_walk)
+			
 
 func set_dead():
 	.set_dead()
