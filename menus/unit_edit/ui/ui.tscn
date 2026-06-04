@@ -745,15 +745,15 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 25 )
 expand = true
 
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
+[node name="TextureRect6" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
 margin_left = 168.0
 margin_right = 248.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 80, 80 )
-texture = ExtResource( 17 )
+texture = ExtResource( 16 )
 expand = true
 
-[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
 margin_top = 84.0
 margin_right = 80.0
 margin_bottom = 164.0
@@ -761,10 +761,19 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 17 )
 expand = true
 
-[node name="TextureRect5" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
+[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
 margin_left = 84.0
 margin_top = 84.0
 margin_right = 164.0
+margin_bottom = 164.0
+rect_min_size = Vector2( 80, 80 )
+texture = ExtResource( 17 )
+expand = true
+
+[node name="TextureRect5" type="TextureRect" parent="CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer6/holder"]
+margin_left = 168.0
+margin_top = 84.0
+margin_right = 248.0
 margin_bottom = 164.0
 rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 20 )

@@ -42,7 +42,7 @@ func _notification(what):
 			return
 			
 func _on_back_pressed():
-	Global.change_scene("res://menus/army_edit/army_edit.tscn", false)
+	Global.change_scene("res://menus/main_menu/main_menu.tscn", false)
 	
 func display_current_squad():
 	for i in squad_holder.get_children():
@@ -72,11 +72,11 @@ func _on_squad_card_pressed(squad :SquadData):
 	 # 0 mean this is squad template and cannot be modified
 	save.visible = (squad.squad_id != 0)
 	
-	infantry_member.headgear = EntityIndex.equipment[squad.member_headgear_idx]
-	infantry_member.armor = EntityIndex.equipment[squad.member_armor_idx]
-	infantry_member.shield = EntityIndex.equipment[squad.member_shield_idx]
-	infantry_member.melee_weapon = EntityIndex.weapons[squad.member_melee_weapon_idx]
-	infantry_member.range_weapon = EntityIndex.weapons[squad.member_range_weapon_idx]
+	infantry_member.headgear = EntityIndex.head_armors[squad.member_headgear_idx]
+	infantry_member.armor = EntityIndex.armors[squad.member_armor_idx]
+	infantry_member.shield = EntityIndex.shields[squad.member_shield_idx]
+	infantry_member.melee_weapon = EntityIndex.melee_weapons[squad.member_melee_weapon_idx]
+	infantry_member.range_weapon = EntityIndex.range_weapons[squad.member_range_weapon_idx]
 	infantry_member.material = Global.player_materials[player_data.color_idx]
 	horse.visible = squad.is_mounted
 	infantry_member.apply_equipment()

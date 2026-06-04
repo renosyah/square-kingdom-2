@@ -215,9 +215,6 @@ func _on_rng_army_pressed():
 	Global.sort_army(temp_current_army)
 	display_current_army()
 	
-func _on_add_button_squad_pressed():
-	Global.change_scene("res://menus/unit_edit/unit_edit.tscn", false)
-
 
 
 

@@ -1,43 +1,6 @@
 extends BaseData
 class_name SquadData
 
-# equipment provide hp bonus
-const equipment_stats = {
-	0:{'hp':0,'speed':0},
-	3:{'hp':5,'speed':0},
-	4:{'hp':12,'speed':-0.02},
-	5:{'hp':22,'speed':-0.03},
-	6:{'hp':28,'speed':-0.06},
-	7:{'hp':18,'speed':-0.03},
-	
-	8:{'hp':25,'speed':-0.08},
-	9:{'hp':65,'speed':-0.13},
-	
-	1:{'hp':35,'speed':-0.07},
-	2:{'hp':15,'speed':-0.06}
-}
-# weapon attack speed
-const melee_weapon_stats = {
-	0:{'attack_speed':2.45},
-	1:{'attack_speed':1.92},
-	2:{'attack_speed':0.81},
-	3:{'attack_speed':0.92},
-	4:{'attack_speed':0.75},
-	5:{'attack_speed':0.68},
-	6:{'attack_speed':0.57},
-	7:{'attack_speed':0.87},
-	8:{'attack_speed':1.85},
-	9:{'attack_speed':1.98},
-}
-const range_weapon_stats = {
-	0:{'range':1,'attack_speed':0.1}, # 1 default
-	10:{'range':4,'attack_speed':1.8},
-	11:{'range':6,'attack_speed':2.86},
-	12:{'range':2,'attack_speed':1.55},
-	13:{'range':3,'attack_speed':1.8},
-	14:{'range':4,'attack_speed':4.85},
-}
-
 # general info
 export var squad_id :int
 export var squad_name :String
@@ -85,7 +48,6 @@ export var member_shield_idx :int
 export var member_melee_weapon_idx :int
 export var member_range_weapon_idx :int
 export var total_member :int = 9
-export var heal_amount :int = 10
 
 # for cav
 export var charge_damage :int
@@ -98,19 +60,20 @@ export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
 
 func attack_range():
-	return range_weapon_stats[member_range_weapon_idx]["range"]
+	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["range"]
 
 func range_attack_speed():
-	return range_weapon_stats[member_range_weapon_idx]["attack_speed"]
+	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["attack_speed"]
 	
 func melee_attack_speed():
-	return melee_weapon_stats[member_melee_weapon_idx]["attack_speed"]
+	return EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["attack_speed"]
 
 func speed() -> float:
 	var sum = 0
-	for i in [member_headgear_idx, member_armor_idx, member_shield_idx]:
-		sum += equipment_stats[i]["speed"]
-		
+	sum += EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
+	sum += EntityIndex.armors_stats[member_armor_idx]["speed"]
+	sum += EntityIndex.shield_stats[member_shield_idx]["speed"]
+	
 	 # 0.5 is base speed of cav
 	if is_mounted:
 		return 1.85 + sum
@@ -120,15 +83,19 @@ func speed() -> float:
 	
 func member_hp() -> int:
 	var sum = 0
-	for i in [member_headgear_idx, member_armor_idx, member_shield_idx]:
-		sum += equipment_stats[i]["hp"]
-		
+	sum += EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
+	sum += EntityIndex.armors_stats[member_armor_idx]["hp"]
+	sum += EntityIndex.shield_stats[member_shield_idx]["hp"]
+	
 	 # 120 is is base hp cav
 	if is_mounted:
 		return 120 + sum
 		
 	# 45 is base hp 
 	return 45 + sum 
+
+func heal_amount() -> int:
+	return int(member_hp() * 0.15)
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -156,7 +123,6 @@ func from_dictionary(_data : Dictionary):
 	member_melee_weapon_idx = _data["p"]
 	member_range_weapon_idx = _data["q"]
 	total_member = _data["t"]
-	heal_amount = _data["u"]
 	is_mounted = _data["v"]
 	siege_engine_attack_damage = _data["v1"]
 	charge_damage = _data["v2"]
@@ -190,7 +156,6 @@ func to_dictionary() -> Dictionary :
 	_data["p"] = member_melee_weapon_idx
 	_data["q"] = member_range_weapon_idx
 	_data["t"] = total_member
-	_data["u"] = heal_amount
 	_data["v"] = is_mounted
 	_data["v1"] = siege_engine_attack_damage
 	_data["v2"] = charge_damage

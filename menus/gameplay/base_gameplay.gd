@@ -540,11 +540,12 @@ func _on_selection_button_pressed(idx :int):
 	ui.select_all_squad(idx)
 	
 ########################################## squad  ############################################
-
-var player_squads :Array = []
-var selected_squads :Array
 var squads :Array = []
 var squad_datas :Dictionary = {}
+
+# current player
+var player_squads :Array = []
+var selected_squads :Array = []
 
 # list of player got screw of their commander ded
 var player_debuf :Array = [] 
@@ -590,19 +591,19 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	# apply debuf, 50% slower attack speed
 	if player_debuf.has(data.player_id):
-		squad.melee_attack_speed += data.melee_attack_speed()
-		squad.range_attack_speed += data.range_attack_speed()
+		squad.melee_attack_speed += squad.melee_attack_speed
+		squad.range_attack_speed += squad.range_attack_speed
 
 	# squad member
-	squad.member_headgear = EntityIndex.equipment[data.member_headgear_idx]
-	squad.member_armor = EntityIndex.equipment[data.member_armor_idx]
-	squad.member_shield = EntityIndex.equipment[data.member_shield_idx]
-	squad.member_melee_weapon = EntityIndex.weapons[data.member_melee_weapon_idx]
-	squad.member_range_weapon = EntityIndex.weapons[data.member_range_weapon_idx]
+	squad.member_headgear = EntityIndex.head_armors[data.member_headgear_idx]
+	squad.member_armor = EntityIndex.armors[data.member_armor_idx]
+	squad.member_shield = EntityIndex.shields[data.member_shield_idx]
+	squad.member_melee_weapon = EntityIndex.melee_weapons[data.member_melee_weapon_idx]
+	squad.member_range_weapon = EntityIndex.range_weapons[data.member_range_weapon_idx]
 	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = data.member_hp()
 	squad.member_max_hp = data.member_hp()
-	squad.heal_amount = data.heal_amount
+	squad.heal_amount = data.heal_amount()
 	squad.total_member = data.total_member
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
@@ -619,7 +620,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead", [data])
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
-	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
+	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")

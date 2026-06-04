@@ -8,7 +8,7 @@
 [ext_resource path="res://assets/background/round_table.png" type="Texture" id=6]
 [ext_resource path="res://assets/background/siege_3.png" type="Texture" id=7]
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=8]
-[ext_resource path="res://assets/user_interface/icons/shop.png" type="Texture" id=10]
+[ext_resource path="res://assets/user_interface/icons/unit.png" type="Texture" id=9]
 [ext_resource path="res://assets/user_interface/icons/tree.png" type="Texture" id=11]
 [ext_resource path="res://assets/user_interface/icons/sword_attack.png" type="Texture" id=12]
 [ext_resource path="res://assets/user_interface/icons/base.png" type="Texture" id=13]
@@ -186,15 +186,14 @@ margin_bottom = 150.0
 rect_min_size = Vector2( 0, 150 )
 alignment = 1
 
-[node name="shop" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="unit" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 136.0
 margin_top = 45.0
 margin_right = 196.0
 margin_bottom = 105.0
 rect_min_size = Vector2( 60, 60 )
 size_flags_vertical = 4
-disabled = true
-icon = ExtResource( 10 )
+icon = ExtResource( 9 )
 icon_align = 1
 expand_icon = true
 
@@ -262,6 +261,7 @@ expand_icon = true
 [connection signal="selected_map" from="CanvasLayer/Control/VBoxContainer/Control/list_map" to="." method="_on_list_map_selected_map"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/unit" to="." method="_on_unit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/unit_editor" to="." method="_on_unit_editor_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/play_battle" to="." method="_on_play_battle_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]

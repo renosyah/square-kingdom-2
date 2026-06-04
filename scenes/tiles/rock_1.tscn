@@ -10,17 +10,18 @@
 [node name="rock" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
-cast_shadow = 0
-mesh = ExtResource( 1 )
-software_skinning_transform_normals = false
-material/0 = ExtResource( 4 )
-material/1 = ExtResource( 6 )
-
 [node name="MeshInstance3" type="MeshInstance" parent="."]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.0136802, 0 )
 cast_shadow = 0
 mesh = ExtResource( 5 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
+cast_shadow = 0
+mesh = ExtResource( 1 )
+skeleton = NodePath("")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 4 )
+material/1 = ExtResource( 6 )

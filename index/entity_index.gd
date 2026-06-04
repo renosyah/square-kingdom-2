@@ -2,6 +2,7 @@ extends Node
 class_name EntityIndex
 
 const squads = [
+	# infantry & cavalry
 	preload("res://scenes/tile_units/squad/infantry_squad/infantry_squad.tscn"),#0
 	preload("res://scenes/tile_units/squad/cavalry_squad/cavalry_squad.tscn"),#1
 	
@@ -14,45 +15,91 @@ const squads = [
 	preload("res://scenes/tile_units/squad/guard_tower_squad/guard_tower_squad.tscn")#5
 ]
 const members = [
-	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"),
-	preload("res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.tscn")
+	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"), #0
+	preload("res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.tscn") #2
 ]
-const weapons = [
+
+const melee_weapons = [
+	preload("res://scenes/equipment/weapons/dagger/dagger.tscn"), #0
+	preload("res://scenes/equipment/weapons/pitchfork/pitchfork.tscn"), #1
+	preload("res://scenes/equipment/weapons/spear/spear.tscn"), #2
+	preload("res://scenes/equipment/weapons/spear/spear_shield.tscn"), #3
+	preload("res://scenes/equipment/weapons/pike/pike.tscn"), #4
+	preload("res://scenes/equipment/weapons/sword/sword.tscn"), #5
+	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #6
+	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #7
+	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
+]
+# weapon attack speed
+const melee_weapon_stats = {
+	0:{'attack_speed':2.45},
+	1:{'attack_speed':1.92},
+	2:{'attack_speed':0.81},
+	3:{'attack_speed':0.92},
+	4:{'attack_speed':0.75},
+	5:{'attack_speed':0.57},
+	6:{'attack_speed':0.68},
+	7:{'attack_speed':0.87},
+	8:{'attack_speed':1.85},
+	9:{'attack_speed':1.98},
+}
+
+const range_weapons = [
 	null, # index 0 as NULL 0
-	preload("res://scenes/equipment/weapons/dagger/dagger.tscn"), #1
-	preload("res://scenes/equipment/weapons/pitchfork/pitchfork.tscn"), #2
-	preload("res://scenes/equipment/weapons/spear/spear.tscn"), #3
-	preload("res://scenes/equipment/weapons/spear/spear_shield.tscn"), #4
-	preload("res://scenes/equipment/weapons/pike/pike.tscn"), #5
-	preload("res://scenes/equipment/weapons/sword/sword.tscn"), #6
-	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #7
-	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #8
-	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #9
-	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #10
-	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #11
-	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn"), #12
-	preload("res://scenes/equipment/weapons/javeline/javelin.tscn"), #13
-	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #14
+	preload("res://scenes/equipment/weapons/javeline/javelin.tscn"), #1
+	preload("res://scenes/equipment/weapons/throwing_axe/throwing_axe.tscn"), #2
+	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #3
+	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #4
+	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #5
 ]
-const equipment = [
+const range_weapon_stats = {
+	0:{'range':1,'attack_speed':0.1}, # 1 default
+	1:{'range':3,'attack_speed':1.8},
+	2:{'range':2,'attack_speed':1.55},
+	3:{'range':4,'attack_speed':1.8},
+	4:{'range':6,'attack_speed':2.86},
+	5:{'range':4,'attack_speed':4.85},
+}
+
+const head_armors = [
 	null, # index 0 as NULL
-	
-	# shield
+	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #1
+	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #2
+	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #3
+	preload("res://scenes/equipment/headgear/helm/helm_2.tscn"), #4
+	preload("res://scenes/equipment/headgear/helm/helm_3.tscn"), #5
+]
+const head_armors_stats = {
+	0:{'hp':0,'speed':0},
+	1:{'hp':5,'speed':0},
+	2:{'hp':12,'speed':-0.012},
+	3:{'hp':22,'speed':-0.023},
+	4:{'hp':23,'speed':-0.035},
+	5:{'hp':28,'speed':-0.062},
+}
+
+const armors = [
+	null, # index 0 as NULL
+	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #1
+	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #2
+]
+const armors_stats = {
+	0:{'hp':0,'speed':0},
+	1:{'hp':25,'speed':-0.08},
+	2:{'hp':65,'speed':-0.13},
+}
+
+const shields = [
+	null, # index 0 as NULL
 	preload("res://scenes/equipment/shield/shield.tscn"),#1
 	preload("res://scenes/equipment/shield/shield_round.tscn"),#2
-	
-	# headgear
-	preload("res://scenes/equipment/headgear/cape/cape.tscn"), #3
-	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #4
-	preload("res://scenes/equipment/headgear/helm/helm_2.tscn"), #5
-	preload("res://scenes/equipment/headgear/helm/helm_3.tscn"), #6
-	preload("res://scenes/equipment/headgear/kettle/kettle.tscn"), #7
-	
-	# armor
-	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #8
-	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #9
-	
 ]
+const shield_stats = {
+	0:{'hp':0,'speed':0},
+	1:{'hp':35,'speed':-0.07},
+	2:{'hp':15,'speed':-0.06}
+}
+
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0
 	preload("res://assets/user_interface/icons/squad/spear.png"), #1

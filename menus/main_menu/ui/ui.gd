@@ -92,3 +92,6 @@ func _on_list_map_new_map(nm):
 
 func _on_unit_editor_pressed():
 	Global.change_scene("res://menus/army_edit/army_edit.tscn", false)
+
+func _on_unit_pressed():
+	Global.change_scene("res://menus/unit_edit/unit_edit.tscn", false)
