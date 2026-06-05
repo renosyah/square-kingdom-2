@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/tiles/models/tile_ground.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://addons/custom_tile_map/scripts/base_tile.gd" type="Script" id=2]
+[ext_resource path="res://scenes/tiles/rock.gd" type="Script" id=2]
 [ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/tiles/materials/grass_material.tres" type="Material" id=4]
 [ext_resource path="res://scenes/tiles/models/Rock3.obj" type="ArrayMesh" id=5]
@@ -9,13 +9,7 @@
 
 [node name="rock" type="Spatial"]
 script = ExtResource( 2 )
-
-[node name="MeshInstance3" type="MeshInstance" parent="."]
-transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.0136802, 0 )
-cast_shadow = 0
-mesh = ExtResource( 5 )
-software_skinning_transform_normals = false
-material/0 = ExtResource( 3 )
+target = NodePath("MeshInstance")
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
@@ -24,3 +18,11 @@ mesh = ExtResource( 1 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
 material/1 = ExtResource( 6 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="MeshInstance"]
+transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.18632, 0 )
+cast_shadow = 0
+mesh = ExtResource( 5 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
