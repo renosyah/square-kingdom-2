@@ -1,396 +1,256 @@
 # Square Kingdom
 
-A mobile-first multiplayer medieval RTS built with **Godot 3.6** using **semi-voxel low-poly visuals**, tile-based navigation, modular squad combat, and siege warfare focused on readability and simplicity.
+A multiplayer medieval RTS built with **Godot 3.6**, featuring tile-based combat, custom army composition, siege warfare, and large-scale squad battles.
+
+---
+
+## Screenshots
+
+### Battle Overview
+
+![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay.png)
+
+![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_1.png)
+
+![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_2.png)
+
+![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_3.png)
+
+### Custom Army System
+
+![Army Screenshot](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/custom_army.png)
+
+### End Match Results
+
+![Results Screenshot](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/end_match.png)
 
 ---
 
 ## Overview
 
-**Square Kingdom** is a real-time strategy game designed specifically for mobile devices.
+**Square Kingdom** is a tile-based real-time strategy game where players command medieval armies in fast-paced multiplayer battles.
 
-The game emphasizes:
+The game focuses on:
 
-* Fast and readable squad-based combat
-* Tile-based tactical movement
-* Wall sieges and vertical battlefield interaction
-* Custom unit composition
-* Multiplayer-focused deterministic gameplay
-* Simple systems that scale into strategic depth
-
-The design philosophy is:
-
-> **"It just works."**
-
-No unnecessary complexity.
-Everything is built for clarity, responsiveness, and performance.
+* Squad-based warfare
+* Tile-based movement and combat
+* Custom army composition
+* Siege weapons and fort assaults
+* Multiplayer battles
+* Simple mechanics with strategic depth
 
 ---
 
-## Core Features
+## Core Gameplay
 
-## Tile-Based Strategy
+Each player commands an army composed of multiple squads.
 
-The battlefield is built on a square tile grid.
+Battles are fought on a tile-based battlefield where positioning, timing, and army composition determine victory.
 
-This allows:
+Players must:
 
-* Deterministic movement
-* Reliable pathfinding
-* Predictable combat range
-* Efficient multiplayer synchronization
+* Defeat enemy armies
+* Protect their own forces
+* Capture battlefield advantages
+* Survive bandit raids
+* Manage reinforcements
 
-Navigation uses multiple A* layers:
+The last team standing wins.
 
-* Ground navigation
-* Water navigation
-* Wall navigation
+---
 
-Units dynamically transition between navigation layers when conditions allow.
+## Multiplayer Battles
+
+Current battle format:
+
+* Up to 4 players
+* 1 AI-controlled bandit faction
+* Free-for-all combat
+* Reinforcement-based army deployment
+
+Each player begins inside a fortified wooden camp.
+
+---
+
+## Fortifications
+
+Every player starts with:
+
+* Wooden palisade fort
+* Main gate
+* Four defensive towers
+
+Fortifications provide protection and serve as the army's reinforcement area.
+
+Damaged squads can return to the fort to replenish losses.
 
 ---
 
 ## Squad-Based Combat
 
-Units are controlled as squads rather than individual soldiers.
+Units are organized into squads.
 
-Each squad has:
+Features include:
 
-* A single shared HP pool
-* Visual member loss as health decreases
-* Flee / collapse behavior on defeat
+* Shared squad health
+* Casualty visualization
+* Melee combat
+* Ranged combat
+* Morale-style collapse through squad destruction
 
-Combat behavior:
+Squads can consist of:
 
-### Ground Combat
-
-When a squad is defeated:
-
-* Some random members die
-* Remaining members flee
-
-### Wall Combat
-
-When a squad is defeated on walls:
-
-* Some members die
-* Remaining members panic and fall from the wall
-
-This system prioritizes:
-
-* Performance
-* Visual clarity
-* Simple combat resolution
+* Infantry
+* Missile troops
+* Cavalry
+* Siege crews
 
 ---
 
-## Modular Unit Creation
+## Custom Army System
 
-Players create custom squads by combining weapon types.
+Players build armies before battle.
 
-Each unit can carry:
+Army composition is fully customizable.
 
-### Primary Weapon (Ranged)
+Examples:
 
-* Bow
-* Javelin
-* Throwing Axe
+* Spearmen
+* Archers
+* Crossbowmen
+* Heavy Infantry
+* Cavalry
+* Hybrid Units
 
-### Secondary Weapon (Melee)
+Hybrid units can carry both:
 
-* Spear
-* Sword
-* Mace
-* Axe
+* Melee weapons
+* Ranged weapons
 
-Melee categories:
+allowing combinations such as:
 
-* One-Handed
-* One-Handed + Shield
-* Two-Handed
-
----
-
-### Example Unit Combinations
-
-**Spearman**
-
-* Barracks
-
-**Hybrid Spear Archer**
-
-* Barracks + Archery Range
-
-**Heavy Maceman**
-
-* Barracks + Blacksmith
-
-This creates a flexible composition-based unit system.
+* Pike + Crossbow Cavalry
+* Sword + Javelin Infantry
+* Spear + Bow Infantry
 
 ---
 
-## Cavalry System
+## Equipment System
 
-Three cavalry archetypes exist.
+Unit statistics are determined by equipment.
 
-### Shock Cavalry
+Equipment affects:
 
-Weapon: Spear
+* Health
+* Movement speed
+* Range
+* Attack rate
+* Combat effectiveness
 
-Mechanic:
+Example:
 
-* Builds momentum by moving in the same direction for 3 consecutive tiles
-* Gains speed
-* Lowers spear
-* Delivers impact damage on contact
+* Plate Armor
 
----
+  * +Health
+  * -Movement Speed
 
-### Melee Cavalry
-
-Weapon: Sword
-
-* Mobile melee attacks
-* Can strike while moving
+This creates meaningful tradeoffs when designing armies.
 
 ---
 
-### Mounted Archer
+## Cavalry
 
-* Mobile ranged harassment
-* High mobility
-* Continuous ranged pressure
+Cavalry units specialize in mobility and shock attacks.
+
+Features include:
+
+* Charge mechanics
+* Momentum-based impact damage
+* Mounted ranged combat
+* Mobile melee combat
+
+Heavy cavalry can deliver devastating charges if allowed to build momentum.
 
 ---
 
 ## Siege Warfare
 
-Sieges are a major gameplay pillar.
+Siege weapons are fully integrated into battles.
 
-Features include:
+Current siege engines:
 
-* Wall traversal
-* Wall-top combat
-* Gate assault
-* Siege towers
-* Battering rams
-* Vertical engagement
+### Catapult
 
-Special wall interactions:
+* Area damage
+* Long range
 
-* Infantry can climb walls
-* Siege towers enable instant wall access
-* Defeated wall defenders may fall from battlements
+### Ballista
 
----
+* Direct fire
+* High accuracy
 
-## Resource Economy
+### Trebuchet
 
-Resources:
+* Extreme range
+* Powerful siege bombardment
 
-### Food
-
-Used for training units
-
-### Wood
-
-Used for construction
-
-### Iron
-
-Used for advanced / expensive military units
-
-### Stone
-
-Used for walls and fortifications
+Siege weapons are capable of destroying tightly packed formations.
 
 ---
 
-## Buildings
+## Bandit Threat
 
-### Core
+Battles include an independent AI-controlled bandit faction.
 
-* Town Center / Keep
+Bandits:
 
----
+* Attack all players
+* Scale in strength over time
+* Spawn increasingly dangerous units
+* Create battlefield chaos
 
-### Economy
-
-* Farm
-* Wood Camp
-* Mine
-* Quarry
+Ignoring the bandits can be just as dangerous as fighting enemy players.
 
 ---
 
-### Population
+## Technical Features
 
-* House
-
----
-
-### Military
-
-* Barracks
-* Archery Range
-* Stable
-* Workshop
+* Godot 3.6
+* Tile-based navigation
+* Multiplayer support
+* Object pooling
+* Low-poly semi-voxel visuals
+* Mobile-friendly design
 
 ---
 
-### Technology
-
-* Market (Economy Tech)
-* Blacksmith (Military Tech)
-
----
-
-### Defense
-
-* Wall
-* Gatehouse
-
----
-
-## Technology Tree
-
-Three branches:
-
-### Economy
-
-Improves resource production
-
-### Military
-
-Improves unit effectiveness
-
-### Administration
-
-Unlocks more structures and increases strategic flexibility
-
----
-
-## Multiplayer
-
-Designed for multiplayer-first gameplay.
-
-Planned match formats:
-
-* 1v1
-* 2v2
-* 4v4
-
-The deterministic tile-based system helps maintain synchronization across clients.
-
----
-
-## Visual Style
-
-The project uses:
-
-* Semi-voxel low-poly art
-* Hard edges
-* Readable silhouettes
-* Simple geometry
-* Mobile-friendly rendering
-
-All assets are designed to be:
-
-* Easy to model
-* Lightweight
-* Consistent
-
----
-
-## Technical Stack
-
-**Engine**
-Godot 3.6
-
-**Modeling**
-Blender
-
-**Target Platform**
-Mobile (Landscape)
-
----
-
-## Development Roadmap
-
-### Stage 1
-
-Map editor + navigation
-
-* Tile placement
-* Terrain editing
-* Navigation layers
-* Pathfinding transitions
-
----
-
-### Stage 2
-
-Core squad movement
-
-* Selection
-* Movement commands
-* Unit states
-
----
-
-### Stage 3
-
-Combat system
-
-* Squad HP
-* Casualty visuals
-* Flee logic
-
----
-
-### Stage 4
-
-Siege mechanics
-
-* Wall traversal
-* Gate assault
-* Siege equipment
-
----
-
-### Stage 5
-
-Custom unit builder
-
-* Weapon combinations
-* Building requirements
-
----
-
-### Stage 6
-
-Multiplayer integration
-
----
-
-## Project Philosophy
-
-Square Kingdom is built around a simple principle:
-
-**Readable systems > simulated realism**
-
-The goal is not perfect realism.
-
-The goal is strategic gameplay that feels immediate, intuitive, and satisfying.
-
----
-
-## Status
-
-Currently in early development.
-
-Primary focus:
-
-**Map editor and tile navigation system**
+## Current Status
+
+Active Development
+
+Implemented:
+
+* Tile-based combat
+* Multiplayer battles
+* Squad combat
+* Cavalry
+* Archers
+* Crossbows
+* Siege engines
+* Fortifications
+* Reinforcement system
+* Bandit faction
+* Custom army creation
+* Equipment-based unit stats
+* End-match statistics
+
+In Development:
+
+* Campaign mode
+* Crusade campaign
+* Strategic world map
+* City conquest
+* Army recruitment
 
 ---
 
