@@ -123,7 +123,9 @@ var _melee_engagement :bool
 var _range_engagement :bool
 
 func _ready():
-	Global.connect("on_setting_updated", self, "_on_setting_updated")
+	if _is_network_master():
+		Global.connect("on_setting_updated", self, "_on_setting_updated")
+		
 	connect("tree_exiting", self, "_on_tree_exiting")
 	
 	_blood_particle = preload("res://assets/blood_particle/blood_particle.tscn").instance()
@@ -486,8 +488,12 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 			_on_enemy_in_range(delta, pos, look)
 			return
 			
+	if _has_enemy == false:
+		return
+		
 	_has_enemy = false
 	enemy = null
+	_on_enemy_unset()
 	
 func _on_enemy_in_melee_range(_delta :float, _pos :Vector3, _enemy_pos :Vector3):
 	pass
@@ -868,6 +874,10 @@ func _is_in_attack_range(_unit) -> bool:
 	
 func _on_enemy_set():
 	pass
+	
+func _on_enemy_unset():
+	if _is_master:
+		_scan_area()
 	
 func set_dead(use_rpc :bool = true):
 	if is_dead:
