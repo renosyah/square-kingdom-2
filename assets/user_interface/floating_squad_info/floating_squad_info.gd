@@ -56,19 +56,13 @@ func _on_squad_member_updated(_squad, _member):
 	_update_bar_colors()
 	
 func _on_squad_taking_heal(_squad):
-	if not visible:
-		return
-		
-	if floating_hurt:
+	if visible and floating_hurt:
 		_heal.color.a = 1
 		
 	_update_bar_colors()
 	
 func _on_squad_taking_damage(_squad, amount):
-	if not visible:
-		return
-		
-	if floating_hurt and amount > 0:
+	if visible and floating_hurt and amount > 0:
 		_hurt.color.a = 1
 		
 	_update_bar_colors()
