@@ -742,11 +742,12 @@ remotesync func _on_members_dead(datas :Array):
 		member.set_dead()
 		
 		_alive_members.erase(member)
-		pos = member.global_position
+		member_alive = _alive_members.size()
+		
 		_on_member_dead(member)
 		
-	member_alive = _alive_members.size()
-	
+		pos = member.global_position
+		
 	if not _blood_particle.emitting and visible and enable_blood:
 		_blood_particle.translation = pos
 		_blood_particle.emitting = true

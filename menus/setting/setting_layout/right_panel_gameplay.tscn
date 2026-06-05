@@ -32,6 +32,7 @@ color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_right = 693.0
 margin_bottom = 507.0
+mouse_filter = 2
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
 margin_right = 693.0
@@ -52,17 +53,20 @@ mouse_filter = 2
 margin_top = 66.0
 margin_right = 693.0
 margin_bottom = 491.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_right = 12.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 16.0
@@ -78,6 +82,7 @@ margin_left = 190.0
 margin_right = 202.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="cam_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 206.0
@@ -97,6 +102,7 @@ margin_left = 586.0
 margin_right = 610.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
+mouse_filter = 2
 
 [node name="cam_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer3"]
 margin_left = 614.0
@@ -111,17 +117,20 @@ margin_left = 653.0
 margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 40, 0 )
+mouse_filter = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 64.0
 margin_right = 693.0
 margin_bottom = 124.0
 rect_min_size = Vector2( 0, 60 )
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 12.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 16.0
@@ -137,6 +146,7 @@ margin_left = 190.0
 margin_right = 202.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="zoom_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 206.0
@@ -156,6 +166,7 @@ margin_left = 586.0
 margin_right = 610.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
+mouse_filter = 2
 
 [node name="zoom_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 614.0
@@ -170,17 +181,20 @@ margin_left = 653.0
 margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 40, 0 )
+mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 128.0
 margin_right = 693.0
 margin_bottom = 188.0
 rect_min_size = Vector2( 0, 60 )
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 12.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 16.0
@@ -196,6 +210,7 @@ margin_left = 190.0
 margin_right = 202.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="rot_speed_slider" type="HSlider" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 206.0
@@ -216,6 +231,7 @@ margin_left = 586.0
 margin_right = 610.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
+mouse_filter = 2
 
 [node name="rot_speed_label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 614.0
@@ -230,28 +246,33 @@ margin_left = 653.0
 margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 40, 0 )
+mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 192.0
 margin_right = 693.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 0, 8 )
+mouse_filter = 2
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 204.0
 margin_right = 693.0
 margin_bottom = 268.0
+mouse_filter = 2
 custom_constants/separation = 24
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6"]
 margin_right = 234.0
 margin_bottom = 64.0
+mouse_filter = 2
 size_flags_horizontal = 0
 
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
 margin_right = 12.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
 margin_left = 16.0
@@ -266,6 +287,7 @@ margin_left = 154.0
 margin_right = 166.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="lock_command" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer4"]
 margin_left = 170.0
@@ -281,12 +303,14 @@ expand_icon = true
 margin_left = 258.0
 margin_right = 455.0
 margin_bottom = 64.0
+mouse_filter = 2
 size_flags_horizontal = 0
 
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5"]
 margin_right = 12.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5"]
 margin_left = 16.0
@@ -301,6 +325,7 @@ margin_left = 117.0
 margin_right = 129.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="unit_tile" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer5"]
 margin_left = 133.0
@@ -316,12 +341,14 @@ expand_icon = true
 margin_left = 479.0
 margin_right = 636.0
 margin_bottom = 64.0
+mouse_filter = 2
 size_flags_horizontal = 0
 
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
 margin_right = 12.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
 margin_left = 16.0
@@ -336,6 +363,7 @@ margin_left = 77.0
 margin_right = 89.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="feed" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer6/HBoxContainer7"]
 margin_left = 93.0
@@ -351,12 +379,14 @@ expand_icon = true
 margin_top = 272.0
 margin_right = 693.0
 margin_bottom = 361.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 365.0
 margin_right = 693.0
 margin_bottom = 425.0
+mouse_filter = 2
 alignment = 2
 
 [node name="reset_button" type="Button" parent="VBoxContainer/VBoxContainer/HBoxContainer5"]
@@ -374,6 +404,7 @@ margin_left = 669.0
 margin_right = 693.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
+mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 495.0

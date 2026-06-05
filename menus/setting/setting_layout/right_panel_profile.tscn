@@ -8,26 +8,26 @@
 [ext_resource path="res://assets/user_interface/icons/refresh.png" type="Texture" id=6]
 
 [node name="right_panel_profile" type="MarginContainer"]
-margin_right = 619.0
-margin_bottom = 434.0
+margin_right = 484.0
+margin_bottom = 232.0
 rect_min_size = Vector2( 255, 0 )
 mouse_filter = 2
 size_flags_horizontal = 3
 script = ExtResource( 4 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_right = 619.0
-margin_bottom = 434.0
+margin_right = 484.0
+margin_bottom = 400.0
 mouse_filter = 2
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 619.0
-margin_bottom = 434.0
+margin_right = 484.0
+margin_bottom = 400.0
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
-margin_right = 619.0
+margin_right = 484.0
 margin_bottom = 46.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 1 )
@@ -36,19 +36,19 @@ valign = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 50.0
-margin_right = 619.0
+margin_right = 484.0
 margin_bottom = 62.0
 rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
 margin_top = 66.0
-margin_right = 619.0
-margin_bottom = 418.0
+margin_right = 484.0
+margin_bottom = 216.0
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
-margin_right = 619.0
+margin_right = 484.0
 margin_bottom = 150.0
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
@@ -109,13 +109,13 @@ rect_min_size = Vector2( 12, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 136.0
-margin_right = 575.0
+margin_right = 440.0
 margin_bottom = 150.0
 size_flags_horizontal = 3
 custom_constants/separation = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
-margin_right = 439.0
+margin_right = 304.0
 margin_bottom = 60.0
 
 [node name="edit_player_name" type="LineEdit" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2/HBoxContainer"]
@@ -151,7 +151,7 @@ color = Color( 0, 0.14902, 0.729412, 1 )
 
 [node name="color_option_holder" type="GridContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2/VBoxContainer2"]
 margin_top = 68.0
-margin_right = 439.0
+margin_right = 304.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 0, 40 )
 size_flags_vertical = 3
@@ -160,16 +160,16 @@ custom_constants/hseparation = 8
 columns = 5
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 579.0
-margin_right = 619.0
+margin_left = 444.0
+margin_right = 484.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 40, 0 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 422.0
-margin_right = 619.0
-margin_bottom = 434.0
-rect_min_size = Vector2( 0, 12 )
+margin_top = 220.0
+margin_right = 484.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 0, 180 )
 mouse_filter = 2
 
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/HBoxContainer2/MarginContainer4/change_potrait" to="." method="_on_change_potrait_pressed"]

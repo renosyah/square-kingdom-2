@@ -3,6 +3,8 @@ class_name MiniMap
 
 signal on_minimap_ready
 
+const object_2d = preload("res://assets/user_interface/minimap/object_2d/object_2d.tscn")
+
 export var cam_pos :bool = true
 export (Array, PackedScene) var tile_scenes :Array
 export var rotation_rad :float
@@ -11,6 +13,7 @@ export var tile_rotation_degree :float = -45
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : Tile2D }
 var _tile_map_data :TileMapFileData
+var _tile_size :float = 10
 
 var _spawned_object :Dictionary = {} # {Spatial:Node2D}
 
@@ -33,7 +36,7 @@ func _process(_delta):
 	_map.rotation = rotation_rad
 	
 	for obj in _spawned_object.keys():
-		var pos = Vector2(obj.global_position.x, obj.global_position.z) * 10
+		var pos = Vector2(obj.global_position.x, obj.global_position.z) * _tile_size
 		var tile = _spawned_object[obj]
 		tile.position = pos
 	
@@ -45,7 +48,7 @@ func load_data_map(data: TileMapFileData):
 	_batch_spawner.start(_tile_map_data.tiles, 16)
 	
 func add_object(obj :Spatial, color :Color):
-	var tile = preload("res://assets/user_interface/minimap/object_2d/object_2d.tscn").instance()
+	var tile = object_2d.instance()
 	tile.self_modulate = color
 	_map.add_child(tile)
 	_spawned_object[obj] = tile
@@ -79,7 +82,7 @@ func _spawn_tile(data :TileMapData) -> Tile2D:
 	var tile :Tile2D = tile_scenes[data.scene_idx].instance()
 	tile.tile_rotation_degree = tile_rotation_degree
 	tile.name = 'tile_2d_%s' % data.id
-	tile.position = data.id * 10 # <- tile size
+	tile.position = data.id * _tile_size # <- tile size
 	_map.add_child(tile)
 	return tile
 	

@@ -16,10 +16,10 @@ onready var setting :SettingData = Global.setting_data
 onready var ui_color :Color = EntityIndex.player_colors[Global.current_player.color_idx]
 onready var overlay_ui = $CanvasLayer/Control/overlay_ui
 onready var movable_camera_ui = $CanvasLayer/Control/movable_camera_ui
-onready var movable_camera_minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/minimap/movable_camera_minimap
-onready var cam_rot_l = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_l
-onready var cam_rot_r = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_r
-onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer/minimap
+onready var movable_camera_minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/minimap/movable_camera_minimap
+onready var cam_rot_l = $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_l
+onready var cam_rot_r =  $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_r
+onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/minimap
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 onready var squad_holder = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/squad_holder
 onready var squad_command_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command
@@ -29,17 +29,18 @@ onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/
 onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
 onready var control_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2
 onready var orbital_camera_ui = $CanvasLayer/Control/orbital_camera_ui
-onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer
-onready var cinematic = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/cinematic
-onready var log_event = $CanvasLayer/Control/log_event
+onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer
+onready var cinematic = $CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/cinematic
+onready var log_event =  $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer/log_event
 onready var scoreboard = $CanvasLayer/Control/scoreboard
 onready var squad_spawner = $squad_spawner
-onready var squad_spawner_ui = $CanvasLayer/Control/VBoxContainer/Control/MarginContainer/squad_spawner_ui
+onready var squad_spawner_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/Control/MarginContainer3/squad_spawner_ui
+onready var minimap_container = $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2
 
-onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_all
-onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_cav
-onready var selection_button_inf = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_inf
-onready var selection_button_rng = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer/HBoxContainer/VBoxContainer2/selection_button_rng
+onready var selection_button_all = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/HBoxContainer/squad_command2/VBoxContainer/selection_button_all
+onready var selection_button_cav = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/HBoxContainer/squad_command2/VBoxContainer/selection_button_cav
+onready var selection_button_inf = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/HBoxContainer/squad_command2/VBoxContainer/selection_button_inf
+onready var selection_button_rng =  $CanvasLayer/Control/VBoxContainer/HBoxContainer2/MarginContainer2/HBoxContainer/squad_command2/VBoxContainer/selection_button_rng
 
 var on_cinematic_mode :bool
 var current_movement_mode :int = 0 # 0:normal, 1:attack move
@@ -238,6 +239,7 @@ func _on_cinematic_pressed():
 	menu_buttons.visible = not on_cinematic_mode
 	log_event.visible = not on_cinematic_mode
 	squad_spawner_ui.visible = not on_cinematic_mode
+	minimap_container.visible = not on_cinematic_mode
 	
 func hide_ui():
 	movable_camera_ui.visible = false
@@ -246,7 +248,7 @@ func hide_ui():
 	menu_buttons.visible = false
 	log_event.visible = false
 	squad_spawner_ui.visible = false
-	
+	minimap_container.visible = false
 
 
 

@@ -21,6 +21,7 @@ export var enable_fog :bool = true
 export var enable_tilt_shift :bool = true
 export var light :float = 1
 export var extra_effect :bool = true
+export var profiler :int = 0 # 0:hide, 1:show, 2:show extended
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
@@ -39,6 +40,7 @@ func from_dictionary(_data : Dictionary):
 	show_unit_tile = _data["l"]
 	extra_effect = _data["m"]
 	show_feed = _data["n"]
+	profiler = _data["o"]
 
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -57,4 +59,5 @@ func to_dictionary() -> Dictionary :
 	_data["l"] = show_unit_tile
 	_data["m"] = extra_effect
 	_data["n"] = show_feed
+	_data["o"] = profiler
 	return _data

@@ -13,6 +13,9 @@ var _ping_time := 0
 var _ping_timer := 0.0
 	
 func _ready():
+	_on_setting_updated(Global.setting_data)
+	Global.connect("on_setting_updated", self, "_on_setting_updated")
+	
 	var _network_peer :NetworkedMultiplayerPeer = get_tree().network_peer
 	if not is_instance_valid(_network_peer):
 		return
@@ -23,6 +26,10 @@ func _ready():
 		
 	_id = NetworkLobbyManager.get_id()
 	_enable_pinging = (_id != Network.PLAYER_HOST_ID)
+	
+func _on_setting_updated(d :SettingData):
+	extend = d.profiler == 2
+	visible = d.profiler != 0
 	
 func pinging(delta):
 	_ping_timer += delta

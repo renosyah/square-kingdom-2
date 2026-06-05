@@ -14,6 +14,7 @@ onready var shadows_option = {
 onready var ts = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer/ts
 onready var fog = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2/fog
 onready var ef = $VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3/ef
+onready var profiler = $VBoxContainer/VBoxContainer/HBoxContainer4/profiler
 
 onready var setting_data = Global.setting_data
 onready var light_label = $VBoxContainer/VBoxContainer/HBoxContainer3/light_label
@@ -38,6 +39,7 @@ func _apply_setting():
 	ef.icon = check if setting_data.extra_effect else uncheck
 	
 	light_label.text = "%s%s" % [(setting_data.light * max_value),"%"]
+	profiler.text = "Disable" if setting_data.profiler == 0 else ("Enable" if setting_data.profiler == 1 else "Extended")
 	
 func _on_check_option_pressed(btn):
 	if btn == ts:
@@ -66,11 +68,16 @@ func _on_reset_button_pressed():
 	setting_data.enable_tilt_shift = n.enable_tilt_shift
 	setting_data.light = n.light
 	setting_data.extra_effect = n.extra_effect
+	setting_data.profiler = n.profiler
 	
 	_apply_setting()
 
 
-
-
-
+func _on_profiler_pressed():
+	setting_data.profiler += 1
+	
+	if setting_data.profiler > 2:
+		setting_data.profiler = 0
+		
+	_apply_setting()
 

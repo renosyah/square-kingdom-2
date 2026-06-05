@@ -3,6 +3,7 @@
 [ext_resource path="res://assets/blood_particle/blood_particle.obj" type="ArrayMesh" id=1]
 
 [node name="blood_particle" type="CPUParticles"]
+cast_shadow = 0
 emitting = false
 amount = 24
 lifetime = 1.2

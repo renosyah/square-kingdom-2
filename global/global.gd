@@ -60,6 +60,8 @@ func load_player_data():
 	
 	for i in EntityIndex.player_colors:
 		var material = SpatialMaterial.new()
+		material.flags_vertex_lighting = true
+		material.vertex_color_use_as_albedo = true
 		material.albedo_color = i
 		player_materials.append(material)
 		

@@ -15,16 +15,16 @@ onready var overlays = [
 ]
 
 onready var right_panels = [
-	$Control/Control/VBoxContainer/HBoxContainer/right_panel_gameplay,
-	$Control/Control/VBoxContainer/HBoxContainer/right_panel_audio,
-	$Control/Control/VBoxContainer/HBoxContainer/right_panel_graphic,
-	$Control/Control/VBoxContainer/HBoxContainer/right_panel_profile,
+	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_gameplay,
+	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_audio,
+	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_graphic,
+	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_profile
 ]
 
-onready var gameplay_setting = $Control/Control/VBoxContainer/HBoxContainer/right_panel_gameplay
-onready var audio_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/audio_setting
-onready var graphic_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/graphic_setting
-onready var profile_setting = $Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/profile_setting
+onready var gameplay_setting = right_panels[0]
+onready var audio_setting = right_panels[1]
+onready var graphic_setting =  right_panels[2]
+onready var profile_setting =  right_panels[3]
 
 func _ready():
 	gameplay_setting.visible = enable_setting_game
