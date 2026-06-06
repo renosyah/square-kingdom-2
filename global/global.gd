@@ -63,6 +63,7 @@ func load_player_data():
 		material.flags_vertex_lighting = true
 		material.vertex_color_use_as_albedo = true
 		material.albedo_color = i
+		material.flags_do_not_receive_shadows = true
 		player_materials.append(material)
 		
 func save_player_data():

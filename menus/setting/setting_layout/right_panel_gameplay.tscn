@@ -378,14 +378,14 @@ expand_icon = true
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
 margin_top = 272.0
 margin_right = 693.0
-margin_bottom = 361.0
+margin_bottom = 332.0
+rect_min_size = Vector2( 0, 60 )
 mouse_filter = 2
-size_flags_vertical = 3
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
-margin_top = 365.0
+margin_top = 336.0
 margin_right = 693.0
-margin_bottom = 425.0
+margin_bottom = 396.0
 mouse_filter = 2
 alignment = 2
 

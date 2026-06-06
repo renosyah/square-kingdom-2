@@ -234,7 +234,7 @@ func chase_target():
 			chase_enemy = null
 			return
 			
-		if _is_in_attack_range(chase_enemy):
+		if _is_in_ranges(chase_enemy):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
@@ -377,7 +377,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			stop(false)
 			return
 			
-		if _is_in_attack_range(chase_enemy):
+		if _is_in_ranges(chase_enemy):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
@@ -484,7 +484,7 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 		if _is_in_melee_range(enemy):
 			_on_enemy_in_melee_range(delta, pos, look)
 			return
-			
+		
 		if _is_in_attack_range(enemy):
 			_on_enemy_in_range(delta, pos, look)
 			return
@@ -638,12 +638,6 @@ func _resurecting():
 		if m.is_dead:
 			rpc("_resurect", idx)
 			return
-	
-func _is_in_melee_range(target):
-	if target.nav_layer != nav_layer:
-		return false
-		
-	return target.current_tile in _melee_tile_ranges
 	
 func _is_on_flank_of(target) -> bool:
 	var dir = target.current_tile.direction_to(current_tile)
@@ -805,7 +799,7 @@ func _chase_on_iddle() -> bool:
 			chase_enemy = null
 			return false
 			
-		if not _is_in_attack_range(chase_enemy):
+		if not _is_in_ranges(chase_enemy):
 			chase_target()
 			return true
 			
@@ -865,7 +859,20 @@ func _get_enemy_in_position(datas :Array) -> Array:
 			return [unit, true]
 			
 	return [null, false]
-
+	
+func _is_in_ranges(_unit) -> bool:
+	if _has_range_weapon:
+		if _is_in_attack_range(_unit):
+			return true
+			
+	return _is_in_melee_range(_unit)
+	
+func _is_in_melee_range(target):
+	if target.nav_layer != nav_layer:
+		return false
+		
+	return target.current_tile in _melee_tile_ranges
+	
 func _is_in_attack_range(_unit) -> bool:
 	if _unit.is_dead:
 		return false

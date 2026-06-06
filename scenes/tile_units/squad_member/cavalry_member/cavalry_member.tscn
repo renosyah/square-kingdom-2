@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.gd" type="Script" id=1]
 [ext_resource path="res://scenes/tile_units/squad_member/cavalry_member/horse.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://scenes/tile_units/squad_member/cavalry_member/horse_leg.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://scenes/tile_units/squad_member/materials/horse_skin_1.tres" type="Material" id=4]
+[ext_resource path="res://scenes/tile_units/squad_member/materials/horse_skin_2.tres" type="Material" id=5]
 
 [sub_resource type="Animation" id=4]
 length = 0.001
@@ -679,11 +680,11 @@ transform = Transform( -0.0116586, 0.999932, 0, -0.999932, -0.0116586, 0, 0, 0, 
 
 [node name="body" type="MeshInstance" parent="pivot/body"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
-cast_shadow = 0
 mesh = ExtResource( 2 )
 skeleton = NodePath("../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
 
 [node name="leg_f_l" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, -0.164 )
@@ -695,6 +696,7 @@ mesh = ExtResource( 3 )
 skeleton = NodePath("../../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
 
 [node name="leg_f_r" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, -0.164 )
@@ -706,6 +708,7 @@ mesh = ExtResource( 3 )
 skeleton = NodePath("../../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
 
 [node name="leg_b_l" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.045, 0.178365 )
@@ -717,6 +720,7 @@ mesh = ExtResource( 3 )
 skeleton = NodePath("../../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
 
 [node name="leg_b_r" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, -0.045, 0.178365 )
@@ -728,6 +732,7 @@ mesh = ExtResource( 3 )
 skeleton = NodePath("../../../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
+material/1 = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
