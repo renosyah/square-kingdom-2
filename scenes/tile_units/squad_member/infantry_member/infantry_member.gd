@@ -181,10 +181,15 @@ func melee_attack():
 	_look_at(enemy.global_position)
 	
 	if not on_horse:
-		var offset = enemy.global_position.direction_to(global_position) * 0.35
-		tween.interpolate_property(self, "translation", global_position, enemy.global_position + offset, 0.8)
+		var pos = enemy.global_position
+		var y_pos = pos.y
+		pos.y = global_position.y
+		
+		var offset = pos.direction_to(global_position) * 0.35
+		tween.interpolate_property(self, "translation", global_position, pos + offset, 0.8)
 		tween.start()
 		yield(tween,"tween_completed")
+		global_position.y = y_pos
 		
 	_current_anim_body = _melee_weapon.attack_animation
 	body_animation_state.travel(_current_anim_body)
@@ -196,10 +201,11 @@ func _on_melee_attack_performed():
 		_combat_sound.play()
 	
 	if not on_horse:
+		global_position.y = _last_pos.y
 		tween.interpolate_property(self, "translation", global_position, _last_pos, 1.2)
 		tween.start()
 		yield(tween,"tween_completed")
-	
+		
 	if is_instance_valid(enemy):
 		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_role)
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)

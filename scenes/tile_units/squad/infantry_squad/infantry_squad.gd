@@ -141,4 +141,4 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	
 	if is_align:
 		translation += -transform.basis.z * speed * delta
-		
+		translation.y = to.y

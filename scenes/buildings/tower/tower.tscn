@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=1]
+[ext_resource path="res://scenes/tile_units/squad/guard_tower_squad/tower_destroy.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/tile_units/squad/guard_tower_squad/tower.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://scenes/tiles/materials/sand_material.tres" type="Material" id=4]
+[ext_resource path="res://scenes/buildings/tower/tower.gd" type="Script" id=5]
+
+[node name="tower" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451227, 0 )
+mesh = ExtResource( 3 )
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 4 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451227, 0 )
+visible = false
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 4 )

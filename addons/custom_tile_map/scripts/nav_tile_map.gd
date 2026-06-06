@@ -5,7 +5,7 @@ var _navigation_datas :Array # as refrences
 
 # faster way to get id
 var _navigation_ids :Dictionary = {} # {(index as LAYER_ID):{ Vector2:int }
-var _navigation_pos :Dictionary = {} # {Vector2:Vector3}
+var _navigation_pos :Dictionary = {} # {Vector2:NavigationData}
 
 # int as key is LAYER of naviagtion
 # for ex 0:ground, 1:wall, 2:sea
@@ -67,9 +67,9 @@ func get_navigation(layer_id :int, start_id :Vector2, end_id :Vector2, blocked_i
 	return _get_navigation(_navigations[layer_id], start, end, blocked_ids, use_safe) # [ Vector2 ]
 	
 func get_pos_v3(id :Vector2) -> Vector3:
-	if not _navigation_pos.has(id):
-		return Vector3.ZERO
-		
+	return get_nav_data(id).pos
+	
+func get_nav_data(id :Vector2) -> NavigationData:
 	return _navigation_pos[id]
 	
 func get_astar(layer_id :int) -> AStar2D:
@@ -159,7 +159,7 @@ func _maping_ids(_navigation_id :Dictionary, data :Array):
 	for i in data:
 		var x :NavigationData = i
 		_navigation_id[x.id] = x.navigation_id
-		_navigation_pos[x.id] = x.pos
+		_navigation_pos[x.id] = x
 		
 func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 	for i in data:
@@ -173,8 +173,19 @@ func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 			var nex_nav_id :int = _navigation_ids[layer_id][next_id]
 			if nav.has_point(nex_nav_id):
 				nav.connect_points(x.navigation_id, nex_nav_id, false)
-				
-func reconnect_point(tile_id: Vector2, new_neighbors: Array, layer_id:int) -> void:
+			
+func set_point_connection(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2, set_connect :bool = true) -> void:
+	var nav :AStar2D = _navigations[layer_id]
+	var point_id_1 :int = _navigation_ids[layer_id][tile_id_1]
+	var point_id_2 :int = _navigation_ids[layer_id][tile_id_2]
+	
+	if set_connect:
+		nav.connect_points(point_id_1, point_id_2, false)
+		
+	else:
+		nav.disconnect_points(point_id_1, point_id_2)
+	
+func reconnect_point(layer_id:int, tile_id: Vector2, new_neighbors: Array) -> void:
 	var nav :AStar2D = _navigations[layer_id]
 	var point_id :int = _navigation_ids[layer_id][tile_id]
 	

@@ -1,31 +1,11 @@
 extends InfantrySquad
 class_name GuardTowerSquad
 
-onready var mesh_instance = $MeshInstance
-onready var garison_pos = $garison_pos.global_position
-onready var invisible_guidance = $invisible_guidance
-onready var mesh_instance_2 = $MeshInstance2
-
 func _ready():
-	mesh_instance.set_as_toplevel(true)
-	mesh_instance.set_surface_material(2, member_material)
+	enable_squad_tile_indicator = false
 	
-	mesh_instance_2.set_surface_material(2, member_material)
-	mesh_instance_2.visible = false
-	reinfoce_tiles = [current_tile]
-	
-func _on_guard_tower_squad_tree_exiting():
-	if Global.current_root:
-		remove_child(mesh_instance_2)
-		Global.current_root.add_child(mesh_instance_2)
-		mesh_instance_2.rotation.y = rotation.y
-		mesh_instance_2.translation = global_position
-		mesh_instance_2.translation.y = 0.451
-		mesh_instance_2.visible = true
-		
-func _move_to(tile_id :Vector2, use_safe :bool):
-	#._move_to(tile_id, use_safe)
-	pass # can move
+func _on_setting_updated(d :SettingData):
+	enable_blood = d.extra_effect
 	
 func _init_formations():
 	#._init_formations()
@@ -37,23 +17,6 @@ func _init_formations():
 	]
 	
 	_formation_positions = _formation_offsets.duplicate()
-	
-func _ajust_formation(pos :Vector3, delta :float):
-	# _ajust_formation(pos, delta)
-	
-	var basis :Basis = global_transform.basis
-	
-	for i in _formation_offsets.size():
-		var offset :Vector3 = _formation_offsets[i] * formation_density
-		_formation_positions[i] = (pos + garison_pos) + offset
-		
-	var members = get_members()
-	for idx in members.size():
-		var m = members[idx]
-		m.translation = m.translation.linear_interpolate(_formation_positions[idx], 5 * delta)
-		
-	mesh_instance.translation.x = pos.x
-	mesh_instance.translation.z = pos.z
 	
 func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	#._on_enemy_in_range(delta, pos, enemy_pos)

@@ -328,6 +328,7 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 func setup_base(p :PlayerData, tile_id :Vector2):
 	var wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
 	var wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
+	var tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
 	
 	var corners = [
 		Vector2.UP + Vector2.RIGHT, # top - right
@@ -348,18 +349,16 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 		180, 90
 	]
 	var wall_nav_reassign = {
-		walls[0] : [Vector2.DOWN,Vector2.LEFT], walls[1] : [Vector2.DOWN, Vector2.LEFT],
-		walls[2] : [Vector2.DOWN,Vector2.RIGHT], walls[3] : [Vector2.DOWN, Vector2.RIGHT],
-		walls[4] : [Vector2.UP,Vector2.LEFT], walls[5] : [Vector2.UP, Vector2.LEFT],
-		walls[6] : [Vector2.UP,Vector2.RIGHT], walls[7] : [Vector2.UP, Vector2.RIGHT],
+		walls[0]: Vector2.UP, walls[1]: Vector2.RIGHT,
+		walls[2]: Vector2.UP, walls[3]: Vector2.LEFT,
+		walls[4]: Vector2.DOWN, walls[5]:Vector2.RIGHT,
+		walls[6]: Vector2.DOWN, walls[7]:Vector2.LEFT,
 	}
 	
 	for key in wall_nav_reassign.keys():
-		var points = []
-		for i in wall_nav_reassign[key]:
-			points.append(tile_id + i + key)
-			
-		nav.reconnect_point(tile_id + key, points, 0)
+		var tile :Vector2 = tile_id + key
+		var v = tile + wall_nav_reassign[key]
+		nav.set_point_connection(0, tile, v, false)
 		
 	for idx in walls.size():
 		var tile :Vector2 = tile_id + walls[idx]
@@ -372,15 +371,31 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 		-90, 0,
 		180, 90
 	]
+	var corner_nav_reassign = {
+		corners[0]: [Vector2.UP,Vector2.RIGHT],
+		corners[1]: [Vector2.UP,Vector2.LEFT],
+		corners[2]: [Vector2.DOWN,Vector2.RIGHT],
+		corners[3]: [Vector2.DOWN,Vector2.LEFT],
+	}
 	
 	for idx in corners.size():
 		var tile :Vector2 = tile_id + (corners[idx] * 2)
-		nav.enable_nav_tile(0, tile, false)
+		nav.get_nav_data(tile).pos.y = 0.60 # elevation
+		
+		for id in corner_nav_reassign[corners[idx]]:
+			nav.set_point_connection(0, tile, tile + id, false)
 		
 		var w = wall_corner_scene.instance()
 		w.material = Global.player_materials[p.color_idx]
 		tile_map.get_tile_instance(tile).add_child(w)
 		w.rotation_degrees.y = wall_corner_orientation[idx]
+		
+		var t = tower_scene.instance()
+		t.material = Global.player_materials[p.color_idx]
+		tile_map.get_tile_instance(tile).add_child(t)
+		tower_buildings[tile] = t
+		
+		nav.enable_nav_tile(0, tile, false)
 		
 		if is_server:
 			var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
@@ -392,7 +407,12 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 			guard_tower.team = p.team
 			tower_datas.append(guard_tower)
 		
-		
+var tower_buildings :Dictionary = {}
+
+func _destroy_tower(tile :Vector2):
+	tower_buildings[tile].destroy()
+	
+	
 ########################################## gameplay win condition  ############################################
 var is_end :bool = false
 
@@ -674,7 +694,6 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	ui.minimap.add_object(squad, squad.color)
 	
 	if squad is GuardTowerSquad:
-		squad.nav_layer = 1 # build diffrent
 		return
 		
 	squad_datas[squad] = data
@@ -851,7 +870,13 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 		squad.floating_info.visible = false
 	
 	yield(get_tree().create_timer(1),"timeout")
+	
+	# respawn squad of dead tower guard
+	if squad is GuardTowerSquad:
+		_destroy_tower(squad.current_tile)
+		
 	squad.queue_free()
+
 	
 func _on_cav_charge(squad : CavalrySquad):
 	if squad.player_id == current_player.player_id:

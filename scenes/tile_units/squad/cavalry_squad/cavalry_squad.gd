@@ -306,4 +306,4 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	
 	var _speed = (speed * 0.5) if attack_move else speed
 	translation += pos.direction_to(to) * _speed * delta
-	
+	translation.y = to.y

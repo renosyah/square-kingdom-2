@@ -1,30 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad/guard_tower_squad/guard_tower_squad.gd" type="Script" id=1]
-[ext_resource path="res://scenes/tile_units/squad/guard_tower_squad/tower.obj" type="ArrayMesh" id=2]
-[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
-[ext_resource path="res://scenes/tiles/materials/sand_material.tres" type="Material" id=4]
-[ext_resource path="res://scenes/tile_units/squad/guard_tower_squad/tower_destroy.obj" type="ArrayMesh" id=5]
 
 [node name="guard_tower_squad" type="Spatial"]
 script = ExtResource( 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451227, 0 )
-mesh = ExtResource( 2 )
-material/0 = ExtResource( 3 )
-material/1 = ExtResource( 4 )
-
-[node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451227, 0 )
-visible = false
-mesh = ExtResource( 5 )
-material/0 = ExtResource( 3 )
-material/1 = ExtResource( 4 )
-
-[node name="garison_pos" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.630185, 0 )
-
-[node name="invisible_guidance" type="Spatial" parent="."]
-
-[connection signal="tree_exiting" from="." to="." method="_on_guard_tower_squad_tree_exiting"]
