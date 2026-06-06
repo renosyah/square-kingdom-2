@@ -56,7 +56,7 @@ puppet var _puppet_translation :Vector3
 
 func _ready():
 	update_spotting()
-	Global.connect("on_global_tick", self, "_on_global_tick")
+	
 	
 func move_to(tile_id :Vector2):
 	_move_to(tile_id, true)
@@ -179,11 +179,6 @@ func puppet_moving(delta :float) -> void:
 		var old = current_tile
 		current_tile = _puppet_current_tile
 		_on_current_tile_updated(old, current_tile)
-	
-# for active enemy spotting
-func _on_global_tick():
-	pass
-	#update_spotting() <- performace concern
 	
 func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 	emit_signal("on_current_tile_updated", self, from_id, to_id)

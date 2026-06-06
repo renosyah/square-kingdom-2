@@ -38,7 +38,6 @@ func sync_update() -> void:
 	pass
 	
 func last_sync_update() -> void:
-	
 	pass
 	
 func _on_camera_entered(_camera: Camera):
@@ -62,6 +61,10 @@ func _ready() -> void:
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)
 	
+	if not _is_master:
+		set_process(false)
+		set_physics_process(false)
+	
 	# add little delay
 	# just in case all its puppet created in time
 	yield(get_tree().create_timer(1),"timeout")
@@ -71,7 +74,12 @@ func _ready() -> void:
 	# active on networked game session
 	if NetworkLobbyManager.get_players().size() > 1:
 		_setup_network_timer()
-	
+		
+		
+	if not _is_master:
+		set_process(true)
+		set_physics_process(true)
+		
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta :float) -> void:
 	moving(delta)

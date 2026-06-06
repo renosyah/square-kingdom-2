@@ -15,6 +15,7 @@ onready var team_label = $HBoxContainer/team/bg/team
 onready var potrait = $HBoxContainer/ColorRect/potrait
 onready var team = $HBoxContainer/team
 onready var remove = $HBoxContainer/remove
+onready var spawn_pos = $HBoxContainer/spawn_pos
 
 func _ready():
 	remove.visible = can_kick
@@ -23,6 +24,7 @@ func _ready():
 	bg.self_modulate = EntityIndex.player_colors[player.color_idx]
 	team_label.text = "%s" % player.team
 	team.disabled = not can_change_team
+	spawn_pos.text = "[%s]" % player.spawn_position
 	set_loading(false)
 
 func set_loading(v :bool):

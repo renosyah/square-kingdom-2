@@ -7,7 +7,9 @@ onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
 onready var batch_spawner = $batch_spawner
 onready var batch_despawner = $batch_despawner
-onready var untouch_tiles = generate_spawn_points()
+onready var untouch_tiles = TileIndex.generate_spawn_points(
+	Global.current_tile_map_manifest_data.map_size
+)
 
 onready var setting :SettingData = Global.setting_data
 
@@ -52,25 +54,7 @@ func _process(delta):
 	
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10
-	
-func generate_spawn_points() -> Array:
-	var datas :Array = []
-	var spawn_points_offset :Array = TileIndex.get_spawn_points(
-		Global.current_tile_map_manifest_data.map_size, 3
-	)
-	
-	for offset in spawn_points_offset:
-		var spawn_points :Array = TileMapUtils.get_adjacent_tiles(
-			TileMapUtils.get_directions(), Vector2.ZERO, 2
-		)
-		spawn_points.append(Vector2.ZERO)
-		
-		for idx in spawn_points.size():
-			spawn_points[idx] += offset
-			
-		datas.append_array(spawn_points)
-		
-	return datas
+
 	
 func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100)):
 	var map_data :TileMapFileData = Global.current_tile_map_file_data
@@ -92,20 +76,17 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 	for i in map_data.tiles:
 		var x :TileMapData = i
 		x.scene_idx = TileIndex.tile_names[TileIndex.ground]
+		var in_untouch = x.id in untouch
 		
-		if x.id in untouch:
-			x.scene_idx = TileIndex.tile_names[TileIndex.road]
-			continue
-			
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
 		if value > 0.4 and value < 0.5:
-			if rng.randf() < 0.2:
+			if rng.randf() < 0.2 and not in_untouch:
 				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, rocks)
 				blocked.append(x.id)
 				
 		elif value > 0.3 and value < 0.4:
-			if rng.randf() < 0.4:
+			if rng.randf() < 0.4 and not in_untouch:
 				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, trees)
 				blocked.append(x.id)
@@ -162,7 +143,7 @@ func _on_ui_on_tile_card_dropped(posv2 :Vector2, tile_data :TileMapData):
 	var posv3 = Utils.screen_to_world(get_viewport().get_camera(), posv2, false, 4)
 	
 	var tile :TileMapData = editable_tile_map.get_closes_tile(posv3)
-	if tile.id in untouch_tiles:
+	if tile.id in untouch_tiles and not tile_data.scene_idx in [0,1,2,3]:
 		return
 	
 	tile_data.id = tile.id

@@ -124,8 +124,9 @@ var _range_engagement :bool
 
 func _ready():
 	if _is_network_master():
-		Global.connect("on_setting_updated", self, "_on_setting_updated")
+		Global.connect("on_global_tick", self, "_on_global_tick")
 		
+	Global.connect("on_setting_updated", self, "_on_setting_updated")
 	connect("tree_exiting", self, "_on_tree_exiting")
 	
 	_blood_particle = preload("res://assets/blood_particle/blood_particle.tscn").instance()
@@ -403,7 +404,7 @@ func sync_update() -> void:
 		rset_unreliable("_puppet_is_moving", _is_moving)
 		rset_unreliable("_puppet_rotation_y", global_rotation.y)
 		
-		if _has_enemy:
+		if is_instance_valid(enemy):
 			rset_unreliable("_puppet_enemy", enemy.get_path())
 			
 		else:
@@ -475,8 +476,8 @@ func _ajust_formation(pos :Vector3, delta :float):
 func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
 	# must check via is_instance_valid enemy
-	if is_instance_valid(enemy):
-		
+	_has_enemy = is_instance_valid(enemy)
+	if _has_enemy:
 		var look :Vector3 =  enemy.global_position
 		look.y = pos.y
 		
@@ -491,7 +492,6 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 	if _has_enemy == false:
 		return
 		
-	_has_enemy = false
 	enemy = null
 	_on_enemy_unset()
 	
@@ -810,9 +810,9 @@ func _chase_on_iddle() -> bool:
 			return true
 			
 	return false
+	
 # for active enemy spotting
 func _on_global_tick():
-	._on_global_tick()
 	
 	if _is_master and not _is_moving:
 		

@@ -22,6 +22,8 @@ onready var _map :Node2D = $ViewportContainer/Viewport/map
 onready var _nine_patch_rect_2 = $NinePatchRect2
 onready var _batch_spawner = $batch_spawner
 onready var _nine_patch_rect = $NinePatchRect
+onready var _object = $ViewportContainer/Viewport/object
+
 
 func _ready():
 	set_physics_process(false)
@@ -35,10 +37,12 @@ func _process(_delta):
 	_map.position = (rect_size / 2) - offset.rotated(rotation_rad) + Vector2(0, 5)
 	_map.rotation = rotation_rad
 	
+	_object.position = _map.position
+	_object.rotation = _map.rotation
+	
 	for obj in _spawned_object.keys():
-		var pos = Vector2(obj.global_position.x, obj.global_position.z) * _tile_size
 		var tile = _spawned_object[obj]
-		tile.position = pos
+		tile.position = Vector2(obj.global_position.x, obj.global_position.z) * _tile_size
 	
 func load_data_map(data: TileMapFileData):
 	_tile_map_data = data
@@ -50,10 +54,11 @@ func load_data_map(data: TileMapFileData):
 func add_object(obj :Spatial, color :Color):
 	var tile = object_2d.instance()
 	tile.self_modulate = color
-	_map.add_child(tile)
+	_object.add_child(tile)
 	_spawned_object[obj] = tile
 	
 func remove_object(obj :Spatial):
+	_object.remove_child(_spawned_object[obj])
 	_spawned_object[obj].queue_free()
 	_spawned_object.erase(obj)
 	

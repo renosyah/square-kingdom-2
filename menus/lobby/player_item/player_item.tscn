@@ -124,7 +124,7 @@ rect_min_size = Vector2( 8, 0 )
 [node name="player_name" type="Label" parent="HBoxContainer"]
 margin_left = 176.0
 margin_top = 29.0
-margin_right = 317.0
+margin_right = 292.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
@@ -132,6 +132,23 @@ text = "Player"
 valign = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
+margin_left = 296.0
+margin_right = 304.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 8, 0 )
+
+[node name="spawn_pos" type="Label" parent="HBoxContainer"]
+margin_left = 308.0
+margin_top = 26.0
+margin_right = 317.0
+margin_bottom = 54.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = ExtResource( 6 )
+text = "1"
+align = 1
+valign = 1
+
+[node name="MarginContainer6" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 321.0
 margin_right = 329.0
 margin_bottom = 80.0

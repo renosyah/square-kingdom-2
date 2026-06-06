@@ -54,6 +54,7 @@ func _on_list_map_selected_map(manif :TileMapFileManifest):
 		player_data.player_id = Utils.create_unique_id()
 		Global.current_player = player_data
 		Global.current_player.team = 1
+		Global.current_player.spawn_position = 0
 		
 		var config :NetworkServer = NetworkServer.new()
 		NetworkLobbyManager.configuration = config

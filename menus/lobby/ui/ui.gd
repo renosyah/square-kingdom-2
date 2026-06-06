@@ -30,6 +30,8 @@ func _ready():
 	minimap.tile_scenes = TileIndex.tiles2d
 	confirm_popup.visible = false
 	
+	current_player.player_network_id = NetworkLobbyManager.get_id()
+	
 	if is_server:
 		button_add_bot.visible = true
 		label_loading_host.visible = false
@@ -45,13 +47,14 @@ func _ready():
 		label_loading_host.visible = true
 		battle.visible = false
 		
+		current_player.spawn_position = NetworkLobbyManager.get_players().size() - 1 # <- my index pos
+		NetworkLobbyManager.update_player_extra_data(current_player.to_dictionary())
+	
 		if Global.current_tile_map_file_data == null:
 			sync_map.request_map_data()
 			return
 			
 		load_map()
-		
-	Global.current_player.player_network_id = NetworkLobbyManager.get_id()
 	
 func load_map():
 	var manif = Global.current_tile_map_manifest_data
@@ -139,7 +142,8 @@ func _on_lobby_player_update(players :Array):
 		
 		if is_host:
 			item.set_loading(false)
-			
+		
+		
 	for idx in Global.bot_players.size():
 		var player_data :PlayerData = Global.bot_players[idx]
 		
@@ -162,6 +166,7 @@ func _on_lobby_player_update(players :Array):
 func update_bot_player():
 	var data = []
 	for i in Global.bot_players:
+		var p :PlayerData = i
 		data.append(i.to_dictionary())
 		
 	rpc("_update_bot_player", data)
@@ -175,6 +180,7 @@ remotesync func _update_bot_player(data :Array):
 		if bot_slot > 0:
 			var p = PlayerData.new()
 			p.from_dictionary(i)
+			p.spawn_position = players.size() + Global.bot_players.size()
 			Global.bot_players.append(p)
 			
 		bot_slot -= 1

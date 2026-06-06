@@ -237,9 +237,14 @@ func spawn_tile_map():
 func _on_tile_map_ready():
 	nav = tile_map.get_nav_tile_map()
 	
+	setup_bandit_mob()
+	
 	# this function only be called
 	# if tile map is ready and setup properly
-	setup_players_spawn_points()
+	setup_players_spawn_points(Global.enable_fort)
+	
+	ui.route_button.disabled = not Global.enable_fort
+	ui.minimap.load_data_map(current_tile_map_file_data)
 	
 	if is_server:
 		NetworkLobbyManager.set_host_ready()
@@ -274,31 +279,42 @@ var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 
 var tower_datas :Array = [] # servers spawn only
 
-func setup_players_spawn_points():
+func setup_bandit_mob():
 	# this is for bot bandit
 	bot_bandit = PlayerData.new()
 	bot_bandit.player_network_id = 1
 	bot_bandit.player_id = "bot_bandit" 
 	bot_bandit.team = -1
 	bot_bandit.color_idx = 10
-	
-	# this is for bot bandit
-	setup_base(bot_bandit, Vector2.ZERO)
-	player_spawn_points[bot_bandit.player_id] = Vector2.ZERO
-	player_reinfoce_tiles[bot_bandit.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 2) + [Vector2.ZERO]
-	
+	bot_bandit.spawn_position = 4 # default set last one
+
+func setup_players_spawn_points(spawn_fort :bool = false):
 	var map_size :int = current_tile_map_manifest_data.map_size
-	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point
-	var all_players = players + bot_players
+	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point edges, 1 center last
+	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
 	
+	# replace all tiles with dirt of bases
+	if spawn_fort:
+		for index in all_players.size():
+			var p :PlayerData = all_players[index]
+			var tiles = TileIndex.generate_player_spawn_tiles(points[p.spawn_position])
+			for id in tiles:
+				var current :TileMapData = tile_map.get_tile(id)
+				current.rotation_idx = 0
+				current.scene_idx = 2
+				tile_map.update_spawned_tile(current)
+		
 	# register player ids
+	# spawn their bases
 	for index in all_players.size():
 		var p :PlayerData = all_players[index]
-		var point :Vector2 = points[index]
+		var point :Vector2 = points[p.spawn_position]
 		player_ids[p.player_id] = p
 		player_spawn_points[p.player_id] = point
-		player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, 2) + [point]
-		setup_base(p, point)
+		
+		if spawn_fort:
+			player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, 2) + [point]
+			setup_base(p, point)
 		
 	# this for current player only
 	# ajustment to camera
@@ -479,7 +495,6 @@ func setup_ui():
 	add_child(ui)
 	
 	ui.scoreboard.init_scoreboard(players + bot_players)
-	ui.minimap.load_data_map(current_tile_map_file_data)
 	
 	ui.squad_spawner.connect("on_squads_ready", self, "_on_squad_spawner_squads_ready")
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
@@ -620,7 +635,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead", [data])
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
-	squad.connect("on_unit_spotted", self, "_on_unit_spotted")
+	#squad.connect("on_unit_spotted", self, "_on_unit_spotted")
 	squad.connect("on_unit_clicked", self, "_on_unit_clicked")
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
@@ -640,8 +655,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	squad.set_hidden(false)
 	add_child(squad)
-	squad.translation = nav.get_pos_v3(data.current_tile)
-	squad.look_at(Vector3.ZERO, Vector3.UP)
+	squad.global_transform.origin = nav.get_pos_v3(data.current_tile)
+	
+	if data.current_tile != Vector2.ZERO:
+		squad.look_at(Vector3.ZERO, Vector3.UP)
 	
 	_on_squad_spawned(squad, data)
 	
@@ -653,6 +670,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	squad.nav = nav
 	squad.unit_position = tile_position_manager.get_positions()
 	squad.update_spotting()
+	
 	ui.minimap.add_object(squad, squad.color)
 	
 	if squad is GuardTowerSquad:
@@ -673,8 +691,6 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		play_squad_spawn(is_commander)
-		
-		
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():

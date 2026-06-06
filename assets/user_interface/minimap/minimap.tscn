@@ -34,6 +34,8 @@ render_target_update_mode = 3
 
 [node name="map" type="Node2D" parent="ViewportContainer/Viewport"]
 
+[node name="object" type="Node2D" parent="ViewportContainer/Viewport"]
+
 [node name="NinePatchRect2" type="NinePatchRect" parent="."]
 visible = false
 anchor_left = 0.5

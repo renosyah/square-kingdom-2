@@ -46,10 +46,11 @@ func _on_all_player_ready():
 		))
 		
 	bot_squad_spawner.add_spawn_queue(_squads)
-	
-	bot_bandit_spawner_timer.start()
 	bot_action_timer.start()
 	
+	if Global.enable_bandit:
+		bot_bandit_spawner_timer.start()
+
 func _on_bot_squad_spawner_on_squads_ready(datas :Array):
 	spawn_squads(datas)
 	
@@ -138,14 +139,16 @@ func _on_bot_bandit_spawner_timer_timeout():
 	data.current_tile = spawn_pos.pick_random()
 	data.color_idx = 10
 	data.team = -1
+	data.current_tile = player_spawn_points[bot_bandit.player_id]
 	spawn_squad(data)
 	
 func _on_bot_action_timer_timeout():
 	bot_action_timer.start()
-	
-	_bot_bandit_action()
 	_bot_players_action()
 	
+	if Global.enable_bandit:
+		_bot_bandit_action()
+		
 func _bot_bandit_action():
 	var enemies = []
 	for i in squads:

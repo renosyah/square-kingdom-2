@@ -297,6 +297,8 @@ var battle_time :int
 var scores :Dictionary = {}
 var is_win :bool
 var player_map_data_received :Array = []
+var enable_fort :bool = true
+var enable_bandit :bool = true
 
 var current_player :PlayerData # specific for game session
 var players :Array = [] # list of players in MP
@@ -353,7 +355,8 @@ func create_bot_player() -> Array:
 	p.team = bot_players.size() + players.size() + 1
 	p.color_idx = randi() % (EntityIndex.player_colors.size() - 1) # exlude last
 	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
-
+	p.spawn_position = bot_players.size() + players.size()
+	
 	var _bot_player_armies = []
 	var count = current_army.size() #int(rand_range(3, 9))
 		

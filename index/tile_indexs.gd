@@ -48,6 +48,25 @@ const tiles2d = [
 	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
 ]
 
+static func generate_spawn_points(map_size :int) -> Array:
+	var datas :Array = []
+	var spawn_points_offset :Array = get_spawn_points(map_size, 3)
+	
+	for offset in spawn_points_offset:
+		datas.append_array(generate_player_spawn_tiles(offset))
+		
+	return datas
+	
+static func generate_player_spawn_tiles(offset :Vector2) -> Array:
+	var spawn_points :Array = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), Vector2.ZERO, 2
+	) + [Vector2.ZERO]
+	
+	for idx in spawn_points.size():
+		spawn_points[idx] += offset
+		
+	return spawn_points
+	
 # will return center position of 
 # each spawn point reserved tile
 static func get_spawn_points(map_size :int, point_size :int) -> Array:
