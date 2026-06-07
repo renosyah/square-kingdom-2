@@ -293,6 +293,8 @@ func save_custom_squad():
 	SaveLoad.save(custom_squads_filepath, data, true)
 	
 ##########################################  lobby & gameplay  ############################################
+const max_army_size :int = 9
+
 var current_root :Node
 var battle_time :int
 var scores :Dictionary = {}
@@ -301,17 +303,16 @@ var player_map_data_received :Array = []
 var enable_fort :bool = true
 var enable_bandit :bool = true
 
-var current_player :PlayerData # specific for game session
-var players :Array = [] # list of players in MP
-
-# value of index of custom_squads
+# why current_army is array of int
+# its a value of index of custom_squads
 # so if anything in custom_squads update
 # current_army will also updated too
-var current_army :Array = []
-var max_army_size :int = 9
+var current_player :PlayerData # specific for game session
+var current_army :Array = [] # [int]
 
-var bot_players :Array = []
-var bot_player_armies :Dictionary = {} # {player_id:[int]}
+var players :Array = [] # list of players in MP
+var bot_players :Array = [] # list of bot players in MP
+var bot_player_armies :Dictionary = {} # {bot_player_id:[int]}
 
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []
@@ -334,6 +335,7 @@ func _sort_by_order(a, b):
 # idx is from current_army
 func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> SquadData:
 	var data :SquadData = custom_squads[idx].duplicate()
+	data.squad_id = i
 	data.network_id = player.player_network_id
 	data.player_id = player.player_id
 	data.node_name = "squad_%s_%s" % [player.player_id, Utils.create_unique_id()]

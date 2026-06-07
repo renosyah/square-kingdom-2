@@ -228,7 +228,7 @@ func _on_player_removed(player :NetworkPlayer):
 	
 func on_back_pressed():
 	confirm_popup.visible = true
-	confirm_popup.show_popup("Leave", "Are you sure\nwant to leave lobby?")
+	confirm_popup.show_popup("Leave", "Are you sure\nWant to leave lobby?")
 	var r = yield(confirm_popup,"confirmed")
 	confirm_popup.visible = false
 	

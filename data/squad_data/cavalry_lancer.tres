@@ -30,7 +30,6 @@ member_shield_idx = 0
 member_melee_weapon_idx = 2
 member_range_weapon_idx = 0
 total_member = 4
-charge_damage = 75
 siege_engine_attack_damage = 0
 siege_engine_attack_speed = 0.0
 siege_engine_attack_range = 0

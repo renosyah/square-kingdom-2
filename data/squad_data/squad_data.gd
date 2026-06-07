@@ -49,8 +49,6 @@ export var member_melee_weapon_idx :int
 export var member_range_weapon_idx :int
 export var total_member :int = 9
 
-# for cav
-export var charge_damage :int
 
 # this is for siege engine
 # because i cant get the stats of the engines
@@ -58,6 +56,12 @@ export var charge_damage :int
 export var siege_engine_attack_damage :int
 export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
+
+func charge_damage() -> int:
+	var sum = 0
+	sum += EntityIndex.melee_weapon_stats[member_headgear_idx]["charge_bonus"]
+	sum = sum * EntityIndex.armors_stats[member_armor_idx]["mass"]
+	return 15 + sum # 15 as base charge damage
 
 func attack_range():
 	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["range"]
@@ -125,7 +129,6 @@ func from_dictionary(_data : Dictionary):
 	total_member = _data["t"]
 	is_mounted = _data["v"]
 	siege_engine_attack_damage = _data["v1"]
-	charge_damage = _data["v2"]
 	spawn_time = _data["v3"]
 	siege_engine_attack_range = _data["v4"]
 	siege_engine_attack_speed = _data["v5"]
@@ -158,7 +161,6 @@ func to_dictionary() -> Dictionary :
 	_data["t"] = total_member
 	_data["v"] = is_mounted
 	_data["v1"] = siege_engine_attack_damage
-	_data["v2"] = charge_damage
 	_data["v3"] = spawn_time
 	_data["v4"] = siege_engine_attack_range
 	_data["v5"] = siege_engine_attack_speed

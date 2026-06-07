@@ -32,16 +32,16 @@ const melee_weapons = [
 ]
 # weapon attack speed
 const melee_weapon_stats = {
-	0:{'attack_speed':2.45},
-	1:{'attack_speed':1.92},
-	2:{'attack_speed':0.81},
-	3:{'attack_speed':0.92},
-	4:{'attack_speed':0.75},
-	5:{'attack_speed':0.57},
-	6:{'attack_speed':0.68},
-	7:{'attack_speed':0.87},
-	8:{'attack_speed':1.85},
-	9:{'attack_speed':1.98},
+	0:{'attack_speed':2.45,'charge_bonus':0},
+	1:{'attack_speed':1.92,'charge_bonus':2},
+	2:{'attack_speed':0.81,'charge_bonus':9},
+	3:{'attack_speed':0.92,'charge_bonus':7},
+	4:{'attack_speed':0.75,'charge_bonus':12},
+	5:{'attack_speed':0.57,'charge_bonus':0},
+	6:{'attack_speed':0.68,'charge_bonus':0},
+	7:{'attack_speed':0.87,'charge_bonus':0},
+	8:{'attack_speed':1.85,'charge_bonus':0},
+	9:{'attack_speed':1.98,'charge_bonus':0},
 }
 
 const range_weapons = [
@@ -84,9 +84,9 @@ const armors = [
 	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #2
 ]
 const armors_stats = {
-	0:{'hp':0,'speed':0},
-	1:{'hp':25,'speed':-0.08},
-	2:{'hp':65,'speed':-0.13},
+	0:{'hp':0,'speed':0,'mass':0},
+	1:{'hp':25,'speed':-0.08,'mass':0.4},
+	2:{'hp':65,'speed':-0.13,'mass':2.6},
 }
 
 const shields = [

@@ -662,7 +662,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
 	
 	if squad is CavalrySquad:
-		squad.charge_damage = data.charge_damage
+		squad.charge_damage = data.charge_damage()
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
 		
 	if squad is SiegeEngineSquad:
