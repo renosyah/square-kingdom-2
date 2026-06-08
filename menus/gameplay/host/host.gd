@@ -128,7 +128,7 @@ func _on_bot_bandit_spawner_timer_timeout():
 		return
 		
 	var enemy_idx = bandit_troops[enemy_type_idx].pick_random()
-	var data :SquadData = Global.custom_squads[enemy_idx].duplicate()
+	var data :SquadData = Global.template_squads[enemy_idx].duplicate()
 	data.network_id = 1
 	
 	if data.scene_idx in [0,1]:

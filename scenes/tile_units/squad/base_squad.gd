@@ -860,24 +860,27 @@ func _get_enemy_in_position(datas :Array) -> Array:
 			
 	return [null, false]
 	
-func _is_in_ranges(_unit) -> bool:
+func _is_in_ranges(target) -> bool:
 	if _has_range_weapon:
-		if _is_in_attack_range(_unit):
+		if _is_in_attack_range(target):
 			return true
 			
-	return _is_in_melee_range(_unit)
+	return _is_in_melee_range(target)
 	
 func _is_in_melee_range(target):
+	if target.is_dead:
+		return false
+		
 	if target.nav_layer != nav_layer:
 		return false
 		
 	return target.current_tile in _melee_tile_ranges
 	
-func _is_in_attack_range(_unit) -> bool:
-	if _unit.is_dead:
+func _is_in_attack_range(target) -> bool:
+	if target.is_dead:
 		return false
 		
-	return _unit.current_tile in _attack_tile_ranges
+	return target.current_tile in _attack_tile_ranges
 	
 func _on_enemy_set():
 	pass
@@ -901,6 +904,9 @@ func on_dead():
 	emit_signal("on_squad_dead", self)
 
 remotesync func _set_dead():
+	if is_dead:
+		return
+		
 	is_dead = true
 	on_dead()
 	

@@ -797,7 +797,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			
 		if not ui_sound.playing:
 			ui_sound.stream = attack_sfx
-			if randi() < 0.03: # 0.03% chance of pria solo
+			if randf() < 0.03: # 0.03% chance of pria solo
 				ui_sound.stream = saya_akan_lawan
 				
 			ui_sound.play()

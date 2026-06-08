@@ -139,6 +139,7 @@ func on_dead():
 		_siege_engine_audio.stream = siege_break.pick_random()
 		_siege_engine_audio.play()
 		yield(_siege_engine_audio,"finished")
+		yield(get_tree().create_timer(1),"timeout")
 		
 	.on_dead()
 

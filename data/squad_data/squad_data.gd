@@ -58,10 +58,10 @@ export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
 
 func charge_damage() -> int:
-	var sum = 0
-	sum += EntityIndex.melee_weapon_stats[member_headgear_idx]["charge_bonus"]
-	sum = sum * EntityIndex.armors_stats[member_armor_idx]["mass"]
-	return 15 + sum # 15 as base charge damage
+	 # 15 as base charge damage
+	var sum = 15 + EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["charge_bonus"]
+	sum += sum * EntityIndex.armors_stats[member_armor_idx]["mass"]
+	return sum
 
 func attack_range():
 	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["range"]
@@ -73,8 +73,7 @@ func melee_attack_speed():
 	return EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["attack_speed"]
 
 func speed() -> float:
-	var sum = 0
-	sum += EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
+	var sum = EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
 	sum += EntityIndex.armors_stats[member_armor_idx]["speed"]
 	sum += EntityIndex.shield_stats[member_shield_idx]["speed"]
 	
@@ -86,8 +85,7 @@ func speed() -> float:
 	return 0.75 + sum
 	
 func member_hp() -> int:
-	var sum = 0
-	sum += EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
+	var sum = EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
 	sum += EntityIndex.armors_stats[member_armor_idx]["hp"]
 	sum += EntityIndex.shield_stats[member_shield_idx]["hp"]
 	
