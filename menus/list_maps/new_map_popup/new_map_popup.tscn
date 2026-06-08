@@ -148,7 +148,7 @@ rect_min_size = Vector2( 170, 64 )
 size_flags_horizontal = 3
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
-text = "25 × 25"
+text = "29 × 29"
 icon = ExtResource( 5 )
 expand_icon = true
 
@@ -160,7 +160,7 @@ rect_min_size = Vector2( 170, 64 )
 size_flags_horizontal = 3
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
-text = "37 × 37"
+text = "33 × 33"
 icon = ExtResource( 5 )
 expand_icon = true
 
@@ -172,7 +172,7 @@ rect_min_size = Vector2( 170, 64 )
 size_flags_horizontal = 3
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
-text = "53 × 53"
+text = "37 × 37"
 icon = ExtResource( 5 )
 expand_icon = true
 
@@ -184,8 +184,7 @@ rect_min_size = Vector2( 170, 64 )
 size_flags_horizontal = 3
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 1 )
-disabled = true
-text = "69 × 69"
+text = "53 × 53"
 icon = ExtResource( 5 )
 expand_icon = true
 

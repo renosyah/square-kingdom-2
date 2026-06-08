@@ -7,10 +7,10 @@ const uncheck = preload("res://assets/user_interface/icons/uncheck.png")
 const check = preload("res://assets/user_interface/icons/check.png")
 
 onready var map_size_button = {
-	12:$MarginContainer/VBoxContainer/HBoxContainer3/small,
-	18:$MarginContainer/VBoxContainer/HBoxContainer3/medium,
-	26:$MarginContainer/VBoxContainer/HBoxContainer3/large,
-	34:$MarginContainer/VBoxContainer/HBoxContainer3/huge
+	14:$MarginContainer/VBoxContainer/HBoxContainer3/small,
+	16:$MarginContainer/VBoxContainer/HBoxContainer3/medium,
+	18:$MarginContainer/VBoxContainer/HBoxContainer3/large,
+	26:$MarginContainer/VBoxContainer/HBoxContainer3/huge
 }
 onready var map_name = $MarginContainer/VBoxContainer/HBoxContainer2/map_name
 
