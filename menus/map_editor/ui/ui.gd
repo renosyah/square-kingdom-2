@@ -164,8 +164,7 @@ func _on_delete_pressed():
 	var result = yield(confirm_popup, "confirmed")
 	if result:
 		Global.delete_map()
-		Global.empty_map_data()
-		Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+		Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 		return
 		
 	confirm_popup.visible = false

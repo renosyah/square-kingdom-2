@@ -18,8 +18,8 @@ script = ExtResource( 2 )
 projectile = ExtResource( 1 )
 attack_damage = 12
 show_on_stored = false
-walk_animation = "range_weapon_ready"
-ready_animation = "range_weapon_ready"
+walk_animation = "range_weapon_hold"
+ready_animation = "range_weapon_hold"
 attack_animation = "shot_range_weapon_2"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

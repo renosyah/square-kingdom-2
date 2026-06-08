@@ -4,7 +4,7 @@ onready var spatial = $Spatial
 
 func _process(delta):
 	if visible:
-		spatial.rotate_x(45 * delta)
+		spatial.rotate_x(-45 * delta)
 	
 func on_stop():
 	_age = 0

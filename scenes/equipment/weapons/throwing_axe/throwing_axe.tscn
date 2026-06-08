@@ -11,7 +11,7 @@ script = ExtResource( 4 )
 projectile = ExtResource( 5 )
 attack_damage = 12
 show_on_stored = false
-attack_animation = "throw_range_weapon"
+attack_animation = "throw_range_weapon_2"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.15, 0 )

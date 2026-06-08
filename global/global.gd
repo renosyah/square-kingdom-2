@@ -98,10 +98,10 @@ func save_map(filename :String, data, use_prefix = true):
 var current_tile_map_manifest_data :TileMapFileManifest
 var current_tile_map_file_data :TileMapFileData
 
-func empty_map_data():
+func empty_map_data(map_name :String, map_size :int):
 	current_tile_map_manifest_data = TileMapFileManifest.new()
-	current_tile_map_manifest_data.map_name = RandomNameGenerator.generate_name()
-	current_tile_map_manifest_data.map_size = 18
+	current_tile_map_manifest_data.map_name = map_name
+	current_tile_map_manifest_data.map_size = map_size
 	
 	current_tile_map_file_data = TileMapUtils.generate_empty_tile_map(
 		current_tile_map_manifest_data.map_size, 1

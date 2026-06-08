@@ -4,7 +4,7 @@
 [ext_resource path="res://menus/list_maps/item/add_map_button.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=4]
-[ext_resource path="res://assets/user_interface/text_input_popup/text_input_popup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://menus/list_maps/new_map_popup/new_map_popup.tscn" type="PackedScene" id=5]
 
 [node name="list_map" type="MarginContainer"]
 margin_right = 831.0
@@ -97,9 +97,13 @@ margin_right = 831.0
 margin_bottom = 400.0
 rect_min_size = Vector2( 12, 0 )
 
-[node name="new_map_name_popup" parent="." instance=ExtResource( 5 )]
+[node name="new_map_popup" parent="." instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 831.0
+margin_bottom = 464.0
 
 [connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer2/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ScrollContainer/GridContainer/add_map_button" to="." method="_on_add_map_button_pressed"]
-[connection signal="close" from="new_map_name_popup" to="." method="_on_new_map_name_popup_close"]
-[connection signal="on_continue" from="new_map_name_popup" to="." method="_on_new_map_name_popup_on_continue"]
+[connection signal="close" from="new_map_popup" to="." method="_on_new_map_popup_close"]
+[connection signal="create_new" from="new_map_popup" to="." method="_on_new_map_popup_create_new"]

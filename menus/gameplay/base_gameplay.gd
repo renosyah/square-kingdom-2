@@ -303,6 +303,7 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 				current.rotation_idx = 0
 				current.scene_idx = 2
 				tile_map.update_spawned_tile(current)
+				nav.enable_nav_tile(0, id, true)
 		
 	# register player ids
 	# spawn their bases

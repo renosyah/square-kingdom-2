@@ -35,7 +35,7 @@ func _thread_save(args):
 	var file = File.new()
 	var b64 = Marshalls.variant_to_base64(data)
 	var bytes = Marshalls.base64_to_raw(b64)
-	bytes = bytes.compress(File.COMPRESSION_DEFLATE)
+	#bytes = bytes.compress(File.COMPRESSION_DEFLATE)
 	var success = file.open(path, File.WRITE) == OK
 	if success:
 		file.store_buffer(bytes)
@@ -69,7 +69,7 @@ func _thread_load(args):
 	var data = null
 	if success:
 		var bytes = file.get_buffer(file.get_len())
-		bytes = bytes.decompress(1048576, File.COMPRESSION_DEFLATE)
+		#bytes = bytes.decompress(1048576, File.COMPRESSION_DEFLATE)
 		var b64 = Marshalls.raw_to_base64(bytes)
 		data = Marshalls.base64_to_variant(b64)
 		file.close()

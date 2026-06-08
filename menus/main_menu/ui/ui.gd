@@ -87,8 +87,8 @@ func _on_setting_pressed():
 	hide_all()
 	Global.change_scene("res://menus/setting/setting.tscn", false)
 
-func _on_list_map_new_map(nm):
-	Global.current_tile_map_manifest_data.map_name = nm
+func _on_list_map_new_map(nm, size):
+	Global.empty_map_data(nm, size)
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 
 func _on_unit_editor_pressed():

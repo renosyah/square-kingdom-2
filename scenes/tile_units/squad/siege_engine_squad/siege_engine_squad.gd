@@ -1,7 +1,7 @@
 extends InfantrySquad
 class_name SiegeEngineSquad
 
-const push_siege_engine = [
+const push_siege_engines = [
 	preload("res://assets/sounds/walks/engine_walk_1.wav"),
 	preload("res://assets/sounds/walks/engine_walk_2.wav"),
 	preload("res://assets/sounds/walks/engine_walk_3.wav"),
@@ -9,7 +9,7 @@ const push_siege_engine = [
 	preload("res://assets/sounds/walks/engine_walk_5.wav")
 ]
 
-const siege_break = [
+const siege_breaks = [
 	preload("res://assets/sounds/sfx/siege_break_1.wav"),
 	preload("res://assets/sounds/sfx/siege_break_2.wav"),
 	preload("res://assets/sounds/sfx/siege_break_3.wav"),
@@ -27,6 +27,7 @@ var _siege_engine_audio :AudioStreamPlayer3D
 func _ready():
 	_siege_engine_audio = AudioStreamPlayer3D.new()
 	_siege_engine_audio.bus = Global.bus_sfx
+	_siege_engine_audio.unit_db = 5
 	add_child(_siege_engine_audio)
 	
 func _init_formations():
@@ -92,7 +93,7 @@ func _on_walking(delta :float):
 	if visible and _is_moving and _walk_timer.is_stopped():
 		_walk_timer.wait_time = 0.5
 		_walk_timer.start()
-		_step_audio.stream = push_siege_engine.pick_random()
+		_step_audio.stream = push_siege_engines.pick_random()
 		_step_audio.play()
 			
 func _ajust_formation(pos :Vector3, delta :float):
@@ -134,9 +135,15 @@ func update_spotting():
 	for id in _minimum_range_tiles:
 		_attack_tile_ranges.erase(id)
 		
+func _is_in_ranges(target) -> bool:
+	if _is_in_attack_range(target):
+		return true
+		
+	return _is_in_melee_range(target)
+	
 func on_dead():
 	if visible:
-		_siege_engine_audio.stream = siege_break.pick_random()
+		_siege_engine_audio.stream = siege_breaks.pick_random()
 		_siege_engine_audio.play()
 		yield(_siege_engine_audio,"finished")
 		yield(get_tree().create_timer(1),"timeout")
