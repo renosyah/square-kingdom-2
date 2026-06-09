@@ -48,3 +48,6 @@ func _on_new_map_popup_close():
 
 func _on_new_map_popup_create_new(map_name, size):
 	emit_signal("new_map", map_name, size)
+
+func _on_back_pressed():
+	emit_signal("close")

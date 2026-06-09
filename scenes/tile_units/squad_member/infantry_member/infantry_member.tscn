@@ -2679,8 +2679,6 @@ auto_advance = true
 [sub_resource type="AnimationNodeStateMachineTransition" id=78]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=79]
-switch_mode = 2
-auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=80]
 
@@ -2794,7 +2792,7 @@ software_skinning_transform_normals = false
 material/1 = ExtResource( 6 )
 
 [node name="range_weapon_holder" type="Spatial" parent="pivot/body/hand_r"]
-transform = Transform( 0.224064, 0.0224175, -0.974321, 0.974555, 0.00155811, 0.224154, 0.00654306, -0.999748, -0.021498, 0.196861, 0.00170654, 0.00404906 )
+transform = Transform( 0.224064, 0.0224175, -0.974321, 0.974555, 0.00155811, 0.224154, 0.00654307, -0.999748, -0.021498, 0.196861, 0.00170654, 0.00404906 )
 __meta__ = {
 "_editor_description_": ""
 }
