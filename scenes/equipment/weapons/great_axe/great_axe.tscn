@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/weapons/melee_weapon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=4]
+[ext_resource path="res://scenes/equipment/weapons/great_axe/great_axe.obj" type="ArrayMesh" id=5]
+
+[node name="great_axe" type="Spatial"]
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+attack_damage = 11
+counters = [ 1, 2, 3 ]
+bonus_damage = 7
+walk_animation = "weapon_2_ready"
+ready_animation = "weapon_2_ready"
+attack_animation = "weapon_2_slash_left"
+attack_animations = [ "weapon_2_slash_left", "weapon_2_slash_right" ]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.111, 0 )
+cast_shadow = 0
+mesh = ExtResource( 5 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
+material/2 = ExtResource( 1 )

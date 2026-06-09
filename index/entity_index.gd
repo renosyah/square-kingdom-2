@@ -29,6 +29,8 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/sword/sword_shield.tscn"), #6
 	preload("res://scenes/equipment/weapons/axe/axe.tscn"), #7
 	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
+	preload("res://scenes/equipment/weapons/great_axe/great_axe.tscn"), #9
+	preload("res://scenes/equipment/weapons/great_sword/great_sword.tscn"), #10
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -42,6 +44,7 @@ const melee_weapon_stats = {
 	7:{'attack_speed':0.87,'charge_bonus':0},
 	8:{'attack_speed':1.85,'charge_bonus':0},
 	9:{'attack_speed':1.98,'charge_bonus':0},
+	10:{'attack_speed':1.78,'charge_bonus':0},
 }
 
 const range_weapons = [

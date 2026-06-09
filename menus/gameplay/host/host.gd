@@ -49,7 +49,7 @@ func _on_all_player_ready():
 	bot_action_timer.start()
 	
 	if Global.enable_bandit:
-		bot_bandit_spawner_timer.start()
+		_on_bot_bandit_spawner_timer_timeout()
 
 func _on_bot_squad_spawner_on_squads_ready(datas :Array):
 	spawn_squads(datas)
@@ -109,15 +109,17 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if squad is GuardTowerSquad:
 		return
 		
-	var conditions = [
-		randf() < 0.6,
-		squad.member_alive > 2,
-	]
-	
 	var is_bot = squad.player_id in bot_player_ids or squad.player_id == bot_bandit.player_id
-	
+	if not is_bot:
+		return
+		
+	var conditions = [
+		randf() < 0.31,
+		squad.member_alive < 2,
+	]
+
 	# retreaat!
-	if conditions.has(true) and is_bot:
+	if conditions.has(true):
 		squad.attack_move = false
 		squad.move_to(player_spawn_points[squad.player_id])
 	

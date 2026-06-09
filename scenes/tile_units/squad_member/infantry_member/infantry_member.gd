@@ -191,7 +191,7 @@ func melee_attack():
 		yield(tween,"tween_completed")
 		global_position.y = y_pos
 		
-	_current_anim_body = _melee_weapon.attack_animation
+	_current_anim_body = _melee_weapon.attack_animations.pick_random()
 	body_animation_state.travel(_current_anim_body)
 	auto_iddle_timer.start()
 	
