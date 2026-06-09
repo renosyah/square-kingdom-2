@@ -11,6 +11,7 @@ export var ready_animation :String = "weapon_ready"
 export var attack_animation :String
 
 export var attack_animations :Array
+export var has_splash_damage :bool = false
 
 func _ready():
 	if attack_animations.empty():

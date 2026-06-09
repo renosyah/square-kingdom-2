@@ -209,6 +209,10 @@ func _on_melee_attack_performed():
 	if is_instance_valid(enemy):
 		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_role)
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)
+		
+		if _melee_weapon.has_splash_damage:
+			var target_tile = enemy.squad.current_tile
+			emit_signal("on_set_damage_to_tile", self, target_tile, melee_dmg * 0.5)
 	
 	iddle = true
 	enemy = null

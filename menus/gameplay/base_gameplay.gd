@@ -695,6 +695,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	ui.minimap.add_object(squad, squad.color)
 	
 	if squad is GuardTowerSquad:
+		squad.nav_layer = 1 # diffrent path
 		return
 		
 	squad_datas[squad] = data

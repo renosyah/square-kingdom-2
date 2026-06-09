@@ -173,7 +173,13 @@ func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 			var nex_nav_id :int = _navigation_ids[layer_id][next_id]
 			if nav.has_point(nex_nav_id):
 				nav.connect_points(x.navigation_id, nex_nav_id, false)
-			
+
+func is_connect(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2) -> bool:
+	var nav :AStar2D = _navigations[layer_id]
+	var point_id_1 :int = _navigation_ids[layer_id][tile_id_1]
+	var point_id_2 :int = _navigation_ids[layer_id][tile_id_2]
+	return nav.are_points_connected(point_id_1, point_id_2)
+
 func set_point_connection(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2, set_connect :bool = true) -> void:
 	var nav :AStar2D = _navigations[layer_id]
 	var point_id_1 :int = _navigation_ids[layer_id][tile_id_1]
