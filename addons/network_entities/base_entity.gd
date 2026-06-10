@@ -60,6 +60,7 @@ func _ready() -> void:
 	_visibility_notifier.connect("camera_entered", self, "_on_camera_entered")
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)
+	visible = false
 	
 	if not _is_master:
 		set_process(false)
@@ -75,11 +76,12 @@ func _ready() -> void:
 	if NetworkLobbyManager.get_players().size() > 1:
 		_setup_network_timer()
 		
-		
 	if not _is_master:
 		set_process(true)
 		set_physics_process(true)
 		
+	visible = _visibility_notifier.is_on_screen()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta :float) -> void:
 	moving(delta)

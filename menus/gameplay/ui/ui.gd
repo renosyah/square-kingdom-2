@@ -1,6 +1,7 @@
 extends Control
 class_name GameplayUi
 
+signal cinematic_view
 signal reset_camera
 signal exit
 
@@ -240,6 +241,8 @@ func _on_cinematic_pressed():
 	log_event.visible = not on_cinematic_mode
 	squad_spawner_ui.visible = not on_cinematic_mode
 	minimap_container.visible = not on_cinematic_mode
+	
+	emit_signal("cinematic_view", on_cinematic_mode)
 	
 func hide_ui():
 	movable_camera_ui.visible = false

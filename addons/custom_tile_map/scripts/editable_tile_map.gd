@@ -56,8 +56,19 @@ func _on_batch_spawner_on_finish():
 		
 	emit_signal("on_map_ready")
 
-func update_camera_location(to :Vector2):
+func update_camera_location(to :Vector2, force_update :bool = false):
 	if not _chunk_system:
+		return
+		
+	if force_update:
+		for i in _visible_tiles:
+			_spawned_tiles[i.id].visible = false
+			
+		_visible_tiles.clear()
+		
+		_last_cam = to
+		_chunk_management.start_position = _last_cam
+		_chunk_management.init_starter_chunk()
 		return
 		
 	if not _batch_spawner.is_running():

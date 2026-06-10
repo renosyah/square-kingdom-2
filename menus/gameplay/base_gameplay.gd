@@ -509,6 +509,7 @@ func setup_ui():
 	ui.name = "ui"
 	ui.connect("reset_camera", self, "_on_ui_reset_camera")
 	ui.connect("exit", self, "on_back_pressed")
+	ui.connect("cinematic_view", self, "_on_ui_cinematic_view")
 	
 	ui.player_squads = player_squads
 	ui.selected_squads = selected_squads
@@ -574,6 +575,17 @@ func _on_selection_button_pressed(idx :int):
 		unit_sound.play()
 		
 	ui.select_all_squad(idx)
+	
+func _on_ui_cinematic_view(cinematic_mode :bool):
+	if cinematic_mode:
+		set_process(false)
+		movable_camera.translation = orbital_camera.translation
+		var pos = movable_camera.translation * Vector3(1,0,1)
+		
+		tile_map.update_camera_location(Vector2(pos.x, pos.z), true)
+		
+		yield(get_tree(),"idle_frame")
+		set_process(true)
 	
 ########################################## squad  ############################################
 var squads :Array = []
