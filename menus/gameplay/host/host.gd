@@ -89,6 +89,9 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 func _on_squad_dead(squad, data):
 	._on_squad_dead(squad, data)
 	
+	if is_end:
+		return
+		
 	if squad is GuardTowerSquad:
 		return
 	
@@ -111,6 +114,9 @@ func _on_squad_dead(squad, data):
 func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
 	._on_squad_member_dead(squad, member, data)
 	
+	if is_end:
+		return
+		
 	if squad is GuardTowerSquad:
 		return
 		
@@ -129,6 +135,9 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		squad.move_to(player_spawn_points[squad.player_id])
 	
 func _on_bot_bandit_spawner_timer_timeout():
+	if is_end:
+		return
+		
 	bot_bandit_spawner_timer.start()
 	
 	if bot_bandit_squads.size() > (players.size() + bot_players.size()):
@@ -150,6 +159,9 @@ func _on_bot_bandit_spawner_timer_timeout():
 	spawn_squad(data)
 	
 func _on_bot_action_timer_timeout():
+	if is_end:
+		return
+		
 	bot_action_timer.start()
 	_bot_players_action()
 	
