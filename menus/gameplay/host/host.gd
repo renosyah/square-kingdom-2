@@ -2,6 +2,8 @@ extends BaseGameplay
 
 const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Raider"]
 const bandit_troops = [
+	[0,0,3],
+	[0,3,4],
 	[3,4,5],
 	[3,4,5,6,7,8],
 	[3,4,5,6,7,8,15,16,17],
@@ -52,6 +54,9 @@ func _on_bot_squad_spawner_on_squads_ready(datas :Array):
 	spawn_squads(datas)
 	
 func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
+	if is_end:
+		return
+		
 	if is_instance_valid(squad.enemy):
 		return
 		
@@ -66,6 +71,9 @@ func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
 	
+	if is_end:
+		return
+		
 	if squad is GuardTowerSquad:
 		return
 		

@@ -63,6 +63,7 @@ export var heal_amount :int = 10
 export var reinfoce_tiles :Array = []
 export var squad_role :int
 export var squad_icon :StreamTexture
+export var squad_attribute :Array
 
 var member_alive :int
 
@@ -234,7 +235,7 @@ func chase_target():
 			chase_enemy = null
 			return
 			
-		if _is_in_ranges(chase_enemy):
+		if _is_still_in_ranges(chase_enemy):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
@@ -377,7 +378,7 @@ func _on_current_tile_updated(from_id :Vector2, to_id :Vector2):
 			stop(false)
 			return
 			
-		if _is_in_ranges(chase_enemy):
+		if _is_still_in_ranges(chase_enemy):
 			enemy = chase_enemy
 			_has_enemy = true
 			_on_enemy_set()
@@ -481,11 +482,11 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 		var look :Vector3 =  enemy.global_position
 		look.y = pos.y
 		
-		if _is_in_melee_range(enemy):
+		if _is_still_in_melee_range(enemy):
 			_on_enemy_in_melee_range(delta, pos, look)
 			return
 		
-		if _is_in_attack_range(enemy):
+		if _is_still_in_attack_range(enemy):
 			_on_enemy_in_range(delta, pos, look)
 			return
 			
@@ -716,7 +717,7 @@ remotesync func _taking_damages(datas :Array):
 			if _range_engagement:
 				var s = get_node_or_null(attacked_by)
 				if is_instance_valid(s):
-					if _is_in_melee_range(s) and s.team != team:
+					if _is_still_in_melee_range(s) and s.team != team:
 						enemy = s
 						_has_enemy = true
 						_on_enemy_set()
@@ -783,14 +784,25 @@ func update_spotting():
 		TileMapUtils.ARROW_DIRECTIONS, current_tile, 1
 	) + [current_tile]
 	
-	_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.ARROW_DIRECTIONS, current_tile, attack_range
-	) + [current_tile]
-	
-	# remove melee from ranges
-	for id in _melee_tile_ranges:
-		_attack_tile_ranges.erase(id)
-
+	# check if range melee tile connected and enable
+	var temp :Array = _melee_tile_ranges.duplicate()
+	for id in temp:
+		if not nav.is_nav_enable(nav_layer, id):
+			_melee_tile_ranges.erase(id)
+			continue
+			
+		if not nav.is_point_connected(nav_layer, current_tile, id):
+			_melee_tile_ranges.erase(id)
+			
+	if attack_range > 1:
+		_attack_tile_ranges = TileMapUtils.get_adjacent_tiles(
+			TileMapUtils.ARROW_DIRECTIONS, current_tile, attack_range
+		)
+		
+		# remove melee tile from ranges
+		for id in _melee_tile_ranges:
+			_attack_tile_ranges.erase(id)
+		
 func _chase_on_iddle() -> bool:
 	if is_instance_valid(chase_enemy):
 		# stop the chase
@@ -799,7 +811,7 @@ func _chase_on_iddle() -> bool:
 			chase_enemy = null
 			return false
 			
-		if not _is_in_ranges(chase_enemy):
+		if not _is_still_in_ranges(chase_enemy):
 			chase_target()
 			return true
 			
@@ -807,7 +819,6 @@ func _chase_on_iddle() -> bool:
 	
 # for active enemy spotting
 func _on_global_tick():
-	
 	if _is_master and not _is_moving:
 		
 		# have task to chase enemy
@@ -827,9 +838,12 @@ func _scan_area():
 	# find in melee range first
 	# then normal range
 	if not _find_in_ranges(_melee_tile_ranges, true):
-		_find_in_ranges(_attack_tile_ranges)
+		_find_in_ranges(_attack_tile_ranges, false)
 	
-func _find_in_ranges(ranges :Array, validate_tile :bool = false) -> bool:
+func _find_in_ranges(ranges :Array, validate_tile :bool) -> bool:
+	if ranges.empty():
+		return false
+		
 	for pos in ranges:
 		if not unit_position.has(pos):
 			continue
@@ -858,28 +872,25 @@ func _get_enemy_in_position(datas :Array, validate_tile :bool) -> Array:
 		if validate_tile:
 			if unit.nav_layer != nav_layer:
 				continue
-				
-			if not nav.is_point_connected(nav_layer, current_tile, unit.current_tile):
-				continue
-				
+			
 		return [unit, true]
 	
 	return [null, false]
 	
-func _is_in_ranges(target) -> bool:
+func _is_still_in_ranges(target) -> bool:
 	if _has_range_weapon:
-		if _is_in_attack_range(target):
+		if _is_still_in_attack_range(target):
 			return true
 			
-	return _is_in_melee_range(target)
+	return _is_still_in_melee_range(target)
 	
-func _is_in_melee_range(target):
+func _is_still_in_melee_range(target):
 	if target.is_dead:
 		return false
 		
 	return target.current_tile in _melee_tile_ranges
 	
-func _is_in_attack_range(target) -> bool:
+func _is_still_in_attack_range(target) -> bool:
 	if target.is_dead:
 		return false
 		

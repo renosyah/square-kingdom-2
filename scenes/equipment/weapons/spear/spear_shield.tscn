@@ -1,14 +1,16 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/equipment/weapons/spear/spear.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://scenes/equipment/weapons/melee_weapon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/weapons/spear/spear.gd" type="Script" id=2]
 [ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
 
 [node name="spear" type="Spatial"]
 script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
 attack_damage = 4
-counters = [ 1 ]
 bonus_damage = 4
 walk_animation = "walk_weapon_hold"
 attack_animation = "weapon_trust_attack"

@@ -57,6 +57,40 @@ export var siege_engine_attack_damage :int
 export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
 
+func squad_attribute() -> Array:
+	# base by index
+	# 0 type : 0=infantry, 1=cavalry, 2=siege
+	var type_squad = 2 if not scene_idx in [0,1] else scene_idx
+	
+	# 1 melee_weapon : 0:sword/dagger/axe,1:all spear,2:all two handded
+	var type_melee_weapon = 0
+	if member_melee_weapon_idx in [0,5,6,7,8,11]:
+		type_melee_weapon = 0
+	elif member_melee_weapon_idx in [2,3,4]:
+		type_melee_weapon = 1
+	elif member_melee_weapon_idx in [9, 10]:
+		type_melee_weapon = 2
+		
+	# 2 range_weapon :0:null, 1:all trowable, 2:bow/crossbow
+	var type_range_weapon = 0
+	if member_range_weapon_idx in [1, 2]:
+		type_range_weapon = 1
+	elif member_range_weapon_idx in [3, 4, 5]:
+		type_range_weapon = 2
+	
+	# 3 armor_type : 0:none, 1:light, 2:medium, 3:heavy
+	var type_armor = 0
+	if member_armor_idx in [1]:
+		type_armor = 1
+	elif member_armor_idx in [3]:
+		type_armor = 2
+	elif member_armor_idx in [2]:
+		type_armor = 3
+	
+	var has_shield = member_shield_idx != 0
+	
+	return [type_squad, type_melee_weapon, type_range_weapon, type_armor, has_shield]
+
 func charge_damage() -> int:
 	 # 15 as base charge damage
 	var sum = 15 + EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["charge_bonus"]

@@ -135,11 +135,11 @@ func update_spotting():
 	for id in _minimum_range_tiles:
 		_attack_tile_ranges.erase(id)
 		
-func _is_in_ranges(target) -> bool:
-	if _is_in_attack_range(target):
+func _is_still_in_ranges(target) -> bool:
+	if _is_still_in_attack_range(target):
 		return true
 		
-	return _is_in_melee_range(target)
+	return _is_still_in_melee_range(target)
 	
 func on_dead():
 	if visible:

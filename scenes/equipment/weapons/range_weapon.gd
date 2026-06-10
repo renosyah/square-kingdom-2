@@ -6,6 +6,7 @@ signal on_hit(projectile_pos)
 export var projectile :PackedScene
 export var attack_damage :int
 export var show_on_stored :bool = true
+export var bonus_damage :int = 6 # times of damage bonus
 
 export var walk_animation :String = "walk"
 export var ready_animation :String = "iddle"
@@ -18,6 +19,9 @@ func _ready():
 	
 	if Global.current_root:
 		_prepare_pool()
+		
+func get_attack_damage(enemy_squad_attribute :Array) -> int:
+	return attack_damage
 	
 func _prepare_pool():
 	for i in 3:

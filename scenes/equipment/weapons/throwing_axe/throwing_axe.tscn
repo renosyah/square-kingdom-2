@@ -9,8 +9,9 @@
 [node name="throwing_axe" type="Spatial"]
 script = ExtResource( 4 )
 projectile = ExtResource( 5 )
-attack_damage = 12
+attack_damage = 6
 show_on_stored = false
+bonus_damage = 4
 attack_animation = "throw_range_weapon_2"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

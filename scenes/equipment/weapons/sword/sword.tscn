@@ -1,13 +1,15 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/equipment/weapons/sword/sword.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://scenes/equipment/weapons/melee_weapon.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/weapons/sword/sword.gd" type="Script" id=2]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=3]
 
 [node name="sword" type="Spatial"]
 script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
 attack_damage = 7
-counters = [ 2, 3 ]
 bonus_damage = 4
 ready_animation = "iddle"
 attack_animation = "weapon_slash_attack"

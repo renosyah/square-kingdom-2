@@ -27,8 +27,9 @@ func load_data_nav(navigation_datas :Array):
 func is_nav_enable(layer_id :int, id :Vector2) -> bool:
 	if _get_navigation_id(layer_id, id) == -1:
 		return false
-	
-	return not _navigations[layer_id].is_point_disabled()
+		
+	var navigation_id :int =_get_navigation_id(layer_id, id)
+	return not _navigations[layer_id].is_point_disabled(navigation_id)
 	
 func enable_nav_tile(layer_id :int, id :Vector2, enable :bool):
 	var navigation_id :int = _get_navigation_id(layer_id, id)
@@ -176,14 +177,19 @@ func _connect_point(nav :AStar2D, data :Array, layer_id:int):
 
 func is_point_connected(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2) -> bool:
 	var nav :AStar2D = _navigations[layer_id]
-	var point_id_1 :int = _navigation_ids[layer_id][tile_id_1]
-	var point_id_2 :int = _navigation_ids[layer_id][tile_id_2]
+	var point_id_1 :int = _get_navigation_id(layer_id, tile_id_1)
+	var point_id_2 :int = _get_navigation_id(layer_id, tile_id_2)
+	if -1 in [point_id_1, point_id_2]:
+		return false
+		
 	return nav.are_points_connected(point_id_1, point_id_2)
 
 func set_point_connection(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2, set_connect :bool = true) -> void:
 	var nav :AStar2D = _navigations[layer_id]
-	var point_id_1 :int = _navigation_ids[layer_id][tile_id_1]
-	var point_id_2 :int = _navigation_ids[layer_id][tile_id_2]
+	var point_id_1 :int = _get_navigation_id(layer_id, tile_id_1)
+	var point_id_2 :int = _get_navigation_id(layer_id, tile_id_2)
+	if -1 in [point_id_1, point_id_2]:
+		return
 	
 	if set_connect:
 		nav.connect_points(point_id_1, point_id_2, false)
@@ -193,7 +199,9 @@ func set_point_connection(layer_id:int, tile_id_1: Vector2, tile_id_2: Vector2, 
 	
 func reconnect_point(layer_id:int, tile_id: Vector2, new_neighbors: Array) -> void:
 	var nav :AStar2D = _navigations[layer_id]
-	var point_id :int = _navigation_ids[layer_id][tile_id]
+	var point_id :int = _get_navigation_id(layer_id, tile_id)
+	if point_id == -1:
+		return
 	
 	if !nav.has_point(point_id):
 		return

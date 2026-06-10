@@ -207,7 +207,7 @@ func _on_melee_attack_performed():
 		yield(tween,"tween_completed")
 		
 	if is_instance_valid(enemy):
-		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_role)
+		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_attribute)
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)
 		
 		if _melee_weapon.has_splash_damage:

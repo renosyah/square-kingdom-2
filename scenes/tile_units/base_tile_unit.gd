@@ -54,10 +54,7 @@ var spotting_area :Array
 puppet var _puppet_current_tile :Vector2
 puppet var _puppet_translation :Vector3
 
-func _ready():
-	update_spotting()
-	
-	
+
 func move_to(tile_id :Vector2):
 	_move_to(tile_id, true)
 	
