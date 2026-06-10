@@ -2,14 +2,11 @@ extends BaseGameplay
 
 const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Raider"]
 const bandit_troops = [
-	[1,2,3],
-	[1,2,3,4],
-	[1,2,3,4,5],
-	[1,2,3,4,5,8],
-	[3,4,5,8,9,10,11],
-	[3,4,5,8,9,10,11,12,13,14],
-	[3,4,5,8,9,10,11,12,13,14,18],
-	[3,4,5,8,9,10,11,12,13,14,18,19,20]
+	[3,4,5],
+	[3,4,5,6,7,8],
+	[3,4,5,6,7,8,15,16,17],
+	[3,4,5,6,7,8,15,16,17],
+	[3,4,5,6,7,8,15,16,17,21,22,23],
 ]
 
 onready var bot_bandit_spawner_timer = $bot_bandit_spawner_timer

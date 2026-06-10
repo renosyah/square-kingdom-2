@@ -826,10 +826,10 @@ func _scan_area():
 		
 	# find in melee range first
 	# then normal range
-	if not _find_in_ranges(_melee_tile_ranges):
+	if not _find_in_ranges(_melee_tile_ranges, true):
 		_find_in_ranges(_attack_tile_ranges)
 	
-func _find_in_ranges(ranges :Array) -> bool:
+func _find_in_ranges(ranges :Array, validate_tile :bool = false) -> bool:
 	for pos in ranges:
 		if not unit_position.has(pos):
 			continue
@@ -838,7 +838,7 @@ func _find_in_ranges(ranges :Array) -> bool:
 		if unit_positions.empty():
 			continue
 			
-		var e = _get_enemy_in_position(unit_positions)
+		var e = _get_enemy_in_position(unit_positions, validate_tile)
 		if e[1]:
 			enemy = e[0]
 			_has_enemy = true
@@ -847,17 +847,23 @@ func _find_in_ranges(ranges :Array) -> bool:
 			
 	return false
 	
-func _get_enemy_in_position(datas :Array) -> Array:
+func _get_enemy_in_position(datas :Array, validate_tile :bool) -> Array:
 	for unit in datas:
 		if not is_instance_valid(unit):
 			continue
 			
-		if unit.is_dead:
+		if unit.is_dead or unit.team == team:
 			continue
 			
-		if unit.team != team:
-			return [unit, true]
-			
+		if validate_tile:
+			if unit.nav_layer != nav_layer:
+				continue
+				
+			if not nav.is_point_connected(nav_layer, current_tile, unit.current_tile):
+				continue
+				
+		return [unit, true]
+	
 	return [null, false]
 	
 func _is_in_ranges(target) -> bool:
@@ -869,9 +875,6 @@ func _is_in_ranges(target) -> bool:
 	
 func _is_in_melee_range(target):
 	if target.is_dead:
-		return false
-		
-	if target.nav_layer != nav_layer:
 		return false
 		
 	return target.current_tile in _melee_tile_ranges

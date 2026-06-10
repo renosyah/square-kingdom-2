@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Arabian Spearman"
+description = "Spear unit"
+scene_idx = 0
+node_name = ""
+current_tile = Vector2( 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+spotting_range = 3
+sort_order = 33
+squad_role = 2
+member_scene_idx = 0
+turning_speed = 8.0
+formation_density = 0.35
+icon_idx = 1
+potrait_idx = 8
+is_mounted = false
+spawn_time = 12
+member_headgear_idx = 6
+member_armor_idx = 1
+member_shield_idx = 0
+member_melee_weapon_idx = 2
+member_range_weapon_idx = 0
+total_member = 9
+siege_engine_attack_damage = 0
+siege_engine_attack_speed = 0.0
+siege_engine_attack_range = 0

@@ -1,0 +1,35 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/squad_data/squad_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+squad_id = 0
+squad_name = "Arabian Archer"
+description = "Missile unit"
+scene_idx = 0
+node_name = ""
+current_tile = Vector2( 0, 0 )
+network_id = 1
+player_id = ""
+team = 1
+color_idx = 0
+spotting_range = 5
+sort_order = 42
+squad_role = 3
+member_scene_idx = 0
+turning_speed = 8.0
+formation_density = 0.35
+icon_idx = 3
+potrait_idx = 2
+is_mounted = false
+spawn_time = 15
+member_headgear_idx = 6
+member_armor_idx = 0
+member_shield_idx = 0
+member_melee_weapon_idx = 0
+member_range_weapon_idx = 3
+total_member = 9
+siege_engine_attack_damage = 0
+siege_engine_attack_speed = 0.0
+siege_engine_attack_range = 0

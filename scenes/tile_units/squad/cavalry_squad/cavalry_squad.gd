@@ -165,7 +165,7 @@ func _on_finish_travel(from_id :Vector2, to_id :Vector2):
 # is blocked by enemy unit, if it, stop cav
 # so charge mechanic still be use
 func _is_charge_blocked(tile_id :Vector2) -> bool:
-	var e :Array = _get_enemy_in_position(unit_position[tile_id])
+	var e :Array = _get_enemy_in_position(unit_position[tile_id], true)
 	return e[1] and _paths.size() > 2
 	
 func _cav_charge(tile_id :Vector2, attack_damage :int):

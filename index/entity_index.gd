@@ -31,6 +31,7 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/axe/axe_shield.tscn"), #8
 	preload("res://scenes/equipment/weapons/great_axe/great_axe.tscn"), #9
 	preload("res://scenes/equipment/weapons/great_sword/great_sword.tscn"), #10
+	preload("res://scenes/equipment/weapons/sword/sword_curve.tscn"), #11
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -45,6 +46,7 @@ const melee_weapon_stats = {
 	8:{'attack_speed':1.85,'charge_bonus':0},
 	9:{'attack_speed':1.98,'charge_bonus':0},
 	10:{'attack_speed':1.78,'charge_bonus':0},
+	11:{'attack_speed':0.78,'charge_bonus':0},
 }
 
 const range_weapons = [
@@ -71,6 +73,8 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/helm/helm.tscn"), #3
 	preload("res://scenes/equipment/headgear/helm/helm_2.tscn"), #4
 	preload("res://scenes/equipment/headgear/helm/helm_3.tscn"), #5
+	preload("res://scenes/equipment/headgear/helm/arabian_helm_1.tscn"), #6
+	preload("res://scenes/equipment/headgear/helm/arabian_helm_2.tscn"), #7
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0},
@@ -79,17 +83,21 @@ const head_armors_stats = {
 	3:{'hp':22,'speed':-0.023},
 	4:{'hp':23,'speed':-0.035},
 	5:{'hp':28,'speed':-0.062},
+	6:{'hp':11,'speed':-0.008},
+	7:{'hp':24,'speed':-0.015},
 }
 
 const armors = [
 	null, # index 0 as NULL
 	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #1
 	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #2
+	preload("res://scenes/equipment/armor/medium_armor/medium_armor.tscn"), #3
 ]
 const armors_stats = {
 	0:{'hp':0,'speed':0,'mass':0},
 	1:{'hp':25,'speed':-0.08,'mass':0.4},
 	2:{'hp':65,'speed':-0.13,'mass':2.6},
+	3:{'hp':45,'speed':-0.09,'mass':1.6},
 }
 
 const shields = [

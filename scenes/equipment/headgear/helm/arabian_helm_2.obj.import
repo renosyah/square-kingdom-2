@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/arabian_helm_2.obj-edf18f3aac520528957c28454156afda.mesh"
+
+[deps]
+
+files=[ "res://.import/arabian_helm_2.obj-edf18f3aac520528957c28454156afda.mesh" ]
+
+source_file="res://scenes/equipment/headgear/helm/arabian_helm_2.obj"
+dest_files=[ "res://.import/arabian_helm_2.obj-edf18f3aac520528957c28454156afda.mesh", "res://.import/arabian_helm_2.obj-edf18f3aac520528957c28454156afda.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

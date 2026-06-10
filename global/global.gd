@@ -243,18 +243,21 @@ const template_squads = [
 	preload("res://data/squad_data/spearman.tres"),
 	preload("res://data/squad_data/swordman.tres"),
 	preload("res://data/squad_data/archer.tres"),#5
+	preload("res://data/squad_data/arabian_spearman.tres"),
+	preload("res://data/squad_data/arabian_swordman.tres"),
+	preload("res://data/squad_data/arabian_archer.tres"),
 	preload("res://data/squad_data/pikeman.tres"),
-	preload("res://data/squad_data/knight.tres"),
+	preload("res://data/squad_data/knight.tres"), # 10
 	preload("res://data/squad_data/crossbowman.tres"),
 	preload("res://data/squad_data/elite_guard.tres"),
-	preload("res://data/squad_data/huscarls.tres"), #10
+	preload("res://data/squad_data/huscarls.tres"),
 	preload("res://data/squad_data/longbowman.tres"),
-	preload("res://data/squad_data/cavalry_spear.tres"),
+	preload("res://data/squad_data/cavalry_spear.tres"), #15
 	preload("res://data/squad_data/cavalry_sword.tres"),
 	preload("res://data/squad_data/cavalry_archer.tres"),
-	preload("res://data/squad_data/cavalry_lancer.tres"),#15
+	preload("res://data/squad_data/cavalry_lancer.tres"),
 	preload("res://data/squad_data/cavalry_paladin.tres"),
-	preload("res://data/squad_data/cavalry_household.tres"),
+	preload("res://data/squad_data/cavalry_household.tres"), # 20
 	preload("res://data/squad_data/engine_catapult.tres"),
 	preload("res://data/squad_data/engine_balista.tres"),
 	preload("res://data/squad_data/engine_trebuchet.tres")
@@ -265,7 +268,7 @@ func set_default_squad_army():
 	for i in template_squads:
 		custom_squads.append(i.duplicate())
 		
-	current_army = [3,3,4,4,5,5,8,12]
+	current_army = [3,3,4,4,5,5,11,15]
 	sort_army(current_army)
 	
 func load_custom_squad():
