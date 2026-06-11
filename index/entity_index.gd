@@ -151,6 +151,10 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png"),#20
 	preload("res://assets/user_interface/squad_potrait/siege_engine/ram.png"),#21
 	preload("res://assets/user_interface/squad_potrait/siege_engine/siege_tower.png"),#22
+	
+	preload("res://assets/user_interface/squad_potrait/infantry/arabian_archer.png"),#23
+	preload("res://assets/user_interface/squad_potrait/infantry/arabian_spearman.png"),#24
+	preload("res://assets/user_interface/squad_potrait/infantry/arabian_swordman.png")#25
 ]
 
 const player_potraits = [
@@ -173,7 +177,13 @@ const player_potraits = [
 	preload("res://assets/user_interface/potrait/17.png"),
 	preload("res://assets/user_interface/potrait/18.png"),
 	preload("res://assets/user_interface/potrait/19.png"),
-	preload("res://assets/user_interface/potrait/20.png")
+	preload("res://assets/user_interface/potrait/20.png"),
+	preload("res://assets/user_interface/potrait/22.png"),
+	preload("res://assets/user_interface/potrait/23.png"),
+	preload("res://assets/user_interface/potrait/24.png"),
+	preload("res://assets/user_interface/potrait/25.png"),
+	preload("res://assets/user_interface/potrait/26.png"),
+	preload("res://assets/user_interface/potrait/27.png")
 ]
 
 const player_colors = [
