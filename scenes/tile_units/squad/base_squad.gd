@@ -477,8 +477,7 @@ func _ajust_formation(pos :Vector3, delta :float):
 func _attack_enemy_proccess(pos :Vector3, delta :float):
 	# because this script run on both master & puppet
 	# must check via is_instance_valid enemy
-	_has_enemy = is_instance_valid(enemy)
-	if _has_enemy:
+	if is_instance_valid(enemy):
 		var look :Vector3 =  enemy.global_position
 		look.y = pos.y
 		
@@ -490,9 +489,12 @@ func _attack_enemy_proccess(pos :Vector3, delta :float):
 			_on_enemy_in_range(delta, pos, look)
 			return
 			
+	# prevent _on_enemy_unset fire
+	# on each frame if already false
 	if _has_enemy == false:
 		return
 		
+	_has_enemy = false
 	enemy = null
 	_on_enemy_unset()
 	
