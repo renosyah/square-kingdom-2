@@ -19,7 +19,11 @@ func release():
 	mesh_instance_2.visible = false
 	
 func get_attack_damage(enemy_squad_attribute :Array) -> int:
+	var dmg = attack_damage
+	if enemy_squad_attribute[1] in [1, 2]: # spear weapon or 2 handed
+		dmg += attack_damage * bonus_damage
+		
 	if enemy_squad_attribute[3] in [2,3]: # medium or heavy armor
-		return attack_damage * bonus_damage
+		dmg += attack_damage * bonus_damage
 		
 	return attack_damage

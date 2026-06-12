@@ -18,6 +18,7 @@ script = ExtResource( 1 )
 projectile = ExtResource( 2 )
 attack_damage = 12
 show_on_stored = false
+bonus_damage = 8
 walk_animation = "range_weapon_hold"
 ready_animation = "range_weapon_ready"
 attack_animation = "shot_range_weapon_2"

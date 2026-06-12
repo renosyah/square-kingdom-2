@@ -26,13 +26,19 @@ var killed_treshold :int = 5
 
 var bot_player_ids :Array
 var bot_squads :Dictionary = {} # {bot_id:[BaseSquad]}
+var bot_cowardices :Dictionary = {}
+var bot_aggresives :Dictionary = {}
 
 func _ready():
 	for i in bot_players:
+		bot_cowardices[i.player_id] = rand_range(0.3, 0.7)
+		bot_aggresives[i.player_id] = rand_range(0.3, 0.8)
 		bot_player_ids.append(i.player_id)
 
 func _on_all_player_ready():
 	._on_all_player_ready()
+	
+	bot_cowardices[bot_bandit.player_id] = 0.5
 	
 	yield(get_tree().create_timer(1),"timeout")
 	var _squads = []
@@ -120,15 +126,15 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if squad is GuardTowerSquad:
 		return
 		
-	var is_bot = squad.player_id in bot_player_ids or squad.player_id == bot_bandit.player_id
+	var is_bot = squad.player_id in (bot_player_ids + [bot_bandit.player_id])
 	if not is_bot:
 		return
 		
 	var conditions = [
-		randf() < 0.31,
+		randf() < bot_cowardices[squad.player_id],
 		squad.member_alive < 2,
 	]
-
+	
 	# retreaat!
 	if conditions.has(true):
 		squad.attack_move = false
@@ -211,10 +217,12 @@ func _bot_players_action():
 			continue
 		
 		var i :BaseSquad = s.pick_random()
-		if randf() < 0.5 and i.member_alive < i.total_member:
+		var go = randf() < bot_aggresives[i.player_id]
+		if not go and i.member_alive < i.total_member:
 			continue
 			
-		if not i.is_moving():
+		go = randf() < bot_aggresives[i.player_id]
+		if not i.is_moving() or go:
 			bot_attack_command(i, e)
 
 

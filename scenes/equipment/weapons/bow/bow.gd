@@ -24,7 +24,7 @@ func get_attack_damage(enemy_squad_attribute :Array) -> int:
 	if enemy_squad_attribute[3] == 0: # no armor
 		dmg += attack_damage * bonus_damage
 		
-	if not enemy_squad_attribute[4] == 0: # no shield
+	if enemy_squad_attribute[1] in [1, 2] and not enemy_squad_attribute[4] == 0: # spear weapon or 2 handed & no shield
 		dmg += attack_damage * bonus_damage
 		
 	return dmg

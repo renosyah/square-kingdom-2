@@ -381,7 +381,7 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 	
 	for idx in corners.size():
 		var tile :Vector2 = tile_id + (corners[idx] * 2)
-		nav.get_nav_data(tile).pos.y = 0.60 # elevation
+		nav.get_nav_data(tile).pos.y = 1.04 # elevation
 		
 		for id in corner_nav_reassign[corners[idx]]:
 			nav.set_point_connection(0, tile, tile + id, false)

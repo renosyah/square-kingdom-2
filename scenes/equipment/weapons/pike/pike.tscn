@@ -13,6 +13,7 @@ __meta__ = {
 attack_damage = 7
 walk_animation = "walk_weapon_hold"
 attack_animation = "weapon_trust_attack"
+attack_animations = [ "weapon_2_slash_left", "weapon_trust_attack", "weapon_2_slash_right" ]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 cast_shadow = 0
