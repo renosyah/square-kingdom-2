@@ -196,6 +196,9 @@ func melee_attack():
 	auto_iddle_timer.start()
 	
 func _on_melee_attack_performed():
+	if not squad:
+		return
+		
 	if squad.visible:
 		_combat_sound.stream = sword_sounds.pick_random()
 		_combat_sound.play()
@@ -244,7 +247,13 @@ func _on_release_bow():
 	if squad.visible:
 		_combat_sound.stream = bow_sounds.pick_random()
 		_combat_sound.play()
-	
+		
+	if not is_instance_valid(enemy):
+		return
+		
+	if not is_instance_valid(enemy.squad):
+		return
+		
 	var target_tile = enemy.squad.current_tile
 	
 	if is_instance_valid(enemy):
