@@ -665,7 +665,7 @@ margin_right = 553.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Special squads are often hybrid units that excel in both melee and ranged combat. Some are considered the best all-round units. you can alse make your own custom squad"
+text = "Special squads are often hybrid units that excel in both melee and ranged combat. Some are considered the best all-round units. you can also make your own custom squad"
 autowrap = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]

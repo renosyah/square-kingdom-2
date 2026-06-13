@@ -17,7 +17,7 @@ const melee_weapons = {
 const shield_melee_weapons = { 2:3,5:6,7:8,11:11 } # {unshield_varian:shield_variant}
 
 const range_weapons = {
-	0 :["",preload("res://assets/user_interface/icons/stop.png")], 
+	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Javeline",preload("res://assets/user_interface/icons/equipment/javeline.png")],
 	2 :["Throwing Axe",preload("res://assets/user_interface/icons/equipment/throwing_axe.png")],
 	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png")],
@@ -25,7 +25,7 @@ const range_weapons = {
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png")],
 }
 const headgears = {
-	0 :["",preload("res://assets/user_interface/icons/stop.png")], 
+	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Cape", preload("res://assets/user_interface/icons/equipment/helmet_1.png")], 
 	2 :["Kettle", preload("res://assets/user_interface/icons/equipment/helmet_2.png")], 
 	3 :["Steel Helm 1", preload("res://assets/user_interface/icons/equipment/headgear.png")], 
@@ -35,15 +35,15 @@ const headgears = {
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
 }
 const armors = {
-	0 :["",preload("res://assets/user_interface/icons/stop.png")], 
+	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Leather",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
 	3 :["Iron",preload("res://assets/user_interface/icons/equipment/armor_2.png") ], 
 	2 :["Plate",preload("res://assets/user_interface/icons/equipment/armor_3.png")], 
 }
 const shields = {
-	0 :["",preload("res://assets/user_interface/icons/stop.png")], 
-	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
-	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
+	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
+	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
+	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
 }
 
 onready var player_data :PlayerData = Global.player_data
@@ -69,6 +69,7 @@ onready var player_color_display = $CanvasLayer/Control/Control/VBoxContainer2/H
 onready var icon_color_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer5/icon_color_display
 onready var potrait_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/MarginContainer2/potrait_display
 onready var icon_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer5/MarginContainer2/icon_display
+onready var edit_name = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/edit_name
 
 onready var save = $CanvasLayer/Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save
 onready var snack_bar = $CanvasLayer/Control/Control/snack_bar
@@ -220,7 +221,6 @@ func display_current_squad():
 		btn.add_child(card)
 		
 		
-
 func _on_melee_weapon_selected(index :int):
 	dup_squad_data.member_melee_weapon_idx = index
 	display_melee_weapons(index)
@@ -256,6 +256,7 @@ func _on_shield_selected(index :int):
 	
 func _on_squad_card_pressed(idx:int, squad :SquadData):
 	selected_index = idx
+	edit_name.text = squad.squad_name
 	
 	 # 0 mean this is squad template and cannot be modified
 	save.visible = (squad.squad_id != 0)
@@ -298,7 +299,8 @@ func _on_change_potrait_pressed():
 	display_attribute()
 
 func _on_button_random_name_pressed():
-	dup_squad_data.squad_name = RandomNameGenerator.generate_name()
+	edit_name.text = RandomNameGenerator.generate_name()
+	dup_squad_data.squad_name = edit_name.text
 	display_attribute()
 
 func _on_edit_name_text_changed(new_text):
@@ -325,7 +327,9 @@ func _on_save_pressed():
 	
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())
+	
 	Global.custom_squads[selected_index] = dup
+	Global.save_custom_squad()
 	
 	display_current_squad()
 	_on_squad_card_pressed(selected_index, Global.custom_squads[selected_index])

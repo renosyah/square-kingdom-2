@@ -179,7 +179,8 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 			continue
 			
 		# we dont want clamp ourself or our kin
-		if enemy_squad == self or enemy_squad.team == team:
+		# revise : cav charge now deal friendly fire LOL
+		if enemy_squad == self: # or enemy_squad.team == team:
 			continue
 			
 		var members :Array = enemy_squad.get_members(true)
