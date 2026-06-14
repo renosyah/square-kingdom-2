@@ -53,6 +53,7 @@ margin_bottom = 0.0
 size_flags_vertical = 3
 
 [node name="play" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
@@ -223,7 +224,7 @@ margin_bottom = 105.0
 rect_min_size = Vector2( 240, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-text = "New Game"
+text = "Battle"
 icon = ExtResource( 12 )
 expand_icon = true
 

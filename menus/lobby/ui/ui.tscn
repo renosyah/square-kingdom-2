@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://assets/background/round_table.png" type="Texture" id=9]
 [ext_resource path="res://assets/user_interface/icons/graphic_setting.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/camera/movable_camera_ui.gd" type="Script" id=13]
 [ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
 
 [node name="ui" type="Control"]
@@ -53,6 +55,7 @@ mouse_filter = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control"]
 margin_right = 1024.0
 margin_bottom = 600.0
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
 margin_right = 1024.0
@@ -116,6 +119,7 @@ rect_min_size = Vector2( 0, 8 )
 margin_top = 76.0
 margin_right = 1024.0
 margin_bottom = 484.0
+mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
@@ -128,6 +132,7 @@ margin_left = 12.0
 margin_right = 452.0
 margin_bottom = 408.0
 rect_min_size = Vector2( 440, 0 )
+mouse_filter = 2
 script = ExtResource( 4 )
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer"]
@@ -139,6 +144,7 @@ color = Color( 0.207843, 0.207843, 0.207843, 1 )
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 440.0
 margin_bottom = 408.0
+mouse_filter = 2
 
 [node name="Label3" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 margin_right = 440.0
@@ -158,6 +164,7 @@ rect_min_size = Vector2( 0, 12 )
 margin_top = 66.0
 margin_right = 440.0
 margin_bottom = 286.0
+mouse_filter = 2
 size_flags_vertical = 0
 
 [node name="minimap" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource( 8 )]
@@ -173,6 +180,16 @@ __meta__ = {
 cam_pos = false
 offset = Vector2( 0, -25 )
 tile_rotation_degree = 0.0
+
+[node name="movable_camera_minimap" type="Control" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap" instance=ExtResource( 12 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+script = ExtResource( 13 )
+max_zoom = 4.0
+center_pos = Vector3( 0, 0, 0 )
+camera_limit_bound = Vector3( 10, 0, 10 )
+move_speed = 0.12
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 margin_top = 290.0
@@ -426,6 +443,7 @@ margin_bottom = 100.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="confirm_popup" parent="CanvasLayer" instance=ExtResource( 11 )]
+visible = false
 
 [connection signal="on_client_request_map" from="sync_map" to="." method="_on_sync_map_on_client_request_map"]
 [connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]

@@ -13,9 +13,10 @@ func _ready():
 	card.data = squad_data
 	card_holder.add_child(card)
 	
-	label_time.text = Utils.format_time(squad_data.spawn_time)
-	time_progress.max_value = squad_data.spawn_time
-	time_progress.value = squad_data.spawn_time
+	var spawn_time = squad_data.spawn_time()
+	label_time.text = Utils.format_time(spawn_time)
+	time_progress.max_value = spawn_time
+	time_progress.value = spawn_time
 	
 func update_progress(time_left :float):
 	label_time.text = Utils.format_time(time_left)

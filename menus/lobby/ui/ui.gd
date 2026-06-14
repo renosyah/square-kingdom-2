@@ -11,6 +11,7 @@ onready var sync_map = $sync_map
 onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer4/Label_loading_host
 onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer/button_add_bot
 onready var confirm_popup = $CanvasLayer/confirm_popup
+onready var movable_camera_minimap = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap/movable_camera_minimap
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
@@ -26,6 +27,7 @@ func _ready():
 	
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
+	
 	
 	minimap.tile_scenes = TileIndex.tiles2d
 	confirm_popup.visible = false
@@ -62,6 +64,8 @@ func load_map():
 	map_name.text = "%s" % manif.map_name
 	map_size.text = "(%s x %s)" % [size, size]
 	minimap.load_data_map(Global.current_tile_map_file_data)
+	
+	movable_camera_minimap.camera_limit_bound = Vector3(manif.map_size, 0, manif.map_size)
 	
 func _on_minimap_on_minimap_ready():
 	_on_lobby_player_update(NetworkLobbyManager.get_players())

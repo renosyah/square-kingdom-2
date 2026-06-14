@@ -35,18 +35,18 @@ const melee_weapons = [
 ]
 # weapon attack speed
 const melee_weapon_stats = {
-	0:{'attack_speed':2.45,'charge_bonus':0},
-	1:{'attack_speed':1.92,'charge_bonus':2},
-	2:{'attack_speed':0.81,'charge_bonus':9},
-	3:{'attack_speed':0.92,'charge_bonus':7},
-	4:{'attack_speed':0.75,'charge_bonus':12},
-	5:{'attack_speed':0.57,'charge_bonus':0},
-	6:{'attack_speed':0.68,'charge_bonus':0},
-	7:{'attack_speed':0.87,'charge_bonus':0},
-	8:{'attack_speed':1.85,'charge_bonus':0},
-	9:{'attack_speed':1.98,'charge_bonus':0},
-	10:{'attack_speed':1.78,'charge_bonus':0},
-	11:{'attack_speed':0.78,'charge_bonus':0},
+	0:{'attack_speed':2.45,'charge_bonus':0,'spawn_time':3},
+	1:{'attack_speed':1.92,'charge_bonus':2,'spawn_time':2},
+	2:{'attack_speed':0.81,'charge_bonus':9,'spawn_time':4},
+	3:{'attack_speed':0.92,'charge_bonus':7,'spawn_time':4},
+	4:{'attack_speed':0.75,'charge_bonus':12,'spawn_time':6},
+	5:{'attack_speed':0.57,'charge_bonus':0,'spawn_time':5},
+	6:{'attack_speed':0.68,'charge_bonus':0,'spawn_time':5},
+	7:{'attack_speed':0.87,'charge_bonus':0,'spawn_time':7},
+	8:{'attack_speed':1.85,'charge_bonus':0,'spawn_time':7},
+	9:{'attack_speed':1.98,'charge_bonus':0,'spawn_time':8},
+	10:{'attack_speed':1.78,'charge_bonus':0,'spawn_time':9},
+	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
 }
 
 const range_weapons = [
@@ -58,12 +58,12 @@ const range_weapons = [
 	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #5
 ]
 const range_weapon_stats = {
-	0:{'range':1,'attack_speed':0.1}, # 1 default
-	1:{'range':3,'attack_speed':1.8},
-	2:{'range':2,'attack_speed':1.55},
-	3:{'range':4,'attack_speed':1.8},
-	4:{'range':6,'attack_speed':2.86},
-	5:{'range':4,'attack_speed':4.85},
+	0:{'range':1,'attack_speed':0.1,'spawn_time':1}, # 1 default
+	1:{'range':3,'attack_speed':1.8,'spawn_time':2},
+	2:{'range':2,'attack_speed':1.55,'spawn_time':3},
+	3:{'range':4,'attack_speed':1.8,'spawn_time':4},
+	4:{'range':6,'attack_speed':2.86,'spawn_time':6},
+	5:{'range':4,'attack_speed':4.85,'spawn_time':5},
 }
 
 const head_armors = [
@@ -77,14 +77,14 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/helm/arabian_helm_2.tscn"), #7
 ]
 const head_armors_stats = {
-	0:{'hp':0,'speed':0},
-	1:{'hp':5,'speed':0},
-	2:{'hp':12,'speed':-0.012},
-	3:{'hp':22,'speed':-0.023},
-	4:{'hp':23,'speed':-0.035},
-	5:{'hp':28,'speed':-0.062},
-	6:{'hp':11,'speed':-0.008},
-	7:{'hp':24,'speed':-0.015},
+	0:{'hp':0,'speed':0,'spawn_time':1},
+	1:{'hp':5,'speed':0,'spawn_time':1},
+	2:{'hp':12,'speed':-0.012,'spawn_time':2},
+	3:{'hp':22,'speed':-0.023,'spawn_time':3},
+	4:{'hp':23,'speed':-0.035,'spawn_time':3},
+	5:{'hp':28,'speed':-0.062,'spawn_time':4},
+	6:{'hp':11,'speed':-0.008,'spawn_time':2},
+	7:{'hp':24,'speed':-0.015,'spawn_time':2},
 }
 
 const armors = [
@@ -94,10 +94,10 @@ const armors = [
 	preload("res://scenes/equipment/armor/medium_armor/medium_armor.tscn"), #3
 ]
 const armors_stats = {
-	0:{'hp':0,'speed':0,'mass':0},
-	1:{'hp':25,'speed':-0.08,'mass':0.4},
-	2:{'hp':65,'speed':-0.13,'mass':2.6},
-	3:{'hp':45,'speed':-0.09,'mass':1.6},
+	0:{'hp':0,'speed':0,'mass':0,'spawn_time':1},
+	1:{'hp':25,'speed':-0.08,'mass':0.4,'spawn_time':4},
+	2:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
+	3:{'hp':45,'speed':-0.09,'mass':1.6,'spawn_time':6},
 }
 
 const shields = [
@@ -106,9 +106,9 @@ const shields = [
 	preload("res://scenes/equipment/shield/shield_round.tscn"),#2
 ]
 const shield_stats = {
-	0:{'hp':0,'speed':0},
-	1:{'hp':35,'speed':-0.07},
-	2:{'hp':15,'speed':-0.06}
+	0:{'hp':0,'speed':0,'spawn_time':1},
+	1:{'hp':35,'speed':-0.07,'spawn_time':4},
+	2:{'hp':15,'speed':-0.06,'spawn_time':3}
 }
 
 const squad_icon = [

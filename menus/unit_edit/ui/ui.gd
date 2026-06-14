@@ -66,13 +66,21 @@ onready var shield_holder = $CanvasLayer/Control/Control/VBoxContainer2/HBoxCont
 onready var shield_option = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option
 
 onready var player_color_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
-onready var icon_color_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer5/icon_color_display
+onready var icon_color_display =  $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
 onready var potrait_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/MarginContainer2/potrait_display
-onready var icon_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer5/MarginContainer2/icon_display
+onready var icon_display = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer2/icon_display
 onready var edit_name = $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/edit_name
+onready var unit_role_buttons = {
+	1: $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_cav,
+	2: $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_inf,
+	3: $CanvasLayer/Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_rng,
+}
 
+onready var create_new = $CanvasLayer/Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/create_new
 onready var save = $CanvasLayer/Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save
 onready var snack_bar = $CanvasLayer/Control/Control/snack_bar
+onready var delete = $CanvasLayer/Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/delete
+onready var confirm_popup = $CanvasLayer/confirm_popup
 
 var selected_index :int
 var dup_squad_data :SquadData
@@ -97,6 +105,16 @@ func _ready():
 	_on_squad_card_pressed(0, Global.custom_squads[0])
 	
 	viewport.size = viewport_container.rect_size
+	
+	for key in unit_role_buttons.keys():
+		var btn :Button = unit_role_buttons[key]
+		btn.connect("pressed", self, "_on_unit_role_button", [key])
+		
+	confirm_popup.visible = false
+	
+func _on_unit_role_button(key):
+	dup_squad_data.squad_role = key
+	display_role(dup_squad_data.squad_role)
 	
 func display_melee_weapons(selected_index :int):
 	for i in weapon_holder.get_children():
@@ -167,6 +185,11 @@ func display_shield(selected_index :int):
 		item.connect("selected", self, "_on_shield_selected", [key])
 		shield_holder.add_child(item)
 		item.set_selected(key == selected_index)
+
+func display_role(role :int):
+	for k in unit_role_buttons.keys():
+		var b :Button = unit_role_buttons[k]
+		b.modulate = Color(0.243137, 0.243137, 0.243137) if role == k else Color.white
 
 func show_shield_option():
 	var index = dup_squad_data.member_melee_weapon_idx
@@ -260,6 +283,8 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	
 	 # 0 mean this is squad template and cannot be modified
 	save.visible = (squad.squad_id != 0)
+	delete.visible = (squad.squad_id != 0)
+	create_new.visible = (squad.squad_id == 0)
 	
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())
@@ -279,6 +304,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_headgear(dup_squad_data.member_headgear_idx)
 	display_armor(dup_squad_data.member_armor_idx)
 	display_shield(dup_squad_data.member_shield_idx)
+	display_role(dup_squad_data.squad_role)
 	display_attribute()
 	show_shield_option()
 	
@@ -334,6 +360,29 @@ func _on_save_pressed():
 	display_current_squad()
 	_on_squad_card_pressed(selected_index, Global.custom_squads[selected_index])
 	
+func _on_delete_pressed():
+	confirm_popup.visible = true
+	confirm_popup.show_popup("Delete", "Delete squad\nThis also remove from army\nContinue?")
+	var yes = yield(confirm_popup,"confirmed")
+	confirm_popup.visible = false
 	
+	if not yes:
+		return
 	
+	snack_bar.text = "Squad Deleted!"
+	snack_bar.show()
 	
+	Global.custom_squads.remove(selected_index)
+	
+	while Global.current_army.has(selected_index):
+		Global.current_army.erase(selected_index)
+	
+	# replace it with peasant
+	while Global.current_army.size() < 4:
+		Global.current_army.append(0)
+	
+	Global.save_custom_squad()
+	
+	selected_index = 0
+	display_current_squad()
+	_on_squad_card_pressed(selected_index, Global.custom_squads[selected_index])

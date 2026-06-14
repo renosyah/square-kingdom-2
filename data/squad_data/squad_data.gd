@@ -39,7 +39,6 @@ export var formation_density :float = 0.35
 export var icon_idx :int
 export var potrait_idx :int
 export var is_mounted :bool = false
-export var spawn_time :int = 100
 
 # squad member
 export var member_headgear_idx :int
@@ -56,6 +55,19 @@ export var total_member :int = 9
 export var siege_engine_attack_damage :int
 export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
+
+func spawn_time() -> int:
+	var sum = 15
+	sum += EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["spawn_time"]
+	sum += EntityIndex.range_weapon_stats[member_range_weapon_idx]["spawn_time"]
+	sum += EntityIndex.head_armors_stats[member_headgear_idx]["spawn_time"]
+	sum += EntityIndex.armors_stats[member_armor_idx]["spawn_time"]
+	sum += EntityIndex.shield_stats[member_shield_idx]["spawn_time"]
+	
+	if is_mounted:
+		sum += 10
+
+	return sum
 
 func squad_attribute() -> Array:
 	# base by index
@@ -119,16 +131,17 @@ func speed() -> float:
 	return 0.75 + sum
 	
 func member_hp() -> int:
-	var sum = EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
+	# 120 is is base hp cav
+	var sum = 120 if is_mounted else 45 # 45 is base hp 
+	sum += EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
 	sum += EntityIndex.armors_stats[member_armor_idx]["hp"]
 	sum += EntityIndex.shield_stats[member_shield_idx]["hp"]
 	
-	 # 120 is is base hp cav
-	if is_mounted:
-		return 120 + sum
+	# give double HP if commander
+	if icon_idx == 6:
+		sum += sum
 		
-	# 45 is base hp 
-	return 45 + sum 
+	return sum
 
 func heal_amount() -> int:
 	return int(member_hp() * 0.15)
@@ -161,7 +174,6 @@ func from_dictionary(_data : Dictionary):
 	total_member = _data["t"]
 	is_mounted = _data["v"]
 	siege_engine_attack_damage = _data["v1"]
-	spawn_time = _data["v3"]
 	siege_engine_attack_range = _data["v4"]
 	siege_engine_attack_speed = _data["v5"]
 	
@@ -193,7 +205,6 @@ func to_dictionary() -> Dictionary :
 	_data["t"] = total_member
 	_data["v"] = is_mounted
 	_data["v1"] = siege_engine_attack_damage
-	_data["v3"] = spawn_time
 	_data["v4"] = siege_engine_attack_range
 	_data["v5"] = siege_engine_attack_speed
 	return _data

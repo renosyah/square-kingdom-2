@@ -13,11 +13,11 @@ var _datas :Array = []
 
 func add_spawn_queue(armies :Array):
 	_datas.append_array(armies)
-	_datas.sort_custom(self, "_sort_by_spawn_time")
 	
 func _add_queue(s :SquadData):
+	var spawn_time = float(s.spawn_time()) if s.icon_idx != 6 else 5.0
 	var timer = Timer.new()
-	timer.wait_time = float(s.spawn_time)
+	timer.wait_time = spawn_time
 	timer.autostart = false
 	timer.one_shot = true
 	timer.connect("timeout", self, "_on_timer_timeout", [s])
@@ -27,10 +27,7 @@ func _add_queue(s :SquadData):
 	timer.start()
 	
 	emit_signal("on_queue_update")
-	
-func _sort_by_spawn_time(a :SquadData, b:SquadData):
-	return a.spawn_time < b.spawn_time
-	
+
 func _process(delta):
 	if not _datas.empty() and queue.size() < max_batch:
 		_add_queue(_datas.front())

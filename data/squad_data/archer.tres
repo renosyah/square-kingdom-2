@@ -23,7 +23,6 @@ formation_density = 0.35
 icon_idx = 3
 potrait_idx = 2
 is_mounted = false
-spawn_time = 15
 member_headgear_idx = 1
 member_armor_idx = 0
 member_shield_idx = 0
