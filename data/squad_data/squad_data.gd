@@ -66,7 +66,11 @@ func spawn_time() -> int:
 	
 	if is_mounted:
 		sum += 10
-
+		
+	# this must be siege unit
+	if not scene_idx in [0, 1]:
+		sum += 25
+	
 	return sum
 
 func squad_attribute() -> Array:
