@@ -10,7 +10,7 @@ func _ready():
 	set_process(false)
 	
 	army_editor_layout.armies = Global.current_army
-	army_editor_layout.squads = Global.custom_squads
+	army_editor_layout.squads = Global.current_squads
 	army_editor_layout.display()
 	
 	Global.hide_transition()

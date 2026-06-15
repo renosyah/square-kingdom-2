@@ -12,6 +12,8 @@ onready var label_loading_host = $CanvasLayer/Control/Control/VBoxContainer/Marg
 onready var button_add_bot = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer/button_add_bot
 onready var confirm_popup = $CanvasLayer/confirm_popup
 onready var movable_camera_minimap = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap/movable_camera_minimap
+onready var army_editor = $CanvasLayer/army_editor
+onready var army_editor_layout = $CanvasLayer/army_editor/army_editor_layout
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
@@ -30,8 +32,13 @@ func _ready():
 	
 	minimap.tile_scenes = TileIndex.tiles2d
 	confirm_popup.visible = false
+	army_editor.visible = false
 	
 	current_player.player_network_id = NetworkLobbyManager.get_id()
+	
+	army_editor_layout.armies = Global.current_army
+	army_editor_layout.squads = Global.current_squads
+	army_editor_layout.display()
 	
 	if is_server:
 		button_add_bot.visible = true
@@ -259,6 +266,16 @@ func _on_button_add_bot_pressed():
 	Global.bot_player_armies[p.player_id] = results[1]
 	
 	update_bot_player()
+
+func _on_edit_army_pressed():
+	army_editor.visible = true
+	
+func _on_army_editor_layout_close():
+	army_editor.visible = false
+	
+func _on_army_editor_layout_save(temp_current_army):
+	Global.current_army = temp_current_army
+	Global.save_custom_squad()
 
 
 

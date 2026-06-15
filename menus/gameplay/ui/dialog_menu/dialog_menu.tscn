@@ -6,7 +6,6 @@
 [ext_resource path="res://menus/setting/setting_layout/setting_layout.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=5]
 
-
 [node name="dialog_menu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -101,7 +100,9 @@ rect_min_size = Vector2( 0, 24 )
 
 [node name="setting_layout" parent="." instance=ExtResource( 4 )]
 visible = false
-enable_setting_profile = false
+enable_setting_game = true
+enable_setting_audio = true
+enable_setting_graphic = true
 
 [node name="confirm_popup" parent="." instance=ExtResource( 5 )]
 visible = false

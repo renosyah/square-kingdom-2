@@ -201,4 +201,5 @@ func _on_rng_army_pressed():
 	display_current_army()
 	
 func _on_back_pressed():
+	display()
 	emit_signal("close")

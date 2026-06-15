@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://menus/lobby/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=2]
@@ -12,7 +12,22 @@
 [ext_resource path="res://assets/user_interface/icons/graphic_setting.png" type="Texture" id=10]
 [ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=11]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/user_interface/icons/select_all.png" type="Texture" id=13]
+[ext_resource path="res://menus/army_edit/army_editor_layout/army_editor_layout.tscn" type="PackedScene" id=14]
 [ext_resource path="res://menus/lobby/sync_map/sync_map.tscn" type="PackedScene" id=15]
+[ext_resource path="res://assets/background/armies.png" type="Texture" id=16]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.513726, 0.360784, 0, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -85,24 +100,47 @@ rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
 margin_left = 152.0
-margin_right = 586.0
+margin_right = 450.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
 margin_top = 12.0
-margin_right = 434.0
+margin_right = 298.0
 margin_bottom = 48.0
 custom_fonts/font = ExtResource( 3 )
 text = "Lobby"
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
-margin_left = 590.0
-margin_right = 1024.0
+margin_left = 454.0
+margin_right = 752.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
+
+[node name="edit_army" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 756.0
+margin_top = 7.0
+margin_right = 996.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 240, 45 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 2 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/disabled = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
+text = "My Army"
+icon = ExtResource( 13 )
+expand_icon = true
+
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer"]
+margin_left = 1000.0
+margin_right = 1024.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
 margin_top = 64.0
@@ -439,9 +477,31 @@ rect_min_size = Vector2( 24, 0 )
 [node name="confirm_popup" parent="CanvasLayer" instance=ExtResource( 11 )]
 visible = false
 
+[node name="army_editor" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/army_editor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 16 )
+expand = true
+stretch_mode = 7
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/army_editor"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.505882 )
+
+[node name="army_editor_layout" parent="CanvasLayer/army_editor" instance=ExtResource( 14 )]
+
 [connection signal="on_client_request_map" from="sync_map" to="." method="_on_sync_map_on_client_request_map"]
 [connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer/HBoxContainer/edit_army" to="." method="_on_edit_army_pressed"]
 [connection signal="on_minimap_ready" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/minimap" to="." method="_on_minimap_on_minimap_ready"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer/MarginContainer/button_add_bot" to="." method="_on_button_add_bot_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Control/VBoxContainer/MarginContainer4/HBoxContainer/MarginContainer5/battle" to="." method="_on_battle_pressed"]
+[connection signal="close" from="CanvasLayer/army_editor/army_editor_layout" to="." method="_on_army_editor_layout_close"]
+[connection signal="save" from="CanvasLayer/army_editor/army_editor_layout" to="." method="_on_army_editor_layout_save"]

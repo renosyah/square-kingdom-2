@@ -204,7 +204,7 @@ margin_right = 204.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 4, 0 )
 
-[node name="unit_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 208.0
 margin_top = 45.0
 margin_right = 388.0
@@ -212,11 +212,11 @@ margin_bottom = 105.0
 rect_min_size = Vector2( 180, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-text = "Army"
-icon = ExtResource( 13 )
+text = "Battle"
+icon = ExtResource( 12 )
 expand_icon = true
 
-[node name="play_battle" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="campaign" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
 margin_left = 392.0
 margin_top = 45.0
 margin_right = 632.0
@@ -224,8 +224,9 @@ margin_bottom = 105.0
 rect_min_size = Vector2( 240, 60 )
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
-text = "Battle"
-icon = ExtResource( 12 )
+disabled = true
+text = "Campaign"
+icon = ExtResource( 13 )
 expand_icon = true
 
 [node name="map_editor" type="Button" parent="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer"]
@@ -263,7 +264,7 @@ expand_icon = true
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/Control/play/VBoxContainer/HBoxContainer/join" to="." method="_on_join_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/unit" to="." method="_on_unit_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/unit_editor" to="." method="_on_unit_editor_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/play_battle" to="." method="_on_play_battle_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/campaign" to="." method="_on_campaign_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/map_editor" to="." method="_on_map_editor_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/MarginContainer2/HBoxContainer/setting" to="." method="_on_setting_pressed"]

@@ -2,10 +2,17 @@ extends Control
 
 signal close
 
-export var enable_setting_game :bool = true
-export var enable_setting_audio :bool = true
-export var enable_setting_graphic :bool = true
-export var enable_setting_profile :bool = true
+export var enable_setting_game :bool
+export var enable_setting_audio :bool
+export var enable_setting_graphic :bool
+export var enable_setting_profile :bool
+
+onready var option_buttons = [
+	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/gameplay,
+	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/audio_setting,
+	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/graphic_setting,
+	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/profile_setting
+]
 
 onready var overlays = [
 	$Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/gameplay/overlay_gameplay,
@@ -21,16 +28,12 @@ onready var right_panels = [
 	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_profile
 ]
 
-onready var gameplay_setting = right_panels[0]
-onready var audio_setting = right_panels[1]
-onready var graphic_setting =  right_panels[2]
-onready var profile_setting =  right_panels[3]
 
 func _ready():
-	gameplay_setting.visible = enable_setting_game
-	audio_setting.visible = enable_setting_audio
-	graphic_setting.visible = enable_setting_graphic
-	profile_setting.visible = enable_setting_profile
+	option_buttons[0].visible = enable_setting_game
+	option_buttons[1].visible = enable_setting_audio
+	option_buttons[2].visible = enable_setting_graphic
+	option_buttons[3].visible = enable_setting_profile
 	
 	_on_gameplay_pressed()
 	
@@ -38,7 +41,6 @@ func _hide_all():
 	for i in overlays + right_panels:
 		i.visible = false
 		
-
 func _on_back_pressed():
 	Global.save_player_data()
 	Global.setting_updated()

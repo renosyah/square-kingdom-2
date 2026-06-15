@@ -11,5 +11,9 @@ script = ExtResource( 13 )
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="setting_layout" parent="CanvasLayer" instance=ExtResource( 1 )]
+enable_setting_game = true
+enable_setting_audio = true
+enable_setting_graphic = true
+enable_setting_profile = true
 
 [connection signal="close" from="CanvasLayer/setting_layout" to="." method="_on_setting_layout_close"]

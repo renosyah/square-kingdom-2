@@ -262,11 +262,17 @@ const template_squads = [
 	preload("res://data/squad_data/engine_balista.tres"),
 	preload("res://data/squad_data/engine_trebuchet.tres")
 ]
-onready var custom_squads :Array = []
+# why current_army is array of int
+# its a value of index of custom_squads
+# so if anything in custom_squads update
+# current_army will also updated too
+var current_player :PlayerData # specific for game session
+var current_army :Array = [] # [int]
+var current_squads :Array = [] # [SquadData] copied
 
 func set_default_squad_army():
 	for i in template_squads:
-		custom_squads.append(i.duplicate())
+		current_squads.append(i.duplicate())
 		
 	current_army = [3,3,4,4,5,5,11,15]
 	sort_army(current_army)
@@ -278,17 +284,17 @@ func load_custom_squad():
 		save_custom_squad()
 		return
 		
-	custom_squads = []
+	current_squads = []
 	for i in data["s"]:
 		var s :SquadData = SquadData.new()
 		s.from_dictionary(i)
-		custom_squads.append(s)
+		current_squads.append(s)
 		
 	current_army = data["a"]
 	
 func save_custom_squad():
 	var datas = []
-	for i in custom_squads:
+	for i in current_squads:
 		var s :SquadData = i
 		datas.append(s.to_dictionary())
 		
@@ -298,6 +304,12 @@ func save_custom_squad():
 ##########################################  lobby & gameplay  ############################################
 const max_army_size :int = 9
 
+# players
+var players :Array = [] # list of players in MP
+var bot_players :Array = [] # list of bot players in MP
+var bot_player_armies :Dictionary = {} # {bot_player_id:[int]}
+
+# battle setting
 var current_root :Node
 var battle_time :int
 var scores :Dictionary = {}
@@ -305,17 +317,6 @@ var is_win :bool
 var player_map_data_received :Array = []
 var enable_fort :bool = true
 var enable_bandit :bool = true
-
-# why current_army is array of int
-# its a value of index of custom_squads
-# so if anything in custom_squads update
-# current_army will also updated too
-var current_player :PlayerData # specific for game session
-var current_army :Array = [] # [int]
-
-var players :Array = [] # list of players in MP
-var bot_players :Array = [] # list of bot players in MP
-var bot_player_armies :Dictionary = {} # {bot_player_id:[int]}
 
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []
@@ -333,11 +334,11 @@ func sort_army(datas :Array):
 	datas.sort_custom(self, "_sort_by_order")
 	
 func _sort_by_order(a, b):
-	return custom_squads[a].sort_order < custom_squads[b].sort_order
+	return current_squads[a].sort_order < current_squads[b].sort_order
 
 # idx is from current_army
 func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> SquadData:
-	var data :SquadData = custom_squads[idx].duplicate()
+	var data :SquadData = current_squads[idx].duplicate()
 	data.squad_id = i
 	data.network_id = player.player_network_id
 	data.player_id = player.player_id
@@ -366,7 +367,7 @@ func create_bot_player() -> Array:
 	var count = current_army.size() #int(rand_range(3, 9))
 		
 	for i in count:
-		var idx = randi() % custom_squads.size()
+		var idx = randi() % current_squads.size()
 		_bot_player_armies.append(idx)
 		
 	sort_army(_bot_player_armies)

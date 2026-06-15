@@ -78,7 +78,6 @@ func _on_host_pressed():
 func _on_join_pressed():
 	var player_data = Global.player_data
 	player_data.player_id = Utils.create_unique_id()
-	player_data.team = 2
 	
 	Global.null_map_data()
 	Global.change_scene("res://menus/join/join.tscn", false)
@@ -91,8 +90,8 @@ func _on_list_map_new_map(nm, size):
 	Global.empty_map_data(nm, size)
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
 
-func _on_unit_editor_pressed():
-	Global.change_scene("res://menus/army_edit/army_edit.tscn", false)
-
 func _on_unit_pressed():
 	Global.change_scene("res://menus/unit_edit/unit_edit.tscn", false)
+
+func _on_campaign_pressed():
+	pass # Replace with function body.
