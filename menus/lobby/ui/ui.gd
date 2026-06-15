@@ -15,6 +15,9 @@ onready var movable_camera_minimap = $CanvasLayer/Control/Control/VBoxContainer/
 onready var army_editor = $CanvasLayer/army_editor
 onready var army_editor_layout = $CanvasLayer/army_editor/army_editor_layout
 
+onready var enable_bandit = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/enable_bandit
+onready var enable_fort = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/enable_fort
+
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
 var idx_bg = [1, 2, 3, 4]
@@ -40,6 +43,8 @@ func _ready():
 	army_editor_layout.squads = Global.current_squads
 	army_editor_layout.display()
 	
+	_update_mode(Global.enable_bandit, Global.enable_fort)
+	
 	if is_server:
 		button_add_bot.visible = true
 		label_loading_host.visible = false
@@ -49,6 +54,9 @@ func _ready():
 		
 		sync_map.manifest = Global.current_tile_map_manifest_data
 		sync_map.map_data = Global.current_tile_map_file_data
+		
+		enable_bandit.connect("pressed", self, "_on_enable_bandit_toggle")
+		enable_fort.connect("pressed", self, "_on_enable_fort_toggle")
 		
 	else:
 		button_add_bot.visible = false
@@ -219,6 +227,13 @@ remotesync func _update_bot_player(data :Array):
 		
 	_on_lobby_player_update(players)
 	
+remotesync func _update_mode(b :bool, f:bool):
+	Global.enable_bandit = b
+	Global.enable_fort = f
+	
+	enable_bandit.text = "Bandit : %s" % ("Enable" if Global.enable_bandit else "Disable")
+	enable_fort.text = "Fort : %s" % ("Enable" if Global.enable_fort else "Disable")
+	
 func _on_bot_team_change(team :int, idx :int):
 	Global.bot_players[idx].team = team
 	update_bot_player()
@@ -276,8 +291,14 @@ func _on_army_editor_layout_close():
 func _on_army_editor_layout_save(temp_current_army):
 	Global.current_army = temp_current_army
 	Global.save_custom_squad()
-
-
+	
+func _on_enable_bandit_toggle():
+	var enable_bandit = not Global.enable_bandit
+	rpc("_update_mode", enable_bandit, Global.enable_fort)
+	
+func _on_enable_fort_toggle():
+	var enable_fort = not Global.enable_fort
+	rpc("_update_mode", Global.enable_bandit, enable_fort)
 
 
 

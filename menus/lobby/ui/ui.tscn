@@ -151,33 +151,33 @@ rect_min_size = Vector2( 0, 8 )
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
 margin_top = 76.0
 margin_right = 1024.0
-margin_bottom = 484.0
+margin_bottom = 496.0
 mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_right = 452.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 rect_min_size = Vector2( 440, 0 )
 mouse_filter = 2
 script = ExtResource( 4 )
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 440.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 mouse_filter = 2
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 440.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
@@ -197,15 +197,15 @@ rect_min_size = Vector2( 0, 12 )
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 margin_top = 66.0
 margin_right = 440.0
-margin_bottom = 286.0
+margin_bottom = 216.0
 mouse_filter = 2
 size_flags_vertical = 0
 
 [node name="minimap" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource( 8 )]
-margin_left = 80.0
-margin_right = 360.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 280, 220 )
+margin_left = 125.0
+margin_right = 315.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 190, 150 )
 size_flags_horizontal = 4
 size_flags_vertical = 3
 __meta__ = {
@@ -224,90 +224,97 @@ camera_limit_bound = Vector3( 10, 0, 10 )
 move_speed = 0.12
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 290.0
+margin_top = 220.0
 margin_right = 440.0
-margin_bottom = 314.0
-rect_min_size = Vector2( 0, 24 )
+margin_bottom = 232.0
+rect_min_size = Vector2( 0, 12 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 318.0
+margin_top = 236.0
 margin_right = 440.0
-margin_bottom = 339.0
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_right = 8.0
-margin_bottom = 21.0
-rect_min_size = Vector2( 8, 0 )
+margin_bottom = 257.0
+alignment = 1
 
 [node name="label" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 12.0
-margin_right = 393.0
+margin_left = 110.0
+margin_right = 310.0
 margin_bottom = 21.0
-size_flags_horizontal = 3
+rect_min_size = Vector2( 200, 0 )
 custom_fonts/font = ExtResource( 7 )
 text = "Map Name"
 
 [node name="map_name" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 397.0
-margin_right = 412.0
+margin_left = 314.0
+margin_right = 329.0
 margin_bottom = 21.0
 custom_fonts/font = ExtResource( 7 )
 text = "..."
 align = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-margin_left = 416.0
-margin_right = 440.0
-margin_bottom = 21.0
-rect_min_size = Vector2( 24, 0 )
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 343.0
+margin_top = 261.0
 margin_right = 440.0
-margin_bottom = 364.0
-
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 8.0
-margin_bottom = 21.0
-rect_min_size = Vector2( 8, 0 )
+margin_bottom = 282.0
+alignment = 1
 
 [node name="label" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 12.0
-margin_right = 393.0
+margin_left = 110.0
+margin_right = 310.0
 margin_bottom = 21.0
-size_flags_horizontal = 3
+rect_min_size = Vector2( 200, 0 )
 custom_fonts/font = ExtResource( 7 )
 text = "Size"
 
 [node name="map_size" type="Label" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 397.0
-margin_right = 412.0
+margin_left = 314.0
+margin_right = 329.0
 margin_bottom = 21.0
 custom_fonts/font = ExtResource( 7 )
 text = "..."
 align = 1
 
-[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 416.0
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+margin_top = 286.0
 margin_right = 440.0
-margin_bottom = 21.0
-rect_min_size = Vector2( 24, 0 )
+margin_bottom = 290.0
+rect_min_size = Vector2( 0, 4 )
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+margin_top = 294.0
+margin_right = 440.0
+margin_bottom = 339.0
+custom_constants/separation = 12
+alignment = 1
+
+[node name="enable_bandit" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 104.0
+margin_right = 214.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 110, 45 )
+text = "Bandit : Enable"
+
+[node name="enable_fort" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 226.0
+margin_right = 336.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 110, 45 )
+text = "Fort : Enable"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 456.0
 margin_right = 1012.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 size_flags_horizontal = 3
 
 [node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2"]
 margin_right = 556.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2"]
 margin_right = 556.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
 margin_right = 556.0
@@ -350,50 +357,44 @@ rect_min_size = Vector2( 0, 8 )
 [node name="players" type="ScrollContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
 margin_top = 68.0
 margin_right = 556.0
-margin_bottom = 396.0
+margin_bottom = 408.0
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players"]
 margin_right = 556.0
-margin_bottom = 328.0
+margin_bottom = 340.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_right = 24.0
-margin_bottom = 328.0
+margin_bottom = 340.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_left = 28.0
 margin_right = 528.0
-margin_bottom = 328.0
+margin_bottom = 340.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer/players/HBoxContainer"]
 margin_left = 532.0
 margin_right = 556.0
-margin_bottom = 328.0
+margin_bottom = 340.0
 rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer2/VBoxContainer"]
-margin_top = 400.0
+margin_top = 412.0
 margin_right = 556.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 1016.0
 margin_right = 1024.0
-margin_bottom = 408.0
+margin_bottom = 420.0
 rect_min_size = Vector2( 8, 0 )
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
-margin_top = 488.0
-margin_right = 1024.0
-margin_bottom = 496.0
-rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer"]
 margin_top = 500.0
@@ -478,6 +479,7 @@ rect_min_size = Vector2( 24, 0 )
 visible = false
 
 [node name="army_editor" type="Control" parent="CanvasLayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
