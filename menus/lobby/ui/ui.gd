@@ -22,6 +22,7 @@ onready var biom_button = $CanvasLayer/Control/Control/VBoxContainer/HBoxContain
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
 var idx_bg = [1, 2, 3, 4]
+var idx_bg_desert = [5, 6]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -279,10 +280,12 @@ func _on_back_pressed():
 	on_back_pressed()
 	
 func _on_host_ready():
-	Global.change_scene("res://menus/gameplay/client/client.tscn", true, idx_bg.pick_random())
+	var idx = idx_bg_desert.pick_random() if Global.biom == 1 else idx_bg.pick_random()
+	Global.change_scene("res://menus/gameplay/client/client.tscn", true, idx)
 	
 func _on_battle_pressed():
-	Global.change_scene("res://menus/gameplay/host/host.tscn", true, idx_bg.pick_random())
+	var idx = idx_bg_desert.pick_random() if Global.biom == 1 else idx_bg.pick_random()
+	Global.change_scene("res://menus/gameplay/host/host.tscn", true, idx)
 	
 func _on_button_add_bot_pressed():
 	var results = Global.create_bot_player()

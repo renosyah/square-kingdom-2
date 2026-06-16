@@ -78,6 +78,7 @@ func _on_host_pressed():
 func _on_join_pressed():
 	var player_data = Global.player_data
 	player_data.player_id = Utils.create_unique_id()
+	player_data.team = 2
 	
 	Global.null_map_data()
 	Global.change_scene("res://menus/join/join.tscn", false)

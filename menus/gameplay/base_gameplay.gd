@@ -453,7 +453,7 @@ func on_end(team :int):
 	yield(get_tree().create_timer(5),"timeout")
 	
 	Global.current_root = null
-	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, 5 if Global.is_win else 6)
+	Global.change_scene("res://menus/battle_result/battle_result.tscn", true, 7 if Global.is_win else 8)
 	
 ########################################## camera  ############################################
 var movable_camera :MovableCamera

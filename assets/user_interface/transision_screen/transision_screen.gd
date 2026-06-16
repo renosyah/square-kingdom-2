@@ -9,8 +9,10 @@ const bgs = [
 	preload("res://assets/background/siege_2.png"),#2
 	preload("res://assets/background/siege_3.png"),#3
 	preload("res://assets/background/siege_4.png"),#4
-	preload("res://assets/background/victory.png"),#5
-	preload("res://assets/background/lost.png"),#6
+	preload("res://assets/background/siege_5.png"),#5
+	preload("res://assets/background/siege_6.png"),#6
+	preload("res://assets/background/victory.png"),#7
+	preload("res://assets/background/lost.png"),#8
 
 ]
 
