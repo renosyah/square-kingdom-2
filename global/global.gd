@@ -365,8 +365,8 @@ func create_bot_player() -> Array:
 	p.spawn_position = bot_players.size() + players.size()
 	
 	var _bot_player_armies = []
-	var count = current_army.size() #int(rand_range(3, 9))
-		
+	var count = int(rand_range(5, 9))
+	
 	for i in count:
 		var idx = randi() % current_squads.size()
 		_bot_player_armies.append(idx)

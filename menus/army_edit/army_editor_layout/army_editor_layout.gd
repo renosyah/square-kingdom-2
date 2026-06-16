@@ -206,6 +206,11 @@ func _on_rng_army_pressed():
 	
 func _on_back_pressed():
 	if save_on_back:
+		if temp_current_army.size() < 4:
+			snack_bar.text = "Army require min 4 squad!"
+			snack_bar.show()
+			return
+		
 		emit_signal("save", temp_current_army)
 		
 	display()

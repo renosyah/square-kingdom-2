@@ -1,12 +1,11 @@
 extends BaseGameplay
 
+const wave_per_stage = 3
+const killed_treshold :int = 5
 const bandit_names = ["Bandit", "Deserter", "Renegade", "Outlaw", "Brigand", "Raider"]
 const bandit_troops = [
-	[0,0,3],
-	[0,3,4],
-	[3,4,5],
+	[0,3,4,5],
 	[3,4,5,6,7,8],
-	[3,4,5,6,7,8,15,16,17],
 	[3,4,5,6,7,8,15,16,17],
 	[3,4,5,6,7,8,15,16,17,21,22,23],
 ]
@@ -18,16 +17,15 @@ onready var bot_squad_spawner = $bot_squad_spawner
 onready var spawn_pos = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions())
 
 var bot_bandit_squads :Array
-var wave_per_stage = 5
 var current_wave = 1
 var enemy_type_idx :int = 0
 var bandit_killed :int = 0
-var killed_treshold :int = 5
 
 var bot_player_ids :Array
 var bot_squads :Dictionary = {} # {bot_id:[BaseSquad]}
 var bot_cowardices :Dictionary = {}
 var bot_aggresives :Dictionary = {}
+var spawn_size_treshold :int = 1
 
 func _ready():
 	for i in bot_players:
@@ -54,6 +52,7 @@ func _on_all_player_ready():
 	bot_action_timer.start()
 	
 	if Global.enable_bandit:
+		spawn_size_treshold = (players.size() + bot_players.size())
 		_on_bot_bandit_spawner_timer_timeout()
 
 func _on_bot_squad_spawner_on_squads_ready(datas :Array):
@@ -108,6 +107,10 @@ func _on_squad_dead(squad, data):
 		bot_bandit_squads.erase(squad)
 		bandit_killed += 1
 		
+	# event madness has his limit
+	if spawn_size_treshold > 8:
+		return
+		
 	# up progress, facing more formidable bandit
 	if bandit_killed > killed_treshold:
 		bandit_killed = 0
@@ -116,6 +119,7 @@ func _on_squad_dead(squad, data):
 		if current_wave == wave_per_stage:
 			enemy_type_idx = int(clamp(enemy_type_idx + 1, 0, bandit_troops.size() - 1))
 			current_wave = 0
+			spawn_size_treshold += 1
 		
 func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
 	._on_squad_member_dead(squad, member, data)
@@ -147,7 +151,8 @@ func _on_bot_bandit_spawner_timer_timeout():
 		
 	bot_bandit_spawner_timer.start()
 	
-	if bot_bandit_squads.size() > (players.size() + bot_players.size()):
+	# limit how many can bandit spawn
+	if bot_bandit_squads.size() > spawn_size_treshold:
 		return
 		
 	var enemy_idx = bandit_troops[enemy_type_idx].pick_random()
