@@ -754,10 +754,9 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		squad.reinfoce_tiles = player_reinfoce_tiles[squad.player_id]
 	
 	if squad.player_id == current_player.player_id:
-		var is_commander :bool = (data.icon_idx == 6)
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
-		play_squad_spawn(is_commander)
+		play_squad_spawn(data.is_commander)
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():
@@ -887,7 +886,7 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 		ui.log_event.add_log_squad_dead(squad)
 	
 	# cheap ass way to detect commander
-	var is_commander :bool = (data.icon_idx == 6)
+	var is_commander :bool = data.is_commander
 
 	# apply debuf, 50% slower attack speed
 	if is_commander and not player_debuf.has(squad.player_id):

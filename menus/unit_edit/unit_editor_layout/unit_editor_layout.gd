@@ -83,6 +83,8 @@ onready var unit_role_buttons = {
 	2: $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_inf,
 	3: $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_rng,
 }
+onready var set_hero = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_hero
+onready var set_squad = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_squad
 
 onready var create_new = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/create_new
 onready var save = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save
@@ -114,9 +116,40 @@ func display():
 		var btn :Button = unit_role_buttons[key]
 		btn.connect("pressed", self, "_on_unit_role_button", [key])
 		
+	set_squad.connect("pressed", self, "_on_set_as_hero", [false])
+	set_hero.connect("pressed", self, "_on_set_as_hero", [true])
+	
 	confirm_popup.visible = false
 	
+func _on_set_as_hero(v :bool):
+	dup_squad_data.is_hero = v
+	
+	var is_mounted = dup_squad_data.is_mounted
+	if v:
+		dup_squad_data.total_member = 1
+		
+	else:
+		dup_squad_data.total_member = 4 if is_mounted else 9
+		
+	display_hero(dup_squad_data.is_hero)
+	
 func _on_unit_role_button(key):
+	if key == 1:
+		dup_squad_data.scene_idx = 1
+		dup_squad_data.member_scene_idx = 1
+		dup_squad_data.total_member = 4
+		dup_squad_data.is_mounted = true
+		
+	else:
+		dup_squad_data.scene_idx = 0
+		dup_squad_data.member_scene_idx = 0
+		dup_squad_data.total_member = 9
+		dup_squad_data.is_mounted = false
+		
+	if dup_squad_data.is_hero:
+		dup_squad_data.total_member = 1
+		
+	horse.visible = dup_squad_data.is_mounted
 	dup_squad_data.squad_role = key
 	display_role(dup_squad_data.squad_role)
 	
@@ -194,6 +227,10 @@ func display_role(role :int):
 	for k in unit_role_buttons.keys():
 		var b :Button = unit_role_buttons[k]
 		b.modulate = Color(0.243137, 0.243137, 0.243137) if role == k else Color.white
+
+func display_hero(v :bool):
+	set_squad.visible = v
+	set_hero.visible = not v
 
 func show_shield_option():
 	var index = dup_squad_data.member_melee_weapon_idx
@@ -299,6 +336,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_armor(dup_squad_data.member_armor_idx)
 	display_shield(dup_squad_data.member_shield_idx)
 	display_role(dup_squad_data.squad_role)
+	display_hero(dup_squad_data.is_hero)
 	display_attribute()
 	show_shield_option()
 	

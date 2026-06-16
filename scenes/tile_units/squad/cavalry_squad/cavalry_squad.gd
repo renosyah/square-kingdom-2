@@ -87,12 +87,16 @@ func _on_member_dead(member :SquadMember):
 func _init_formations():
 	._init_formations()
 	
-	# flag carrier were back
-	_formation_offsets = [
-		Vector3.FORWARD, 
-		Vector3.LEFT, Vector3.RIGHT, 
-		Vector3.BACK
-	]
+	if total_member == 1:
+		_formation_offsets = [ Vector3.ZERO ]
+		
+	else:
+		_formation_offsets = [
+			Vector3.FORWARD, 
+			Vector3.LEFT, Vector3.RIGHT, 
+			Vector3.BACK
+		]
+		
 	_formation_positions = _formation_offsets.duplicate()
 	
 func master_moving(delta :float) -> void:

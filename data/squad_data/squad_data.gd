@@ -38,7 +38,11 @@ export var turning_speed :float = 8
 export var formation_density :float = 0.35
 export var icon_idx :int
 export var potrait_idx :int
+
+# special stats
 export var is_mounted :bool = false
+export var is_hero :bool = false
+export var is_commander :bool = false
 
 # squad member
 export var member_headgear_idx :int
@@ -146,12 +150,19 @@ func member_hp() -> int:
 	sum += EntityIndex.shield_stats[member_shield_idx]["hp"]
 	
 	# give double HP if commander
-	if icon_idx == 6:
+	if is_commander:
 		sum += sum
+		
+	 # special hp for singular unit
+	if is_hero:
+		sum += 1000
 		
 	return sum
 
 func heal_amount() -> int:
+	if is_hero:
+		return int(member_hp() * 0.25)
+		
 	return int(member_hp() * 0.15)
 
 func from_dictionary(_data : Dictionary):
@@ -184,6 +195,8 @@ func from_dictionary(_data : Dictionary):
 	siege_engine_attack_damage = _data["v1"]
 	siege_engine_attack_range = _data["v4"]
 	siege_engine_attack_speed = _data["v5"]
+	is_hero = _data["v6"]
+	is_commander = _data["v7"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -215,6 +228,8 @@ func to_dictionary() -> Dictionary :
 	_data["v1"] = siege_engine_attack_damage
 	_data["v4"] = siege_engine_attack_range
 	_data["v5"] = siege_engine_attack_speed
+	_data["v6"] = is_hero
+	_data["v7"] = is_commander
 	return _data
 	
 

@@ -351,6 +351,7 @@ func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> Sq
 	# 1st position is commander
 	if i == 0:
 		data.icon_idx = 6
+		data.is_commander = true
 		
 	return data
 

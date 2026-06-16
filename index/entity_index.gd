@@ -16,7 +16,7 @@ const squads = [
 ]
 const members = [
 	preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn"), #0
-	preload("res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.tscn") #2
+	preload("res://scenes/tile_units/squad_member/cavalry_member/cavalry_member.tscn") #1
 ]
 
 const melee_weapons = [
