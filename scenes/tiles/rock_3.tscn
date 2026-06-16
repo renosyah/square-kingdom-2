@@ -9,7 +9,6 @@
 
 [node name="rock" type="Spatial"]
 script = ExtResource( 2 )
-target = NodePath("MeshInstance")
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0 )
@@ -19,7 +18,7 @@ software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
 material/1 = ExtResource( 6 )
 
-[node name="MeshInstance3" type="MeshInstance" parent="MeshInstance"]
+[node name="rock" type="MeshInstance" parent="MeshInstance"]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0.18632, 0 )
 cast_shadow = 0
 mesh = ExtResource( 5 )

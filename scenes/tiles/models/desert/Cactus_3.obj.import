@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Cactus_3.obj-b386e1d93b6149bba1b69048e41171b5.mesh"
+
+[deps]
+
+files=[ "res://.import/Cactus_3.obj-b386e1d93b6149bba1b69048e41171b5.mesh" ]
+
+source_file="res://scenes/tiles/models/desert/Cactus_3.obj"
+dest_files=[ "res://.import/Cactus_3.obj-b386e1d93b6149bba1b69048e41171b5.mesh", "res://.import/Cactus_3.obj-b386e1d93b6149bba1b69048e41171b5.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

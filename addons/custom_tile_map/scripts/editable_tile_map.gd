@@ -4,6 +4,10 @@ class_name EditableTileMap
 signal on_map_ready
 signal on_tile_updated(id, data, node)
 
+const biom_tropic = 0
+const biom_desert = 1
+const biom_snow = 2
+
 # must be set with BaseTile scenes
 # and make sure index were set accordingly
 export (Array, PackedScene) var tile_scenes :Array
@@ -14,6 +18,8 @@ var _tile_datas :Dictionary = {} # { Vector2 : TileMapData }
 var _tile_map_data :TileMapFileData
 var _is_editor :bool = false
 var _last_cam :Vector2
+
+var biom :int
 
 var _visible_tiles :Array = [] # [ BaseTile ]
 onready var _chunk_system :bool = chunk_system
@@ -145,6 +151,7 @@ func get_closes_tile(from :Vector3) -> TileMapData:
 	
 func _spawn_tile(data :TileMapData) -> BaseTile:
 	var tile :BaseTile = tile_scenes[data.scene_idx].instance()
+	tile.biom = biom
 	tile.name = 'tile_%s' % data.id
 	tile.visible = not _chunk_system
 	add_child(tile)

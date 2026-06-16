@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/BirchTree_1.obj-2d7cdf65088afb12fc7b1a45960acfb4.mesh"
+
+[deps]
+
+files=[ "res://.import/BirchTree_1.obj-2d7cdf65088afb12fc7b1a45960acfb4.mesh" ]
+
+source_file="res://scenes/tiles/models/tropic/BirchTree_1.obj"
+dest_files=[ "res://.import/BirchTree_1.obj-2d7cdf65088afb12fc7b1a45960acfb4.mesh", "res://.import/BirchTree_1.obj-2d7cdf65088afb12fc7b1a45960acfb4.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

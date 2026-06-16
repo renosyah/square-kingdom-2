@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/BirchTree_Snow_4.obj-3cc9c332979a02de5b01eff345c2ca96.mesh"
+
+[deps]
+
+files=[ "res://.import/BirchTree_Snow_4.obj-3cc9c332979a02de5b01eff345c2ca96.mesh" ]
+
+source_file="res://scenes/tiles/models/snow/BirchTree_Snow_4.obj"
+dest_files=[ "res://.import/BirchTree_Snow_4.obj-3cc9c332979a02de5b01eff345c2ca96.mesh", "res://.import/BirchTree_Snow_4.obj-3cc9c332979a02de5b01eff345c2ca96.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

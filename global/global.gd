@@ -317,6 +317,7 @@ var is_win :bool
 var player_map_data_received :Array = []
 var enable_fort :bool = true
 var enable_bandit :bool = true
+var biom :int
 
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []

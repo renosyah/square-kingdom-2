@@ -227,6 +227,7 @@ func spawn_tile_map():
 	tile_map = preload("res://addons/custom_tile_map/scenes/editable_tile_map/editable_tile_map.tscn").instance()
 	tile_map.connect("on_map_ready", self, "_on_tile_map_ready")
 	tile_map.name = "tile_map"
+	tile_map.biom = Global.biom
 	tile_map.tile_scenes = TileIndex.tiles
 	add_child(tile_map)
 	tile_map.load_data_map(current_tile_map_file_data)
@@ -244,6 +245,7 @@ func _on_tile_map_ready():
 	setup_players_spawn_points(Global.enable_fort)
 	
 	ui.route_button.disabled = not Global.enable_fort
+	ui.minimap.biom = Global.biom
 	ui.minimap.load_data_map(current_tile_map_file_data)
 	
 	if is_server:
@@ -616,6 +618,37 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	var data :SquadData = SquadData.new()
 	data.from_bytes(bytes)
 	
+	var squad_attribute = data.squad_attribute()
+	var speed = data.speed()
+	var melee_attack_speed = data.melee_attack_speed()
+	var range_attack_speed = data.range_attack_speed()
+	var heal_amount = data.heal_amount()
+	
+	match (Global.biom):
+		1:
+			# using heavy armor, speed reduce by -10%
+			# using heavy armor, attack speed slower -15%
+			if squad_attribute[3] == 3:
+				speed = speed - (speed * 0.10)
+				speed = max(speed, 0.01)
+				
+				melee_attack_speed = melee_attack_speed + (melee_attack_speed * 0.15)
+				
+			# healing reduce by 25%
+			heal_amount = int(heal_amount - (heal_amount * 0.25))
+			
+		2:
+			# using no armor, speed reduce by -10%
+			if squad_attribute[3] == 0:
+				speed = speed - (speed * 0.10)
+				speed = max(speed, 0.01)
+				
+			# attack range speed slower -20%
+			# healing reduce by 10%
+			range_attack_speed = range_attack_speed + (range_attack_speed * 0.20)
+			heal_amount = int(heal_amount - (heal_amount * 0.10))
+		
+		
 	var squad :BaseSquad = EntityIndex.squads[data.scene_idx].instance()
 	squad.name = data.node_name
 	squad.network_id = data.network_id
@@ -625,14 +658,14 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.unit_name = data.squad_name
 	squad.team = data.team
 	squad.color = EntityIndex.player_colors[data.color_idx]
-	squad.speed = data.speed()
+	squad.speed = speed
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
 	squad.can_attack = true
 	squad.turning_speed = data.turning_speed
-	squad.melee_attack_speed = data.melee_attack_speed()
-	squad.range_attack_speed = data.range_attack_speed()
+	squad.melee_attack_speed = melee_attack_speed
+	squad.range_attack_speed = range_attack_speed
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
 	squad.attack_range = data.attack_range()
@@ -651,11 +684,11 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = data.member_hp()
 	squad.member_max_hp = data.member_hp()
-	squad.heal_amount = data.heal_amount()
+	squad.heal_amount = heal_amount
 	squad.total_member = data.total_member
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
-	squad.squad_attribute = data.squad_attribute()
+	squad.squad_attribute = squad_attribute
 	
 	# extra ui
 	squad.enable_blood = setting.extra_effect

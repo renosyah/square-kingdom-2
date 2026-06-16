@@ -2127,7 +2127,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 10.794, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/body/head:translation")

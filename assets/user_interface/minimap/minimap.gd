@@ -10,6 +10,7 @@ export (Array, PackedScene) var tile_scenes :Array
 export var rotation_rad :float
 export var offset :Vector2
 export var tile_rotation_degree :float = -45
+export var biom :int
 
 var _spawned_tiles :Dictionary = {} # { Vector2 : Tile2D }
 var _tile_map_data :TileMapFileData
@@ -86,6 +87,7 @@ func update_spawned_tile(data :TileMapData):
 func _spawn_tile(data :TileMapData) -> Tile2D:
 	var tile :Tile2D = tile_scenes[data.scene_idx].instance()
 	tile.tile_rotation_degree = tile_rotation_degree
+	tile.biom = biom
 	tile.name = 'tile_2d_%s' % data.id
 	tile.position = data.id * _tile_size # <- tile size
 	_map.add_child(tile)

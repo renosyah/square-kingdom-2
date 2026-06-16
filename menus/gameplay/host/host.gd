@@ -131,8 +131,9 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		return
 		
 	var conditions = [
-		randf() < bot_cowardices[squad.player_id],
-		squad.member_alive < 2,
+		data.icon_idx == 6, # is commander
+		randf() < bot_cowardices[squad.player_id], # coward tendencies
+		squad.member_alive < 2, # member only 2 left
 	]
 	
 	# retreaat!

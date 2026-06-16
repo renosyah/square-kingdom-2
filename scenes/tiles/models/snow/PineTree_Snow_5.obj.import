@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/PineTree_Snow_5.obj-3f0e19b10df4b07c9ff8e64d9aec376e.mesh"
+
+[deps]
+
+files=[ "res://.import/PineTree_Snow_5.obj-3f0e19b10df4b07c9ff8e64d9aec376e.mesh" ]
+
+source_file="res://scenes/tiles/models/snow/PineTree_Snow_5.obj"
+dest_files=[ "res://.import/PineTree_Snow_5.obj-3f0e19b10df4b07c9ff8e64d9aec376e.mesh", "res://.import/PineTree_Snow_5.obj-3f0e19b10df4b07c9ff8e64d9aec376e.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

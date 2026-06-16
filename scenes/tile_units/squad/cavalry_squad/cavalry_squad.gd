@@ -183,6 +183,11 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 		if enemy_squad == self: # or enemy_squad.team == team:
 			continue
 			
+		# if there enemy squad with spear? fking hell!
+		if enemy_squad.team != team and enemy_squad.squad_attribute[1] == 1:
+			_get_reflected_damage(attack_damage, enemy_squad.get_path())
+			return
+			
 		var members :Array = enemy_squad.get_members(true)
 		if members.empty():
 			continue
@@ -199,6 +204,15 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 			_horse_audio.play()
 		
 		emit_signal("on_cav_charge", self)
+
+func _get_reflected_damage(attack_damage, by):
+	if not _horse_audio.playing:
+		_horse_audio.stream = horse_dead.pick_random()
+		_horse_audio.play()
+	
+	var members :Array = get_members()
+	for idx in members.size():
+		take_damage(attack_damage, idx, by)
 
 func _ajust_formation(pos :Vector3, delta :float):
 	var members = get_members()

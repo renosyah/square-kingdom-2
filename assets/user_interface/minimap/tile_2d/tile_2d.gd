@@ -3,6 +3,7 @@ class_name Tile2D
 
 export var tile_rotation_degree :float
 export var target_image :NodePath
+export var biom :int
 
 onready var _target_image :TextureRect = get_node_or_null(target_image)
 

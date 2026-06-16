@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/tiles/models/tile_ground.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://addons/custom_tile_map/scripts/base_tile.gd" type="Script" id=2]
+[ext_resource path="res://scenes/tiles/sand.gd" type="Script" id=2]
 [ext_resource path="res://scenes/tiles/materials/ground_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/tiles/materials/sand_material.tres" type="Material" id=4]
 

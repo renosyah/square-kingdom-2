@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/CommonTree_Snow_2.obj-9bf22c6b539952a7678b317d1da46679.mesh"
+
+[deps]
+
+files=[ "res://.import/CommonTree_Snow_2.obj-9bf22c6b539952a7678b317d1da46679.mesh" ]
+
+source_file="res://scenes/tiles/models/snow/CommonTree_Snow_2.obj"
+dest_files=[ "res://.import/CommonTree_Snow_2.obj-9bf22c6b539952a7678b317d1da46679.mesh", "res://.import/CommonTree_Snow_2.obj-9bf22c6b539952a7678b317d1da46679.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

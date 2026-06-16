@@ -127,6 +127,10 @@ func speed() -> float:
 	sum += EntityIndex.armors_stats[member_armor_idx]["speed"]
 	sum += EntityIndex.shield_stats[member_shield_idx]["speed"]
 	
+	# siege engine
+	if not scene_idx in [0, 1]:
+		return 0.34 + sum
+		
 	 # 0.5 is base speed of cav
 	if is_mounted:
 		return 1.85 + sum

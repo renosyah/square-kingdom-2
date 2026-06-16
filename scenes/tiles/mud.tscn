@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/custom_tile_map/scripts/base_tile.gd" type="Script" id=2]
 [ext_resource path="res://scenes/tiles/materials/ground_material.tres" type="Material" id=3]
 
-[node name="ground" type="Spatial"]
+[node name="mud" type="Spatial"]
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

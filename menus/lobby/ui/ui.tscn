@@ -286,19 +286,40 @@ margin_bottom = 339.0
 custom_constants/separation = 12
 alignment = 1
 
-[node name="enable_bandit" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 104.0
-margin_right = 214.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_right = 40.0
 margin_bottom = 45.0
-rect_min_size = Vector2( 110, 45 )
+rect_min_size = Vector2( 40, 0 )
+
+[node name="enable_bandit" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 52.0
+margin_right = 159.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
+size_flags_horizontal = 3
 text = "Bandit : Enable"
 
 [node name="enable_fort" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
-margin_left = 226.0
-margin_right = 336.0
+margin_left = 171.0
+margin_right = 273.0
 margin_bottom = 45.0
-rect_min_size = Vector2( 110, 45 )
+rect_min_size = Vector2( 0, 45 )
+size_flags_horizontal = 3
 text = "Fort : Enable"
+
+[node name="biom" type="Button" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 285.0
+margin_right = 388.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 0, 45 )
+size_flags_horizontal = 3
+text = "Biom : Tropic"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 400.0
+margin_right = 440.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 40, 0 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/Control/VBoxContainer/HBoxContainer"]
 margin_left = 456.0
@@ -497,6 +518,7 @@ anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.505882 )
 
 [node name="army_editor_layout" parent="CanvasLayer/army_editor" instance=ExtResource( 14 )]
+save_on_back = true
 
 [connection signal="on_client_request_map" from="sync_map" to="." method="_on_sync_map_on_client_request_map"]
 [connection signal="on_map_received" from="sync_map" to="." method="_on_sync_map_on_map_received"]

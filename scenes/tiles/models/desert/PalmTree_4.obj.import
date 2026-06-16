@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/PalmTree_4.obj-a38d5e0155494e5092b17f44c7172ee4.mesh"
+
+[deps]
+
+files=[ "res://.import/PalmTree_4.obj-a38d5e0155494e5092b17f44c7172ee4.mesh" ]
+
+source_file="res://scenes/tiles/models/desert/PalmTree_4.obj"
+dest_files=[ "res://.import/PalmTree_4.obj-a38d5e0155494e5092b17f44c7172ee4.mesh", "res://.import/PalmTree_4.obj-a38d5e0155494e5092b17f44c7172ee4.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

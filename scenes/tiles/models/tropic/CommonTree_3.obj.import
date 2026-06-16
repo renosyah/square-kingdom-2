@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/CommonTree_3.obj-aadddcfd3ca5df4c63c7886d7e8f93db.mesh"
+
+[deps]
+
+files=[ "res://.import/CommonTree_3.obj-aadddcfd3ca5df4c63c7886d7e8f93db.mesh" ]
+
+source_file="res://scenes/tiles/models/tropic/CommonTree_3.obj"
+dest_files=[ "res://.import/CommonTree_3.obj-aadddcfd3ca5df4c63c7886d7e8f93db.mesh", "res://.import/CommonTree_3.obj-aadddcfd3ca5df4c63c7886d7e8f93db.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

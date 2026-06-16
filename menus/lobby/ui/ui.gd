@@ -17,6 +17,7 @@ onready var army_editor_layout = $CanvasLayer/army_editor/army_editor_layout
 
 onready var enable_bandit = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/enable_bandit
 onready var enable_fort = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/enable_fort
+onready var biom_button = $CanvasLayer/Control/Control/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/biom
 
 onready var current_player :PlayerData = Global.current_player
 onready var is_server = NetworkLobbyManager.is_server()
@@ -43,7 +44,7 @@ func _ready():
 	army_editor_layout.squads = Global.current_squads
 	army_editor_layout.display()
 	
-	_update_mode(Global.enable_bandit, Global.enable_fort)
+	_update_mode(Global.enable_bandit, Global.enable_fort, Global.biom)
 	
 	if is_server:
 		button_add_bot.visible = true
@@ -57,6 +58,7 @@ func _ready():
 		
 		enable_bandit.connect("pressed", self, "_on_enable_bandit_toggle")
 		enable_fort.connect("pressed", self, "_on_enable_fort_toggle")
+		biom_button.connect("pressed", self, "_on_change_biom")
 		
 	else:
 		button_add_bot.visible = false
@@ -227,12 +229,21 @@ remotesync func _update_bot_player(data :Array):
 		
 	_on_lobby_player_update(players)
 	
-remotesync func _update_mode(b :bool, f:bool):
-	Global.enable_bandit = b
-	Global.enable_fort = f
+remotesync func _update_mode(bandit :bool, fort:bool, biom :int):
+	Global.enable_bandit = bandit
+	Global.enable_fort = fort
+	Global.biom = biom
 	
 	enable_bandit.text = "Bandit : %s" % ("Enable" if Global.enable_bandit else "Disable")
 	enable_fort.text = "Fort : %s" % ("Enable" if Global.enable_fort else "Disable")
+	
+	match (Global.biom):
+		0:
+			biom_button.text = "Biom : Tropic"
+		1:
+			biom_button.text = "Biom : Desert"
+		2:
+			biom_button.text = "Biom : Snow"
 	
 func _on_bot_team_change(team :int, idx :int):
 	Global.bot_players[idx].team = team
@@ -292,15 +303,23 @@ func _on_army_editor_layout_save(temp_current_army):
 	Global.current_army = temp_current_army
 	Global.save_custom_squad()
 	
+	army_editor_layout.armies = Global.current_army
+	army_editor_layout.squads = Global.current_squads
+	
 func _on_enable_bandit_toggle():
 	var enable_bandit = not Global.enable_bandit
-	rpc("_update_mode", enable_bandit, Global.enable_fort)
+	rpc("_update_mode", enable_bandit, Global.enable_fort, Global.biom)
 	
 func _on_enable_fort_toggle():
 	var enable_fort = not Global.enable_fort
-	rpc("_update_mode", Global.enable_bandit, enable_fort)
+	rpc("_update_mode", Global.enable_bandit, enable_fort, Global.biom)
 
-
+func _on_change_biom():
+	var biom = Global.biom + 1
+	if biom > 2:
+		biom = 0
+		
+	rpc("_update_mode", Global.enable_bandit, Global.enable_fort, biom)
 
 
 

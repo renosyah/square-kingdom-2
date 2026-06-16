@@ -7,6 +7,7 @@ const dragable_card_scene = preload("res://assets/user_interface/dragable_card/d
 
 export var squads :Array
 export var armies :Array
+export var save_on_back :bool
 
 onready var army_label = $Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/Label2
 
@@ -35,6 +36,9 @@ onready var areas = {
 }
 
 var temp_current_army :Array = []
+
+func _ready():
+	save_button.visible = not save_on_back
 
 func display():
 	temp_current_army = armies.duplicate()
@@ -201,5 +205,12 @@ func _on_rng_army_pressed():
 	display_current_army()
 	
 func _on_back_pressed():
+	if save_on_back:
+		emit_signal("save", temp_current_army)
+		
 	display()
 	emit_signal("close")
+
+
+
+
