@@ -227,6 +227,16 @@ func _bot_players_action():
 		if not go and i.member_alive < i.total_member:
 			continue
 			
+		# make bot use ability
+		if i.in_melee_engagement() and i.squad_ability_idx in [1,2,3]:
+			use_squad_ability(i)
+			continue
+			
+		if i.in_range_engagement() and i.squad_ability_idx == 4:
+			use_squad_ability(i)
+			continue
+			
+		# is squad iddle or aggresive, go for it
 		go = randf() < bot_aggresives[i.player_id]
 		if not i.is_moving() or go:
 			bot_attack_command(i, e)

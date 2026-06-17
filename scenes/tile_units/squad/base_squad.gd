@@ -954,19 +954,30 @@ func start_ability_cooldown(v :float):
 	if _ability_cooldown.is_stopped():
 		_ability_cooldown.wait_time = v
 		_ability_cooldown.start()
-	
-# type :int, value :float, expired :float
+		
+const buff_debuff_icon = [
+	null,
+	preload("res://assets/user_interface/icons/arrow_down.png"), #1
+	preload("res://assets/user_interface/icons/angry.png"), #2
+	preload("res://assets/user_interface/icons/scare.png"), #3
+	preload("res://assets/user_interface/icons/hand_stop.png"),#4
+	preload("res://assets/user_interface/icons/attack.png"),#5
+]
+
+# type :int, value :float, expired :float, icon_idx
 # type buff debuff : 0=melee, 1:range, value is percentage
 func add_buff_debuffs(datas :Array):
 	rpc("_add_buff_debuffs", datas)
 	
 remotesync func _add_buff_debuffs(datas :Array):
 	var additional :float = 1.0
+	var indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 	
 	for i in datas:
 		var type :int = i[0]
 		var value :float = i[1]
 		var expired :float = i[2]
+		var icon_idx :int = i[3]
 		
 		var _expired = Timer.new()
 		_expired.one_shot = true
@@ -975,6 +986,13 @@ remotesync func _add_buff_debuffs(datas :Array):
 		_expired.connect("timeout", self, "_on_buff_debuff_expired", [type, _expired])
 		add_child(_expired)
 		_expired.start()
+		
+		var ind = indicator.instance()
+		ind.icon = buff_debuff_icon[icon_idx]
+		ind.is_buff = value > 1.0
+		add_child(ind)
+		ind.set_as_toplevel(true)
+		ind.translation = global_position
 		
 		_set_multiplier(type, value)
 		additional += 1

@@ -115,7 +115,7 @@ const shield_stats = {
 const squad_abilities = [
 	null,
 	{
-		"name": "Spear Wall",
+		"name": "Hold'em",
 		"icon": preload("res://assets/user_interface/ability/pike_up_ability.png"),
 		"detail": "Force stop movement all enemy in melee range who just want pass through",
 		"type": "melee",
@@ -131,7 +131,7 @@ const squad_abilities = [
 		"cooldown" : 30.0,
 	},
 	{
-		"name": "Beserk",
+		"name": "Beserk!",
 		"icon":  preload("res://assets/user_interface/ability/beserk_ability.png"),
 		"detail": "Temporary increase melee attack speed (50% faster)",
 		"type": "melee",
@@ -139,7 +139,7 @@ const squad_abilities = [
 		"cooldown" : 35.0,
 	},
 	{
-		"name": "Rain Arrows",
+		"name": "Rain Arrows!",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
 		"detail": "Temporary increase range attack speed and suppress enemy",
 		"type": "range",
@@ -236,3 +236,5 @@ const player_colors = [
 	Color.black,
 	Color("#652d00")
 ]
+
+

@@ -575,9 +575,15 @@ func _on_use_ability():
 	if selected_squads.empty():
 		return
 		
-	var squad :BaseSquad = selected_squads[0]
+	use_squad_ability(selected_squads[0])
+	
+func use_squad_ability(squad :BaseSquad):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
+		return
+		
+	# ability still on cooldown
+	if squad.get_ability_cooldown()[0]:
 		return
 		
 	match squad_ability_idx:
@@ -585,7 +591,7 @@ func _on_use_ability():
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.add_buff_debuffs([[2, 0.5, 15]])
+					enemy.add_buff_debuffs([[2, 0.5, 15, 4]])
 					enemy.stop()
 				
 		2: # enemy -50% attack speed for 25 sec
@@ -593,20 +599,20 @@ func _on_use_ability():
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
 					enemy.add_buff_debuffs([
-						[0, 0.5, 25],
-						[1, 0.5, 25]
+						[0, 0.5, 25, 0],
+						[1, 0.5, 25, 3]
 					])
 				
 		3: # +50% melee attack speed for 15 sec
-			squad.add_buff_debuffs([[0, 1.5, 15]])
+			squad.add_buff_debuffs([[0, 1.5, 15, 2]])
 			
 		4:# +50% range attack speed for 15 sec
-			squad.add_buff_debuffs([[1, 1.5, 15]])
+			squad.add_buff_debuffs([[1, 1.5, 15, 5]])
 			
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_buff_debuffs([[2, 0.5, 15]])
+				enemy.add_buff_debuffs([[2, 0.5, 15, 1]])
 			
 	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
 	
