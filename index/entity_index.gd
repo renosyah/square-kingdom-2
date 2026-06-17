@@ -117,7 +117,7 @@ const squad_abilities = [
 	{
 		"name": "Hold'em",
 		"icon": preload("res://assets/user_interface/ability/pike_up_ability.png"),
-		"detail": "Force stop movement all enemy in melee range who just want pass through",
+		"detail": "Stop them dead in their track and decrease their movement speed by -50% for 15 second",
 		"type": "melee",
 		"weapon_idx": 4,
 		"cooldown" : 15.0,
@@ -125,7 +125,7 @@ const squad_abilities = [
 	{
 		"name": "Fear!",
 		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
-		"detail": "Enemy temporary get all attack speed debuff (50% slower)",
+		"detail": "Frighten and intimidated, temporary decrease enemy all attack speed by -50% for 15 second",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 30.0,
@@ -133,7 +133,7 @@ const squad_abilities = [
 	{
 		"name": "Beserk!",
 		"icon":  preload("res://assets/user_interface/ability/beserk_ability.png"),
-		"detail": "Temporary increase melee attack speed (50% faster)",
+		"detail": "Unleash all the fury, grant the wielder temporary 50% melee attack speed for 15 second",
 		"type": "melee",
 		"weapon_idx": 9,
 		"cooldown" : 35.0,
@@ -141,7 +141,7 @@ const squad_abilities = [
 	{
 		"name": "Rain Arrows!",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
-		"detail": "Temporary increase range attack speed and suppress enemy",
+		"detail": "Suppress enemy by hail of arrows, grant temporary range attack speed boost by 50% and slow their target speed by 50% for 15 second",
 		"type": "range",
 		"weapon_idx": 4,
 		"cooldown" : 20.0,
@@ -191,10 +191,8 @@ const squad_potraits = [
 	
 	preload("res://assets/user_interface/squad_potrait/infantry/arabian_archer.png"),#23
 	preload("res://assets/user_interface/squad_potrait/infantry/arabian_spearman.png"),#24
-	preload("res://assets/user_interface/squad_potrait/infantry/arabian_swordman.png")#25
-]
+	preload("res://assets/user_interface/squad_potrait/infantry/arabian_swordman.png"),#25
 
-const player_potraits = [
 	preload("res://assets/user_interface/potrait/1.png"),
 	preload("res://assets/user_interface/potrait/2.png"),
 	preload("res://assets/user_interface/potrait/3.png"),

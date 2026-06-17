@@ -22,7 +22,7 @@ func _ready():
 func _apply():
 	edit_player_name.text = player_data.player_name
 	player_color_display.color = EntityIndex.player_colors[player_data.color_idx]
-	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
+	player_potrait_display.texture = EntityIndex.squad_potraits[player_data.potrait_idx]
 
 func _color_btn_pressed(idx):
 	player_data.color_idx = idx
@@ -34,10 +34,10 @@ func _on_edit_player_name_text_changed(new_text):
 
 func _on_change_potrait_pressed():
 	player_data.potrait_idx += 1
-	if player_data.potrait_idx > EntityIndex.player_potraits.size() - 1:
+	if player_data.potrait_idx > EntityIndex.squad_potraits.size() - 1:
 		player_data.potrait_idx = 0
 		
-	player_potrait_display.texture = EntityIndex.player_potraits[player_data.potrait_idx]
+	player_potrait_display.texture = EntityIndex.squad_potraits[player_data.potrait_idx]
 
 func _on_button_random_name_pressed():
 	player_data.player_name = RandomNameGenerator.generate_name()

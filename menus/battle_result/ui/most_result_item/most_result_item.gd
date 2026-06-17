@@ -40,5 +40,5 @@ func _ready():
 	value_label.self_modulate = colors[most_type]
 	team.text = "%s" % player.team
 	bg.self_modulate = EntityIndex.player_colors[player.color_idx]
-	potrait.texture = EntityIndex.player_potraits[player.potrait_idx]
+	potrait.texture = EntityIndex.squad_potraits[player.potrait_idx]
 	player_name.text = player.player_name

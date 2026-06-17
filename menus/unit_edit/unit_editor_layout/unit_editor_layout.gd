@@ -73,6 +73,7 @@ onready var armor_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginC
 onready var shield_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option/MarginContainer7/shield_holder
 onready var shield_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option
 onready var abilities_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/MarginContainer6/abilities_holder
+onready var ability_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/ability_desc
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -80,9 +81,9 @@ onready var potrait_display = $Control/Control/VBoxContainer2/HBoxContainer/Marg
 onready var icon_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer2/icon_display
 onready var edit_name = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/edit_name
 onready var unit_role_buttons = {
-	1: $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_cav,
-	2: $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_inf,
-	3: $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_rng,
+	1:  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_cav,
+	2:  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_inf,
+	3:  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_rng,
 }
 onready var set_hero = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_hero
 onready var set_squad = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_squad
@@ -230,7 +231,9 @@ func display_abilities(current_melee_weapon_idx :int, current_range_weapon_idx :
 		i.queue_free()
 		
 	var abilities = EntityIndex.squad_abilities
-
+	ability_desc.text = "No Ability selected"
+	
+	
 	# for none
 	var item_null = equipment_item_scene.instance()
 	item_null.index = 0
@@ -251,13 +254,18 @@ func display_abilities(current_melee_weapon_idx :int, current_range_weapon_idx :
 		if not for_melee and not for_range:
 			continue
 		
+		var is_selected = (idx == selected_index)
+		
 		var item = equipment_item_scene.instance()
 		item.index = idx
 		item.icon = abilities[idx]["icon"]
 		item.item_name = abilities[idx]["name"]
 		item.connect("selected", self, "_on_ability_selected", [idx])
 		abilities_holder.add_child(item)
-		item.set_selected(idx == selected_index)
+		item.set_selected(is_selected)
+		
+		if is_selected:
+			ability_desc.text = abilities[selected_index]["detail"]
 	
 func display_role(role :int):
 	for k in unit_role_buttons.keys():

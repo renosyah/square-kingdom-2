@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/debuff.wav-3f9e02db1b0a2f5dcc57041f66817d57.sample"
+
+[deps]
+
+source_file="res://assets/sounds/gameplay/debuff.wav"
+dest_files=[ "res://.import/debuff.wav-3f9e02db1b0a2f5dcc57041f66817d57.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

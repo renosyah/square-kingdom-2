@@ -362,7 +362,7 @@ func create_bot_player() -> Array:
 	p.player_name = "%s (bot)" % RandomNameGenerator.generate_name()
 	p.team = bot_players.size() + players.size() + 1
 	p.color_idx = randi() % (EntityIndex.player_colors.size() - 1) # exlude last
-	p.potrait_idx = randi() % EntityIndex.player_potraits.size()
+	p.potrait_idx = randi() % EntityIndex.squad_potraits.size()
 	p.spawn_position = bot_players.size() + players.size()
 	
 	var _bot_player_armies = []

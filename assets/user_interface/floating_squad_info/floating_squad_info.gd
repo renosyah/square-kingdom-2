@@ -23,6 +23,7 @@ onready var _temp_red = $Control/temp_red
 onready var _temp_grey = $Control/temp_grey
 
 onready var _hp_bar_holder = $Control/MarginContainer/hp_bar_holder
+onready var _hp_bar = $Control/MarginContainer/hp_bar
 
 onready var _green_color = $Control/temp_green.color
 onready var _red_color = $Control/temp_red.color
@@ -46,6 +47,13 @@ func _ready():
 	_update_bar()
 	visible = true
 	
+	_hp_bar_holder.visible = squad.total_member> 1
+	_hp_bar.visible = not _hp_bar_holder.visible
+	
+	if _hp_bar.visible:
+		_hp_bar.max_value = squad.get_members()[0].max_hp
+		_hp_bar.value = squad.get_members()[0].hp
+		
 func _process(delta):
 	if floating_hurt and visible:
 		_hurt.color.a = lerp(_hurt.color.a, 0, 5 * delta)
@@ -55,18 +63,30 @@ func _on_squad_member_updated(_squad, _member):
 	_update_bar()
 	_update_bar_colors()
 	
-func _on_squad_taking_heal(_squad):
+func _on_squad_taking_heal(s):
 	if visible and floating_hurt:
 		_heal.color.a = 1
 		
-	_update_bar_colors()
-	
-func _on_squad_taking_damage(_squad, amount):
+	if _hp_bar_holder.visible:
+		_update_bar_colors()
+		
+	if _hp_bar.visible:
+		var hp = s.get_members()[0].hp
+		_hp_bar.tint_progress = _get_hp_color(hp, _hp_bar.max_value)
+		_hp_bar.value = hp
+		
+func _on_squad_taking_damage(s, amount):
 	if visible and floating_hurt and amount > 0:
 		_hurt.color.a = 1
 		
-	_update_bar_colors()
-	
+	if _hp_bar_holder.visible:
+		_update_bar_colors()
+		
+	if _hp_bar.visible:
+		var hp = s.get_members()[0].hp
+		_hp_bar.tint_progress = _get_hp_color(hp, _hp_bar.max_value)
+		_hp_bar.value = hp
+		
 func _get_hp_color(hp :int, max_hp: int) -> Color:
 	# prevent zero by devision
 	if hp <= 0:

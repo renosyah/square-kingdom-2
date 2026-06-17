@@ -1,6 +1,8 @@
 extends Button
 
 var squad :BaseSquad
+var required_enemy_in_melee :bool
+var required_enemy_in_range :bool
 
 onready var time_progress = $ability_button_cooldown/time_progress
 onready var label_time = $ability_button_cooldown/label_time
@@ -20,7 +22,14 @@ func _process(delta):
 	if is_instance_valid(squad):
 		var cooldowns = squad.get_ability_cooldown()
 		var on_cooldown = cooldowns[0]
-		cooldown_bg.visible = on_cooldown
+		
+		if required_enemy_in_melee:
+			disabled = not squad.in_melee_engagement()
+			
+		if required_enemy_in_range:
+			disabled = not squad.in_range_engagement()
+			
+		cooldown_bg.visible = on_cooldown or disabled
 		ability_button_cooldown.visible = on_cooldown
 		label_time.text = Utils.format_time(cooldowns[1])
 		time_progress.value = cooldowns[1]

@@ -78,6 +78,8 @@ func _process(delta):
 ########################################## ambient sound  ############################################
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 const saya_akan_lawan = preload("res://assets/sounds/gameplay/saya_akan_lawan.wav")
+const buff = preload("res://assets/sounds/gameplay/buff.wav")
+const debuff = preload("res://assets/sounds/gameplay/debuff.wav")
 
 const attack = [
 	preload("res://assets/sounds/unit/attack/attack_1_1.wav"), preload("res://assets/sounds/unit/attack/attack_1_2.wav"), preload("res://assets/sounds/unit/attack/attack_1_3.wav"), preload("res://assets/sounds/unit/attack/attack_1_4.wav")
@@ -577,6 +579,10 @@ func _on_use_ability():
 		
 	use_squad_ability(selected_squads[0])
 	
+	if not ui_sound.playing:
+		ui_sound.stream = buff
+		ui_sound.play()
+		
 func use_squad_ability(squad :BaseSquad):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
@@ -591,31 +597,31 @@ func use_squad_ability(squad :BaseSquad):
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.add_buff_debuffs([[2, 0.5, 15, 4]])
+					enemy.add_modifiers([[2, 0.5, 15, 4]])
 					enemy.stop()
 				
 		2: # enemy -50% attack speed for 25 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.add_buff_debuffs([
+					enemy.add_modifiers([
 						[0, 0.5, 25, 0],
 						[1, 0.5, 25, 3]
 					])
 				
 		3: # +50% melee attack speed for 15 sec
-			squad.add_buff_debuffs([[0, 1.5, 15, 2]])
+			squad.add_modifiers([[0, 1.5, 15, 2]])
 			
 		4:# +50% range attack speed for 15 sec
-			squad.add_buff_debuffs([[1, 1.5, 15, 5]])
+			squad.add_modifiers([[1, 1.5, 15, 5]])
 			
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_buff_debuffs([[2, 0.5, 15, 1]])
+				enemy.add_modifiers([[2, 0.5, 15, 1]])
 			
 	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
-	
+			
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
 	if idx > 0 and selected_squads.empty():
@@ -754,6 +760,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
+	squad.connect("on_squad_added_modifier", self, "_on_squad_added_modifier")
 	
 	if squad is CavalrySquad:
 		squad.charge_damage = data.charge_damage()
@@ -866,6 +873,12 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if from.team == squad.team:
 		ui.scoreboard.add_friendly_fire(from_player, from_squad, 1)
 
+func _on_squad_added_modifier(squad :BaseSquad, type :int, value :float):
+	if squad.player_id == current_player.player_id and value < 1.0:
+		if not ui_sound.playing:
+			ui_sound.stream = debuff
+			ui_sound.play()
+	
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass
 	

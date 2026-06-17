@@ -7,6 +7,7 @@ signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
 signal on_squad_dead(unit)
+signal on_squad_added_modifier(squad, type, value)
 
 const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_1.wav"),
@@ -966,10 +967,10 @@ const buff_debuff_icon = [
 
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 0=melee, 1:range, value is percentage
-func add_buff_debuffs(datas :Array):
-	rpc("_add_buff_debuffs", datas)
+func add_modifiers(datas :Array):
+	rpc("_add_modifiers", datas)
 	
-remotesync func _add_buff_debuffs(datas :Array):
+remotesync func _add_modifiers(datas :Array):
 	var additional :float = 1.0
 	var indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 	
@@ -993,9 +994,12 @@ remotesync func _add_buff_debuffs(datas :Array):
 		add_child(ind)
 		ind.set_as_toplevel(true)
 		ind.translation = global_position
+		ind.rotation.y = 0
 		
 		_set_multiplier(type, value)
 		additional += 1
+		
+		emit_signal("on_squad_added_modifier", self, type, value)
 	
 func _on_buff_debuff_expired(type :int, timer :Timer):
 	timer.queue_free()

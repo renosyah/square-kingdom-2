@@ -1,8 +1,9 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://menus/unit_edit/unit_editor_layout/unit_editor_layout.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/icons/squad/commander.png" type="Texture" id=2]
 [ext_resource path="res://assets/user_interface/icons/unit.png" type="Texture" id=3]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
 [ext_resource path="res://assets/camera/orbital_camera_ui.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/camera/orbital_camera.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=8]
@@ -527,7 +528,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer"]
 margin_right = 288.0
-margin_bottom = 2095.0
+margin_bottom = 2161.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/margin_right = 12
@@ -536,7 +537,7 @@ custom_constants/margin_left = 12
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer"]
 margin_left = 12.0
 margin_right = 276.0
-margin_bottom = 2095.0
+margin_bottom = 2161.0
 mouse_filter = 2
 custom_constants/separation = 12
 
@@ -1187,7 +1188,7 @@ expand_icon = true
 [node name="VBoxContainer4" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
 margin_top = 1695.0
 margin_right = 264.0
-margin_bottom = 2095.0
+margin_bottom = 2161.0
 rect_min_size = Vector2( 0, 400 )
 mouse_filter = 2
 
@@ -1247,10 +1248,26 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 20 )
 expand = true
 
-[node name="MarginContainer7" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4"]
 margin_top = 150.0
 margin_right = 264.0
-margin_bottom = 400.0
+margin_bottom = 162.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="ability_desc" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4"]
+margin_top = 166.0
+margin_right = 264.0
+margin_bottom = 212.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 4 )
+text = "..."
+autowrap = true
+
+[node name="MarginContainer7" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4"]
+margin_top = 216.0
+margin_right = 264.0
+margin_bottom = 466.0
 rect_min_size = Vector2( 0, 250 )
 mouse_filter = 2
 
