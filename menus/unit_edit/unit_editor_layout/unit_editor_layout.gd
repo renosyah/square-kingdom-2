@@ -72,6 +72,7 @@ onready var headgear_holder = $Control/Control/VBoxContainer2/HBoxContainer/Marg
 onready var armor_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer5/armor_holder
 onready var shield_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option/MarginContainer7/shield_holder
 onready var shield_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option
+onready var abilities_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/MarginContainer6/abilities_holder
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -222,7 +223,42 @@ func display_shield(selected_index :int):
 		item.connect("selected", self, "_on_shield_selected", [key])
 		shield_holder.add_child(item)
 		item.set_selected(key == selected_index)
+		
+func display_abilities(current_melee_weapon_idx :int, current_range_weapon_idx :int, selected_index :int):
+	for i in abilities_holder.get_children():
+		abilities_holder.remove_child(i)
+		i.queue_free()
+		
+	var abilities = EntityIndex.squad_abilities
 
+	# for none
+	var item_null = equipment_item_scene.instance()
+	item_null.index = 0
+	item_null.icon = preload("res://assets/user_interface/icons/equipment/empty.png")
+	item_null.item_name = "(Not Set)"
+	item_null.connect("selected", self, "_on_ability_selected", [0])
+	abilities_holder.add_child(item_null)
+	item_null.set_selected(0 == selected_index)
+	
+	for idx in [1,2,3,4]:
+		var is_melee = abilities[idx]["type"] == "melee"
+		var is_range = abilities[idx]["type"] == "range"
+		var weapon_idx = abilities[idx]["weapon_idx"]
+		
+		var for_melee = is_melee and weapon_idx == current_melee_weapon_idx
+		var for_range = is_range and weapon_idx == current_range_weapon_idx
+		
+		if not for_melee and not for_range:
+			continue
+		
+		var item = equipment_item_scene.instance()
+		item.index = idx
+		item.icon = abilities[idx]["icon"]
+		item.item_name = abilities[idx]["name"]
+		item.connect("selected", self, "_on_ability_selected", [idx])
+		abilities_holder.add_child(item)
+		item.set_selected(idx == selected_index)
+	
 func display_role(role :int):
 	for k in unit_role_buttons.keys():
 		var b :Button = unit_role_buttons[k]
@@ -284,11 +320,27 @@ func _on_melee_weapon_selected(index :int):
 	infantry_member.shield = dup_squad_data.member_shield_idx
 	infantry_member.apply_equipment()
 	
+	# nah just set it to none if changes
+	dup_squad_data.squad_ability_idx = 0
+	
+	display_abilities(
+		index,
+		dup_squad_data.member_range_weapon_idx, 0
+	)
+	
 func _on_range_weapon_selected(index :int):
 	dup_squad_data.member_range_weapon_idx = index
 	display_range_weapons(index)
 	infantry_member.range_weapon = EntityIndex.range_weapons[index]
 	infantry_member.apply_equipment()
+	
+	# nah just set it to none if changes
+	dup_squad_data.squad_ability_idx = 0
+	
+	display_abilities(
+		dup_squad_data.member_melee_weapon_idx,
+		index, 0
+	)
 	
 func _on_headgear_selected(index :int):
 	dup_squad_data.member_headgear_idx = index
@@ -307,6 +359,14 @@ func _on_shield_selected(index :int):
 	display_shield(index)
 	infantry_member.shield = EntityIndex.shields[index]
 	infantry_member.apply_equipment()
+	
+func _on_ability_selected(index :int):
+	dup_squad_data.squad_ability_idx = index
+	display_abilities(
+		dup_squad_data.member_melee_weapon_idx,
+		dup_squad_data.member_range_weapon_idx,
+		index
+	)
 	
 func _on_squad_card_pressed(idx:int, squad :SquadData):
 	selected_index = idx
@@ -337,6 +397,11 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_shield(dup_squad_data.member_shield_idx)
 	display_role(dup_squad_data.squad_role)
 	display_hero(dup_squad_data.is_hero)
+	display_abilities(
+		dup_squad_data.member_melee_weapon_idx,
+		dup_squad_data.member_range_weapon_idx,
+		dup_squad_data.squad_ability_idx
+	)
 	display_attribute()
 	show_shield_option()
 	

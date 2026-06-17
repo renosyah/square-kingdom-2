@@ -123,7 +123,7 @@ const squad_abilities = [
 		"cooldown" : 15.0,
 	},
 	{
-		"name": "Intimidation",
+		"name": "Fear!",
 		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
 		"detail": "Enemy temporary get all attack speed debuff (50% slower)",
 		"type": "melee",
