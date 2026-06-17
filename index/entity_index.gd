@@ -111,6 +111,43 @@ const shield_stats = {
 	2:{'hp':15,'speed':-0.06,'spawn_time':3}
 }
 
+
+const squad_abilities = [
+	null,
+	{
+		"name": "Spear Wall",
+		"icon": preload("res://assets/user_interface/ability/pike_up_ability.png"),
+		"detail": "Force stop movement all enemy in melee range who just want pass through",
+		"type": "melee",
+		"weapon_idx": 4,
+		"cooldown" : 5.0,
+	},
+	{
+		"name": "Intimidation",
+		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
+		"detail": "Enemy temporary get attack speed debuff (50% slower)",
+		"type": "melee",
+		"weapon_idx": 10,
+		"cooldown" : 30.0,
+	},
+	{
+		"name": "Beserk",
+		"icon":  preload("res://assets/user_interface/ability/beserk_ability.png"),
+		"detail": "Temporary increase melee attack speed (50% faster)",
+		"type": "melee",
+		"weapon_idx": 9,
+		"cooldown" : 25.0,
+	},
+	{
+		"name": "Rain Arrows",
+		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
+		"detail": "Temporary increase range attack speed",
+		"type": "range",
+		"weapon_idx": 4,
+		"cooldown" : 15.0,
+	},
+]
+
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0
 	preload("res://assets/user_interface/icons/squad/spear.png"), #1

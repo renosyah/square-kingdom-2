@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://menus/gameplay/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://assets/camera/movable_camera_ui.tscn" type="PackedScene" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://assets/user_interface/squad_spawner/squad_spawner.tscn" type="PackedScene" id=28]
 [ext_resource path="res://assets/user_interface/squad_spawner/squad_spawner_ui.tscn" type="PackedScene" id=29]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=30]
+[ext_resource path="res://menus/gameplay/ui/ability_button/ability_button.tscn" type="PackedScene" id=31]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -408,7 +409,7 @@ rect_min_size = Vector2( 0, 12 )
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
 margin_left = 113.0
-margin_right = 854.0
+margin_right = 748.0
 margin_bottom = 299.0
 mouse_filter = 2
 size_flags_horizontal = 3
@@ -420,7 +421,7 @@ mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/MarginContainer"]
 margin_top = 199.0
-margin_right = 741.0
+margin_right = 635.0
 margin_bottom = 299.0
 rect_min_size = Vector2( 0, 100 )
 rect_pivot_offset = Vector2( 0, 100 )
@@ -428,7 +429,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 8
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/MarginContainer/MarginContainer2"]
-margin_right = 741.0
+margin_right = 635.0
 margin_bottom = 100.0
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
@@ -441,14 +442,14 @@ alignment = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 155.0
-margin_right = 741.0
+margin_right = 635.0
 margin_bottom = 179.0
 rect_min_size = Vector2( 0, 24 )
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 183.0
-margin_right = 741.0
+margin_right = 635.0
 margin_bottom = 263.0
 rect_min_size = Vector2( 0, 80 )
 mouse_filter = 2
@@ -461,26 +462,26 @@ mouse_filter = 2
 
 [node name="squad_holder" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer"]
 margin_left = 16.0
-margin_right = 725.0
+margin_right = 619.0
 margin_bottom = 80.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer"]
-margin_left = 729.0
-margin_right = 741.0
+margin_left = 623.0
+margin_right = 635.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 12, 0 )
 mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer"]
 margin_top = 267.0
-margin_right = 741.0
+margin_right = 635.0
 margin_bottom = 299.0
 rect_min_size = Vector2( 0, 32 )
 
 [node name="squad_command" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2"]
-margin_left = 854.0
+margin_left = 748.0
 margin_top = 129.0
 margin_right = 1024.0
 margin_bottom = 299.0
@@ -489,77 +490,112 @@ mouse_filter = 2
 size_flags_vertical = 8
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
-margin_right = 170.0
+margin_right = 276.0
 margin_bottom = 170.0
 mouse_filter = 2
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
-margin_right = 170.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
+margin_right = 276.0
 margin_bottom = 170.0
+mouse_filter = 2
+custom_constants/separation = 8
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
+
+[node name="ability_container" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer"]
+margin_left = 20.0
+margin_right = 120.0
+margin_bottom = 170.0
+mouse_filter = 2
+custom_constants/margin_top = 22
+custom_constants/margin_bottom = 22
+
+[node name="ability_button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/ability_container" instance=ExtResource( 31 )]
+margin_top = 22.0
+margin_bottom = 148.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer"]
+margin_left = 128.0
+margin_right = 256.0
+margin_bottom = 170.0
+mouse_filter = 2
 custom_constants/separation = 7
 alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer"]
 margin_top = 2.0
-margin_right = 170.0
+margin_right = 128.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer"]
 margin_top = 21.0
-margin_right = 170.0
+margin_right = 128.0
 margin_bottom = 81.0
+mouse_filter = 2
 custom_constants/separation = 8
 alignment = 1
 
-[node name="movement_mode" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer"]
-margin_left = 21.0
-margin_right = 81.0
+[node name="movement_mode" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 60.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 icon = ExtResource( 12 )
 expand_icon = true
 
-[node name="stop_button" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer"]
-margin_left = 89.0
-margin_right = 149.0
+[node name="stop_button" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 68.0
+margin_right = 128.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 icon = ExtResource( 16 )
 expand_icon = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer"]
 margin_top = 88.0
-margin_right = 170.0
+margin_right = 128.0
 margin_bottom = 148.0
+mouse_filter = 2
 custom_constants/separation = 8
 alignment = 1
 
-[node name="selection_mode" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2"]
-margin_left = 21.0
-margin_right = 81.0
+[node name="selection_mode" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_right = 60.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 icon = ExtResource( 22 )
 expand_icon = true
 
-[node name="route_button" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2"]
-margin_left = 89.0
-margin_right = 149.0
+[node name="route_button" type="Button" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 68.0
+margin_right = 128.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 icon = ExtResource( 15 )
 expand_icon = true
 
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer"]
 margin_top = 155.0
-margin_right = 170.0
+margin_right = 128.0
 margin_bottom = 167.0
 rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer"]
+margin_left = 264.0
+margin_right = 276.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 12, 0 )
+mouse_filter = 2
 
 [node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command"]
-margin_right = 170.0
+margin_right = 276.0
 margin_bottom = 170.0
 texture = ExtResource( 17 )
 
@@ -573,8 +609,8 @@ visible = false
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/cinematic" to="." method="_on_cinematic_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/score" to="." method="_on_score_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode" to="." method="_on_selection_mode_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer/movement_mode" to="." method="_on_movement_mode_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer/stop_button" to="." method="_on_stop_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer2/selection_mode" to="." method="_on_selection_mode_pressed"]
 [connection signal="on_exit" from="CanvasLayer/Control/dialog_menu" to="." method="_on_dialog_menu_on_exit"]
 [connection signal="close" from="CanvasLayer/Control/scoreboard" to="." method="_on_scoreboard_close"]

@@ -52,6 +52,8 @@ export var member_melee_weapon_idx :int
 export var member_range_weapon_idx :int
 export var total_member :int = 9
 
+# choosen ability
+export var squad_ability_idx :int = 0
 
 # this is for siege engine
 # because i cant get the stats of the engines
@@ -197,6 +199,7 @@ func from_dictionary(_data : Dictionary):
 	siege_engine_attack_speed = _data["v5"]
 	is_hero = _data["v6"]
 	is_commander = _data["v7"]
+	squad_ability_idx = _data["v8"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -230,6 +233,7 @@ func to_dictionary() -> Dictionary :
 	_data["v5"] = siege_engine_attack_speed
 	_data["v6"] = is_hero
 	_data["v7"] = is_commander
+	_data["v8"] = squad_ability_idx
 	return _data
 	
 

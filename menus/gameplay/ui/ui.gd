@@ -24,10 +24,12 @@ onready var minimap = $CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginCon
 onready var dialog_menu = $CanvasLayer/Control/dialog_menu
 onready var squad_holder = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/squad_holder
 onready var squad_command_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command
-onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer/movement_mode
-onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/route_button
+onready var movement_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer/movement_mode
+onready var route_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer2/route_button
+onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/VBoxContainer/HBoxContainer2/selection_mode
+onready var ability_container = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/ability_container
+onready var ability_button = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/HBoxContainer/ability_container/ability_button
 onready var nine_patch_rect = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/NinePatchRect
-onready var selection_mode = $CanvasLayer/Control/VBoxContainer/HBoxContainer2/squad_command/VBoxContainer/HBoxContainer2/selection_mode
 onready var control_ui = $CanvasLayer/Control/VBoxContainer/HBoxContainer2
 onready var orbital_camera_ui = $CanvasLayer/Control/orbital_camera_ui
 onready var menu_buttons = $CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer
@@ -77,6 +79,7 @@ func _process(delta):
 func selected_squads_updated():
 	squad_command_ui.visible = not selected_squads.empty()
 	_check_movement_mode()
+	_check_squad_ability()
 	
 func _check_movement_mode():
 	if selected_squads.empty():
@@ -98,6 +101,23 @@ func _check_movement_mode():
 	else:
 		movement_mode.icon = icon_unknown_mode
 		
+func _check_squad_ability():
+	ability_container.visible = false
+	ability_button.visible = false
+	
+	if selected_squads.empty() or selected_squads.size() > 1:
+		return
+		
+	var squad :BaseSquad = selected_squads[0]
+	if squad.squad_ability_idx == 0:
+		return
+		
+	ability_container.visible = true
+	ability_button.visible = true
+	
+	var ability = EntityIndex.squad_abilities[squad.squad_ability_idx]
+	ability_button.squad = squad
+	ability_button.set_ability_icon(ability["name"], ability["icon"])
 	
 func add_squad_card(squad :BaseSquad, data :SquadData):
 	var card = squad_card_scene.instance()

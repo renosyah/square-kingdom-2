@@ -64,6 +64,7 @@ export var reinfoce_tiles :Array = []
 export var squad_role :int
 export var squad_icon :StreamTexture
 export var squad_attribute :Array
+export var squad_ability_idx :int = 0
 
 var member_alive :int
 
@@ -123,6 +124,9 @@ var _member_spawned :bool = false
 var _melee_engagement :bool
 var _range_engagement :bool
 
+var _buff_debuffs :Dictionary = {} # {type:value}
+var _ability_cooldown :Timer
+
 func _ready():
 	if _is_network_master():
 		Global.connect("on_global_tick", self, "_on_global_tick")
@@ -164,6 +168,12 @@ func _ready():
 	_taking_damage_timer.autostart = false
 	_taking_damage_timer.wait_time = 0.2
 	add_child(_taking_damage_timer)
+	
+	_ability_cooldown = Timer.new()
+	_ability_cooldown.one_shot = true
+	_ability_cooldown.autostart = false
+	_ability_cooldown.wait_time = 1
+	add_child(_ability_cooldown)
 	
 	_step_audio = AudioStreamPlayer3D.new()
 	_step_audio.bus = Global.bus_sfx
@@ -925,6 +935,54 @@ remotesync func _set_dead():
 		
 	is_dead = true
 	on_dead()
+	
+# return [on cooldown, current time, total time]
+func get_ability_cooldown() -> Array:
+	return [
+		not _ability_cooldown.is_stopped(), 
+		_ability_cooldown.time_left, 
+		_ability_cooldown.wait_time
+	]
+	
+func start_ability_cooldown(v :float):
+	if _ability_cooldown.is_stopped():
+		_ability_cooldown.wait_time = v
+		_ability_cooldown.start()
+	
+# type buff debuff : 0=melee, 1:range, value is percentage
+func add_buff_debuff(type :int, value :float, expired :float = 25.0, use_rpc :bool = true):
+	if _buff_debuffs.has(type):
+		return
+		
+	rpc("_add_buff_debuff", type, value, expired)
+	
+remotesync func _add_buff_debuff(type :int, value :float, expired :float):
+	var _buff_debuff_timer = Timer.new()
+	_buff_debuff_timer.one_shot = true
+	_buff_debuff_timer.autostart = false
+	_buff_debuff_timer.wait_time = expired
+	_buff_debuff_timer.connect("timeout", self, "_on_buff_debuff_expired", [type, _buff_debuff_timer])
+	add_child(_buff_debuff_timer)
+	
+	_buff_debuffs[type] = abs(value)
+	
+func _on_buff_debuff_expired(type :int, timer):
+	timer.queue_free()
+	
+	if _buff_debuffs.has(type):
+		_buff_debuffs.erase(type)
+	
+func get_melee_attack_speed() -> float:
+	if _buff_debuffs.has(0):
+		return melee_attack_speed / _buff_debuffs[0]
+			
+	return melee_attack_speed 
+	
+func get_range_attack_speed() -> float:
+	if _buff_debuffs.has(1):
+		return range_attack_speed / _buff_debuffs[1]
+			
+	return range_attack_speed 
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position

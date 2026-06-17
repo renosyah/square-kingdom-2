@@ -100,6 +100,10 @@ func stop(use_rpc :bool = true):
 	# call stop, tell master to stop from other peer
 	rpc_id(get_network_master(), "_stop")
 	
+remote func _stop():
+	_is_moving = false
+	_paths.clear()
+	
 # only mechanic for puppet side only
 func set_spotted(v :bool):
 	if not _is_master and not _hidden:
@@ -119,9 +123,7 @@ func set_selected(v :bool):
 func is_selected() -> bool:
 	return _is_selected
 	
-remote func _stop():
-	_is_moving = false
-	_paths.clear()
+
 	
 func sync_update() -> void:
 	.sync_update()

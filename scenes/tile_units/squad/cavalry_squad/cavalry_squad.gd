@@ -258,7 +258,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 
 func _perform_melee_attack():
 	if _melee_attack_timer.is_stopped():
-		_melee_attack_timer.wait_time = melee_attack_speed
+		_melee_attack_timer.wait_time = get_melee_attack_speed()
 		_melee_attack_timer.start()
 		
 		_melee_engagement = true
@@ -288,7 +288,7 @@ func _perform_range_attack():
 		return
 		
 	if _range_attack_timer.is_stopped():
-		_range_attack_timer.wait_time = range_attack_speed
+		_range_attack_timer.wait_time = get_range_attack_speed()
 		_range_attack_timer.start()
 		
 		_range_engagement = true

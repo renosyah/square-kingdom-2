@@ -522,6 +522,7 @@ func setup_ui():
 	
 	ui.squad_spawner.connect("on_squads_ready", self, "_on_squad_spawner_squads_ready")
 	ui.route_button.connect("pressed", self, "_on_ui_route_button_pressed")
+	ui.ability_button.connect("pressed", self, "_on_use_ability")
 	
 	var selection_buttons = [
 		ui.selection_button_all,
@@ -570,6 +571,33 @@ func _on_ui_route_button_pressed():
 		
 	_move_squad_to(tile_map.get_tile(player_spawn_points[current_player.player_id]), false)
 
+func _on_use_ability():
+	if selected_squads.empty():
+		return
+		
+	var squad :BaseSquad = selected_squads[0]
+	var squad_ability_idx :int = squad.squad_ability_idx
+	if squad_ability_idx == 0:
+		return
+		
+	match squad_ability_idx:
+		1: # stop enemy
+			if is_instance_valid(squad.enemy):
+				squad.enemy.stop()
+				
+		2: # enemy -50% attack speed for 25 sec
+			if is_instance_valid(squad.enemy):
+				squad.enemy.add_buff_debuff(0, 0.5, 25)
+				squad.enemy.add_buff_debuff(1, 0.5, 25)
+				
+		3: # +50% melee attack speed for 15 sec
+			squad.add_buff_debuff(0, 2.0, 15)
+			
+		4:# +50% range attack speed for 15 sec
+			squad.add_buff_debuff(1, 2.0, 15)
+			
+	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
+	
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
 	if idx > 0 and selected_squads.empty():
@@ -689,6 +717,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	squad.squad_attribute = squad_attribute
+	squad.squad_ability_idx = data.squad_ability_idx
 	
 	# extra ui
 	squad.enable_blood = setting.extra_effect
