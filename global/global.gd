@@ -51,7 +51,7 @@ func load_player_data():
 		player_data.player_name = OS.get_name()
 		player_data.team = 1
 		player_data.color_idx = randi() % EntityIndex.player_colors.size()  # exlude last
-		player_data.potrait_idx = randi() % EntityIndex.player_potraits.size()
+		player_data.potrait_idx = randi() % EntityIndex.squad_potraits.size()
 		save_player_data()
 		
 	else:

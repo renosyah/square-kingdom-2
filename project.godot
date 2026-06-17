@@ -404,7 +404,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Square Kingdom"
+config/name="Square Kingdom : Crusade"
 run/main_scene="res://menus/splash.tscn"
 boot_splash/image="res://splash.png"
 config/icon="res://icn.png"
