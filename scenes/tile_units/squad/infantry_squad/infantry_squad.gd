@@ -140,5 +140,5 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	var is_align :bool = foward_dir.dot(dir_to) > 0.85
 	
 	if is_align:
-		translation += -transform.basis.z * speed * delta
+		translation += -transform.basis.z * get_speed() * delta
 		translation.y = to.y

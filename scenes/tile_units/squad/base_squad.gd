@@ -49,6 +49,10 @@ export var melee_attack_speed :float = 0.8
 export var range_attack_speed :float = 0.8
 export var formation_density :float = 0.35
 
+var melee_attack_speed_mul :float = 1.0
+var range_attack_speed_mul :float = 1.0
+var speed_mul :float = 1.0
+
 export var member_headgear :PackedScene
 export var member_armor :PackedScene
 export var member_shield :PackedScene
@@ -124,7 +128,6 @@ var _member_spawned :bool = false
 var _melee_engagement :bool
 var _range_engagement :bool
 
-var _buff_debuffs :Dictionary = {} # {type:value}
 var _ability_cooldown :Timer
 
 func _ready():
@@ -896,6 +899,9 @@ func _is_still_in_ranges(target) -> bool:
 			
 	return _is_still_in_melee_range(target)
 	
+func is_in_melee_range(target) -> bool:
+	return _is_still_in_melee_range(target)
+	
 func _is_still_in_melee_range(target):
 	if target.is_dead:
 		return false
@@ -949,40 +955,51 @@ func start_ability_cooldown(v :float):
 		_ability_cooldown.wait_time = v
 		_ability_cooldown.start()
 	
+# type :int, value :float, expired :float
 # type buff debuff : 0=melee, 1:range, value is percentage
-func add_buff_debuff(type :int, value :float, expired :float = 25.0, use_rpc :bool = true):
-	if _buff_debuffs.has(type):
-		return
+func add_buff_debuffs(datas :Array):
+	rpc("_add_buff_debuffs", datas)
+	
+remotesync func _add_buff_debuffs(datas :Array):
+	var additional :float = 1.0
+	
+	for i in datas:
+		var type :int = i[0]
+		var value :float = i[1]
+		var expired :float = i[2]
 		
-	rpc("_add_buff_debuff", type, value, expired)
+		var _expired = Timer.new()
+		_expired.one_shot = true
+		_expired.autostart = false
+		_expired.wait_time = expired + additional
+		_expired.connect("timeout", self, "_on_buff_debuff_expired", [type, _expired])
+		add_child(_expired)
+		_expired.start()
+		
+		_set_multiplier(type, value)
+		additional += 1
 	
-remotesync func _add_buff_debuff(type :int, value :float, expired :float):
-	var _buff_debuff_timer = Timer.new()
-	_buff_debuff_timer.one_shot = true
-	_buff_debuff_timer.autostart = false
-	_buff_debuff_timer.wait_time = expired
-	_buff_debuff_timer.connect("timeout", self, "_on_buff_debuff_expired", [type, _buff_debuff_timer])
-	add_child(_buff_debuff_timer)
-	
-	_buff_debuffs[type] = abs(value)
-	
-func _on_buff_debuff_expired(type :int, timer):
+func _on_buff_debuff_expired(type :int, timer :Timer):
 	timer.queue_free()
+	_set_multiplier(type, 1)
 	
-	if _buff_debuffs.has(type):
-		_buff_debuffs.erase(type)
+func _set_multiplier(type :int, v :float):
+	match type:
+		0:
+			melee_attack_speed_mul = v
+		1:
+			range_attack_speed_mul = v
+		2:
+			speed_mul = v
+			
+func get_speed() -> float:
+	return speed * speed_mul
 	
 func get_melee_attack_speed() -> float:
-	if _buff_debuffs.has(0):
-		return melee_attack_speed / _buff_debuffs[0]
-			
-	return melee_attack_speed 
+	return melee_attack_speed / melee_attack_speed_mul
 	
 func get_range_attack_speed() -> float:
-	if _buff_debuffs.has(1):
-		return range_attack_speed / _buff_debuffs[1]
-			
-	return range_attack_speed 
+	return range_attack_speed / range_attack_speed_mul
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position

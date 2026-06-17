@@ -323,6 +323,6 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	var t:Transform = transform.looking_at(look, Vector3.UP)
 	transform = transform.interpolate_with(t, turning_speed * delta)
 	
-	var _speed = (speed * 0.5) if attack_move else speed
+	var _speed = (get_speed() * 0.5) if attack_move else get_speed()
 	translation += pos.direction_to(to) * _speed * delta
 	translation.y = to.y

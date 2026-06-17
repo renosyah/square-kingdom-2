@@ -120,12 +120,12 @@ const squad_abilities = [
 		"detail": "Force stop movement all enemy in melee range who just want pass through",
 		"type": "melee",
 		"weapon_idx": 4,
-		"cooldown" : 5.0,
+		"cooldown" : 15.0,
 	},
 	{
 		"name": "Intimidation",
 		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
-		"detail": "Enemy temporary get attack speed debuff (50% slower)",
+		"detail": "Enemy temporary get all attack speed debuff (50% slower)",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 30.0,
@@ -136,15 +136,15 @@ const squad_abilities = [
 		"detail": "Temporary increase melee attack speed (50% faster)",
 		"type": "melee",
 		"weapon_idx": 9,
-		"cooldown" : 25.0,
+		"cooldown" : 35.0,
 	},
 	{
 		"name": "Rain Arrows",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
-		"detail": "Temporary increase range attack speed",
+		"detail": "Temporary increase range attack speed and suppress enemy",
 		"type": "range",
 		"weapon_idx": 4,
-		"cooldown" : 15.0,
+		"cooldown" : 20.0,
 	},
 ]
 
