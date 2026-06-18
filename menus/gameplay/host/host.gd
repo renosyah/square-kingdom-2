@@ -128,9 +128,12 @@ func _on_squad_dead(squad, data):
 			current_wave = 0
 			spawn_size_treshold += 1
 			
-func _on_squad_taking_damage(squad :BaseSquad, amount :int):
-	._on_squad_taking_damage(squad, amount)
+func _on_hero_taking_damage(squad :BaseSquad, amount :int):
+	._on_hero_taking_damage(squad, amount)
 	
+	if is_end:
+		return
+		
 	if bot_squad_heroes.empty():
 		return
 		
@@ -163,7 +166,7 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		return
 		
 	var conditions = [
-		data.icon_idx == 6, # is commander
+		data.is_commander,
 		randf() < bot_cowardices[squad.player_id], # coward tendencies
 		squad.member_alive < 2, # member only 2 left
 	]
@@ -250,12 +253,12 @@ func _bot_players_action():
 		var go = randf() < bot_aggresive
 		var e = enemies.pick_random()
 		
-		if e.current_tile in e.reinfoce_tiles and not go:
+		if e.current_tile in e.reinfoce_tiles or not go:
 			continue
 		
 		var i :BaseSquad = s.pick_random()
 		go = randf() < bot_aggresive
-		if not go and i.member_alive < i.total_member:
+		if i.member_alive < i.total_member or not go:
 			continue
 			
 		# make bot use ability if in combat
@@ -265,9 +268,7 @@ func _bot_players_action():
 				
 			continue
 			
-		# is squad iddle or aggresive, go for it
-		go = randf() < bot_aggresive
-		if not i.is_moving() or go:
+		if not i.is_moving():
 			bot_attack_command(i, e)
 
 

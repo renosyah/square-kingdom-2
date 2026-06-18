@@ -809,7 +809,10 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	# for floating info
 	squad.camera = movable_camera.camera
 	squad.unit_indexing = tile_position_manager.get_unit_indexing()
-
+	
+	if data.is_hero:
+		squad.connect("on_squad_taking_damage", self, "_on_hero_taking_damage")
+	
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_member_dead", self, "_on_squad_member_dead", [data])
 	squad.connect("on_squad_member_resurect", self, "_on_squad_member_resurect")
@@ -909,6 +912,9 @@ func _move_squad_to(tile :TileMapData, lock_command :bool):
 		tap.tap(tile_map.get_tile(tile_id).pos, (1 if squad.attack_move else 0))
 		idx += 1
 		
+func _on_hero_taking_damage(squad :BaseSquad, amount :int):
+	pass
+	
 func _on_squad_taking_damage(squad :BaseSquad, amount :int):
 	if setting.show_feed:
 		ui.log_event.add_log_damage(squad, amount)

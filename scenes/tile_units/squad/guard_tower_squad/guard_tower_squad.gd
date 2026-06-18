@@ -9,7 +9,7 @@ func _on_setting_updated(d :SettingData):
 	enable_blood = d.extra_effect
 	
 func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
-	var dmg = attack_damage * 8
+	var dmg = attack_damage * 4 # extra damage agains intruder
 	._on_member_set_damage_to_tile(_member, tile_id, dmg)
 	
 func _init_formations():
