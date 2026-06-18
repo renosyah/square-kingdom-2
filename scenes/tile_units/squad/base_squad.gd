@@ -704,7 +704,7 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	if _has_shield and randf() < 0.20:
 		return
 		
-	var dmg :int = int(amount / damage_receive_mul)
+	var dmg :int = int(max(1, amount / damage_receive_mul))
 	
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
@@ -713,10 +713,8 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	
 	var m :SquadMember = _members[member_idx]
 	m.attacked_by = attacked_by
+	m.take_damage(amount)
 	
-	if dmg > 0:
-		m.take_damage(amount)
-		
 	_taking_damages_pending.append([dmg, m.hp, member_idx, from])
 	
 remotesync func _resurect(member_idx :int):
