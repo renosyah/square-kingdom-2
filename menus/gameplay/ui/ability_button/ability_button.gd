@@ -31,6 +31,6 @@ func _process(delta):
 			
 		cooldown_bg.visible = on_cooldown or disabled
 		ability_button_cooldown.visible = on_cooldown
-		label_time.text = Utils.format_time(cooldowns[1])
+		label_time.text = "%s" % int(cooldowns[1])
 		time_progress.value = cooldowns[1]
 		time_progress.max_value = cooldowns[2]

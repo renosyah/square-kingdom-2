@@ -403,7 +403,8 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 			reverse[value] = key
 			
 		# switch to unshielded version
-		dup_squad_data.member_melee_weapon_idx = reverse[dup_squad_data.member_melee_weapon_idx]
+		if reverse.has(dup_squad_data.member_melee_weapon_idx):
+			dup_squad_data.member_melee_weapon_idx = reverse[dup_squad_data.member_melee_weapon_idx]
 		
 	infantry_member.headgear = EntityIndex.head_armors[dup_squad_data.member_headgear_idx]
 	infantry_member.armor = EntityIndex.armors[dup_squad_data.member_armor_idx]

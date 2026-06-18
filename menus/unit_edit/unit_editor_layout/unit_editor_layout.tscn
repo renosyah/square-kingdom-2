@@ -399,12 +399,14 @@ margin_bottom = 36.0
 size_flags_vertical = 0
 
 [node name="squad_name" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_left = 183.0
-margin_right = 207.0
+margin_right = 390.0
 margin_bottom = 36.0
-size_flags_horizontal = 4
+size_flags_horizontal = 5
+size_flags_vertical = 1
 custom_fonts/font = ExtResource( 51 )
-text = "..."
+align = 1
+valign = 1
+autowrap = true
 
 [node name="ViewportContainer" type="ViewportContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer"]
 margin_right = 390.0

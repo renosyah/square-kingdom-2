@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/user_interface/background/white.png" type="Texture" id=1]
 [ext_resource path="res://menus/gameplay/ui/ability_button/ability_button.gd" type="Script" id=2]
 [ext_resource path="res://assets/user_interface/ability/pike_up_ability.png" type="Texture" id=3]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_14.tres" type="DynamicFont" id=4]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_32.tres" type="DynamicFont" id=5]
 
 [node name="ability_button" type="Button"]
 margin_right = 100.0
@@ -62,7 +63,7 @@ autowrap = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-color = Color( 0, 0, 0, 0.729412 )
+color = Color( 0, 0, 0, 0.572549 )
 
 [node name="ability_button_cooldown" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -79,15 +80,15 @@ step = 0.01
 value = 12.0
 texture_progress = ExtResource( 1 )
 fill_mode = 5
-tint_progress = Color( 0.658824, 0.658824, 0.658824, 0.72549 )
+tint_progress = Color( 0.658824, 0.658824, 0.658824, 0.521569 )
 nine_patch_stretch = true
 
 [node name="label_time" type="Label" parent="ability_button_cooldown"]
-visible = false
 margin_right = 100.0
 margin_bottom = 126.0
 rect_min_size = Vector2( 40, 0 )
 size_flags_vertical = 1
-text = "00:00"
+custom_fonts/font = ExtResource( 5 )
+text = "256"
 align = 1
 valign = 1
