@@ -27,6 +27,8 @@ var bot_cowardices :Dictionary = {}
 var bot_aggresives :Dictionary = {}
 var spawn_size_treshold :int = 1
 
+var bot_squad_heroes = []
+
 func _ready():
 	for i in bot_players:
 		bot_cowardices[i.player_id] = rand_range(0.3, 0.7)
@@ -87,6 +89,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 			bot_squads[squad.player_id] = []
 		
 		bot_squads[squad.player_id].append(squad)
+		if data.is_hero:
+			bot_squad_heroes.append(squad)
 		
 	if squad.player_id == bot_bandit.player_id:
 		bot_bandit_squads.append(squad)
@@ -99,6 +103,9 @@ func _on_squad_dead(squad, data):
 		
 	if squad is GuardTowerSquad:
 		return
+		
+	if bot_squad_heroes.has(squad):
+		bot_squad_heroes.erase(squad)
 	
 	if squad.player_id in bot_player_ids:
 		bot_squads[squad.player_id].erase(squad)
@@ -120,7 +127,28 @@ func _on_squad_dead(squad, data):
 			enemy_type_idx = int(clamp(enemy_type_idx + 1, 0, bandit_troops.size() - 1))
 			current_wave = 0
 			spawn_size_treshold += 1
+			
+func _on_squad_taking_damage(squad :BaseSquad, amount :int):
+	._on_squad_taking_damage(squad, amount)
+	
+	if bot_squad_heroes.empty():
+		return
 		
+	if not squad.player_id in bot_player_ids:
+		return
+		
+	if squad.is_moving():
+		return
+		
+	if not squad in bot_squad_heroes:
+		return
+		
+	var hp = squad.get_members()[0].hp < 60
+	
+	# save the heroes
+	if hp and randf() < bot_cowardices[squad.player_id]:
+		squad.retreat()
+	
 func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
 	._on_squad_member_dead(squad, member, data)
 	
@@ -142,7 +170,7 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	
 	# retreaat!
 	if conditions.has(true):
-		squad.retreat(false)
+		squad.retreat()
 	
 func _on_bot_bandit_spawner_timer_timeout():
 	if is_end:
@@ -216,27 +244,29 @@ func _bot_players_action():
 	var count = int(rand_range(1, 6))
 	
 	var s = bot_squads[bot_player.player_id]
+	var bot_aggresive = bot_aggresives[bot_player.player_id]
+	
 	for _i in count:
+		var go = randf() < bot_aggresive
 		var e = enemies.pick_random()
-		if e.current_tile in e.reinfoce_tiles:
+		
+		if e.current_tile in e.reinfoce_tiles and not go:
 			continue
 		
 		var i :BaseSquad = s.pick_random()
-		var go = randf() < bot_aggresives[i.player_id]
+		go = randf() < bot_aggresive
 		if not go and i.member_alive < i.total_member:
 			continue
 			
-		# make bot use ability
-		if i.in_melee_engagement() and i.squad_ability_idx in [1,2,3]:
-			use_squad_ability(i)
-			continue
-			
-		if i.in_range_engagement() and i.squad_ability_idx == 4:
-			use_squad_ability(i)
+		# make bot use ability if in combat
+		if i.in_melee_engagement() or i.in_range_engagement():
+			if i.squad_ability_idx != 0:
+				use_squad_ability(i)
+				
 			continue
 			
 		# is squad iddle or aggresive, go for it
-		go = randf() < bot_aggresives[i.player_id]
+		go = randf() < bot_aggresive
 		if not i.is_moving() or go:
 			bot_attack_command(i, e)
 

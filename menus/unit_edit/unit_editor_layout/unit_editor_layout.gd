@@ -85,8 +85,9 @@ onready var unit_role_buttons = {
 	2:  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_inf,
 	3:  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/HBoxContainer3/selection_button_rng,
 }
-onready var set_hero = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_hero
-onready var set_squad = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/set_squad
+onready var set_hero =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer3/set_hero
+onready var set_squad = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer3/set_squad
+onready var type_describe = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/type_describe
 
 onready var create_new = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/create_new
 onready var save = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save
@@ -276,10 +277,16 @@ func display_role(role :int):
 		var b :Button = unit_role_buttons[k]
 		b.modulate = Color(0.243137, 0.243137, 0.243137) if role == k else Color.white
 
-func display_hero(v :bool):
-	set_squad.visible = v
-	set_hero.visible = not v
-
+func display_hero(is_hero :bool):
+	set_squad.modulate.a = 0.5 if is_hero else 1.0
+	set_hero.modulate.a = 0.5 if not is_hero else 1.0
+	
+	if is_hero:
+		type_describe.text = "A powerful individual who stands above the common soldier. Heroes fight alone, possessing exceptional endurance and the ability to turn the tide of battle."
+		
+	else:
+		type_describe.text = "The backbone of every army. A squad is a group of soldiers fighting together as a single battlefield formation."
+		
 func show_shield_option():
 	var index = dup_squad_data.member_melee_weapon_idx
 	var compatible = index in shield_melee_weapons

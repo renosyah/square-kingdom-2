@@ -9,6 +9,7 @@ const buff_debuff_icon = [
 	preload("res://assets/user_interface/icons/attack.png"),#5
 	preload("res://assets/user_interface/icons/arrow_up.png"),#6
 	preload("res://assets/user_interface/icons/movement_mode.png"),#7
+	preload("res://assets/user_interface/icons/defend.png"),#8
 ]
 
 const buff_color = preload("res://assets/squad_buff_debuff_indicator/buff_color.tres")

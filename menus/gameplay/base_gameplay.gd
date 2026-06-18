@@ -571,9 +571,7 @@ func _on_ui_route_button_pressed():
 
 	for squad in dup:
 		squad.retreat()
-		
-		if not setting.lock_command:
-			squad.click() # unselected
+		squad.click() # unselected
 		
 func _on_use_ability():
 	if selected_squads.empty():
@@ -643,16 +641,24 @@ func use_squad_ability(squad :BaseSquad):
 				
 		8: # +50% damage resistance, -50% attack speed,& -75% speed, for 25 sec
 			squad.add_modifiers([
-				[2, 0.75, 25, 1],
-				[3, 0.5, 25, 1],
+				[2, 0.75, 25, 0],
 				[0, 0.5, 25, 0],
-				[1, 0.5, 25, 3]
+				[1, 0.5, 25, 0],
+				[3, 1.5, 25, 8],
 			])
 			
 		9: # -50% attack speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				enemy.add_modifiers([[1, 0.5, 10, 3]])
+				
+		10: # -25% defence & 50% slower
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				enemy.add_modifiers([
+					[2, 0.5, 15, 0],
+					[3, 0.75, 25, 8],
+				])
 			
 	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
 	

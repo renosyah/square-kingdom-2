@@ -704,7 +704,7 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	if _has_shield and randf() < 0.20:
 		return
 		
-	var dmg :int = int(amount * damage_receive_mul)
+	var dmg :int = int(amount / damage_receive_mul)
 	
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
@@ -1023,13 +1023,14 @@ remotesync func _add_modifiers(datas :Array):
 		
 		_expired_modifier[type] = _expired
 		
-		var ind = indicator.instance()
-		ind.icon_idx = icon_idx
-		ind.is_buff = value > 1.0
-		add_child(ind)
-		ind.set_as_toplevel(true)
-		ind.translation = global_position
-		ind.rotation.y = 0
+		if icon_idx != 0:
+			var ind = indicator.instance()
+			ind.icon_idx = icon_idx
+			ind.is_buff = value > 1.0
+			add_child(ind)
+			ind.set_as_toplevel(true)
+			ind.translation = global_position
+			ind.rotation.y = 0
 		
 		_set_multiplier(type, value)
 		additional += 1

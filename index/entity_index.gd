@@ -204,6 +204,16 @@ const squad_abilities = [
 		"cooldown" : 50.0,
 		"required_enemy": true,
 	},
+	{
+		# melee pitchfork weapon 10
+		"name": "Riot!",
+		"icon": preload("res://assets/user_interface/ability/riot_ability.png"),
+		"detail": "All rise agains tyrant!, temporary weaken enemy defence by 25% and slow them by 50% for 15 second",
+		"type": "melee",
+		"weapon_idx": 1,
+		"cooldown" : 60.0,
+		"required_enemy": true,
+	},
 ]
 
 const squad_icon = [
