@@ -4,3 +4,4 @@
 
 [node name="guard_tower_squad" type="Spatial"]
 script = ExtResource( 1 )
+rapid_fire_mode = true

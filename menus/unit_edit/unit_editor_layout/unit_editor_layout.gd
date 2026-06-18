@@ -48,6 +48,10 @@ const shields = {
 	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
 	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
 }
+const fire_modes = {
+	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 
+	1 :["Rappid!", preload("res://assets/user_interface/ability/rappid_fire.png")], 
+}
 
 export var player_color_idx :int
 export var player_material :SpatialMaterial
@@ -74,6 +78,8 @@ onready var shield_holder = $Control/Control/VBoxContainer2/HBoxContainer/Margin
 onready var shield_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option
 onready var abilities_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/MarginContainer6/abilities_holder
 onready var ability_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/ability_desc
+onready var fire_mode_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option
+onready var fire_mode_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option/MarginContainer7/fire_mode_holder
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -226,6 +232,20 @@ func display_shield(selected_index :int):
 		shield_holder.add_child(item)
 		item.set_selected(key == selected_index)
 		
+func display_fire_mode(selected_index :int):
+	for i in fire_mode_holder.get_children():
+		fire_mode_holder.remove_child(i)
+		i.queue_free()
+		
+	for key in fire_modes.keys():
+		var item = equipment_item_scene.instance()
+		item.index = key
+		item.icon = fire_modes[key][1]
+		item.item_name = fire_modes[key][0]
+		item.connect("selected", self, "_on_fire_mode_selected", [key])
+		fire_mode_holder.add_child(item)
+		item.set_selected(key == selected_index)
+		
 func display_abilities(s :SquadData, selected_index :int):
 	for i in abilities_holder.get_children():
 		abilities_holder.remove_child(i)
@@ -299,6 +319,9 @@ func show_shield_option():
 	if not compatible:
 		dup_squad_data.member_shield_idx = 0
 	
+func show_fire_mode_option():
+	fire_mode_option.visible = dup_squad_data.member_range_weapon_idx != 0
+	
 func display_attribute():
 	squad_name.text = dup_squad_data.squad_name
 	potrait_display.texture = EntityIndex.squad_potraits[dup_squad_data.potrait_idx]
@@ -346,6 +369,8 @@ func _on_melee_weapon_selected(index :int):
 func _on_range_weapon_selected(index :int):
 	dup_squad_data.member_range_weapon_idx = index
 	display_range_weapons(index)
+	show_fire_mode_option()
+	
 	infantry_member.range_weapon = EntityIndex.range_weapons[index]
 	infantry_member.apply_equipment()
 	
@@ -374,6 +399,10 @@ func _on_shield_selected(index :int):
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
 	display_abilities(dup_squad_data, 0)
+	
+func _on_fire_mode_selected(index :int):
+	dup_squad_data.range_fire_mode = index
+	display_fire_mode(index)
 	
 func _on_ability_selected(index :int):
 	dup_squad_data.squad_ability_idx = index
@@ -419,11 +448,13 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_headgear(dup_squad_data.member_headgear_idx)
 	display_armor(dup_squad_data.member_armor_idx)
 	display_shield(dup_squad_data.member_shield_idx)
+	display_fire_mode(dup_squad_data.range_fire_mode)
 	display_role(dup_squad_data.squad_role)
 	display_hero(dup_squad_data.is_hero)
 	display_abilities(dup_squad_data, dup_squad_data.squad_ability_idx)
 	display_attribute()
 	show_shield_option()
+	show_fire_mode_option()
 	
 	infantry_member.apply_equipment()
 	

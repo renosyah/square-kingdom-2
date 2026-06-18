@@ -2,10 +2,15 @@ extends InfantrySquad
 class_name GuardTowerSquad
 
 func _ready():
+	rapid_fire_mode = true
 	enable_squad_tile_indicator = false
 	
 func _on_setting_updated(d :SettingData):
 	enable_blood = d.extra_effect
+	
+func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
+	var dmg = attack_damage * 8
+	._on_member_set_damage_to_tile(_member, tile_id, dmg)
 	
 func _init_formations():
 	#._init_formations()
@@ -29,34 +34,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 	
 	# range attack only
 	_perform_range_attack()
-
-# custom range attack
-# making rapid fire mode
-func _perform_range_attack():
-	if not _has_range_weapon:
-		return
-		
-	if _range_attack_timer.is_stopped():
-		_range_attack_timer.wait_time = 0.4
-		_range_attack_timer.start()
-		
-		var iddles :Array = get_iddle_members()
-		if iddles.empty():
-			return
-			
-		for i in _members:
-			i.prepare_range_weapon()
-			
-		var enemy_member :SquadMember = enemy.pick_member(false)
-		var target_idx :int = enemy.get_member_index(enemy_member)
-		if target_idx == -1:
-			return
-			
-		var m :SquadMember = iddles.pick_random()
-		m.target_idx = target_idx
-		m.enemy = enemy_member
-		m.range_attack()
-
+	
 func update_spotting():
 	#.update_spotting()
 	

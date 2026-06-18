@@ -54,6 +54,8 @@ var melee_attack_speed_mul :float = 0.0
 var range_attack_speed_mul :float = 0.0
 var damage_receive_mul :float = 0.0
 var speed_mul :float = 0.0
+var melee_damage_mul :float = 0.0
+var range_damage_mul :float = 0.0
 
 export var member_headgear :PackedScene
 export var member_armor :PackedScene
@@ -71,6 +73,7 @@ export var squad_role :int
 export var squad_icon :StreamTexture
 export var squad_attribute :Array
 export var squad_ability_idx :int = 0
+export var rapid_fire_mode :bool = false
 
 var member_alive :int
 
@@ -356,7 +359,7 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 		
 	# set damage to random member
 	var idx :int = enemy_squad.get_member_index(members.pick_random())
-	enemy_squad.take_damage(attack_damage, idx, get_path())
+	enemy_squad.take_damage(_get_attack_damage(1, attack_damage), idx, get_path())
 	
 func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
 	if not _is_master:
@@ -371,7 +374,7 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 	if _is_on_flank_of(target.squad):
 		dmg = attack_damage * 2
 		
-	target.squad.take_damage(dmg, target_member_idx, get_path())
+	target.squad.take_damage(_get_attack_damage(0, dmg), target_member_idx, get_path())
 	
 func _on_local_member_die(member :SquadMember, idx :int):
 	_member_deads_pending.append([idx, member.attacked_by])
@@ -709,7 +712,7 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 		
 	attacked_by = from
 	
-	var dmg :int = _get_damage(amount)
+	var dmg :int = _get_damage_receive(amount)
 	var m :SquadMember = _members[member_idx]
 	m.attacked_by = attacked_by
 	m.take_damage(dmg)
@@ -994,7 +997,8 @@ func start_ability_cooldown(v :float):
 var _expired_modifier :Dictionary = {} # [type:timer]
 
 # type :int, value :float, expired :float, icon_idx
-# type buff debuff : 0=melee, 1:range, 2:speed, 3:damage, value is percentage
+# type buff debuff : 
+# 0=melee speed, 1:range speed, 2:move speed, 3:damage receive, 4:melee damage, 5:range damage, value is percentage
 func set_modifiers(datas :Array):
 	rpc("_set_modifiers", datas)
 	
@@ -1043,7 +1047,17 @@ func _set_multiplier(type :int, v :float):
 		3:
 			damage_receive_mul = v
 			
-func _get_damage(unmod :int) -> int:
+			
+func _get_attack_damage(type:int, unmod :int) -> int:
+	match type:
+		0:
+			return int(unmod * (1.0 + melee_damage_mul))
+		1:
+			return int(unmod * (1.0 + range_damage_mul))
+	
+	return unmod
+	
+func _get_damage_receive(unmod :int) -> int:
 	var _v = unmod * (1.0 + damage_receive_mul)
 	return int(max(_v, 1))
 	
@@ -1054,6 +1068,11 @@ func _get_melee_attack_speed() -> float:
 	return melee_attack_speed / (1.0 + melee_attack_speed_mul)
 	
 func _get_range_attack_speed() -> float:
+	if rapid_fire_mode:
+		var count = max(member_alive, 1)
+		var spd = clamp(range_attack_speed / count * 1.1, 0.1, range_attack_speed)
+		return spd / (1.0 + range_attack_speed_mul) 
+		
 	return range_attack_speed / (1.0 + range_attack_speed_mul) 
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):

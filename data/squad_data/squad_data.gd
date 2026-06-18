@@ -54,6 +54,7 @@ export var total_member :int = 9
 
 # choosen ability
 export var squad_ability_idx :int = 0
+export var range_fire_mode :int = 0 # 0:volley 1:rappid
 
 # this is for siege engine
 # because i cant get the stats of the engines
@@ -200,6 +201,7 @@ func from_dictionary(_data : Dictionary):
 	is_hero = _data["v6"]
 	is_commander = _data["v7"]
 	squad_ability_idx = _data["v8"]
+	range_fire_mode = _data["v9"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -234,6 +236,7 @@ func to_dictionary() -> Dictionary :
 	_data["v6"] = is_hero
 	_data["v7"] = is_commander
 	_data["v8"] = squad_ability_idx
+	_data["v9"] = range_fire_mode
 	return _data
 	
 

@@ -301,6 +301,18 @@ func _perform_range_attack():
 		for i in _members:
 			i.prepare_range_weapon()
 			
+		if rapid_fire_mode:
+			var enemy_member :SquadMember = enemy.pick_member(false)
+			var target_idx :int = enemy.get_member_index(enemy_member)
+			if target_idx == -1:
+				return
+			
+			var m :SquadMember = iddles.pick_random()
+			m.target_idx = target_idx
+			m.enemy = enemy_member
+			m.range_attack()
+			return
+			
 		for i in iddles:
 			var enemy_member :SquadMember = enemy.pick_member(false)
 			var target_idx :int = enemy.get_member_index(enemy_member)
