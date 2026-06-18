@@ -103,6 +103,10 @@ func stop(use_rpc :bool = true):
 remote func _stop():
 	_is_moving = false
 	_paths.clear()
+	on_stop()
+	
+func on_stop():
+	pass
 	
 # only mechanic for puppet side only
 func set_spotted(v :bool):

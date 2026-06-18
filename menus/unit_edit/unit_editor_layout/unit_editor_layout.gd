@@ -225,14 +225,13 @@ func display_shield(selected_index :int):
 		shield_holder.add_child(item)
 		item.set_selected(key == selected_index)
 		
-func display_abilities(current_melee_weapon_idx :int, current_range_weapon_idx :int, selected_index :int):
+func display_abilities(s :SquadData, selected_index :int):
 	for i in abilities_holder.get_children():
 		abilities_holder.remove_child(i)
 		i.queue_free()
 		
 	var abilities = EntityIndex.squad_abilities
 	ability_desc.text = "No Ability selected"
-	
 	
 	# for none
 	var item_null = equipment_item_scene.instance()
@@ -243,15 +242,20 @@ func display_abilities(current_melee_weapon_idx :int, current_range_weapon_idx :
 	abilities_holder.add_child(item_null)
 	item_null.set_selected(0 == selected_index)
 	
-	for idx in [1,2,3,4]:
+	for idx in abilities.size():
+		if idx == 0:
+			continue
+			
 		var is_melee = abilities[idx]["type"] == "melee"
 		var is_range = abilities[idx]["type"] == "range"
+		var is_shield = abilities[idx]["type"] == "shield"
 		var weapon_idx = abilities[idx]["weapon_idx"]
 		
-		var for_melee = is_melee and weapon_idx == current_melee_weapon_idx
-		var for_range = is_range and weapon_idx == current_range_weapon_idx
+		var for_melee = is_melee and weapon_idx == s.member_melee_weapon_idx
+		var for_range = is_range and weapon_idx == s.member_range_weapon_idx
+		var for_shield = is_shield and s.member_shield_idx != 0
 		
-		if not for_melee and not for_range:
+		if not for_melee and not for_range and not for_shield:
 			continue
 		
 		var is_selected = (idx == selected_index)
@@ -330,11 +334,7 @@ func _on_melee_weapon_selected(index :int):
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
-	
-	display_abilities(
-		index,
-		dup_squad_data.member_range_weapon_idx, 0
-	)
+	display_abilities(dup_squad_data, 0)
 	
 func _on_range_weapon_selected(index :int):
 	dup_squad_data.member_range_weapon_idx = index
@@ -344,11 +344,7 @@ func _on_range_weapon_selected(index :int):
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
-	
-	display_abilities(
-		dup_squad_data.member_melee_weapon_idx,
-		index, 0
-	)
+	display_abilities(dup_squad_data, 0)
 	
 func _on_headgear_selected(index :int):
 	dup_squad_data.member_headgear_idx = index
@@ -368,13 +364,13 @@ func _on_shield_selected(index :int):
 	infantry_member.shield = EntityIndex.shields[index]
 	infantry_member.apply_equipment()
 	
+	# nah just set it to none if changes
+	dup_squad_data.squad_ability_idx = 0
+	display_abilities(dup_squad_data, 0)
+	
 func _on_ability_selected(index :int):
 	dup_squad_data.squad_ability_idx = index
-	display_abilities(
-		dup_squad_data.member_melee_weapon_idx,
-		dup_squad_data.member_range_weapon_idx,
-		index
-	)
+	display_abilities(dup_squad_data, index)
 	
 func _on_squad_card_pressed(idx:int, squad :SquadData):
 	selected_index = idx
@@ -390,6 +386,18 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	dup_squad_data.squad_id = 1
 	dup_squad_data.description = "Custom Squad"
 	
+	# for shield scinanigan, 
+	# i regret made this shield and unshield varian 
+	# but what ever
+	if dup_squad_data.member_shield_idx != 0:
+		var reverse = {}
+		for key in shield_melee_weapons.keys():
+			var value = shield_melee_weapons[key]
+			reverse[value] = key
+			
+		# switch to unshielded version
+		dup_squad_data.member_melee_weapon_idx = reverse[dup_squad_data.member_melee_weapon_idx]
+		
 	infantry_member.headgear = EntityIndex.head_armors[dup_squad_data.member_headgear_idx]
 	infantry_member.armor = EntityIndex.armors[dup_squad_data.member_armor_idx]
 	infantry_member.shield = EntityIndex.shields[dup_squad_data.member_shield_idx]
@@ -405,11 +413,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_shield(dup_squad_data.member_shield_idx)
 	display_role(dup_squad_data.squad_role)
 	display_hero(dup_squad_data.is_hero)
-	display_abilities(
-		dup_squad_data.member_melee_weapon_idx,
-		dup_squad_data.member_range_weapon_idx,
-		dup_squad_data.squad_ability_idx
-	)
+	display_abilities(dup_squad_data, dup_squad_data.squad_ability_idx)
 	display_attribute()
 	show_shield_option()
 	

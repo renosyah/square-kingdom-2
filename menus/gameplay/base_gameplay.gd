@@ -565,20 +565,26 @@ func _on_ui_reset_camera():
 	movable_camera.rotation_degrees.y = 45
 	
 func _on_ui_route_button_pressed():
-	if selected_squads.empty():
+	var dup :Array = selected_squads.duplicate() # must use dup pointer
+	if dup.empty():
 		return
-		
-	for i in selected_squads:
-		i.attack_move = false
-		
-	_move_squad_to(tile_map.get_tile(player_spawn_points[current_player.player_id]), false)
 
+	for squad in dup:
+		squad.retreat()
+		
+		if not setting.lock_command:
+			squad.click() # unselected
+		
 func _on_use_ability():
 	if selected_squads.empty():
 		return
 		
-	use_squad_ability(selected_squads[0])
+	var squad :BaseSquad = selected_squads[0]
+	use_squad_ability(squad)
 	
+	if not setting.lock_command:
+		squad.click() # unselected
+		
 	if not ui_sound.playing:
 		ui_sound.stream = buff
 		ui_sound.play()
@@ -619,9 +625,37 @@ func use_squad_ability(squad :BaseSquad):
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				enemy.add_modifiers([[2, 0.5, 15, 1]])
+				
+		5:# +50% speed for 10 sec
+			squad.add_modifiers([[2, 1.5, 10, 7]])
+			
+		6: # set enemy flee
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				if squad.is_in_melee_range(enemy):
+					enemy.add_modifiers([[2, 0.5, 15, 3]])
+					enemy.retreat()
+					
+		7: # -50% speed for 15 sec
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				enemy.add_modifiers([[2, 0.8, 15, 1]])
+				
+		8: # +50% damage resistance, -50% attack speed,& -75% speed, for 25 sec
+			squad.add_modifiers([
+				[2, 0.75, 25, 1],
+				[3, 0.5, 25, 1],
+				[0, 0.5, 25, 0],
+				[1, 0.5, 25, 3]
+			])
+			
+		9: # -50% attack speed for enemy
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				enemy.add_modifiers([[1, 0.5, 10, 3]])
 			
 	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
-			
+	
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
 	if idx > 0 and selected_squads.empty():
@@ -811,6 +845,9 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		play_squad_spawn(data.is_commander)
+		
+	if squad.squad_ability_idx != 0:
+		squad.start_ability_cooldown(EntityIndex.squad_abilities[squad.squad_ability_idx]["cooldown"])
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():

@@ -52,6 +52,7 @@ export var formation_density :float = 0.35
 
 var melee_attack_speed_mul :float = 1.0
 var range_attack_speed_mul :float = 1.0
+var damage_receive_mul :float = 1.0
 var speed_mul :float = 1.0
 
 export var member_headgear :PackedScene
@@ -435,6 +436,38 @@ func last_sync_update() -> void:
 func has_range_weapon() -> bool:
 	return _has_range_weapon
 	
+func retreat(use_rpc :bool = true):
+	if reinfoce_tiles.empty():
+		return
+		
+	if _is_master or not use_rpc:
+		_retreat()
+		return
+		
+	# call stop, tell master to stop from other peer
+	rpc_id(get_network_master(), "_retreat")
+	
+remote func _retreat():
+	if reinfoce_tiles.empty():
+		return
+		
+	_is_moving = false
+	_paths.clear()
+	
+	attack_move = false
+	_has_enemy = false
+	enemy = null
+	chase_enemy = null
+	
+	_move_to(reinfoce_tiles.pick_random(), true)
+	
+func on_stop():
+	.on_stop()
+	
+	_has_enemy = false
+	enemy = null
+	chase_enemy = null
+	
 func moving(delta :float) -> void:
 	.moving(delta)
 	
@@ -671,6 +704,8 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	if _has_shield and randf() < 0.20:
 		return
 		
+	var dmg :int = int(amount * damage_receive_mul)
+	
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
@@ -679,10 +714,10 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	var m :SquadMember = _members[member_idx]
 	m.attacked_by = attacked_by
 	
-	if amount > 0:
+	if dmg > 0:
 		m.take_damage(amount)
 		
-	_taking_damages_pending.append([amount, m.hp, member_idx, from])
+	_taking_damages_pending.append([dmg, m.hp, member_idx, from])
 	
 remotesync func _resurect(member_idx :int):
 	if member_idx > _members.size() - 1 or member_idx == -1:
@@ -955,18 +990,11 @@ func start_ability_cooldown(v :float):
 	if _ability_cooldown.is_stopped():
 		_ability_cooldown.wait_time = v
 		_ability_cooldown.start()
-		
-const buff_debuff_icon = [
-	null,
-	preload("res://assets/user_interface/icons/arrow_down.png"), #1
-	preload("res://assets/user_interface/icons/angry.png"), #2
-	preload("res://assets/user_interface/icons/scare.png"), #3
-	preload("res://assets/user_interface/icons/hand_stop.png"),#4
-	preload("res://assets/user_interface/icons/attack.png"),#5
-]
+	
+var _expired_modifier :Dictionary = {} # [type:timer]
 
 # type :int, value :float, expired :float, icon_idx
-# type buff debuff : 0=melee, 1:range, value is percentage
+# type buff debuff : 0=melee, 1:range, 2:speed, 3:damage, value is percentage
 func add_modifiers(datas :Array):
 	rpc("_add_modifiers", datas)
 	
@@ -980,6 +1008,11 @@ remotesync func _add_modifiers(datas :Array):
 		var expired :float = i[2]
 		var icon_idx :int = i[3]
 		
+		if _expired_modifier.has(type):
+			_expired_modifier[type].stop()
+			_expired_modifier[type].queue_free()
+			_expired_modifier.erase(type)
+			
 		var _expired = Timer.new()
 		_expired.one_shot = true
 		_expired.autostart = false
@@ -988,8 +1021,10 @@ remotesync func _add_modifiers(datas :Array):
 		add_child(_expired)
 		_expired.start()
 		
+		_expired_modifier[type] = _expired
+		
 		var ind = indicator.instance()
-		ind.icon = buff_debuff_icon[icon_idx]
+		ind.icon_idx = icon_idx
 		ind.is_buff = value > 1.0
 		add_child(ind)
 		ind.set_as_toplevel(true)
@@ -1004,6 +1039,7 @@ remotesync func _add_modifiers(datas :Array):
 func _on_buff_debuff_expired(type :int, timer :Timer):
 	timer.queue_free()
 	_set_multiplier(type, 1)
+	_expired_modifier.erase(type)
 	
 func _set_multiplier(type :int, v :float):
 	match type:
@@ -1013,6 +1049,8 @@ func _set_multiplier(type :int, v :float):
 			range_attack_speed_mul = v
 		2:
 			speed_mul = v
+		3:
+			damage_receive_mul = v
 			
 func get_speed() -> float:
 	return speed * speed_mul

@@ -142,8 +142,7 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	
 	# retreaat!
 	if conditions.has(true):
-		squad.attack_move = false
-		squad.move_to(player_spawn_points[squad.player_id])
+		squad.retreat(false)
 	
 func _on_bot_bandit_spawner_timer_timeout():
 	if is_end:

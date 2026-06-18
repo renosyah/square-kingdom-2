@@ -117,8 +117,8 @@ func _check_squad_ability():
 	
 	var ability = EntityIndex.squad_abilities[squad.squad_ability_idx]
 	ability_button.squad = squad
-	ability_button.required_enemy_in_melee = ability["type"] == "melee"
-	ability_button.required_enemy_in_range = ability["type"] == "range"
+	ability_button.required_enemy_in_melee = ability["type"] == "melee" and ability["required_enemy"]
+	ability_button.required_enemy_in_range = ability["type"] == "range" and ability["required_enemy"]
 	ability_button.set_ability_icon(ability["name"], ability["icon"])
 	
 func add_squad_card(squad :BaseSquad, data :SquadData):
