@@ -17,6 +17,7 @@ const debuff_color = preload("res://assets/squad_buff_debuff_indicator/debuff_co
 
 export var icon_idx :int
 export var is_buff :bool
+var squad :BaseSquad
 
 onready var mesh_instance = $MeshInstance
 onready var sprite_3d = $Sprite3D
@@ -25,6 +26,10 @@ func _ready():
 	sprite_3d.texture = buff_debuff_icon[icon_idx]
 	sprite_3d.modulate = Color.green if is_buff else Color.red
 	mesh_instance.set_surface_material(0, buff_color if is_buff else debuff_color)
+	
+func _process(delta):
+	if is_instance_valid(squad):
+		translation = squad.get_current_tile_v3()
 	
 func _on_AnimationPlayer_animation_finished(anim_name):
 	queue_free()

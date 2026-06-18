@@ -7,7 +7,7 @@ signal on_squad_member_dead(squad, member)
 signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
 signal on_squad_dead(unit)
-signal on_squad_added_modifier(squad, type, value)
+signal on_squad_set_modifier(squad, datas)
 
 const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_1.wav"),
@@ -50,10 +50,10 @@ export var melee_attack_speed :float = 0.8
 export var range_attack_speed :float = 0.8
 export var formation_density :float = 0.35
 
-var melee_attack_speed_mul :float = 1.0
-var range_attack_speed_mul :float = 1.0
-var damage_receive_mul :float = 1.0
-var speed_mul :float = 1.0
+var melee_attack_speed_mul :float = 0.0
+var range_attack_speed_mul :float = 0.0
+var damage_receive_mul :float = 0.0
+var speed_mul :float = 0.0
 
 export var member_headgear :PackedScene
 export var member_armor :PackedScene
@@ -704,16 +704,15 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	if _has_shield and randf() < 0.20:
 		return
 		
-	var dmg :int = int(max(1, amount / damage_receive_mul))
-	
 	if member_idx > _members.size() - 1 or member_idx == -1:
 		return
 		
 	attacked_by = from
 	
+	var dmg :int = _get_damage(amount)
 	var m :SquadMember = _members[member_idx]
 	m.attacked_by = attacked_by
-	m.take_damage(amount)
+	m.take_damage(dmg)
 	
 	_taking_damages_pending.append([dmg, m.hp, member_idx, from])
 	
@@ -933,6 +932,9 @@ func _is_still_in_ranges(target) -> bool:
 			
 	return _is_still_in_melee_range(target)
 	
+func get_current_tile_v3() -> Vector3:
+	return _current_tile_v3
+	
 func is_in_melee_range(target) -> bool:
 	return _is_still_in_melee_range(target)
 	
@@ -993,16 +995,15 @@ var _expired_modifier :Dictionary = {} # [type:timer]
 
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 0=melee, 1:range, 2:speed, 3:damage, value is percentage
-func add_modifiers(datas :Array):
-	rpc("_add_modifiers", datas)
+func set_modifiers(datas :Array):
+	rpc("_set_modifiers", datas)
 	
-remotesync func _add_modifiers(datas :Array):
+remotesync func _set_modifiers(datas :Array):
 	var additional :float = 1.0
-	var indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 	
 	for i in datas:
 		var type :int = i[0]
-		var value :float = i[1]
+		var value :float = clamp(i[1], -0.99, 0.99)
 		var expired :float = i[2]
 		var icon_idx :int = i[3]
 		
@@ -1021,23 +1022,14 @@ remotesync func _add_modifiers(datas :Array):
 		
 		_expired_modifier[type] = _expired
 		
-		if icon_idx != 0:
-			var ind = indicator.instance()
-			ind.icon_idx = icon_idx
-			ind.is_buff = value > 1.0
-			add_child(ind)
-			ind.set_as_toplevel(true)
-			ind.translation = global_position
-			ind.rotation.y = 0
-		
 		_set_multiplier(type, value)
 		additional += 1
 		
-		emit_signal("on_squad_added_modifier", self, type, value)
+		emit_signal("on_squad_set_modifier", self, i)
 	
 func _on_buff_debuff_expired(type :int, timer :Timer):
 	timer.queue_free()
-	_set_multiplier(type, 1)
+	_set_multiplier(type, 0)
 	_expired_modifier.erase(type)
 	
 func _set_multiplier(type :int, v :float):
@@ -1051,14 +1043,18 @@ func _set_multiplier(type :int, v :float):
 		3:
 			damage_receive_mul = v
 			
-func get_speed() -> float:
-	return speed * speed_mul
+func _get_damage(unmod :int) -> int:
+	var _v = unmod * (1.0 + damage_receive_mul)
+	return int(max(_v, 1))
 	
-func get_melee_attack_speed() -> float:
-	return melee_attack_speed / melee_attack_speed_mul
+func _get_speed() -> float:
+	return speed * (1.0 + speed_mul)
 	
-func get_range_attack_speed() -> float:
-	return range_attack_speed / range_attack_speed_mul
+func _get_melee_attack_speed() -> float:
+	return melee_attack_speed / (1.0 + melee_attack_speed_mul)
+	
+func _get_range_attack_speed() -> float:
+	return range_attack_speed / (1.0 + range_attack_speed_mul) 
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position

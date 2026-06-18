@@ -258,7 +258,7 @@ func _on_enemy_in_range(delta :float, pos :Vector3, enemy_pos :Vector3):
 
 func _perform_melee_attack():
 	if _melee_attack_timer.is_stopped():
-		_melee_attack_timer.wait_time = get_melee_attack_speed()
+		_melee_attack_timer.wait_time = _get_melee_attack_speed()
 		_melee_attack_timer.start()
 		
 		_melee_engagement = true
@@ -288,7 +288,7 @@ func _perform_range_attack():
 		return
 		
 	if _range_attack_timer.is_stopped():
-		_range_attack_timer.wait_time = get_range_attack_speed()
+		_range_attack_timer.wait_time = _get_range_attack_speed()
 		_range_attack_timer.start()
 		
 		_range_engagement = true
@@ -323,6 +323,6 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	var t:Transform = transform.looking_at(look, Vector3.UP)
 	transform = transform.interpolate_with(t, turning_speed * delta)
 	
-	var _speed = (get_speed() * 0.5) if attack_move else get_speed()
+	var _speed = (_get_speed() * 0.5) if attack_move else _get_speed()
 	translation += pos.direction_to(to) * _speed * delta
 	translation.y = to.y

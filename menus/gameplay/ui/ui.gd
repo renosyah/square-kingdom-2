@@ -125,6 +125,7 @@ func _check_squad_ability():
 	else:
 		ability_button.required_enemy_in_melee = false
 		ability_button.required_enemy_in_range = false
+		ability_button.disabled = false
 		
 	ability_button.set_ability_icon(ability["name"], ability["icon"])
 	

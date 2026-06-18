@@ -596,7 +596,6 @@ func use_squad_ability(squad :BaseSquad):
 	if squad.get_ability_cooldown()[0]:
 		return
 		
-	
 	var icon_scared = 3
 	var icon_debuff = 1
 	var icon_shield = 8
@@ -607,69 +606,69 @@ func use_squad_ability(squad :BaseSquad):
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
 					var icon_hand_stop = 4
-					enemy.add_modifiers([[2, 0.5, 15, icon_hand_stop]])
+					enemy.set_modifiers([[2, -0.50, 15, icon_hand_stop]])
 					enemy.stop()
 				
 		2: # enemy -50% attack speed for 25 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.add_modifiers([
-						[0, 0.5, 25, 0], # melee attack speed
-						[1, 0.5, 25, icon_scared] # range attack speed 
+					enemy.set_modifiers([
+						[0, -0.50, 25, 0], # melee attack speed
+						[1, -0.50, 25, icon_scared] # range attack speed 
 					])
 				
-		3: # +50% melee attack speed for 15 sec
+		3: # +50% melee attack speed and +20% movement speed for 15 sec
 			var icon_angry = 2
-			squad.add_modifiers([
-				[0, 1.5, 15, icon_angry], # melee attack speed
-				[2, 1.2, 25, 0], # movement speed
+			squad.set_modifiers([
+				[0, 0.50, 15, icon_angry], # melee attack speed
+				[2, 0.20, 25, 0], # movement speed
 			])
 			
 		4:# +50% range attack speed for 15 sec
 			var icon_aim = 5
-			squad.add_modifiers([[1, 1.5, 15, icon_aim]]) # range attack speed 
+			squad.set_modifiers([[1, 0.50, 15, icon_aim]]) # range attack speed 
 			
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_modifiers([[2, 0.5, 15, icon_debuff]]) # movement speed
+				enemy.set_modifiers([[2, -0.50, 15, icon_debuff]]) # movement speed
 				
 		5:# +50% speed for 10 sec
 			var icon_run = 7
-			squad.add_modifiers([[2, 1.5, 10, icon_run]])
+			squad.set_modifiers([[2, 0.50, 10, icon_run]]) # movement speed
 			
 		6: # set enemy flee
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.add_modifiers([[2, 0.5, 15, icon_scared]]) # movement speed
+					enemy.set_modifiers([[2, -0.50, 15, icon_scared]]) # movement speed
 					enemy.retreat()
 					
 		7: # -80% move speed for 15 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_modifiers([[2, (1.0 - 0.8), 15, icon_debuff]]) # movement speed
+				enemy.set_modifiers([[2, -0.80, 15, icon_debuff]]) # movement speed
 				
-		8: # +50% damage resistance, -50% attack speed,& -75% move speed, for 25 sec
-			squad.add_modifiers([
-				[3, 1.5, 25, icon_shield], # damage receive
-				[0, 0.5, 25, 0], # melee attack speed
-				[1, 0.5, 25, 0], # range attack speed 
-				[2, (1.0 - 0.75), 25, 0], # movement speed
+		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
+			squad.set_modifiers([
+				[3, -0.50, 25, icon_shield], # damage receive
+				[0, -0.50, 25, 0], # melee attack speed
+				[1, -0.50, 25, 0], # range attack speed 
+				[2, -0.25, 25, 0], # movement speed
 			])
 			
-		9: # -50% attack speed for enemy
+		9: # -50% range attack speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_modifiers([[1, 0.5, 10, icon_scared]]) # range attack speed
+				enemy.set_modifiers([[2, -0.50, 10, icon_scared]]) # range attack speed
 				
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.add_modifiers([
-					[2, 0.5, 15, 0], # movement speed
-					[3, (1.0 - 0.25), 25, icon_shield], # damage receive
+				enemy.set_modifiers([
+					[2, -0.50, 15, 0], # movement speed
+					[3, 0.25, 25, icon_shield], # damage receive
 				])
 			
 	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
@@ -812,7 +811,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_current_tile_updated", self, "_on_current_tile_updated")
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
-	squad.connect("on_squad_added_modifier", self, "_on_squad_added_modifier")
+	squad.connect("on_squad_set_modifier", self, "_on_squad_set_modifier")
 	
 	if squad is CavalrySquad:
 		squad.charge_damage = data.charge_damage()
@@ -927,9 +926,23 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	
 	if from.team == squad.team:
 		ui.scoreboard.add_friendly_fire(from_player, from_squad, 1)
+	
+const modifier_indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 
-func _on_squad_added_modifier(squad :BaseSquad, type :int, value :float):
-	if squad.player_id == current_player.player_id and value < 1.0:
+func _on_squad_set_modifier(squad :BaseSquad, datas :Array):
+	var type :float = datas[0]
+	var value :float = datas[1]
+	var icon_idx :int = datas[3]
+	var is_buff :bool = value > 0 if type != 3 else value < 0
+	
+	if icon_idx != 0:
+		var ind = modifier_indicator.instance()
+		ind.icon_idx = icon_idx
+		ind.is_buff = is_buff
+		ind.squad = squad
+		add_child(ind)
+	
+	if squad.player_id == current_player.player_id and not is_buff:
 		if not ui_sound.playing:
 			ui_sound.stream = debuff
 			ui_sound.play()
