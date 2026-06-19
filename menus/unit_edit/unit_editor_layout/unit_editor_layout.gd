@@ -315,14 +315,9 @@ func display_hero(is_hero :bool):
 		type_describe.text = "The backbone of every army. A squad is a group of soldiers fighting together as a single battlefield formation."
 		
 func show_shield_option():
-	var index = dup_squad_data.member_melee_weapon_idx
-	var compatible = index in shield_melee_weapons
+	var compatible = dup_squad_data.member_melee_weapon_idx in shield_melee_weapons
 	shield_option.visible = compatible
 	
-	# replace with shield variant
-	if compatible and dup_squad_data.member_shield_idx != 0:
-		dup_squad_data.member_melee_weapon_idx = shield_melee_weapons[index]
-		
 	if not compatible:
 		dup_squad_data.member_shield_idx = 0
 	
@@ -507,6 +502,12 @@ func _on_save_pressed():
 	snack_bar.text = "Squad Saved!"
 	snack_bar.show()
 	
+	# replace with shield variant
+	var member_melee_weapon_idx = dup_squad_data.member_melee_weapon_idx
+	var compatible = member_melee_weapon_idx in shield_melee_weapons
+	if compatible and dup_squad_data.member_shield_idx != 0:
+		dup_squad_data.member_melee_weapon_idx = shield_melee_weapons[member_melee_weapon_idx]
+		
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())
 	
