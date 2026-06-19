@@ -5,7 +5,7 @@ class_name SettingData
 export var camera_move_speed :float = 0.018 # 0.008 - 0.040
 export var camera_zoom_speed :float = 0.02 # 0.01 - 0.03
 export var camera_rotation_speed :float = 45.0 # 20 - 90
-export var lock_command :bool = true
+export var lock_command :bool = false
 export var show_unit_tile :bool = true
 export var show_feed :bool = true
 
@@ -18,7 +18,7 @@ export var mute :bool = false
 # graphic 
 export var shadow_type :int = 1
 export var enable_fog :bool = true
-export var enable_tilt_shift :bool = true
+export var enable_tilt_shift :bool = false
 export var light :float = 1
 export var extra_effect :bool = true
 export var profiler :int = 0 # 0:hide, 1:show, 2:show extended
