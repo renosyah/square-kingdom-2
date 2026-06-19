@@ -157,7 +157,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 16
 		"name": "Offering!",
 		"icon": preload("res://assets/user_interface/ability/give_food_ability.png"),
-		"detail": "Peasant offering food & drink, heal all nearby squad",
+		"detail": "Share food, water, and supplies with nearby allies, allowing them to recover health even while in combat. Fallen warriors cannot be restored.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 15.0,
@@ -167,7 +167,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 17
 		"name": "On Me!",
 		"icon": preload("res://assets/user_interface/ability/rally_ability.png"),
-		"detail": "Our hero is calling! nearby squad receive 25% attack speed, 15% speed and 15% attack damage for 10 second",
+		"detail": "Lead by example and rally nearby allies, granting +25% attack speed, +15% movement speed, and +15% damage for 25 seconds.",
 		"type": "hero",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 80.0,
