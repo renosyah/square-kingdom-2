@@ -339,7 +339,26 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 	var wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
 	var wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
 	var tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
+	var gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
 	
+	var gate_pos = [
+		Vector2.UP, Vector2.DOWN,
+		Vector2.LEFT, Vector2.RIGHT
+	]
+	var gate_orientation = [
+		0, 180,
+		90, -90
+	]
+	for idx in gate_pos.size():
+		var tile :Vector2 = tile_id + gate_pos[idx] * 2
+		var g = gate_scene.instance()
+		g.unit_position = tile_position_manager.get_positions()
+		g.material = Global.player_materials[p.color_idx]
+		tile_map.get_tile_instance(tile).add_child(g)
+		g.rotation_degrees.y = gate_orientation[idx]
+		g.tile_ids = [tile, tile + gate_pos[idx]]
+		g.team = p.team
+		
 	var corners = [
 		Vector2.UP + Vector2.RIGHT, # top - right
 		Vector2.UP + Vector2.LEFT, # top - left
@@ -579,10 +598,7 @@ func _on_ui_route_button_pressed():
 		squad.click() # unselected
 		
 func _on_use_ability():
-	if selected_squads.empty():
-		return
-		
-	var squad :BaseSquad = selected_squads[0]
+	var squad :BaseSquad = ui.squad_with_ability
 	AbilityHandle.use_squad_ability(squad, tile_position_manager)
 	
 	if not setting.lock_command:
@@ -868,7 +884,7 @@ func _on_squad_set_modifier(squad :BaseSquad, datas :Array):
 	
 	if icon_idx != 0:
 		var ind = modifier_indicator.instance()
-		ind.icon_idx = icon_idx
+		ind.icon = AbilityHandle.buff_debuff_icon[icon_idx]
 		ind.is_buff = is_buff
 		ind.squad = squad
 		add_child(ind)

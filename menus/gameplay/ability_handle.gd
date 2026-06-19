@@ -97,7 +97,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 10
 		"name": "Riot!",
 		"icon": preload("res://assets/user_interface/ability/riot_ability.png"),
-		"detail": "All rise agains tyrant!, temporary weaken enemy defence by 25% and slow them by 50% for 15 second",
+		"detail": "In the absolute chaos and confusion, Temporary weaken enemy defence by 25% and slow them down by 50% for 15 second",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 60.0,
@@ -157,7 +157,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 16
 		"name": "Offering!",
 		"icon": preload("res://assets/user_interface/ability/give_food_ability.png"),
-		"detail": "Share food, water, and supplies with nearby allies, allowing them to recover health even while in combat. Fallen warriors cannot be restored.",
+		"detail": "Carry food, water, and supplies to nearby allies, restoring some of their health even while in combat.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 15.0,
@@ -175,6 +175,21 @@ const squad_abilities = [
 	},
 ]
 
+const buff_debuff_icon = [
+	null,
+	preload("res://assets/user_interface/icons/arrow_down.png"), #1
+	preload("res://assets/user_interface/icons/angry.png"), #2
+	preload("res://assets/user_interface/icons/scare.png"), #3
+	preload("res://assets/user_interface/icons/hand_stop.png"),#4
+	preload("res://assets/user_interface/icons/attack.png"),#5
+	preload("res://assets/user_interface/icons/arrow_up.png"),#6
+	preload("res://assets/user_interface/icons/movement_mode.png"),#7
+	preload("res://assets/user_interface/icons/defend.png"),#8
+	preload("res://assets/user_interface/icons/heal.png"),#9
+	preload("res://assets/user_interface/icons/fist_up.png")#10
+	
+]
+
 static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
@@ -188,6 +203,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 	var icon_debuff = 1
 	var icon_buff = 6
 	var icon_scared = 3
+	var icon_run = 7
 	var icon_shield = 8
 	var icon_heal = 9
 	var icon_rally = 10
@@ -235,7 +251,6 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				enemy.set_modifiers([[speed, -0.50, 15, icon_debuff]]) # movement speed
 				
 		5:# +50% speed for 10 sec
-			var icon_run = 7
 			squad.set_modifiers([[speed, 0.50, 10, icon_run]]) # movement speed
 			
 		6: # set enemy flee
@@ -248,7 +263,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 		7: # -80% move speed for 15 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.80, 15, icon_debuff]]) # movement speed
+				enemy.set_modifiers([[speed, -0.80, 15, icon_run]]) # movement speed
 				
 		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
 			squad.set_modifiers([

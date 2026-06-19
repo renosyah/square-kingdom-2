@@ -65,6 +65,7 @@ onready var squad_holder = $Control/Control/VBoxContainer2/HBoxContainer/squad_c
 onready var squad_name = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/squad_name
 onready var viewport = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport
 onready var viewport_container = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer
+onready var template_squad_warning = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/template_squad_warning
 
 onready var horse = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse
 onready var movable_camera = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/movable_camera
@@ -422,6 +423,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	save.visible = (squad.squad_id != 0)
 	delete.visible = (squad.squad_id != 0)
 	create_new.visible = (squad.squad_id == 0)
+	template_squad_warning.visible = (squad.squad_id == 0)
 	
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())

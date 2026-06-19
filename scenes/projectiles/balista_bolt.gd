@@ -5,7 +5,7 @@ onready var setting_data = Global.setting_data
 
 func _ready():
 	trail_render.render = setting_data.extra_effect
-
+	
 func on_stop():
 	_age = 0
 	set_process(false)

@@ -113,7 +113,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource( 3 )
 expand = true
-stretch_mode = 1
+stretch_mode = 7
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
 margin_left = 164.0

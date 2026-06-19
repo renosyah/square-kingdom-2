@@ -59,7 +59,7 @@ align = 1
 valign = 1
 autowrap = true
 
-[node name="cooldown_bg" type="ColorRect" parent="."]
+[node name="disable_bg" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2

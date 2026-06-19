@@ -50,6 +50,8 @@ var current_movement_mode :int = 0 # 0:normal, 1:attack move
 var player_squads :Array # refrences
 var selected_squads :Array # refrences
 
+var squad_with_ability :BaseSquad = null
+
 func _ready():
 	orbital_camera_ui.visible = false
 	scoreboard.visible = false
@@ -105,18 +107,22 @@ func _check_squad_ability():
 	ability_container.visible = false
 	ability_button.visible = false
 	
-	if selected_squads.empty() or selected_squads.size() > 1:
+	if selected_squads.empty():
 		return
 		
-	var squad :BaseSquad = selected_squads[0]
-	if squad.squad_ability_idx == 0:
+	for squad in selected_squads:
+		if squad.squad_ability_idx != 0:
+			squad_with_ability = squad
+			break
+		
+	if not is_instance_valid(squad_with_ability):
 		return
 		
 	ability_container.visible = true
 	ability_button.visible = true
 	
-	var ability = AbilityHandle.squad_abilities[squad.squad_ability_idx]
-	ability_button.squad = squad
+	var ability = AbilityHandle.squad_abilities[squad_with_ability.squad_ability_idx]
+	ability_button.squad = squad_with_ability
 	
 	if ability["required_enemy"]:
 		ability_button.required_enemy_in_melee = ability["type"] == "melee"

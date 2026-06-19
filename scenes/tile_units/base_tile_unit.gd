@@ -54,7 +54,6 @@ var spotting_area :Array
 puppet var _puppet_current_tile :Vector2
 puppet var _puppet_translation :Vector3
 
-
 func move_to(tile_id :Vector2):
 	_move_to(tile_id, true)
 	
@@ -71,6 +70,12 @@ func _move_to(tile_id :Vector2, use_safe :bool):
 	_is_moving = true
 	_paths.clear()
 	_paths.append_array(v)
+	
+func has_next_path() -> bool:
+	return not _paths.empty() and _paths.size() > 1
+	
+func next_tile() -> Vector2:
+	return _paths[1].tile_id
 	
 func is_moving() -> bool:
 	return _is_moving

@@ -467,6 +467,7 @@ remote func _retreat():
 func on_stop():
 	.on_stop()
 	
+	_move_to_indicator.visible = false
 	_has_enemy = false
 	enemy = null
 	chase_enemy = null

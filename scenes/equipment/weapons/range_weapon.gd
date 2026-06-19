@@ -58,6 +58,6 @@ func shot_projectile(to :Vector3, v :bool):
 	var arrow = _get_pool()
 	arrow.visible = v
 	arrow.translation = global_position
-	arrow.to = to + Vector3.ONE * rand_range(-0.5,0.5)
+	arrow.to = to + Vector3.ONE * rand_range(-0.25,0.25)
 	arrow.launch()
 	
