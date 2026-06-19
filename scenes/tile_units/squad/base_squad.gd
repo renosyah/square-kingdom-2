@@ -38,7 +38,6 @@ const death_sounds = [
 	preload("res://assets/sounds/death/dead_5.wav"),
 	
 	preload("res://assets/sounds/death/wilhem_scream.wav"),
-	preload("res://assets/sounds/death/hidup_jokowi.wav"),
 	preload("res://assets/sounds/death/my_leg.wav")
 	
 ]
@@ -74,6 +73,7 @@ export var squad_icon :StreamTexture
 export var squad_attribute :Array
 export var squad_ability_idx :int = 0
 export var rapid_fire_mode :bool = false
+export var is_hero :bool
 
 var member_alive :int
 
@@ -662,9 +662,12 @@ func _on_heal_timer():
 		return
 		
 	_resurecting()
-	_healing()
+	healing()
 
-func _healing():
+func healing():
+	if not _is_master or is_dead:
+		return
+	
 	# heal first
 	var datas :Array = []
 	for idx in _members.size():
@@ -809,7 +812,7 @@ remotesync func _on_members_dead(datas :Array):
 	
 		# funny
 		if randf() < 0.08:
-			var _l = [5, 6, 7]
+			var _l = [5, 6]
 			_unit_audio.stream = death_sounds[_l.pick_random()]
 	
 		_unit_audio.play()
@@ -1046,6 +1049,10 @@ func _set_multiplier(type :int, v :float):
 			speed_mul = v
 		3:
 			damage_receive_mul = v
+		4:
+			melee_damage_mul = v
+		5:
+			range_damage_mul = v
 			
 			
 func _get_attack_damage(type:int, unmod :int) -> int:
@@ -1053,8 +1060,9 @@ func _get_attack_damage(type:int, unmod :int) -> int:
 		0:
 			return int(unmod * (1.0 + melee_damage_mul))
 		1:
-			return int(unmod * (1.0 + range_damage_mul))
-	
+			 # lest buff hero attack range
+			var v = unmod * 4 if is_hero else unmod
+			return int(v * (1.0 + range_damage_mul))
 	return unmod
 	
 func _get_damage_receive(unmod :int) -> int:

@@ -32,6 +32,7 @@ member_melee_weapon_idx = 6
 member_range_weapon_idx = 0
 total_member = 4
 squad_ability_idx = 0
+range_fire_mode = 0
 siege_engine_attack_damage = 0
 siege_engine_attack_speed = 0.0
 siege_engine_attack_range = 0

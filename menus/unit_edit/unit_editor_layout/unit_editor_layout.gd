@@ -142,6 +142,10 @@ func _on_set_as_hero(v :bool):
 		
 	display_hero(dup_squad_data.is_hero)
 	
+	# nah just set it to none if changes
+	dup_squad_data.squad_ability_idx = 0
+	display_abilities(dup_squad_data, 0)
+	
 func _on_unit_role_button(key):
 	if key == 1:
 		dup_squad_data.scene_idx = 1
@@ -251,7 +255,7 @@ func display_abilities(s :SquadData, selected_index :int):
 		abilities_holder.remove_child(i)
 		i.queue_free()
 		
-	var abilities = EntityIndex.squad_abilities
+	var abilities = AbilityHandle.squad_abilities
 	ability_desc.text = "No Ability selected"
 	
 	# for none
@@ -270,13 +274,15 @@ func display_abilities(s :SquadData, selected_index :int):
 		var is_melee = abilities[idx]["type"] == "melee"
 		var is_range = abilities[idx]["type"] == "range"
 		var is_shield = abilities[idx]["type"] == "shield"
+		var is_hero = abilities[idx]["type"] == "hero"
 		var weapon_idx = abilities[idx]["weapon_idx"]
 		
 		var for_melee = is_melee and weapon_idx == s.member_melee_weapon_idx
 		var for_range = is_range and weapon_idx == s.member_range_weapon_idx
 		var for_shield = is_shield and s.member_shield_idx != 0
+		var for_hero = is_hero and s.is_hero
 		
-		if not for_melee and not for_range and not for_shield:
+		if not for_melee and not for_range and not for_shield and not for_hero:
 			continue
 		
 		var is_selected = (idx == selected_index)

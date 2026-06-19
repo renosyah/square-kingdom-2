@@ -76,8 +76,13 @@ func _process(delta):
 		ui.minimap.offset = Vector2(pos.x, pos.z) * 10
 		
 ########################################## ambient sound  ############################################
-const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
+
+# meme
+const hidup_jokowi = preload("res://assets/sounds/death/hidup_jokowi.wav")
 const saya_akan_lawan = preload("res://assets/sounds/gameplay/saya_akan_lawan.wav")
+const antek_asing = preload("res://assets/sounds/gameplay/antek_asing.wav")
+
+const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 const buff = preload("res://assets/sounds/gameplay/buff.wav")
 const debuff = preload("res://assets/sounds/gameplay/debuff.wav")
 
@@ -578,107 +583,19 @@ func _on_use_ability():
 		return
 		
 	var squad :BaseSquad = selected_squads[0]
-	use_squad_ability(squad)
+	AbilityHandle.use_squad_ability(squad, tile_position_manager)
 	
 	if not setting.lock_command:
 		squad.click() # unselected
 		
 	if not ui_sound.playing:
 		ui_sound.stream = buff
+		if randf() < 0.15: # 0.25% chance of pria sawit
+			var h = [antek_asing, hidup_jokowi]
+			ui_sound.stream = h.pick_random()
+		
 		ui_sound.play()
 		
-func use_squad_ability(squad :BaseSquad):
-	var squad_ability_idx :int = squad.squad_ability_idx
-	if squad_ability_idx == 0:
-		return
-		
-	# ability still on cooldown
-	if squad.get_ability_cooldown()[0]:
-		return
-		
-	var icon_null = 0
-	var icon_debuff = 1
-	var icon_scared = 3
-	var icon_shield = 8
-	
-	var melee_speed = 0
-	var range_speed = 1
-	var speed = 2
-	var damage_receive = 3
-	
-	match squad_ability_idx:
-		1: # stop enemy and -50% speed for them
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				if squad.is_in_melee_range(enemy):
-					var icon_hand_stop = 4
-					enemy.set_modifiers([[speed, -0.50, 15, icon_hand_stop]])
-					enemy.stop()
-				
-		2: # enemy -50% attack speed for 25 sec
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([
-						[melee_speed, -0.50, 25, icon_null], # melee attack speed
-						[range_speed, -0.50, 25, icon_scared] # range attack speed 
-					])
-				
-		3: # +50% melee attack speed and +20% movement speed for 15 sec
-			var icon_angry = 2
-			squad.set_modifiers([
-				[melee_speed, 0.50, 15, icon_angry], # melee attack speed
-				[speed, 0.20, 25, icon_null], # movement speed
-			])
-			
-		4:# +50% range attack speed for 15 sec
-			var icon_aim = 5
-			squad.set_modifiers([[melee_speed, 0.50, 15, icon_aim]]) # range attack speed 
-			
-			# -50% speed for enemy
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.50, 15, icon_debuff]]) # movement speed
-				
-		5:# +50% speed for 10 sec
-			var icon_run = 7
-			squad.set_modifiers([[speed, 0.50, 10, icon_run]]) # movement speed
-			
-		6: # set enemy flee
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[speed, -0.50, 15, icon_scared]]) # movement speed
-					enemy.retreat()
-					
-		7: # -80% move speed for 15 sec
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.80, 15, icon_debuff]]) # movement speed
-				
-		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
-			squad.set_modifiers([
-				[damage_receive, -0.50, 25, icon_shield], # damage receive
-				[melee_speed, -0.50, 25, icon_null], # melee attack speed
-				[range_speed, -0.50, 25, icon_null], # range attack speed 
-				[speed, -0.25, 25, icon_null], # movement speed
-			])
-			
-		9: # -50% range attack speed for enemy
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.50, 10, icon_scared]]) # range attack speed
-				
-		10: # -25% damage resistance & 50% slower
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([
-					[speed, -0.50, 15, 0], # movement speed
-					[damage_receive, 0.25, 25, icon_shield], # damage receive
-				])
-			
-	squad.start_ability_cooldown(EntityIndex.squad_abilities[squad_ability_idx]["cooldown"])
-	
 func _on_selection_button_pressed(idx :int):
 	# index 0 audio dont exist
 	if idx > 0 and selected_squads.empty():
@@ -800,6 +717,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_attribute = squad_attribute
 	squad.squad_ability_idx = data.squad_ability_idx
 	squad.rapid_fire_mode = (data.range_fire_mode == 1)
+	squad.is_hero = data.is_hero
 	
 	# extra ui
 	squad.enable_blood = setting.extra_effect
@@ -874,7 +792,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		play_squad_spawn(data.is_commander)
 		
 	if squad.squad_ability_idx != 0:
-		squad.start_ability_cooldown(EntityIndex.squad_abilities[squad.squad_ability_idx]["cooldown"])
+		squad.start_ability_cooldown(AbilityHandle.squad_abilities[squad.squad_ability_idx]["cooldown"])
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():
@@ -985,7 +903,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 			
 		if not ui_sound.playing:
 			ui_sound.stream = attack_sfx
-			if randf() < 0.03: # 0.03% chance of pria solo
+			if randf() < 0.23: # 0.23% chance of pria solo
 				ui_sound.stream = saya_akan_lawan
 				
 			ui_sound.play()

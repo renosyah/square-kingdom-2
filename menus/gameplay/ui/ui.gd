@@ -115,7 +115,7 @@ func _check_squad_ability():
 	ability_container.visible = true
 	ability_button.visible = true
 	
-	var ability = EntityIndex.squad_abilities[squad.squad_ability_idx]
+	var ability = AbilityHandle.squad_abilities[squad.squad_ability_idx]
 	ability_button.squad = squad
 	
 	if ability["required_enemy"]:

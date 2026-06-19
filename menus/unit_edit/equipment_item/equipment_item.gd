@@ -7,7 +7,7 @@ export var icon :StreamTexture
 export var item_name :String
 
 onready var texture_rect = $MarginContainer/TextureRect
-onready var equipment_name = $MarginContainer/VBoxContainer2/MarginContainer/equipment_name
+onready var equipment_name = $MarginContainer/VBoxContainer2/MarginContainer/MarginContainer/equipment_name
 onready var overlay = $overlay
 
 func _ready():

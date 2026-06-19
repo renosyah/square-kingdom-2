@@ -264,7 +264,7 @@ func _bot_players_action():
 		# make bot use ability if in combat
 		if i.in_melee_engagement() or i.in_range_engagement():
 			if i.squad_ability_idx != 0:
-				use_squad_ability(i)
+				AbilityHandle.use_squad_ability(i, tile_position_manager)
 				
 			continue
 			
