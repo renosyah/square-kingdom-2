@@ -360,6 +360,11 @@ func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2)
 		data.icon_idx = 6
 		data.is_commander = true
 		
+		# if no ability set
+		# the special for commander will be set instead
+		if data.squad_ability_idx == 0:
+			data.squad_ability_idx = 18
+		
 	return data
 
 func create_bot_player() -> Array:

@@ -35,6 +35,8 @@ onready var areas = {
 	squad_container:squad_highlight
 }
 
+var index_target :int # for re arrage army
+var target_holder
 var temp_current_army :Array = []
 
 func _ready():
@@ -69,7 +71,7 @@ func display_current_squad():
 		c.add_child(card)
 		
 		dragable.connect("on_grab", self, "_on_card_on_grab", [c, squads[idx]])
-		dragable.connect("on_draging", self, "_on_card_on_draging")
+		dragable.connect("on_draging", self, "_on_card_on_draging", [idx, 1])
 		dragable.connect("on_release", self, "_on_card_on_release", [idx, 1])
 		dragable.connect("on_cancel", self, "_on_card_on_cancel")
 		
@@ -94,11 +96,12 @@ func display_current_army():
 		c.add_child(card)
 		
 		dragable.connect("on_grab", self, "_on_card_on_grab", [c, squads[i]])
-		dragable.connect("on_draging", self, "_on_card_on_draging")
+		dragable.connect("on_draging", self, "_on_card_on_draging", [idx,2])
 		dragable.connect("on_release", self, "_on_card_on_release", [idx, 2])
 		dragable.connect("on_cancel", self, "_on_card_on_cancel")
 		
 		army_squad_holder.add_child(dragable)
+		dragable.name = "army_squad_card_%s" % idx
 		dragable.add_child(c)
 		
 		idx += 1
@@ -119,8 +122,25 @@ func _on_card_on_grab(card, pos, container, data):
 	
 	info.display_info(data)
 	
-func _on_card_on_draging(card, pos):
+	target_holder = null
+	
+func _on_card_on_draging(card, pos, idx, type_drag):
 	dragable_item.rect_position = pos
+	
+	if army_squad_holder.get_child_count() == 0:
+		return
+		
+	if type_drag == 2:
+		var crd = _get_closes_child(army_squad_holder, pos)
+		index_target = army_squad_holder.get_children().find(crd)
+		
+		if crd != card:
+			if target_holder != crd:
+				if target_holder:
+					target_holder.modulate.a = 1
+					
+				crd.modulate.a = 0.2
+				target_holder = crd
 	
 func _on_card_on_release(card, pos, idx, type_drag):
 	card.modulate.a = 1
@@ -153,18 +173,43 @@ func _on_card_on_release(card, pos, idx, type_drag):
 				if new_idx != idx:
 					temp_current_army.append(new_idx)
 			
-	# asume drag from army container to trash or back to squad
-	# which honestly work the same as removing it
-	if type_drag == 2 and (areas[trash_area].visible or areas[squad_container].visible):
-		if temp_current_army.size() > 0:
-			temp_current_army.remove(idx)
+	if type_drag == 2:
+		# of nothing, re arange the squad card order? 
+		if areas[army_container].visible and index_target != -1 and index_target != idx:
+			army_squad_holder.get_child(index_target).modulate.a = 1
+			Utils.move_array_item(temp_current_army, idx, index_target)
+			
+		# asume drag from army container to trash or back to squad
+		# which honestly work the same as removing it
+		if (areas[trash_area].visible or areas[squad_container].visible):
+			if temp_current_army.size() > 0:
+				temp_current_army.remove(idx)
+			
 			
 	display_current_army()
-	
 	save_button.disabled = temp_current_army.size() < 4
 	
 	for key in areas.keys():
 		areas[key].visible = false
+		
+
+func _get_closes_child(holder, from):
+	var list = holder.get_children()
+	if list.empty():
+		return null
+		
+	var current = list[0]
+	var dist :float = (current.rect_global_position).distance_squared_to(from)
+	for i in list:
+		if i == current:
+			continue
+			
+		var dist_2 = (i.rect_global_position).distance_squared_to(from)
+		if dist_2 < dist:
+			current = i
+			dist = dist_2
+			
+	return current
 	
 func _on_card_on_cancel(card):
 	card.modulate.a = 1

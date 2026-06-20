@@ -31,6 +31,7 @@ export var blocked_tiles :Array
 var _is_moving :bool # block some function if this is true
 var _is_selected :bool = true # allow this unit to be selected or not
 
+var _current_tile_checked :Vector2 # prevent logic being check repeated
 var _last_tile :Vector2 # last tile leaved
 var _last_to :Vector3 # las position leave
 var _paths :Array # [TileUnitPath]
@@ -160,13 +161,11 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 		
 	var p :TileUnitPath = _paths.front()
 	
-	# check if tile blocked
-	if not blocked_tiles.empty():
-		if p.tile_id in blocked_tiles:
-			_is_moving = false
-			_paths.clear()
-			_on_finish_travel(_last_tile, current_tile)
-			return
+	if p.tile_id in blocked_tiles:
+		_is_moving = false
+		_paths.clear()
+		_on_finish_travel(_last_tile, current_tile)
+		return
 		
 	if pos.distance_squared_to(p.pos) <= (margin * margin):
 		_last_tile = current_tile

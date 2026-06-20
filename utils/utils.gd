@@ -122,6 +122,17 @@ static func format_time_full(n :int) -> String:
 	var seconds: int = n % 60
 	return "%02d:%02d:%02d" % [hours, minutes, seconds]
 
-
-
-
+static func move_array_item(array: Array, from_index: int, to_index: int) -> void:
+	# Ensure indices are within valid bounds
+	if from_index < 0 or from_index >= array.size() or to_index < 0 or to_index >= array.size():
+		return
+		
+	# Extract the item, insert it at the new target, and remove the original
+	var item = array.pop_at(from_index)
+	array.insert(to_index, item)
+	
+static func swap_indices(arr: Array, idx1: int, idx2: int) -> Array:
+	var temp = arr[idx1]
+	arr[idx1] = arr[idx2]
+	arr[idx2] = temp
+	return arr

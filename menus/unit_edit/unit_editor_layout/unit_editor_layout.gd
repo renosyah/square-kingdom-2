@@ -267,7 +267,7 @@ func display_abilities(s :SquadData, selected_index :int):
 	item_null.connect("selected", self, "_on_ability_selected", [0])
 	abilities_holder.add_child(item_null)
 	item_null.set_selected(0 == selected_index)
-	
+
 	for idx in abilities.size():
 		if idx == 0:
 			continue
@@ -298,7 +298,17 @@ func display_abilities(s :SquadData, selected_index :int):
 		
 		if is_selected:
 			ability_desc.text = abilities[selected_index]["detail"]
-	
+			
+	var item_commander = equipment_item_scene.instance()
+	item_commander.index = AbilityHandle.commander_only_ability
+	item_commander.icon = abilities[item_commander.index]["icon"]
+	item_commander.item_name = abilities[item_commander.index]["name"]
+	item_commander.connect("selected", self, "_on_ability_selected", [item_commander.index])
+	abilities_holder.add_child(item_commander)
+	item_commander.set_selected(item_commander.index == selected_index)
+	if item_commander.index == selected_index:
+		ability_desc.text = abilities[selected_index]["detail"]
+		
 func display_role(role :int):
 	for k in unit_role_buttons.keys():
 		var b :Button = unit_role_buttons[k]
@@ -407,7 +417,9 @@ func _on_fire_mode_selected(index :int):
 	display_fire_mode(index)
 	
 func _on_ability_selected(index :int):
-	dup_squad_data.squad_ability_idx = index
+	if index != AbilityHandle.commander_only_ability:
+		dup_squad_data.squad_ability_idx = index
+		
 	display_abilities(dup_squad_data, index)
 	
 func _on_squad_card_pressed(idx:int, squad :SquadData):

@@ -84,7 +84,7 @@ const memes = [
 	preload("res://assets/sounds/memes/saya_akan_lawan.wav"),#2
 	preload("res://assets/sounds/memes/antek_asing.wav")#3
 ]
-
+const regroup = preload("res://assets/sounds/gameplay/regroup.wav")
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 const buff = preload("res://assets/sounds/gameplay/buff.wav")
 const debuff = preload("res://assets/sounds/gameplay/debuff.wav")
@@ -623,6 +623,9 @@ func _on_use_ability():
 		
 	if not ui_sound.playing:
 		ui_sound.stream = buff
+		if squad.squad_ability_idx == 18:
+			ui_sound.stream = regroup
+			
 		if randf() < 0.15:
 			ui_sound.stream = memes.pick_random()
 		
@@ -773,6 +776,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	#squad.connect("on_finish_travel", self, "_on_finish_travel")
 	squad.connect("on_squad_dead", self, "_on_squad_dead", [data])
 	squad.connect("on_squad_set_modifier", self, "_on_squad_set_modifier")
+	squad.connect("on_squad_modifier_clear", self, "_on_squad_modifier_clear")
 	
 	if squad is CavalrySquad:
 		squad.charge_damage = data.charge_damage()
@@ -914,6 +918,14 @@ func _on_squad_set_modifier(squad :BaseSquad, i :Array):
 		if not ui_sound.playing:
 			ui_sound.stream = debuff
 			ui_sound.play()
+	
+func _on_squad_modifier_clear(squad :BaseSquad):
+	if squad.player_id == current_player.player_id:
+		var ind = modifier_indicator.instance()
+		ind.icon = AbilityHandle.buff_debuff_icons[AbilityHandle.icon_horn]
+		ind.is_buff = true
+		ind.squad = squad
+		add_child(ind)
 	
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass

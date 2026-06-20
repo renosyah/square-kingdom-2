@@ -8,6 +8,7 @@ signal on_squad_taking_damage(squad, amount)
 signal on_squad_taking_heal(squad)
 signal on_squad_dead(unit)
 signal on_squad_set_modifier(squad, datas)
+signal on_squad_modifier_clear(squad)
 
 const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_1.wav"),
@@ -991,12 +992,12 @@ func start_ability_cooldown(v :float):
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 
 # 0=melee speed, 1:range speed, 2:move speed, 3:damage receive, 4:melee damage, 5:range damage, value is percentage
-func set_modifiers(datas :Array):
+func set_modifiers(datas :Array, remove_all :bool = false):
 	for data in datas:
 		var id = int(rand_range(-100, 100))
 		data.append(id)
 		
-	rpc("_set_modifiers", datas)
+	rpc("_set_modifiers", datas, remove_all)
 	
 	# type modifier
 const modifier_melee_speed = 0
@@ -1008,7 +1009,15 @@ const modifier_range_damage = 5
 	
 var _modifiers :Dictionary = {} # {type:{id:value}}
 
-remotesync func _set_modifiers(datas :Array):
+remotesync func _set_modifiers(datas :Array, remove_all :bool):
+	if remove_all:
+		for type in _modifiers.keys():
+			_modifiers[type].clear()
+			_update_multiplier(type)
+			
+		emit_signal("on_squad_modifier_clear", self)
+		return
+		
 	var additional :float = 1.0
 	
 	for i in datas:
@@ -1038,9 +1047,11 @@ remotesync func _set_modifiers(datas :Array):
 		emit_signal("on_squad_set_modifier", self, i)
 	
 func _on_buff_debuff_expired(type :int, id:int, timer :Timer):
-	timer.queue_free()
+	if _modifiers[type].has(id):
+		_modifiers[type].erase(id)
+		
 	_update_multiplier(type)
-	_modifiers[type].erase(id)
+	timer.queue_free()
 	
 func _get_modifiers_value(type :int) -> float:
 	var v = 0.0
