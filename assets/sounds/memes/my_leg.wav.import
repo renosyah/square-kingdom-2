@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/saya_akan_lawan.wav-39e8e38cc81b5176f7a02f49f52c0a27.sample"
+path="res://.import/my_leg.wav-ec3ddb053b4a19290993b0bc838b20e8.sample"
 
 [deps]
 
-source_file="res://assets/sounds/gameplay/saya_akan_lawan.wav"
-dest_files=[ "res://.import/saya_akan_lawan.wav-39e8e38cc81b5176f7a02f49f52c0a27.sample" ]
+source_file="res://assets/sounds/memes/my_leg.wav"
+dest_files=[ "res://.import/my_leg.wav-ec3ddb053b4a19290993b0bc838b20e8.sample" ]
 
 [params]
 

@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/my_leg.wav-d6b6615e706c4e7faca41419418a4886.sample"
+path="res://.import/hidup_jokowi.wav-3010f496ae8f32418d7a17435dfd3aa4.sample"
 
 [deps]
 
-source_file="res://assets/sounds/death/my_leg.wav"
-dest_files=[ "res://.import/my_leg.wav-d6b6615e706c4e7faca41419418a4886.sample" ]
+source_file="res://assets/sounds/memes/hidup_jokowi.wav"
+dest_files=[ "res://.import/hidup_jokowi.wav-3010f496ae8f32418d7a17435dfd3aa4.sample" ]
 
 [params]
 

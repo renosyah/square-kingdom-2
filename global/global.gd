@@ -322,12 +322,18 @@ var biom :int
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), spawn_pos, 1
+		TileMapUtils.ARROW_DIRECTIONS, spawn_pos, 1
 	)
+	var tile_idx = 0
 	for idx in army.size():
-		var tile_id = tiles[idx]
+		if tile_idx > tiles.size() - 1:
+			tile_idx = 0
+		
+		var tile_id = tiles[tile_idx]
 		var squad :SquadData = prepare_squad(idx, army[idx], player, tile_id)
 		datas.append(squad)
+		
+		tile_idx += 1
 		
 	return datas
 	
@@ -338,9 +344,10 @@ func _sort_by_order(a, b):
 	return current_squads[a].sort_order < current_squads[b].sort_order
 
 # idx is from current_army
-func prepare_squad(i :int, idx :int, player :PlayerData, tile_id :Vector2) -> SquadData:
-	var data :SquadData = current_squads[idx].duplicate()
+func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2) -> SquadData:
+	var data :SquadData = current_squads[squad_idx].duplicate()
 	data.squad_id = i
+	data.sort_order = i
 	data.network_id = player.player_network_id
 	data.player_id = player.player_id
 	data.node_name = "squad_%s_%s" % [player.player_id, Utils.create_unique_id()]

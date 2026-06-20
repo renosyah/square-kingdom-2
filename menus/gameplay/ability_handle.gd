@@ -145,7 +145,7 @@ const squad_abilities = [
 	},
 	{
 		# melee great axe 15
-		"name": "Cleave'em!",
+		"name": "Cleave!",
 		"icon": preload("res://assets/user_interface/ability/cleave_ability.png"),
 		"detail": "This axes can cut tree and man behind it, deal 50% damage with 50% slow attack for 15 second",
 		"type": "melee",
@@ -175,20 +175,29 @@ const squad_abilities = [
 	},
 ]
 
-const buff_debuff_icon = [
+const buff_debuff_icons = [
 	null,
-	preload("res://assets/user_interface/icons/arrow_down.png"), #1
-	preload("res://assets/user_interface/icons/angry.png"), #2
-	preload("res://assets/user_interface/icons/scare.png"), #3
-	preload("res://assets/user_interface/icons/hand_stop.png"),#4
-	preload("res://assets/user_interface/icons/attack.png"),#5
-	preload("res://assets/user_interface/icons/arrow_up.png"),#6
-	preload("res://assets/user_interface/icons/movement_mode.png"),#7
-	preload("res://assets/user_interface/icons/defend.png"),#8
-	preload("res://assets/user_interface/icons/heal.png"),#9
-	preload("res://assets/user_interface/icons/fist_up.png")#10
-	
+	preload("res://assets/user_interface/icons/modifier_effect/buffed.png"),#1
+	preload("res://assets/user_interface/icons/modifier_effect/debuffed.png"), #2
+	preload("res://assets/user_interface/icons/modifier_effect/beserk.png"), #3
+	preload("res://assets/user_interface/icons/modifier_effect/scare.png"), #4
+	preload("res://assets/user_interface/icons/modifier_effect/heal.png"),#5
+	preload("res://assets/user_interface/icons/modifier_effect/fist_up.png"),#6
+	preload("res://assets/user_interface/icons/modifier_effect/move_speed.png"),#7
+	preload("res://assets/user_interface/icons/modifier_effect/defence_down.png"),#8
+	preload("res://assets/user_interface/icons/modifier_effect/defence_up.png")#9
 ]
+
+const icon_null = 0
+const icon_buffed = 1
+const icon_debuffed = 2
+const icon_beserk = 3
+const icon_scared = 4
+const icon_heal = 5
+const icon_fist_up = 6
+const icon_move_speed = 7
+const icon_defence_down = 8
+const icon_defence_up = 9
 
 static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -199,29 +208,13 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 	if squad.get_ability_cooldown()[0]:
 		return
 		
-	var icon_null = 0
-	var icon_debuff = 1
-	var icon_buff = 6
-	var icon_scared = 3
-	var icon_run = 7
-	var icon_shield = 8
-	var icon_heal = 9
-	var icon_rally = 10
-	
-	var melee_speed = 0
-	var range_speed = 1
-	var speed = 2
-	var damage_receive = 3
-	var melee_damage = 4
-	var range_damage = 5
-	
 	match squad_ability_idx:
 		1: # stop enemy and -50% speed for them
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
 					var icon_hand_stop = 4
-					enemy.set_modifiers([[speed, -0.50, 15, icon_hand_stop]])
+					enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_hand_stop]])
 					enemy.stop()
 				
 		2: # enemy -50% attack speed for 25 sec
@@ -229,73 +222,72 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
 					enemy.set_modifiers([
-						[melee_speed, -0.50, 25, icon_null], # melee attack speed
-						[range_speed, -0.50, 25, icon_scared] # range attack speed 
+						[squad.modifier_melee_speed, -0.50, 25, icon_null], # melee attack speed
+						[squad.modifier_range_speed, -0.50, 25, icon_scared] # range attack speed 
 					])
 				
 		3: # +50% melee attack speed and +20% movement speed, -25% damage resistance for 15 sec
 			var icon_angry = 2
 			squad.set_modifiers([
-				[melee_speed, 0.50, 15, icon_angry], # melee attack speed
-				[speed, 0.20, 25, icon_null], # movement speed
-				[damage_receive, 0.25, 25, icon_null], # damage receive
+				[squad.modifier_melee_speed, 0.50, 15, icon_angry], # melee attack speed
+				[squad.modifier_move_speed, 0.20, 25, icon_null], # movement speed
+				[squad.modifier_damage_receive, 0.25, 25, icon_null], # damage receive
 			])
 			
 		4:# +50% range attack speed for 15 sec
-			var icon_aim = 5
-			squad.set_modifiers([[melee_speed, 0.50, 15, icon_aim]]) # range attack speed 
+			squad.set_modifiers([[squad.modifier_range_speed, 0.50, 15, icon_buffed]]) # range attack speed 
 			
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.50, 15, icon_debuff]]) # movement speed
+				enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_debuffed]]) # movement speed
 				
 		5:# +50% speed for 10 sec
-			squad.set_modifiers([[speed, 0.50, 10, icon_run]]) # movement speed
+			squad.set_modifiers([[squad.modifier_move_speed, 0.50, 10, icon_move_speed]]) # movement speed
 			
 		6: # set enemy flee
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[speed, -0.50, 15, icon_scared]]) # movement speed
+					enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_scared]]) # movement speed
 					enemy.retreat()
 					
 		7: # -80% move speed for 15 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[speed, -0.80, 15, icon_run]]) # movement speed
+				enemy.set_modifiers([[squad.modifier_move_speed, -0.80, 15, icon_debuffed]]) # movement speed
 				
 		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
 			squad.set_modifiers([
-				[damage_receive, -0.50, 25, icon_shield], # damage receive
-				[melee_speed, -0.50, 25, icon_null], # melee attack speed
-				[range_speed, -0.50, 25, icon_null], # range attack speed 
-				[speed, -0.25, 25, icon_null], # movement speed
+				[squad.modifier_damage_receive, -0.50, 25, icon_defence_up], # damage receive
+				[squad.modifier_melee_speed, -0.50, 25, icon_null], # melee attack speed
+				[squad.modifier_range_speed, -0.50, 25, icon_null], # range attack speed 
+				[squad.modifier_move_speed, -0.25, 25, icon_null], # movement speed
 			])
 			
 		9: # -50% range attack speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[range_speed, -0.50, 10, icon_scared]]) # range attack speed
+				enemy.set_modifiers([[squad.modifier_range_speed, -0.50, 10, icon_debuffed]]) # range attack speed
 				
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				enemy.set_modifiers([
-					[speed, -0.50, 15, icon_null], # movement speed
-					[damage_receive, 0.25, 25, icon_shield], # damage receive
+					[squad.modifier_move_speed, -0.50, 15, icon_null], # movement speed
+					[squad.modifier_damage_receive, 0.25, 15, icon_defence_down], # damage receive
 				])
 				
 		11,12,13: # 50% range damage, 50% slowest rate of fire
 			squad.set_modifiers([
-				[range_damage, 0.50, 15, icon_buff], # damage receive
-				[range_speed, -0.50, 15, icon_null], # range attack speed 
+				[squad.modifier_range_damage, 0.50, 15, icon_buffed], # damage deal
+				[squad.modifier_range_speed, -0.50, 15, icon_null], #  attack speed 
 			])
 			
 		14,15: # 50% melee damage, 50% slowest rate of fire
 			squad.set_modifiers([
-				[melee_damage, 0.50, 15, icon_buff], # damage receive
-				[melee_speed, -0.50, 15, icon_null], # range attack speed 
+				[squad.modifier_melee_damage, 0.50, 15, icon_buffed], # damage deal
+				[squad.modifier_melee_speed, -0.50, 15, icon_null], # attack speed 
 			])
 			
 		16, 17: # get nearby squads
@@ -305,16 +297,16 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				var s :BaseSquad = i
 				if s != squad and s.team == squad.team:
 					if squad_ability_idx == 16: # heal
-						s.set_modifiers([ [damage_receive, -0.05, 5, icon_heal]]) # just for indicator
+						s.set_modifiers([ [squad.modifier_move_speed, 0.10, 2, icon_heal]]) # just for indicator
 						s.healing()
 						
 					elif squad_ability_idx == 17: # 25% attack speed, 15% speed and 15% attack damage for 10
 						s.set_modifiers([
-							[melee_speed, 0.25, 25, icon_rally], 
-							[range_speed, 0.25, 25, icon_null],
-							[speed, 0.15, 25, icon_null],
-							[melee_damage, 0.15, 25, icon_null],
-							[range_damage, 0.15, 25, icon_null],
+							[squad.modifier_melee_speed, 0.25, 25, icon_fist_up], 
+							[squad.modifier_range_speed, 0.25, 25, icon_null],
+							[squad.modifier_move_speed, 0.15, 25, icon_null],
+							[squad.modifier_melee_damage, 0.15, 25, icon_null],
+							[squad.modifier_range_damage, 0.15, 25, icon_null],
 						])
 					
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])

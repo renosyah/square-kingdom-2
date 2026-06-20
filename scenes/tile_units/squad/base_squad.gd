@@ -26,9 +26,8 @@ const hurt_sounds = [
 	preload("res://assets/sounds/hurt/hurt_14.wav"),
 	preload("res://assets/sounds/hurt/hurt_15.wav"),
 	preload("res://assets/sounds/hurt/hurt_16.wav"),
-	
-	preload("res://assets/sounds/death/jokowi_kaget.wav"),
-	preload("res://assets/sounds/death/my_leg.wav")
+	preload("res://assets/sounds/memes/jokowi_kaget.wav"),
+	preload("res://assets/sounds/memes/my_leg.wav")
 ]
 const death_sounds = [
 	preload("res://assets/sounds/death/dead_1.wav"),
@@ -36,10 +35,7 @@ const death_sounds = [
 	preload("res://assets/sounds/death/dead_3.wav"),
 	preload("res://assets/sounds/death/dead_4.wav"),
 	preload("res://assets/sounds/death/dead_5.wav"),
-	
-	preload("res://assets/sounds/death/wilhem_scream.wav"),
-	preload("res://assets/sounds/death/my_leg.wav")
-	
+	preload("res://assets/sounds/memes/wilhem_scream.wav")
 ]
 
 export var member_scene :PackedScene
@@ -809,13 +805,7 @@ remotesync func _on_members_dead(datas :Array):
 		_blood_particle.emitting = true
 		
 	if visible and not _unit_audio.playing:
-		_unit_audio.stream = death_sounds[randi() % 4]
-	
-		# funny
-		if randf() < 0.08:
-			var _l = [5, 6]
-			_unit_audio.stream = death_sounds[_l.pick_random()]
-	
+		_unit_audio.stream = death_sounds.pick_random()
 		_unit_audio.play()
 		
 	if member_alive <= 0 and not is_dead:
@@ -998,14 +988,26 @@ func start_ability_cooldown(v :float):
 		_ability_cooldown.wait_time = v
 		_ability_cooldown.start()
 	
-var _expired_modifier :Dictionary = {} # [type:timer]
-
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 
 # 0=melee speed, 1:range speed, 2:move speed, 3:damage receive, 4:melee damage, 5:range damage, value is percentage
 func set_modifiers(datas :Array):
+	for data in datas:
+		var id = int(rand_range(-100, 100))
+		data.append(id)
+		
 	rpc("_set_modifiers", datas)
 	
+	# type modifier
+const modifier_melee_speed = 0
+const modifier_range_speed = 1
+const modifier_move_speed = 2
+const modifier_damage_receive = 3
+const modifier_melee_damage = 4
+const modifier_range_damage = 5
+	
+var _modifiers :Dictionary = {} # {type:{id:value}}
+
 remotesync func _set_modifiers(datas :Array):
 	var additional :float = 1.0
 	
@@ -1015,46 +1017,55 @@ remotesync func _set_modifiers(datas :Array):
 		var expired :float = i[2]
 		var icon_idx :int = i[3]
 		
-		if _expired_modifier.has(type):
-			_expired_modifier[type].stop()
-			_expired_modifier[type].queue_free()
-			_expired_modifier.erase(type)
-			
+		var id :int = i.back()
+		
 		var _expired = Timer.new()
 		_expired.one_shot = true
 		_expired.autostart = false
 		_expired.wait_time = expired + additional
-		_expired.connect("timeout", self, "_on_buff_debuff_expired", [type, _expired])
+		_expired.connect("timeout", self, "_on_buff_debuff_expired", [type, id, _expired])
 		add_child(_expired)
 		_expired.start()
 		
-		_expired_modifier[type] = _expired
+		if not _modifiers.has(type):
+			_modifiers[type] = {}
+			
+		_modifiers[type][id] = value
 		
-		_set_multiplier(type, value)
+		_update_multiplier(type)
 		additional += 1
 		
 		emit_signal("on_squad_set_modifier", self, i)
 	
-func _on_buff_debuff_expired(type :int, timer :Timer):
+func _on_buff_debuff_expired(type :int, id:int, timer :Timer):
 	timer.queue_free()
-	_set_multiplier(type, 0)
-	_expired_modifier.erase(type)
+	_update_multiplier(type)
+	_modifiers[type].erase(id)
 	
-func _set_multiplier(type :int, v :float):
+func _get_modifiers_value(type :int) -> float:
+	var v = 0.0
+	if not _modifiers.has(type):
+		return v
+		
+	for values in _modifiers[type].values():
+		v += values
+	
+	return clamp(v, -0.99, 0.99)
+	
+func _update_multiplier(type :int):
 	match type:
-		0:
-			melee_attack_speed_mul = v
-		1:
-			range_attack_speed_mul = v
-		2:
-			speed_mul = v
-		3:
-			damage_receive_mul = v
-		4:
-			melee_damage_mul = v
-		5:
-			range_damage_mul = v
-			
+		modifier_melee_speed:
+			melee_attack_speed_mul = _get_modifiers_value(type)
+		modifier_range_speed:
+			range_attack_speed_mul = _get_modifiers_value(type)
+		modifier_move_speed:
+			speed_mul = _get_modifiers_value(type)
+		modifier_damage_receive:
+			damage_receive_mul = _get_modifiers_value(type)
+		modifier_melee_damage:
+			melee_damage_mul = _get_modifiers_value(type)
+		modifier_range_damage:
+			range_damage_mul = _get_modifiers_value(type)
 			
 func _get_attack_damage(type:int, unmod :int) -> int:
 	match type:
@@ -1064,6 +1075,7 @@ func _get_attack_damage(type:int, unmod :int) -> int:
 			 # lest buff hero attack range
 			var v = unmod * 4 if is_hero else unmod
 			return int(v * (1.0 + range_damage_mul))
+			
 	return unmod
 	
 func _get_damage_receive(unmod :int) -> int:

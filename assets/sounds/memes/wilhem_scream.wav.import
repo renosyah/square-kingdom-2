@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/antek_asing.wav-ce8a120c25cf79f8f9b27096b0853222.sample"
+path="res://.import/wilhem_scream.wav-21a5f07e18b4da195cda43642d5ecdce.sample"
 
 [deps]
 
-source_file="res://assets/sounds/gameplay/antek_asing.wav"
-dest_files=[ "res://.import/antek_asing.wav-ce8a120c25cf79f8f9b27096b0853222.sample" ]
+source_file="res://assets/sounds/memes/wilhem_scream.wav"
+dest_files=[ "res://.import/wilhem_scream.wav-21a5f07e18b4da195cda43642d5ecdce.sample" ]
 
 [params]
 

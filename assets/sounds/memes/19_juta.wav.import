@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/jokowi_kaget.wav-32f7659cb351477ac6317d59f2471082.sample"
+path="res://.import/19_juta.wav-b9de0afc343bd32ea63d1c58880a9c9c.sample"
 
 [deps]
 
-source_file="res://assets/sounds/death/jokowi_kaget.wav"
-dest_files=[ "res://.import/jokowi_kaget.wav-32f7659cb351477ac6317d59f2471082.sample" ]
+source_file="res://assets/sounds/memes/19_juta.wav"
+dest_files=[ "res://.import/19_juta.wav-b9de0afc343bd32ea63d1c58880a9c9c.sample" ]
 
 [params]
 

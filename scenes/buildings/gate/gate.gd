@@ -12,8 +12,8 @@ onready var audio_stream_player_3d = $AudioStreamPlayer3D
 onready var animation_player = $AnimationPlayer
 onready var mesh_instance = $MeshInstance
 onready var door = $door
-onready var door_2 = $Spatial/door2
 onready var queue = $queue_task
+onready var door_2 = $Spatial/door2
 
 var is_open = false
 var _operating :bool = false

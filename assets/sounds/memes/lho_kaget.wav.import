@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/hidup_jokowi.wav-c8daab8a488fb791a89223ea3a51bdc6.sample"
+path="res://.import/lho_kaget.wav-cf0d24305aa7a9366082e2b8efb94603.sample"
 
 [deps]
 
-source_file="res://assets/sounds/death/hidup_jokowi.wav"
-dest_files=[ "res://.import/hidup_jokowi.wav-c8daab8a488fb791a89223ea3a51bdc6.sample" ]
+source_file="res://assets/sounds/memes/lho_kaget.wav"
+dest_files=[ "res://.import/lho_kaget.wav-cf0d24305aa7a9366082e2b8efb94603.sample" ]
 
 [params]
 

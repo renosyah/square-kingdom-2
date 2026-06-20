@@ -77,10 +77,13 @@ func _process(delta):
 		
 ########################################## ambient sound  ############################################
 
-# meme
-const hidup_jokowi = preload("res://assets/sounds/death/hidup_jokowi.wav")
-const saya_akan_lawan = preload("res://assets/sounds/gameplay/saya_akan_lawan.wav")
-const antek_asing = preload("res://assets/sounds/gameplay/antek_asing.wav")
+# memes
+const memes = [
+	preload("res://assets/sounds/memes/19_juta.wav"),#0
+	preload("res://assets/sounds/memes/hidup_jokowi.wav"),#1
+	preload("res://assets/sounds/memes/saya_akan_lawan.wav"),#2
+	preload("res://assets/sounds/memes/antek_asing.wav")#3
+]
 
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 const buff = preload("res://assets/sounds/gameplay/buff.wav")
@@ -606,9 +609,8 @@ func _on_use_ability():
 		
 	if not ui_sound.playing:
 		ui_sound.stream = buff
-		if randf() < 0.15: # 0.25% chance of pria sawit
-			var h = [antek_asing, hidup_jokowi]
-			ui_sound.stream = h.pick_random()
+		if randf() < 0.15:
+			ui_sound.stream = memes.pick_random()
 		
 		ui_sound.play()
 		
@@ -876,15 +878,19 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	
 const modifier_indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 
-func _on_squad_set_modifier(squad :BaseSquad, datas :Array):
-	var type :float = datas[0]
-	var value :float = datas[1]
-	var icon_idx :int = datas[3]
+func _on_squad_set_modifier(squad :BaseSquad, i :Array):
+	var type :int = i[0]
+	var value :float = clamp(i[1], -0.99, 0.99)
+	var icon_idx :int = i[3]
+	
 	var is_buff :bool = value > 0 if type != 3 else value < 0
 	
+	if setting.show_feed:
+		ui.log_event.add_log_squad_add_modifier(squad, type, value, is_buff)
+		
 	if icon_idx != 0:
 		var ind = modifier_indicator.instance()
-		ind.icon = AbilityHandle.buff_debuff_icon[icon_idx]
+		ind.icon = AbilityHandle.buff_debuff_icons[icon_idx]
 		ind.is_buff = is_buff
 		ind.squad = squad
 		add_child(ind)
@@ -920,7 +926,7 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 		if not ui_sound.playing:
 			ui_sound.stream = attack_sfx
 			if randf() < 0.23: # 0.23% chance of pria solo
-				ui_sound.stream = saya_akan_lawan
+				ui_sound.stream = memes[2]
 				
 			ui_sound.play()
 			

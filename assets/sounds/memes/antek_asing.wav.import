@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/antek_asing.wav-251ced6bd5e840eecc7a8d2805f6e51a.sample"
+
+[deps]
+
+source_file="res://assets/sounds/memes/antek_asing.wav"
+dest_files=[ "res://.import/antek_asing.wav-251ced6bd5e840eecc7a8d2805f6e51a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

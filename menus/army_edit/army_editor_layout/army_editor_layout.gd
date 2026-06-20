@@ -159,7 +159,6 @@ func _on_card_on_release(card, pos, idx, type_drag):
 		if temp_current_army.size() > 0:
 			temp_current_army.remove(idx)
 			
-	Global.sort_army(temp_current_army)
 	display_current_army()
 	
 	save_button.disabled = temp_current_army.size() < 4

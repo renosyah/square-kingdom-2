@@ -110,6 +110,8 @@ func _check_squad_ability():
 	if selected_squads.empty():
 		return
 		
+	squad_with_ability = null
+	
 	for squad in selected_squads:
 		if squad.squad_ability_idx != 0:
 			squad_with_ability = squad

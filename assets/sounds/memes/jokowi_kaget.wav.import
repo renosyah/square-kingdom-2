@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/wilhem_scream.wav-7dcfa577dfb45052b5b75f26ca0a25e4.sample"
+path="res://.import/jokowi_kaget.wav-41413991d1e2911fd0a3d6b80c05144b.sample"
 
 [deps]
 
-source_file="res://assets/sounds/death/wilhem_scream.wav"
-dest_files=[ "res://.import/wilhem_scream.wav-7dcfa577dfb45052b5b75f26ca0a25e4.sample" ]
+source_file="res://assets/sounds/memes/jokowi_kaget.wav"
+dest_files=[ "res://.import/jokowi_kaget.wav-41413991d1e2911fd0a3d6b80c05144b.sample" ]
 
 [params]
 

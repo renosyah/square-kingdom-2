@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fist_up.png-ff8bb78f79d146d310cfbcb9705237d5.stex"
+path="res://.import/move_speed.png-4e857ea61d458edf6bb80eeecac73e18.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/icons/fist_up.png"
-dest_files=[ "res://.import/fist_up.png-ff8bb78f79d146d310cfbcb9705237d5.stex" ]
+source_file="res://assets/user_interface/icons/modifier_effect/move_speed.png"
+dest_files=[ "res://.import/move_speed.png-4e857ea61d458edf6bb80eeecac73e18.stex" ]
 
 [params]
 
