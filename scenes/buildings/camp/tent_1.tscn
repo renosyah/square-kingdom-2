@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=1]
+[ext_resource path="res://scenes/buildings/camp/tent.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=5]
+[ext_resource path="res://scenes/buildings/camp/barrel_2.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://scenes/tiles/materials/water_material.tres" type="Material" id=7]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 0.8, 0.65 )
+
+[node name="camp_1" type="Spatial"]
+
+[node name="tent" type="MeshInstance" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.223747, -0.165833 )
+cast_shadow = 0
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 1 )
+
+[node name="barrel2" type="MeshInstance" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.258559, 0.166877, 0.315656 )
+cast_shadow = 0
+mesh = ExtResource( 6 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 4 )
+material/2 = ExtResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.196723 )
+cast_shadow = 0
+mesh = SubResource( 1 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 5 )

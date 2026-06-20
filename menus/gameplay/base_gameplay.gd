@@ -46,6 +46,7 @@ func _on_leave():
 func _on_all_player_ready():
 	if is_server:
 		spawn_squads(tower_datas)
+		rpc("_spawn_camps", camp_buildings)
 		
 	Global.battle_time = 0
 	Global.hide_transition()
@@ -292,6 +293,7 @@ var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 var tower_datas :Array = [] # servers spawn only
 var blocked_tiles :Dictionary = {0:[]} # {team:[Vector2]}
 var tower_buildings :Dictionary = {}
+var camp_buildings: Array
 
 func setup_bandit_mob():
 	# this is for bot bandit
@@ -343,12 +345,38 @@ func setup_players_spawn_points(spawn_fort :bool = false, fort_size :int = 4):
 	movable_camera.translation.x = tile.pos.x + 1
 	movable_camera.translation.z = tile.pos.z + 1
 	
-func setup_base(p :PlayerData, tile_id :Vector2, size :int):
-	var wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
-	var wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
-	var tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
-	var gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
+const wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
+const wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
+const tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
+const gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
+const camps = [
+	preload("res://scenes/buildings/camp/tent_1.tscn"),
+	preload("res://scenes/buildings/camp/tent_2.tscn"),
+	preload("res://scenes/buildings/camp/tent_3.tscn")
+]
+
+remotesync func _spawn_camps(datas :Array):
+	for i in datas:
+		var id = i[0]
+		var w = camps[i[1]].instance()
+		tile_map.get_tile_instance(id).add_child(w)
+		nav.enable_nav_tile(0, id, false)
+		w.rotation_degrees.y = i[2]
 	
+func setup_base(p :PlayerData, tile_id :Vector2, size :int):
+	var rotations = [0,-90, 90, 180]
+	var camp_positions = [
+		Vector2.UP + Vector2.LEFT,
+		Vector2.UP + Vector2.RIGHT,
+		Vector2.DOWN + Vector2.LEFT,
+		Vector2.DOWN + Vector2.RIGHT
+	]
+	
+	if is_server:
+		for pos in camp_positions:
+			var id = tile_id + pos
+			camp_buildings.append([id, randi() % camps.size(), rotations.pick_random()])
+		
 	var datas :Array = TileIndex.generate_fort_ring(tile_id, size)
 	for i in datas:
 		var data :Dictionary = i
