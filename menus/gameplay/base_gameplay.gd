@@ -290,6 +290,7 @@ var player_spawn_points :Dictionary = {} # {player_id:Vector2} all players
 var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 
 var tower_datas :Array = [] # servers spawn only
+var blocked_tiles :Dictionary = {0:[]} # {team:[Vector2]}
 
 func setup_bandit_mob():
 	# this is for bot bandit
@@ -304,6 +305,9 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 	var map_size :int = current_tile_map_manifest_data.map_size
 	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point edges, 1 center last
 	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
+	
+	for p in all_players:
+		blocked_tiles[p.team] = []
 	
 	# replace all tiles with dirt of bases
 	if spawn_fort:
@@ -352,15 +356,25 @@ func setup_base(p :PlayerData, tile_id :Vector2):
 		0, 180,
 		90, -90
 	]
-	for idx in gate_pos.size():
-		var tile :Vector2 = tile_id + gate_pos[idx] * 2
-		var g = gate_scene.instance()
-		g.unit_position = tile_position_manager.get_positions()
-		g.material = Global.player_materials[p.color_idx]
-		tile_map.get_tile_instance(tile).add_child(g)
-		g.rotation_degrees.y = gate_orientation[idx]
-		g.tile_ids = [tile, tile + gate_pos[idx]]
-		g.team = p.team
+	
+	var is_bandit = p.player_id == bot_bandit.player_id
+	if not is_bandit:
+		for idx in gate_pos.size():
+			var tile :Vector2 = tile_id + gate_pos[idx] * 2
+			var g = gate_scene.instance()
+			g.unit_position = tile_position_manager.get_positions()
+			g.material = Global.player_materials[p.color_idx]
+			tile_map.get_tile_instance(tile).add_child(g)
+			g.rotation_degrees.y = gate_orientation[idx]
+			g.tile_ids = [tile, tile + gate_pos[idx]]
+			g.keep_open = false
+			g.team = p.team
+			
+			# append to blocked tile
+			# to team that nots in this gate
+			for team in blocked_tiles.keys():
+				if team != p.team:
+					blocked_tiles[team].append(tile)
 		
 	var corners = [
 		Vector2.UP + Vector2.RIGHT, # top - right
@@ -697,6 +711,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.name = data.node_name
 	squad.network_id = data.network_id
 	squad.current_tile = data.current_tile
+	squad.blocked_tiles = blocked_tiles[data.team]
 	
 	squad.player_id = data.player_id
 	squad.unit_name = data.squad_name

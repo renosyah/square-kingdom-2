@@ -7,6 +7,7 @@ export var material :SpatialMaterial
 var tile_ids :Array
 var unit_position :Dictionary = {} # {Vector2 : [BaseTileUnit]}
 var team :int
+var keep_open :bool
 
 onready var audio_stream_player_3d = $AudioStreamPlayer3D
 onready var animation_player = $AnimationPlayer
@@ -28,7 +29,7 @@ func _on_global_tick():
 	if _operating:
 		return
 		
-	var at_gate = _squad_at_gates(false)
+	var at_gate = _squad_at_gates(not keep_open)
 	if at_gate and not is_open:
 		_operating = true
 		queue.add_task(self, "open_gate")

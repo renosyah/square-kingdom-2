@@ -53,10 +53,10 @@ func add_log_squad_add_modifier(squad :BaseSquad, type :int, value:float, is_buf
 			type_label = "Range Damage"
 	var v = "%s%s" % [(value * 100),"%"] 
 	if is_buff:
-		var arr = [squad.color.to_html(),squad.unit_name,type_label,Color.green,v]
+		var arr = [squad.color.to_html(),squad.unit_name,type_label,Color.green.to_html(),v]
 		add_log("[BUFF] [color=#%s]%s[/color] %s Improve By [color=#%s]%s[/color]" % arr)
 	else:
-		var arr = [squad.color.to_html(),squad.unit_name,type_label,Color.red,v]
+		var arr = [squad.color.to_html(),squad.unit_name,type_label,Color.red.to_html(),v]
 		add_log("[NERF] [color=#%s]%s[/color] %s Reduce By [color=#%s]%s[/color]" % arr)
 	
 func add_log(text :String):

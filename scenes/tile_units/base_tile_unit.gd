@@ -26,6 +26,8 @@ export var color :Color = Color.white
 export var speed :float = 1.4
 export var margin :float = 0.15
 
+export var blocked_tiles :Array
+
 var _is_moving :bool # block some function if this is true
 var _is_selected :bool = true # allow this unit to be selected or not
 
@@ -131,9 +133,7 @@ func set_selected(v :bool):
 	
 func is_selected() -> bool:
 	return _is_selected
-	
 
-	
 func sync_update() -> void:
 	.sync_update()
 	
@@ -160,6 +160,14 @@ func _follow_path_proccess(delta :float, pos :Vector3):
 		
 	var p :TileUnitPath = _paths.front()
 	
+	# check if tile blocked
+	if not blocked_tiles.empty():
+		if p.tile_id in blocked_tiles:
+			_is_moving = false
+			_paths.clear()
+			_on_finish_travel(_last_tile, current_tile)
+			return
+		
 	if pos.distance_squared_to(p.pos) <= (margin * margin):
 		_last_tile = current_tile
 		current_tile = p.tile_id

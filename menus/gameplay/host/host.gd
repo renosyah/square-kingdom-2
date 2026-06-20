@@ -253,11 +253,7 @@ func _bot_players_action():
 		var go = randf() < bot_aggresive
 		var e = enemies.pick_random()
 		
-		if e.current_tile in e.reinfoce_tiles or not go:
-			continue
-		
 		var i :BaseSquad = s.pick_random()
-		go = randf() < bot_aggresive
 		if i.member_alive < i.total_member or not go:
 			continue
 			
