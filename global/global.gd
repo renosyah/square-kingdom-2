@@ -316,6 +316,7 @@ var scores :Dictionary = {}
 var is_win :bool
 var player_map_data_received :Array = []
 var enable_fort :bool = true
+var fort_size :int = 2
 var enable_bandit :bool = true
 var biom :int
 

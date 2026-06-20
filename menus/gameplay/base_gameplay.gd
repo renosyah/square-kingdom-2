@@ -252,7 +252,7 @@ func _on_tile_map_ready():
 	
 	# this function only be called
 	# if tile map is ready and setup properly
-	setup_players_spawn_points(Global.enable_fort)
+	setup_players_spawn_points(Global.enable_fort, Global.fort_size)
 	
 	ui.route_button.disabled = not Global.enable_fort
 	ui.minimap.biom = Global.biom
@@ -291,6 +291,7 @@ var player_reinfoce_tiles :Dictionary = {} # {player_id:[]}
 
 var tower_datas :Array = [] # servers spawn only
 var blocked_tiles :Dictionary = {0:[]} # {team:[Vector2]}
+var tower_buildings :Dictionary = {}
 
 func setup_bandit_mob():
 	# this is for bot bandit
@@ -301,9 +302,9 @@ func setup_bandit_mob():
 	bot_bandit.color_idx = 10
 	bot_bandit.spawn_position = 4 # default set last one
 
-func setup_players_spawn_points(spawn_fort :bool = false):
+func setup_players_spawn_points(spawn_fort :bool = false, fort_size :int = 4):
 	var map_size :int = current_tile_map_manifest_data.map_size
-	var points = TileIndex.get_spawn_points(map_size, 3) # 4 spawn point edges, 1 center last
+	var points = TileIndex.get_spawn_points(map_size, fort_size + 1) # 4 spawn point edges, 1 center last
 	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
 	
 	for p in all_players:
@@ -313,7 +314,7 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 	if spawn_fort:
 		for index in all_players.size():
 			var p :PlayerData = all_players[index]
-			var tiles = TileIndex.generate_player_spawn_tiles(points[p.spawn_position])
+			var tiles = TileIndex.generate_player_spawn_tiles(points[p.spawn_position], fort_size)
 			for id in tiles:
 				var current :TileMapData = tile_map.get_tile(id)
 				current.rotation_idx = 0
@@ -331,7 +332,7 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 		
 		if spawn_fort:
 			player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, 2) + [point]
-			setup_base(p, point)
+			setup_base(p, point, fort_size)
 		
 	# this for current player only
 	# ajustment to camera
@@ -342,122 +343,76 @@ func setup_players_spawn_points(spawn_fort :bool = false):
 	movable_camera.translation.x = tile.pos.x + 1
 	movable_camera.translation.z = tile.pos.z + 1
 	
-func setup_base(p :PlayerData, tile_id :Vector2):
+func setup_base(p :PlayerData, tile_id :Vector2, size :int):
 	var wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
 	var wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
 	var tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
 	var gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
 	
-	var gate_pos = [
-		Vector2.UP, Vector2.DOWN,
-		Vector2.LEFT, Vector2.RIGHT
-	]
-	var gate_orientation = [
-		0, 180,
-		90, -90
-	]
+	var datas :Array = TileIndex.generate_fort_ring(tile_id, size)
+	for i in datas:
+		var data :Dictionary = i
+		var id = data["tile_id"]
+		var rotation = data["rotation"]
+		var outsides = data["outsides"]
+		
+		match (data["type"]):
+			"wall":
+				var w = wall_scene.instance()
+				w.material = Global.player_materials[p.color_idx]
+				tile_map.get_tile_instance(id).add_child(w)
+				w.rotation_degrees.y = rotation
+				
+				for outside in outsides:
+					nav.set_point_connection(0, id, outside, false)
+				
+			"corner":
+				nav.get_nav_data(id).pos.y = 1.04 # elevation
+				
+				var w = wall_corner_scene.instance()
+				w.material = Global.player_materials[p.color_idx]
+				tile_map.get_tile_instance(id).add_child(w)
+				w.rotation_degrees.y = rotation
+				
+				var t = tower_scene.instance()
+				t.material = Global.player_materials[p.color_idx]
+				tile_map.get_tile_instance(id).add_child(t)
+				tower_buildings[id] = t
+				
+				nav.enable_nav_tile(0, id, false)
+				
+				for outside in outsides:
+					nav.set_point_connection(0, id, outside, false)
+					
+				if is_server:
+					var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
+					guard_tower.network_id = 1
+					guard_tower.player_id = p.player_id
+					guard_tower.node_name = "tower_%s_%s" % [p.player_id, Utils.create_unique_id()]
+					guard_tower.current_tile = id
+					guard_tower.color_idx = p.color_idx
+					guard_tower.team = p.team
+					tower_datas.append(guard_tower)
+					
+			"gate":
+				var is_bandit = p.player_id == bot_bandit.player_id
+				if not is_bandit:
+					var g = gate_scene.instance()
+					g.unit_position = tile_position_manager.get_positions()
+					g.material = Global.player_materials[p.color_idx]
+					tile_map.get_tile_instance(id).add_child(g)
+					g.rotation_degrees.y = rotation
+					g.tile_ids = outsides + [id]
+					g.team = p.team
+					
+					# append to blocked tile
+					# to team that nots in this gate
+					for team in blocked_tiles.keys():
+						if team != p.team:
+							blocked_tiles[team].append(id)
 	
-	var is_bandit = p.player_id == bot_bandit.player_id
-	if not is_bandit:
-		for idx in gate_pos.size():
-			var tile :Vector2 = tile_id + gate_pos[idx] * 2
-			var g = gate_scene.instance()
-			g.unit_position = tile_position_manager.get_positions()
-			g.material = Global.player_materials[p.color_idx]
-			tile_map.get_tile_instance(tile).add_child(g)
-			g.rotation_degrees.y = gate_orientation[idx]
-			g.tile_ids = [tile, tile + gate_pos[idx]]
-			g.keep_open = false
-			g.team = p.team
-			
-			# append to blocked tile
-			# to team that nots in this gate
-			for team in blocked_tiles.keys():
-				if team != p.team:
-					blocked_tiles[team].append(tile)
-		
-	var corners = [
-		Vector2.UP + Vector2.RIGHT, # top - right
-		Vector2.UP + Vector2.LEFT, # top - left
-		Vector2.DOWN + Vector2.RIGHT, # down - right
-		Vector2.DOWN + Vector2.LEFT, # down - left
-	]
-	var walls = [
-		corners[0] * 2 + Vector2.LEFT, corners[0] * 2 + Vector2.DOWN,
-		corners[1] * 2 + Vector2.RIGHT, corners[1] * 2 + Vector2.DOWN,
-		corners[2] * 2 + Vector2.LEFT, corners[2] * 2 + Vector2.UP,
-		corners[3] * 2 + Vector2.RIGHT, corners[3] * 2 + Vector2.UP
-	]
-	var wall_orientation = [
-		0, -90,
-		0, 90,
-		180, -90,
-		180, 90
-	]
-	var wall_nav_reassign = {
-		walls[0]: Vector2.UP, walls[1]: Vector2.RIGHT,
-		walls[2]: Vector2.UP, walls[3]: Vector2.LEFT,
-		walls[4]: Vector2.DOWN, walls[5]:Vector2.RIGHT,
-		walls[6]: Vector2.DOWN, walls[7]:Vector2.LEFT,
-	}
-	
-	for key in wall_nav_reassign.keys():
-		var tile :Vector2 = tile_id + key
-		var v = tile + wall_nav_reassign[key]
-		nav.set_point_connection(0, tile, v, false)
-		
-	for idx in walls.size():
-		var tile :Vector2 = tile_id + walls[idx]
-		var w = wall_scene.instance()
-		w.material = Global.player_materials[p.color_idx]
-		tile_map.get_tile_instance(tile).add_child(w)
-		w.rotation_degrees.y = wall_orientation[idx]
-		
-	var wall_corner_orientation = [
-		-90, 0,
-		180, 90
-	]
-	var corner_nav_reassign = {
-		corners[0]: [Vector2.UP,Vector2.RIGHT],
-		corners[1]: [Vector2.UP,Vector2.LEFT],
-		corners[2]: [Vector2.DOWN,Vector2.RIGHT],
-		corners[3]: [Vector2.DOWN,Vector2.LEFT],
-	}
-	
-	for idx in corners.size():
-		var tile :Vector2 = tile_id + (corners[idx] * 2)
-		nav.get_nav_data(tile).pos.y = 1.04 # elevation
-		
-		for id in corner_nav_reassign[corners[idx]]:
-			nav.set_point_connection(0, tile, tile + id, false)
-		
-		var w = wall_corner_scene.instance()
-		w.material = Global.player_materials[p.color_idx]
-		tile_map.get_tile_instance(tile).add_child(w)
-		w.rotation_degrees.y = wall_corner_orientation[idx]
-		
-		var t = tower_scene.instance()
-		t.material = Global.player_materials[p.color_idx]
-		tile_map.get_tile_instance(tile).add_child(t)
-		tower_buildings[tile] = t
-		
-		nav.enable_nav_tile(0, tile, false)
-		
-		if is_server:
-			var guard_tower = preload("res://data/squad_data/static_guard_tower.tres").duplicate()
-			guard_tower.network_id = 1
-			guard_tower.player_id = p.player_id
-			guard_tower.node_name = "tower_%s_%s" % [p.player_id, idx]
-			guard_tower.current_tile = tile
-			guard_tower.color_idx = p.color_idx
-			guard_tower.team = p.team
-			tower_datas.append(guard_tower)
-		
-var tower_buildings :Dictionary = {}
-
 func _destroy_tower(tile :Vector2):
 	tower_buildings[tile].destroy()
-	
 	
 ########################################## gameplay win condition  ############################################
 var is_end :bool = false
