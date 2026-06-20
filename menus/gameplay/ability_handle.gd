@@ -127,7 +127,7 @@ const squad_abilities = [
 		# range javeline  weapon 13
 		"name": "Yeet!",
 		"icon": preload("res://assets/user_interface/ability/heavy_javeline_ability.png"),
-		"detail": "Throw thing as hard you can, 50% deal more damage with range attack 50% slower for 10 second",
+		"detail": "Throw this thing as hard you can, 50% deal more damage with range attack 50% slower for 10 second",
 		"type": "range",
 		"weapon_idx": 1,
 		"cooldown" : 25.0,
@@ -177,7 +177,7 @@ const squad_abilities = [
 		# special for commander only 18
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
-		"detail": "Remove all status effects from nearby allies. Automaticaly be equip as commander if other ability were not choosen",
+		"detail": "(Commander Default Ability) Remove all status effects from nearby allies. Automaticaly equip if other ability were not choosen",
 		"type": "commander",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 70.0,

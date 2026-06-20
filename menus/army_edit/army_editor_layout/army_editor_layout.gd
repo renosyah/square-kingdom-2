@@ -134,13 +134,12 @@ func _on_card_on_draging(card, pos, idx, type_drag):
 		var crd = _get_closes_child(army_squad_holder, pos)
 		index_target = army_squad_holder.get_children().find(crd)
 		
+		if target_holder:
+			target_holder.modulate.a = 1
+				
 		if crd != card:
-			if target_holder != crd:
-				if target_holder:
-					target_holder.modulate.a = 1
-					
-				crd.modulate.a = 0.2
-				target_holder = crd
+			crd.modulate.a = 0.6
+			target_holder = crd
 	
 func _on_card_on_release(card, pos, idx, type_drag):
 	card.modulate.a = 1
