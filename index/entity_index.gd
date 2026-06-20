@@ -75,6 +75,7 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/helm/helm_3.tscn"), #5
 	preload("res://scenes/equipment/headgear/helm/arabian_helm_1.tscn"), #6
 	preload("res://scenes/equipment/headgear/helm/arabian_helm_2.tscn"), #7
+	preload("res://scenes/equipment/headgear/cape/hood.tscn"),#8
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
@@ -85,6 +86,7 @@ const head_armors_stats = {
 	5:{'hp':28,'speed':-0.062,'spawn_time':4},
 	6:{'hp':11,'speed':-0.008,'spawn_time':2},
 	7:{'hp':24,'speed':-0.015,'spawn_time':2},
+	8:{'hp':5,'speed':0,'spawn_time':1},
 }
 
 const armors = [
@@ -92,23 +94,27 @@ const armors = [
 	preload("res://scenes/equipment/armor/leather_armor/leather_armor.tscn"), #1
 	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #2
 	preload("res://scenes/equipment/armor/medium_armor/medium_armor.tscn"), #3
+	preload("res://scenes/equipment/armor/leather_armor/leather_armor_cross.tscn"), #4
 ]
 const armors_stats = {
 	0:{'hp':0,'speed':0,'mass':0,'spawn_time':1},
 	1:{'hp':25,'speed':-0.08,'mass':0.4,'spawn_time':4},
 	2:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
 	3:{'hp':45,'speed':-0.09,'mass':1.6,'spawn_time':6},
+	4:{'hp':40,'speed':-0.06,'mass':1.5,'spawn_time':5},
 }
 
 const shields = [
 	null, # index 0 as NULL
 	preload("res://scenes/equipment/shield/shield.tscn"),#1
 	preload("res://scenes/equipment/shield/shield_round.tscn"),#2
+	preload("res://scenes/equipment/shield/shield_cross.tscn"),#3
 ]
 const shield_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
 	1:{'hp':35,'speed':-0.07,'spawn_time':4},
-	2:{'hp':15,'speed':-0.06,'spawn_time':3}
+	2:{'hp':15,'speed':-0.06,'spawn_time':3},
+	3:{'hp':35,'speed':-0.07,'spawn_time':4},
 }
 
 

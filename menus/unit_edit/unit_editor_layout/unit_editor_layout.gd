@@ -36,17 +36,20 @@ const headgears = {
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
 	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
+	8 :["Hood", preload("res://assets/user_interface/icons/equipment/helmet_1.png")],
 }
 const armors = {
 	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Leather",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
-	3 :["Iron",preload("res://assets/user_interface/icons/equipment/armor_2.png") ], 
+	3 :["Iron",preload("res://assets/user_interface/icons/equipment/armor_2.png")], 
 	2 :["Plate",preload("res://assets/user_interface/icons/equipment/armor_3.png")], 
+	4 :["Cross",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
 }
 const shields = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
 	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
+	3 :["Cross",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
 }
 const fire_modes = {
 	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 

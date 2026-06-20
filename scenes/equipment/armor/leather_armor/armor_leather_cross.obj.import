@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/armor_leather_cross.obj-692591dbd6fee71def3485e6b205f336.mesh"
+
+[deps]
+
+files=[ "res://.import/armor_leather_cross.obj-692591dbd6fee71def3485e6b205f336.mesh" ]
+
+source_file="res://scenes/equipment/armor/leather_armor/armor_leather_cross.obj"
+dest_files=[ "res://.import/armor_leather_cross.obj-692591dbd6fee71def3485e6b205f336.mesh", "res://.import/armor_leather_cross.obj-692591dbd6fee71def3485e6b205f336.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true
