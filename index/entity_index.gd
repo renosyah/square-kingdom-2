@@ -199,7 +199,25 @@ const squad_potraits = [
 	preload("res://assets/user_interface/potrait/24.png"),
 	preload("res://assets/user_interface/potrait/25.png"),
 	preload("res://assets/user_interface/potrait/26.png"),
-	preload("res://assets/user_interface/potrait/27.png")
+	preload("res://assets/user_interface/potrait/27.png"),
+	preload("res://assets/user_interface/potrait/28.png"), 
+	preload("res://assets/user_interface/potrait/29.png"), 
+	preload("res://assets/user_interface/potrait/30.png"), 
+	preload("res://assets/user_interface/potrait/31.png"), 
+	preload("res://assets/user_interface/potrait/32.png"), 
+	preload("res://assets/user_interface/potrait/33.png"), 
+	preload("res://assets/user_interface/potrait/34.png"), 
+	preload("res://assets/user_interface/potrait/35.png"), 
+	preload("res://assets/user_interface/potrait/36.png"), 
+	preload("res://assets/user_interface/potrait/37.png"), 
+	preload("res://assets/user_interface/potrait/38.png"), 
+	preload("res://assets/user_interface/potrait/39.png"), 
+	preload("res://assets/user_interface/potrait/40.png"), 
+	preload("res://assets/user_interface/potrait/41.png"), 
+	preload("res://assets/user_interface/potrait/42.png"), 
+	preload("res://assets/user_interface/potrait/43.png")
+	
+	
 ]
 
 const player_colors = [

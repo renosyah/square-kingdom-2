@@ -260,6 +260,11 @@ func _on_tile_map_ready():
 	# if tile map is ready and setup properly
 	var map_size :int = current_tile_map_manifest_data.map_size
 	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
+	
+	for index in all_players.size():
+		var p :PlayerData = all_players[index]
+		blocked_tiles[p.team] = []
+		
 	for index in all_players.size():
 		var p :PlayerData = all_players[index]
 		
@@ -267,9 +272,7 @@ func _on_tile_map_ready():
 		var offset_edge = spawn_point_fort[1]
 		var points = TileIndex.get_spawn_points(map_size, offset_edge + 1) # 4 spawn point edges, 1 center last
 		player_ids[p.player_id] = p
-		
 		player_spawn_points[p.player_id] = points[p.spawn_position]
-		blocked_tiles[p.team] = []
 		
 		setup_players_spawn_point(p, spawn_point_fort)
 		

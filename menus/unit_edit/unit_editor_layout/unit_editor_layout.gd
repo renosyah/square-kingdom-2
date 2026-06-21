@@ -112,11 +112,14 @@ onready var save = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer
 onready var snack_bar = $Control/Control/snack_bar
 onready var delete = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/delete
 onready var confirm_popup = $confirm_popup
+onready var popup_choose_potrait = $popup_choose_potrait
 
 var selected_index :int
 var dup_squad_data :SquadData
 
 func display():
+	popup_choose_potrait.visible = false
+	
 	player_color_display.color = EntityIndex.player_colors[player_color_idx]
 	icon_color_display.color = EntityIndex.player_colors[player_color_idx]
 	
@@ -496,11 +499,12 @@ func _on_change_icon_pressed():
 	display_attribute()
 
 func _on_change_potrait_pressed():
-	dup_squad_data.potrait_idx += 1
-	if dup_squad_data.potrait_idx > EntityIndex.squad_potraits.size() - 1:
-		dup_squad_data.potrait_idx = 0
-		
-	display_attribute()
+	popup_choose_potrait.visible = true
+#	dup_squad_data.potrait_idx += 1
+#	if dup_squad_data.potrait_idx > EntityIndex.squad_potraits.size() - 1:
+#		dup_squad_data.potrait_idx = 0
+#
+#	display_attribute()
 
 func _on_button_random_name_pressed():
 	edit_name.text = RandomNameGenerator.generate_name()
@@ -570,3 +574,11 @@ func _on_delete_pressed():
 	selected_index = 0
 	display_current_squad()
 	_on_squad_card_pressed(selected_index, current_squads[selected_index])
+
+func _on_popup_choose_potrait_close():
+	popup_choose_potrait.visible = false
+
+func _on_popup_choose_potrait_selected(idx):
+	popup_choose_potrait.visible = false
+	dup_squad_data.potrait_idx = idx
+	display_attribute()

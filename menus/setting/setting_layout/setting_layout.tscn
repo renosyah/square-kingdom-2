@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/user_interface/confirm_popup/confirm_popup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/user_interface/icons/back.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://assets/user_interface/icons/setting.png" type="Texture" id=13]
 [ext_resource path="res://menus/setting/setting_layout/right_panel_gameplay.tscn" type="PackedScene" id=14]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=15]
+[ext_resource path="res://assets/user_interface/popup_choose_potrait/popup_choose_potrait.tscn" type="PackedScene" id=16]
 
 [node name="setting_layout" type="Control"]
 anchor_right = 1.0
@@ -415,8 +416,11 @@ margin_bottom = 84.0
 [node name="confirm_popup" parent="Control" instance=ExtResource( 1 )]
 visible = false
 
+[node name="popup_choose_potrait" parent="." instance=ExtResource( 16 )]
+
 [connection signal="pressed" from="Control/Control/VBoxContainer/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/gameplay" to="." method="_on_gameplay_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/audio_setting" to="." method="_on_audio_setting_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/graphic_setting" to="." method="_on_graphic_setting_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer/HBoxContainer/left_panel/VBoxContainer/profile_setting" to="." method="_on_profile_setting_pressed"]
+[connection signal="close" from="popup_choose_potrait" to="." method="_on_popup_choose_potrait_close"]

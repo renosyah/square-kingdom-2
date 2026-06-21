@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/user_interface/potrait/1.png" type="Texture" id=1]
+[ext_resource path="res://assets/user_interface/popup_choose_potrait/item/item.gd" type="Script" id=2]
+
+[node name="item" type="Button"]
+margin_right = 100.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 100, 120 )
+mouse_filter = 1
+script = ExtResource( 2 )
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_right = 100.0
+margin_bottom = 120.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="selected" type="ColorRect" parent="."]
+visible = false
+margin_right = 100.0
+margin_bottom = 120.0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 100.0
+margin_bottom = 120.0
+mouse_filter = 2
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="icon" type="TextureRect" parent="MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 96.0
+margin_bottom = 116.0
+mouse_filter = 2
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7

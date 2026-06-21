@@ -28,8 +28,14 @@ onready var right_panels = [
 	$Control/Control/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer/right_panel_profile
 ]
 
+onready var popup_choose_potrait = $popup_choose_potrait
 
 func _ready():
+	popup_choose_potrait.visible = false
+	
+	right_panels[3].popup_choose_potrait = popup_choose_potrait
+	popup_choose_potrait.connect("selected", right_panels[3], "_on_popup_choose_potrait_selected")
+	
 	option_buttons[0].visible = enable_setting_game
 	option_buttons[1].visible = enable_setting_audio
 	option_buttons[2].visible = enable_setting_graphic
@@ -67,4 +73,5 @@ func _on_profile_setting_pressed():
 	overlays[3].visible = true
 	right_panels[3].visible = true
 
-
+func _on_popup_choose_potrait_close():
+	popup_choose_potrait.visible = false

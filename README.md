@@ -7,14 +7,21 @@ A multiplayer medieval RTS built with **Godot 3.6**, featuring tile-based combat
 ## Screenshots
 
 ### Battle Overview
+![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/3.png)
 
-![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay.png)
+![Battle Screenshot 2](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/1.png)
 
-![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_1.png)
+![Battle Screenshot 3](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/2.png)
 
-![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_2.png)
+![Battle Screenshot 4](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/4.png)
 
-![Battle Screenshot 1](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_3.png)
+![Battle Screenshot 5](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay.png)
+
+![Battle Screenshot 6](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_1.png)
+
+![Battle Screenshot 7](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_2.png)
+
+![Battle Screenshot 8](https://raw.githubusercontent.com/renosyah/square-kingdom-2/refs/heads/master/ss/gameplay_3.png)
 
 ### Custom Army System
 

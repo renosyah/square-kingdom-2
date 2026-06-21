@@ -1,0 +1,116 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/user_interface/fonts/montserrat_eb_28.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/user_interface/popup_choose_potrait/popup_choose_potrait.gd" type="Script" id=3]
+[ext_resource path="res://assets/user_interface/icons/close.png" type="Texture" id=4]
+
+[node name="popup_choose_potrait" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.67451 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -377.5
+margin_top = -241.0
+margin_right = 377.5
+margin_bottom = 241.0
+rect_min_size = Vector2( 750, 200 )
+
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer"]
+margin_right = 755.0
+margin_bottom = 482.0
+mouse_filter = 2
+size_flags_horizontal = 3
+color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_right = 755.0
+margin_bottom = 482.0
+mouse_filter = 2
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 755.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 70 )
+custom_constants/margin_right = 12
+custom_constants/margin_top = 12
+custom_constants/margin_left = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer4"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 743.0
+margin_bottom = 72.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 0 )
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_left = 64.0
+margin_top = 12.0
+margin_right = 667.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Choose Potrait"
+align = 1
+
+[node name="close" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+margin_left = 671.0
+margin_right = 731.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 1 )
+icon = ExtResource( 4 )
+icon_align = 1
+expand_icon = true
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 755.0
+margin_bottom = 470.0
+mouse_filter = 2
+size_flags_vertical = 3
+custom_constants/margin_right = 14
+custom_constants/margin_top = 12
+custom_constants/margin_left = 14
+custom_constants/margin_bottom = 12
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
+margin_left = 14.0
+margin_top = 12.0
+margin_right = 741.0
+margin_bottom = 382.0
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/ScrollContainer"]
+margin_right = 727.0
+margin_bottom = 370.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 7
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 474.0
+margin_right = 755.0
+margin_bottom = 482.0
+rect_min_size = Vector2( 0, 8 )
+mouse_filter = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/close" to="." method="_on_close_pressed"]

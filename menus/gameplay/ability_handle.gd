@@ -27,7 +27,7 @@ const squad_abilities = [
 		# melee axe weapon 3
 		"name": "Beserk!",
 		"icon": preload("res://assets/user_interface/ability/beserk_ability.png"),
-		"detail": "Unleash a furious assault, increasing melee attack speed by 50%, move speed by 25% but receive 25% damage for 15 seconds.",
+		"detail": "Unleash a furious assault, increasing melee attack speed by 50% and movement speed by 25%, but suffer 25% more incoming damage for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 7,
 		"cooldown" : 35.0,
@@ -37,10 +37,10 @@ const squad_abilities = [
 		# range longbow weapon 4
 		"name": "Rain Arrows!",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
-		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by 50% while slowing affected enemies by 50% for 15 seconds.",
+		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by 50% while slowing affected enemies by 15% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 4,
-		"cooldown" : 45.0,
+		"cooldown" : 40.0,
 		"required_enemy": true,
 	},
 	{
@@ -97,7 +97,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 10
 		"name": "Riot!",
 		"icon": preload("res://assets/user_interface/ability/riot_ability.png"),
-		"detail": "In the absolute chaos and confusion, Temporary weaken enemy defence by 25% and slow them down by 50% for 15 second",
+		"detail": "Overwhelm the enemy with chaos and confusion, reducing their defense by 25% and movement speed by 50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 60.0,
@@ -107,7 +107,7 @@ const squad_abilities = [
 		# range longbow weapon 11
 		"name": "Heavy Draw",
 		"icon": preload("res://assets/user_interface/ability/heavy_draw_ability.png"),
-		"detail": "Pull your bow as hardest as you can, increase range damage by 50% but range attack 50% slower for 15 second",
+		"detail": "Draw with maximum force, increasing ranged damage by 50% but reducing ranged attack speed by 50% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 4,
 		"cooldown" : 30.0,
@@ -117,7 +117,7 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "Bodkin Point",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "This tip can punch through even their moral, gain 50% more damage for 10 second",
+		"detail": "Armor-piercing bodkin points increase ranged damage by 50% for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 25.0,
@@ -127,7 +127,7 @@ const squad_abilities = [
 		# range javeline  weapon 13
 		"name": "Yeet!",
 		"icon": preload("res://assets/user_interface/ability/heavy_javeline_ability.png"),
-		"detail": "Throw this thing as hard you can, 50% deal more damage with range attack 50% slower for 10 second",
+		"detail": "Throw with reckless force, increasing ranged damage by 50% but reducing attack speed by 50% for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 1,
 		"cooldown" : 25.0,
@@ -137,7 +137,7 @@ const squad_abilities = [
 		# melee great sword 14
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
-		"detail": "Remember your training, deal 50% more damage at cost of 50% slower attack for 15 second",
+		"detail": "Deliver a carefully aimed strike, increasing melee damage by 50% but reducing attack speed by 50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 35.0,
@@ -147,7 +147,7 @@ const squad_abilities = [
 		# melee great axe 15
 		"name": "Cleave!",
 		"icon": preload("res://assets/user_interface/ability/cleave_ability.png"),
-		"detail": "This axes can cut tree and man behind it, deal 50% damage with 50% slow attack for 15 second",
+		"detail": "Swing with overwhelming force, increasing melee damage by 50% but reducing attack speed by 50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 9,
 		"cooldown" : 35.0,
@@ -177,7 +177,7 @@ const squad_abilities = [
 		# special for commander only 18
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
-		"detail": "(Commander Default Ability) Remove ALL status effects from nearby allies. Automaticaly equip if other ability were not choosen",
+		"detail": "(Commander Default Ability) Restore discipline and order, removing all active buffs and debuffs from nearby allies. Automatically equipped if no other ability is selected.",
 		"type": "commander",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 70.0,
@@ -258,7 +258,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_slowed]]) # movement speed
+				enemy.set_modifiers([[squad.modifier_move_speed, -0.15, 15, icon_slowed]]) # movement speed
 				
 		5:# +50% speed for 10 sec
 			squad.set_modifiers([[squad.modifier_move_speed, 0.50, 10, icon_move_speed]]) # movement speed

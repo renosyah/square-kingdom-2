@@ -106,14 +106,15 @@ var _current_tile_v3 :Vector3
 
 var _melee_attack_timer :Timer
 var _range_attack_timer :Timer
-var _taking_damage_timer :Timer
 var _walk_timer :Timer
 var _heal_timer :Timer
 var _tile_indicator :Spatial
 var _move_to_indicator :Spatial
 
+var _send_rpc_pending_timer :Timer
 var _taking_damages_pending :Array = [] # [[]]
 var _member_deads_pending :Array = [] # [[]]
+var _pending_modifier_send :Array = [] # [[]]
 var _heal_interupt :bool = false
 
 var _step_audio :AudioStreamPlayer3D
@@ -168,11 +169,11 @@ func _ready():
 	add_child(_heal_timer)
 	_heal_timer.start()
 	
-	_taking_damage_timer = Timer.new()
-	_taking_damage_timer.one_shot = true
-	_taking_damage_timer.autostart = false
-	_taking_damage_timer.wait_time = 0.2
-	add_child(_taking_damage_timer)
+	_send_rpc_pending_timer = Timer.new()
+	_send_rpc_pending_timer.one_shot = true
+	_send_rpc_pending_timer.autostart = false
+	_send_rpc_pending_timer.wait_time = 0.2
+	add_child(_send_rpc_pending_timer)
 	
 	_ability_cooldown = Timer.new()
 	_ability_cooldown.one_shot = true
@@ -485,21 +486,23 @@ func moving(delta :float) -> void:
 # prevent bursh of damage info send over network
 # check all the pending and send all at once
 func _send_rpc_pending():
-	if not _taking_damage_timer.is_stopped():
+	if not _send_rpc_pending_timer.is_stopped():
 		return
 		
-	_taking_damage_timer.start()
-	
 	if not _taking_damages_pending.empty():
 		rpc_unreliable("_taking_damages", _taking_damages_pending)
 		_taking_damages_pending.clear()
-		return
 		
 	if not _member_deads_pending.empty():
 		rpc("_on_members_dead", _member_deads_pending)
 		_member_deads_pending.clear()
 		
+	if not _pending_modifier_send.empty():
+		rpc("_set_modifiers", _pending_modifier_send)
+		_pending_modifier_send.clear()
 		
+	_send_rpc_pending_timer.start()
+	
 func _on_walking(delta :float):
 	pass
 	
@@ -995,7 +998,7 @@ func set_modifiers(datas :Array, remove_all :bool = false):
 		var id = int(rand_range(-100, 100))
 		data.append(id)
 		
-	rpc("_set_modifiers", datas, remove_all)
+	_pending_modifier_send.append([datas, remove_all])
 	
 	# type modifier
 const modifier_melee_speed = 0
@@ -1004,10 +1007,14 @@ const modifier_move_speed = 2
 const modifier_damage_receive = 3
 const modifier_melee_damage = 4
 const modifier_range_damage = 5
-	
+
 var _modifiers :Dictionary = {} # {type:{id:value}}
 
-remotesync func _set_modifiers(datas :Array, remove_all :bool):
+remotesync func _set_modifiers(datas :Array):
+	for i in datas:
+		on_set_modifiers(i[0], i[1])
+		
+func on_set_modifiers(datas :Array, remove_all :bool):
 	if remove_all:
 		for type in _modifiers.keys():
 			_modifiers[type].clear()
