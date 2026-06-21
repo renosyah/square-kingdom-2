@@ -345,7 +345,6 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 282.0
 margin_bottom = 434.0
-mouse_filter = 1
 theme = SubResource( 2 )
 scroll_horizontal_enabled = false
 
@@ -651,7 +650,6 @@ custom_constants/margin_bottom = 20
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2"]
 margin_right = 312.0
 margin_bottom = 504.0
-mouse_filter = 1
 theme = SubResource( 2 )
 scroll_horizontal_enabled = false
 __meta__ = {

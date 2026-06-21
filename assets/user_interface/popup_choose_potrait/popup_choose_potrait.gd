@@ -15,14 +15,28 @@ func _ready():
 		item.connect("pressed", self, "_on_item_press", [idx, item])
 		grid_container.add_child(item)
 		
-func _on_item_press(idx :int, item):
-	emit_signal("selected",idx)
-	
+func selected(idx :int):
+	var conditions = [
+		idx < 0,
+		idx > EntityIndex.squad_potraits.size() - 1
+	]
+	if conditions.has(true):
+		return
+		
 	if _prev_item:
 		_prev_item.set_selected(false)
 		
+	var item = grid_container.get_child(idx)
 	item.set_selected(true)
 	_prev_item = item
+		
+		
+func _on_item_press(idx :int, item):
+	if _prev_item == item:
+		return
+		
+	emit_signal("selected",idx)
+	selected(idx)
 	
 func _on_close_pressed():
 	emit_signal("close")

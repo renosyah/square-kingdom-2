@@ -32,6 +32,7 @@ onready var popup_choose_potrait = $popup_choose_potrait
 
 func _ready():
 	popup_choose_potrait.visible = false
+	popup_choose_potrait.selected(Global.player_data.potrait_idx)
 	
 	right_panels[3].popup_choose_potrait = popup_choose_potrait
 	popup_choose_potrait.connect("selected", right_panels[3], "_on_popup_choose_potrait_selected")
@@ -40,6 +41,7 @@ func _ready():
 	option_buttons[1].visible = enable_setting_audio
 	option_buttons[2].visible = enable_setting_graphic
 	option_buttons[3].visible = enable_setting_profile
+	
 	
 	_on_gameplay_pressed()
 	

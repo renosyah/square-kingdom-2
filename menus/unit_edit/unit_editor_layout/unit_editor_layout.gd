@@ -352,6 +352,7 @@ func display_attribute():
 	squad_name.text = dup_squad_data.squad_name
 	potrait_display.texture = EntityIndex.squad_potraits[dup_squad_data.potrait_idx]
 	icon_display.texture = EntityIndex.squad_icon[dup_squad_data.icon_idx]
+	popup_choose_potrait.selected(dup_squad_data.potrait_idx)
 	
 func _on_back_pressed():
 	emit_signal("close")
@@ -373,6 +374,7 @@ func display_current_squad():
 		card.data = data
 		
 		var btn = Button.new()
+		btn.mouse_filter = MOUSE_FILTER_PASS
 		btn.rect_min_size = Vector2(70, 100)
 		btn.connect("pressed", self, "_on_squad_card_pressed", [idx, current_squads[idx]])
 		squad_holder.add_child(btn)
@@ -500,6 +502,7 @@ func _on_change_icon_pressed():
 
 func _on_change_potrait_pressed():
 	popup_choose_potrait.visible = true
+	
 #	dup_squad_data.potrait_idx += 1
 #	if dup_squad_data.potrait_idx > EntityIndex.squad_potraits.size() - 1:
 #		dup_squad_data.potrait_idx = 0
