@@ -32,6 +32,8 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/great_axe/great_axe.tscn"), #9
 	preload("res://scenes/equipment/weapons/great_sword/great_sword.tscn"), #10
 	preload("res://scenes/equipment/weapons/sword/sword_curve.tscn"), #11
+	preload("res://scenes/equipment/weapons/sword/sword_curve_shield.tscn"), #12
+	preload("res://scenes/equipment/weapons/mace/mace.tscn"), #13
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -47,6 +49,8 @@ const melee_weapon_stats = {
 	9:{'attack_speed':1.98,'charge_bonus':0,'spawn_time':8},
 	10:{'attack_speed':1.78,'charge_bonus':0,'spawn_time':9},
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
+	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
+	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
 }
 
 const range_weapons = [
@@ -142,6 +146,10 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/catapult.png"), #9
 	preload("res://assets/user_interface/icons/squad/balista.png"),#10
 	preload("res://assets/user_interface/icons/squad/trebuchet.png"),#11
+	preload("res://assets/user_interface/icons/squad/hero.png"),#12
+	preload("res://assets/user_interface/icons/squad/light.png"),#13
+	preload("res://assets/user_interface/icons/squad/shield.png"),#14
+	preload("res://assets/user_interface/icons/squad/hammer.png"),#15
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0
@@ -216,8 +224,6 @@ const squad_potraits = [
 	preload("res://assets/user_interface/potrait/41.png"), 
 	preload("res://assets/user_interface/potrait/42.png"), 
 	preload("res://assets/user_interface/potrait/43.png")
-	
-	
 ]
 
 const player_colors = [

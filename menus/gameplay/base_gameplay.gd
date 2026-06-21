@@ -83,7 +83,13 @@ const memes = [
 	preload("res://assets/sounds/memes/19_juta.wav"),#0
 	preload("res://assets/sounds/memes/hidup_jokowi.wav"),#1
 	preload("res://assets/sounds/memes/saya_akan_lawan.wav"),#2
-	preload("res://assets/sounds/memes/antek_asing.wav")#3
+	preload("res://assets/sounds/memes/antek_asing.wav"),#3
+	preload("res://assets/sounds/memes/lho_kaget.wav"),#4
+]
+const memes2 = [
+	preload("res://assets/sounds/memes/akh.wav"),
+	preload("res://assets/sounds/memes/boom.wav"),
+	preload("res://assets/sounds/memes/faa.wav")
 ]
 const regroup = preload("res://assets/sounds/gameplay/regroup.wav")
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
@@ -910,6 +916,10 @@ func _on_squad_set_modifier(squad :BaseSquad, i :Array):
 	if squad.player_id == current_player.player_id and not is_buff:
 		if not ui_sound.playing:
 			ui_sound.stream = debuff
+			
+			if randf() < 0.14:
+				ui_sound.stream = memes2.pick_random()
+				
 			ui_sound.play()
 	
 func _on_squad_modifier_clear(squad :BaseSquad):

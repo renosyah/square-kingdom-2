@@ -14,10 +14,11 @@ const melee_weapons = {
 	5 :["Sword",preload("res://assets/user_interface/icons/equipment/sword.png")],
 	11 :["Arabian Sword",preload("res://assets/user_interface/icons/equipment/sword_curve.png")],
 	7 :["Axe",preload("res://assets/user_interface/icons/equipment/axe.png")],
+	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png")],
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png")],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png")],
 }
-const shield_melee_weapons = { 2:3,5:6,7:8,11:11 } # {unshield_varian:shield_variant}
+const shield_melee_weapons = { 2:3,5:6,7:8,11:12 } # {unshield_varian:shield_variant}
 
 const range_weapons = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
@@ -30,31 +31,31 @@ const range_weapons = {
 const headgears = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Cape", preload("res://assets/user_interface/icons/equipment/helmet_1.png")], 
+	8 :["Hood", preload("res://assets/user_interface/icons/equipment/hood.png")],
+	9 :["Hood Cross", preload("res://assets/user_interface/icons/equipment/hood.png")],
 	2 :["Kettle", preload("res://assets/user_interface/icons/equipment/helmet_2.png")], 
 	3 :["Steel Helm 1", preload("res://assets/user_interface/icons/equipment/headgear.png")], 
 	4 :["Steel Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_3.png")], 
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
+	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
 	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
-	8 :["Hood", preload("res://assets/user_interface/icons/equipment/hood.png")],
-	9 :["Hood Cross", preload("res://assets/user_interface/icons/equipment/hood.png")],
-	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")], 
 }
 const armors = {
 	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Leather",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
+	4 :["Cross", preload("res://assets/user_interface/icons/equipment/armor_cross.png")], 
 	3 :["Iron",preload("res://assets/user_interface/icons/equipment/armor_2.png")], 
 	2 :["Plate",preload("res://assets/user_interface/icons/equipment/armor_3.png")], 
-	4 :["Cross", preload("res://assets/user_interface/icons/equipment/armor_cross.png")], 
 	5 :["Plate Cross", preload("res://assets/user_interface/icons/equipment/plate_cross.png")], 
 }
 const shields = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
-	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
-	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
-	3 :["Cross", preload("res://assets/user_interface/icons/equipment/shield_cross.png")],
 	4 :["Kite", preload("res://assets/user_interface/icons/equipment/shield_kite.png")], 
-	5 :["Kite Cross", preload("res://assets/user_interface/icons/equipment/shield_kite_cross.png")],  
+	5 :["Kite Cross", preload("res://assets/user_interface/icons/equipment/shield_kite_cross.png")],
+	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
+	3 :["Square Cross", preload("res://assets/user_interface/icons/equipment/shield_cross.png")],
+	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
 }
 const fire_modes = {
 	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 
@@ -387,7 +388,7 @@ func _on_melee_weapon_selected(index :int):
 	show_shield_option()
 	
 	infantry_member.melee_weapon = EntityIndex.melee_weapons[index]
-	infantry_member.shield = dup_squad_data.member_shield_idx
+	infantry_member.shield = EntityIndex.shields[dup_squad_data.member_shield_idx]
 	infantry_member.apply_equipment()
 	
 	# nah just set it to none if changes

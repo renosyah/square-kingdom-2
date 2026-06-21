@@ -183,6 +183,16 @@ const squad_abilities = [
 		"cooldown" : 70.0,
 		"required_enemy": false,
 	},
+	{
+		# melee mace weapon 12
+		"name": "Bonk!",
+		"icon": preload("res://assets/user_interface/ability/bonk.png"),
+		"detail": "Delivers a heavy blow to the enemy. Increases your melee attack speed by 15%, while reducing the target's melee attack speed by 25% and their damage resistance by 15% for 10 seconds.",
+		"type": "melee",
+		"weapon_idx": 13, 
+		"cooldown" : 35.0,
+		"required_enemy": true,
+	},
 ]
 
 const commander_only_ability = 18
@@ -202,6 +212,7 @@ const buff_debuff_icons = [
 	preload("res://assets/user_interface/icons/modifier_effect/slowed.png"),#11
 	preload("res://assets/user_interface/icons/modifier_effect/zap.png"),#12
 	preload("res://assets/user_interface/icons/modifier_effect/horn.png"),#13
+	preload("res://assets/user_interface/icons/modifier_effect/headhurt.png"),#14
 ]
 
 const icon_null = 0
@@ -218,6 +229,7 @@ const icon_aim_better = 10
 const icon_slowed = 11
 const icon_zap = 12
 const icon_horn = 13
+const icon_headhurt = 14
 
 static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -329,6 +341,16 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						
 					elif squad_ability_idx == 18: # remove all modifier
 						s.set_modifiers([], true)
+						
+		19:# +15% melee speed & enemy 25% melee speed for 10 sec
+			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, 10, icon_buffed]]) # range attack speed 
+			
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				enemy.set_modifiers([
+					[squad.modifier_damage_receive, 0.25, 15, icon_null],
+					[squad.modifier_melee_speed, -0.25, 10, icon_headhurt]
+				])
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 
