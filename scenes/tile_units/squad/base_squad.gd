@@ -437,9 +437,6 @@ func has_range_weapon() -> bool:
 	return _has_range_weapon
 	
 func retreat(use_rpc :bool = true):
-	if reinfoce_tiles.empty():
-		return
-		
 	if _is_master or not use_rpc:
 		_retreat()
 		return
@@ -448,9 +445,6 @@ func retreat(use_rpc :bool = true):
 	rpc_id(get_network_master(), "_retreat")
 	
 remote func _retreat():
-	if reinfoce_tiles.empty():
-		return
-		
 	_is_moving = false
 	_paths.clear()
 	
@@ -459,6 +453,10 @@ remote func _retreat():
 	enemy = null
 	chase_enemy = null
 	
+	if reinfoce_tiles.empty():
+		_move_to(current_tile + -tile_front() * 2, true) # move back
+		return
+		
 	_move_to(reinfoce_tiles.pick_random(), true)
 	
 func on_stop():

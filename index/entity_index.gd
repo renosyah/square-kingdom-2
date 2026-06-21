@@ -76,6 +76,8 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/helm/arabian_helm_1.tscn"), #6
 	preload("res://scenes/equipment/headgear/helm/arabian_helm_2.tscn"), #7
 	preload("res://scenes/equipment/headgear/cape/hood.tscn"),#8
+	preload("res://scenes/equipment/headgear/cape/hood_white.tscn"),#9
+	preload("res://scenes/equipment/headgear/helm/helm_3_cross.tscn"),#10
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
@@ -87,7 +89,11 @@ const head_armors_stats = {
 	6:{'hp':11,'speed':-0.008,'spawn_time':2},
 	7:{'hp':24,'speed':-0.015,'spawn_time':2},
 	8:{'hp':5,'speed':0,'spawn_time':1},
+	9:{'hp':5,'speed':0,'spawn_time':1},
+	10:{'hp':28,'speed':-0.062,'spawn_time':4},
 }
+
+const heavy_armor_idxs = [2, 5]
 
 const armors = [
 	null, # index 0 as NULL
@@ -95,6 +101,7 @@ const armors = [
 	preload("res://scenes/equipment/armor/plate_armor/plate_armor.tscn"), #2
 	preload("res://scenes/equipment/armor/medium_armor/medium_armor.tscn"), #3
 	preload("res://scenes/equipment/armor/leather_armor/leather_armor_cross.tscn"), #4
+	preload("res://scenes/equipment/armor/plate_armor/plate_armor_cross.tscn"), #5
 ]
 const armors_stats = {
 	0:{'hp':0,'speed':0,'mass':0,'spawn_time':1},
@@ -102,6 +109,7 @@ const armors_stats = {
 	2:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
 	3:{'hp':45,'speed':-0.09,'mass':1.6,'spawn_time':6},
 	4:{'hp':40,'speed':-0.06,'mass':1.5,'spawn_time':5},
+	5:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
 }
 
 const shields = [
@@ -109,14 +117,17 @@ const shields = [
 	preload("res://scenes/equipment/shield/shield.tscn"),#1
 	preload("res://scenes/equipment/shield/shield_round.tscn"),#2
 	preload("res://scenes/equipment/shield/shield_cross.tscn"),#3
+	preload("res://scenes/equipment/shield/shield_kite.tscn"),#4
+	preload("res://scenes/equipment/shield/shield_kite_cross.tscn"),#5
 ]
 const shield_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
 	1:{'hp':35,'speed':-0.07,'spawn_time':4},
 	2:{'hp':15,'speed':-0.06,'spawn_time':3},
 	3:{'hp':35,'speed':-0.07,'spawn_time':4},
+	4:{'hp':13,'speed':-0.05,'spawn_time':3},
+	5:{'hp':13,'speed':-0.05,'spawn_time':3},
 }
-
 
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0

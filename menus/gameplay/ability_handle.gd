@@ -40,7 +40,7 @@ const squad_abilities = [
 		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by 50% while slowing affected enemies by 50% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 4,
-		"cooldown" : 30.0,
+		"cooldown" : 45.0,
 		"required_enemy": true,
 	},
 	{
@@ -157,7 +157,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 16
 		"name": "Offering!",
 		"icon": preload("res://assets/user_interface/ability/give_food_ability.png"),
-		"detail": "Carry food, water, and supplies to nearby allies, restoring some of their health even while in combat.",
+		"detail": "Carry food, water, and supplies to nearby allies, restoring 15% of their health even while in combat.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 15.0,
@@ -177,7 +177,7 @@ const squad_abilities = [
 		# special for commander only 18
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
-		"detail": "(Commander Default Ability) Remove all status effects from nearby allies. Automaticaly equip if other ability were not choosen",
+		"detail": "(Commander Default Ability) Remove ALL status effects from nearby allies. Automaticaly equip if other ability were not choosen",
 		"type": "commander",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 70.0,

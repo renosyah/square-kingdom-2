@@ -23,6 +23,7 @@ const horse_skins = [
 
 export var charge_damage :int = 23
 export var min_charge_required :int = 3
+export var use_heavy_armor :bool
 
 var _charges :int
 var _horse_audio :AudioStreamPlayer3D
@@ -64,6 +65,7 @@ func _spawn_members():
 		
 		member.hp = member_hp
 		member.max_hp = member_max_hp
+		member.use_heavy_armor = use_heavy_armor
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")

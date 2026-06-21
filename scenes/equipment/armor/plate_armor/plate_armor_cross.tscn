@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/equipment/material/white.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=2]
+[ext_resource path="res://scenes/equipment/equipment.gd" type="Script" id=3]
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=4]
+[ext_resource path="res://scenes/equipment/armor/plate_armor/armor_heavy_cross.obj" type="ArrayMesh" id=5]
+
+[node name="plate_armor" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 5 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 1 )
+material/2 = ExtResource( 4 )

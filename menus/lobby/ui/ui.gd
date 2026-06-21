@@ -235,6 +235,9 @@ remotesync func _update_mode(bandit :bool, fort:bool, biom :int):
 	Global.enable_fort = fort
 	Global.biom = biom
 	
+	for key in Global.spawn_point_forts.keys():
+		Global.spawn_point_forts[key][0] = Global.enable_fort
+		
 	enable_bandit.text = "Bandit : %s" % ("Enable" if Global.enable_bandit else "Disable")
 	enable_fort.text = "Fort : %s" % ("Enable" if Global.enable_fort else "Disable")
 	

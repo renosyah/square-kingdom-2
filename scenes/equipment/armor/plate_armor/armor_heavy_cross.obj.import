@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/armor_heavy_cross.obj-7ca4d763dd90a9208ab073204e98b548.mesh"
+
+[deps]
+
+files=[ "res://.import/armor_heavy_cross.obj-7ca4d763dd90a9208ab073204e98b548.mesh" ]
+
+source_file="res://scenes/equipment/armor/plate_armor/armor_heavy_cross.obj"
+dest_files=[ "res://.import/armor_heavy_cross.obj-7ca4d763dd90a9208ab073204e98b548.mesh", "res://.import/armor_heavy_cross.obj-7ca4d763dd90a9208ab073204e98b548.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

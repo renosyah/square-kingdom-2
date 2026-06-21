@@ -36,20 +36,25 @@ const headgears = {
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
 	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
-	8 :["Hood", preload("res://assets/user_interface/icons/equipment/helmet_1.png")],
+	8 :["Hood", preload("res://assets/user_interface/icons/equipment/hood.png")],
+	9 :["Hood Cross", preload("res://assets/user_interface/icons/equipment/hood.png")],
+	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")], 
 }
 const armors = {
 	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Leather",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
 	3 :["Iron",preload("res://assets/user_interface/icons/equipment/armor_2.png")], 
 	2 :["Plate",preload("res://assets/user_interface/icons/equipment/armor_3.png")], 
-	4 :["Cross",preload("res://assets/user_interface/icons/equipment/armor_1.png")], 
+	4 :["Cross", preload("res://assets/user_interface/icons/equipment/armor_cross.png")], 
+	5 :["Plate Cross", preload("res://assets/user_interface/icons/equipment/plate_cross.png")], 
 }
 const shields = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Square",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
 	2 :["Round",preload("res://assets/user_interface/icons/equipment/shield_2.png")], 
-	3 :["Cross",preload("res://assets/user_interface/icons/equipment/shield_1.png")], 
+	3 :["Cross", preload("res://assets/user_interface/icons/equipment/shield_cross.png")],
+	4 :["Kite", preload("res://assets/user_interface/icons/equipment/shield_kite.png")], 
+	5 :["Kite Cross", preload("res://assets/user_interface/icons/equipment/shield_kite_cross.png")],  
 }
 const fire_modes = {
 	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 
@@ -71,6 +76,9 @@ onready var viewport_container = $Control/Control/VBoxContainer2/HBoxContainer/M
 onready var template_squad_warning = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/template_squad_warning
 
 onready var horse = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse
+onready var horse_armored = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse_armored
+onready var horse_armored_body = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/horse_armored/body/body
+
 onready var movable_camera = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/movable_camera
 onready var infantry_member = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/infantry_member
 
@@ -335,7 +343,7 @@ func show_shield_option():
 		dup_squad_data.member_shield_idx = 0
 	
 func show_fire_mode_option():
-	fire_mode_option.visible = dup_squad_data.member_range_weapon_idx != 0
+	fire_mode_option.visible = dup_squad_data.member_range_weapon_idx != 0 and not dup_squad_data.is_hero
 	
 func display_attribute():
 	squad_name.text = dup_squad_data.squad_name
@@ -459,7 +467,11 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	infantry_member.melee_weapon = EntityIndex.melee_weapons[dup_squad_data.member_melee_weapon_idx]
 	infantry_member.range_weapon = EntityIndex.range_weapons[dup_squad_data.member_range_weapon_idx]
 	infantry_member.material = player_material
-	horse.visible = dup_squad_data.is_mounted
+	
+	var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
+	horse.visible = dup_squad_data.is_mounted and not use_heavy_armor
+	horse_armored.visible = dup_squad_data.is_mounted and use_heavy_armor
+	horse_armored_body.set_surface_material(3, player_material)
 	
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
 	display_range_weapons(dup_squad_data.member_range_weapon_idx)

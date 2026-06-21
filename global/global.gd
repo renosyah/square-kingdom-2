@@ -315,10 +315,19 @@ var battle_time :int
 var scores :Dictionary = {}
 var is_win :bool
 var player_map_data_received :Array = []
-var enable_fort :bool = true
-var fort_size :int = 2
+
+var enable_fort :bool = true # just for MP BATTLE
 var enable_bandit :bool = true
 var biom :int
+
+# position:[enable fort, spawn size]
+var spawn_point_forts :Dictionary = {
+	0:[true, 2], # TOP
+	1:[true, 2], # LEFT
+	2:[true, 2], # RIGHT
+	3:[true, 2], # DOWN
+	4:[true, 2], # center of map
+}
 
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 	var datas = []

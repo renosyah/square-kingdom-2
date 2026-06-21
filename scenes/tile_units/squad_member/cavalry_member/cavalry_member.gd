@@ -2,8 +2,11 @@ extends SquadMember
 class_name CavalryMember
 
 const rider_scene = preload("res://scenes/tile_units/squad_member/infantry_member/infantry_member.tscn")
+const horse = preload("res://scenes/tile_units/squad_member/cavalry_member/horse.obj")
+const horse_armored = preload("res://scenes/tile_units/squad_member/cavalry_member/horse_armored.obj")
 
 export var horse_skin :SpatialMaterial
+export var use_heavy_armor :bool
 
 var _rider
 
@@ -43,6 +46,12 @@ func _ready():
 	
 	_rider.set_as_toplevel(true)
 	_rider.translation = rider_holder.global_position
+	
+	if use_heavy_armor:
+		meshes[0].mesh = horse_armored
+		meshes[0].set_surface_material(1, preload("res://scenes/equipment/material/black.tres"))
+		meshes[0].set_surface_material(2, preload("res://scenes/equipment/material/iron.tres"))
+		meshes[0].set_surface_material(3, material)
 	
 	for i in meshes:
 		var m :MeshInstance = i

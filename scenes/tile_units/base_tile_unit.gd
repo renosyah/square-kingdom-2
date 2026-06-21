@@ -208,7 +208,14 @@ func update_spotting():
 		spotting_area = TileMapUtils.get_adjacent_tiles(
 			TileMapUtils.ARROW_DIRECTIONS, current_tile, spotting_range
 		) + [current_tile]
-
+		
+		
+func tile_front() -> Vector2:
+	var v = Vector2(-transform.basis.z.x, -transform.basis.z.z)
+	if abs(v.x) > abs(v.y):
+		return Vector2.RIGHT if v.x > 0 else Vector2.LEFT
+	return Vector2.DOWN if v.y > 0 else Vector2.UP
+	
 # just for decoration
 func clone_mesh() -> Spatial:
 	return null

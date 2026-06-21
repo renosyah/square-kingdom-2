@@ -229,12 +229,17 @@ func setup_unit_position_manager():
 	
 ########################################## tile map ############################################
 onready var current_tile_map_manifest_data :TileMapFileManifest = Global.current_tile_map_manifest_data
-onready var current_tile_map_file_data :TileMapFileData = Global.current_tile_map_file_data
+var current_tile_map_file_data :TileMapFileData
 
 var tile_map :EditableTileMap
 var nav :NavTileMap
 
 func spawn_tile_map():
+	
+	# dup and assign
+	current_tile_map_file_data = TileMapFileData.new()
+	current_tile_map_file_data.from_dictionary(Global.current_tile_map_file_data.to_dictionary())
+	
 	tile_map = preload("res://addons/custom_tile_map/scenes/editable_tile_map/editable_tile_map.tscn").instance()
 	tile_map.connect("on_map_ready", self, "_on_tile_map_ready")
 	tile_map.name = "tile_map"
@@ -253,9 +258,21 @@ func _on_tile_map_ready():
 	
 	# this function only be called
 	# if tile map is ready and setup properly
-	setup_players_spawn_points(Global.enable_fort, Global.fort_size)
-	
-	ui.route_button.disabled = not Global.enable_fort
+	var map_size :int = current_tile_map_manifest_data.map_size
+	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
+	for index in all_players.size():
+		var p :PlayerData = all_players[index]
+		
+		var spawn_point_fort :Array = spawn_point_forts[p.spawn_position]
+		var offset_edge = spawn_point_fort[1]
+		var points = TileIndex.get_spawn_points(map_size, offset_edge + 1) # 4 spawn point edges, 1 center last
+		player_ids[p.player_id] = p
+		
+		player_spawn_points[p.player_id] = points[p.spawn_position]
+		blocked_tiles[p.team] = []
+		
+		setup_players_spawn_point(p, spawn_point_fort)
+		
 	ui.minimap.biom = Global.biom
 	ui.minimap.load_data_map(current_tile_map_file_data)
 	
@@ -264,6 +281,13 @@ func _on_tile_map_ready():
 		yield(get_tree().create_timer(3), "timeout")
 		
 	NetworkLobbyManager.set_ready()
+	
+	# this for current player only
+	# ajustment to camera
+	var tile :TileMapData = tile_map.get_tile(player_spawn_points[current_player.player_id])
+	if tile != null:
+		movable_camera.translation.x = tile.pos.x + 1
+		movable_camera.translation.z = tile.pos.z + 1
 	
 ########################################## players army spawn mechanism  ############################################
 
@@ -282,6 +306,7 @@ func _on_squad_spawner_squads_ready(squads :Array):
 var bot_bandit :PlayerData # bandit ai
 
 onready var current_player :PlayerData = Global.current_player
+onready var spawn_point_forts :Dictionary = Global.spawn_point_forts
 
 onready var players :Array = Global.players # [PlayerData]
 onready var player_ids :Dictionary = {}
@@ -304,46 +329,23 @@ func setup_bandit_mob():
 	bot_bandit.color_idx = 10
 	bot_bandit.spawn_position = 4 # default set last one
 
-func setup_players_spawn_points(spawn_fort :bool = false, fort_size :int = 4):
-	var map_size :int = current_tile_map_manifest_data.map_size
-	var points = TileIndex.get_spawn_points(map_size, fort_size + 1) # 4 spawn point edges, 1 center last
-	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
-	
-	for p in all_players:
-		blocked_tiles[p.team] = []
-	
-	# replace all tiles with dirt of bases
-	if spawn_fort:
-		for index in all_players.size():
-			var p :PlayerData = all_players[index]
-			var tiles = TileIndex.generate_player_spawn_tiles(points[p.spawn_position], fort_size)
-			for id in tiles:
-				var current :TileMapData = tile_map.get_tile(id)
-				current.rotation_idx = 0
-				current.scene_idx = 2
-				tile_map.update_spawned_tile(current)
-				nav.enable_nav_tile(0, id, true)
-		
-	# register player ids
-	# spawn their bases
-	for index in all_players.size():
-		var p :PlayerData = all_players[index]
-		var point :Vector2 = points[p.spawn_position]
-		player_ids[p.player_id] = p
-		player_spawn_points[p.player_id] = point
-		
-		if spawn_fort:
-			player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, 2) + [point]
-			setup_base(p, point, fort_size)
-		
-	# this for current player only
-	# ajustment to camera
-	var tile :TileMapData = tile_map.get_tile(player_spawn_points[current_player.player_id])
-	if tile == null:
+func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
+	if not spawn_point_fort[0]:
 		return
+		
+	var fort_size :int = spawn_point_fort[1]
+	var point :Vector2 = player_spawn_points[p.player_id]
 	
-	movable_camera.translation.x = tile.pos.x + 1
-	movable_camera.translation.z = tile.pos.z + 1
+	var tiles = TileIndex.generate_player_spawn_tiles(point, fort_size)
+	for id in tiles:
+		var current :TileMapData = tile_map.get_tile(id)
+		current.rotation_idx = 0
+		current.scene_idx = 2
+		tile_map.update_spawned_tile(current)
+		nav.enable_nav_tile(0, id, true)
+		
+	player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, fort_size) + [point]
+	setup_base(p, point, fort_size)
 	
 const wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
 const wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
@@ -735,7 +737,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
 	squad.squad_attribute = squad_attribute
 	squad.squad_ability_idx = data.squad_ability_idx
-	squad.rapid_fire_mode = (data.range_fire_mode == 1)
+	squad.rapid_fire_mode = (data.range_fire_mode == 1) and (not data.is_hero)
 	squad.is_hero = data.is_hero
 	
 	# extra ui
@@ -762,6 +764,7 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.connect("on_squad_modifier_clear", self, "_on_squad_modifier_clear")
 	
 	if squad is CavalrySquad:
+		squad.use_heavy_armor = data.member_armor_idx in EntityIndex.heavy_armor_idxs
 		squad.charge_damage = data.charge_damage()
 		squad.connect("on_cav_charge", self, "_on_cav_charge")
 		
@@ -885,17 +888,21 @@ func _on_squad_set_modifier(squad :BaseSquad, i :Array):
 	var value :float = clamp(i[1], -0.99, 0.99)
 	var icon_idx :int = i[3]
 	
-	var is_buff :bool = value > 0 if type != 3 else value < 0
-	
+	var is_buff :bool = value > 0
+	if type == squad.modifier_damage_receive:
+		is_buff = value < 0
+		
 	if setting.show_feed:
 		ui.log_event.add_log_squad_add_modifier(squad, type, value, is_buff)
 		
-	if icon_idx != 0:
-		var ind = modifier_indicator.instance()
-		ind.icon = AbilityHandle.buff_debuff_icons[icon_idx]
-		ind.is_buff = is_buff
-		ind.squad = squad
-		add_child(ind)
+	if icon_idx == 0:
+		return
+		
+	var ind = modifier_indicator.instance()
+	ind.icon = AbilityHandle.buff_debuff_icons[icon_idx]
+	ind.is_buff = is_buff
+	ind.squad = squad
+	add_child(ind)
 	
 	if squad.player_id == current_player.player_id and not is_buff:
 		if not ui_sound.playing:
@@ -903,6 +910,8 @@ func _on_squad_set_modifier(squad :BaseSquad, i :Array):
 			ui_sound.play()
 	
 func _on_squad_modifier_clear(squad :BaseSquad):
+	
+	# special indicator, all stats modifier removed
 	if squad.player_id == current_player.player_id:
 		var ind = modifier_indicator.instance()
 		ind.icon = AbilityHandle.buff_debuff_icons[AbilityHandle.icon_horn]
