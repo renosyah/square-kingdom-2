@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/equipment/headgear/cape/hood.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=2]
-[ext_resource path="res://scenes/equipment/equipment.gd" type="Script" id=3]
+[ext_resource path="res://scenes/equipment/headgear/headgear.gd" type="Script" id=3]
 
 [node name="cape" type="Spatial"]
 script = ExtResource( 3 )

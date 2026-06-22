@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=1]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=2]
-[ext_resource path="res://scenes/equipment/equipment.gd" type="Script" id=3]
+[ext_resource path="res://scenes/equipment/headgear/headgear.gd" type="Script" id=3]
 [ext_resource path="res://scenes/equipment/headgear/helm/arabian_helm_2.obj" type="ArrayMesh" id=4]
 
 [node name="helm" type="Spatial"]

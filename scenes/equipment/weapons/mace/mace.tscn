@@ -10,8 +10,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
-attack_damage = 4
-bonus_damage = 8
+attack_damage = 5
 ready_animation = "iddle"
 attack_animation = "weapon_slash_attack"
 has_splash_damage = true

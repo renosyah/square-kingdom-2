@@ -28,13 +28,14 @@ onready var range_storage_holder = $pivot/body/range_storage_holder
 onready var melee_storage_holder = $pivot/body/melee_storage_holder
 onready var shield_storage_holder = $pivot/body/shield_storage_holder
 
-var _headgear :Equipment
+var _headgear :Headgear
 var _armor :Equipment
 var _shield :Equipment
 var _melee_weapon :MeleeWeapon
 var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
+onready var head = $pivot/body/head/head
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -58,6 +59,7 @@ func resurect():
 	
 	if _headgear:
 		_headgear.visible = true
+		head.visible = _headgear.show_head
 		
 	if _armor:
 		_armor.visible = true
@@ -87,6 +89,7 @@ func apply_equipment():
 		var w = headgear.instance()
 		headgear_holder.add_child(w)
 		_headgear = w
+		head.visible = _headgear.show_head
 		
 	if armor:
 		var w = armor.instance()
@@ -278,14 +281,12 @@ func take_damage(amount :int):
 	# little bit mechanism of losing
 	# gear on damages
 	var ratio = float(hp) / float(max_hp)
-	if ratio > 0.5:
-		return
-		
-	if randf() < 0.6 and _headgear:
+	if ratio < 0.6 and _headgear:
 		_headgear.visible = false
+		head.visible = true
 		return
 		
-	if randf() < 0.4 and _armor:
+	if ratio < 0.4 and _armor:
 		_armor.visible = false
 		
 func moving(delta :float):

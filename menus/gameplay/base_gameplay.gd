@@ -386,7 +386,8 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int):
 	if is_server:
 		for pos in camp_positions:
 			var id = tile_id + pos
-			camp_buildings.append([id, randi() % camps.size(), rotations.pick_random()])
+			var camp = randi() % camps.size()
+			camp_buildings.append([id, camp, rotations.pick_random() if (camp == 1) else 0])
 		
 	var datas :Array = TileIndex.generate_fort_ring(tile_id, size)
 	for i in datas:
