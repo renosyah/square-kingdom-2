@@ -17,6 +17,7 @@ const melee_weapons = {
 	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png")],
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png")],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png")],
+	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png")],
 }
 const shield_melee_weapons = { 2:3,5:6,7:8,11:12 } # {unshield_varian:shield_variant}
 
@@ -446,13 +447,11 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	 # 0 mean this is squad template and cannot be modified
 	save.visible = (squad.squad_id != 0)
 	delete.visible = (squad.squad_id != 0)
-	create_new.visible = (squad.squad_id == 0)
 	template_squad_warning.visible = (squad.squad_id == 0)
 	
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())
 	dup_squad_data.squad_id = 1
-	dup_squad_data.description = "Custom Squad"
 	
 	# for shield scinanigan, 
 	# i regret made this shield and unshield varian 
@@ -523,6 +522,8 @@ func _on_create_new_pressed():
 	snack_bar.text = "Squad Created!"
 	snack_bar.show()
 	
+	dup_squad_data.description = "Custom Squad" if not dup_squad_data.is_hero else "Hero"
+	
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())
 	
@@ -543,6 +544,8 @@ func _on_save_pressed():
 	if compatible and dup_squad_data.member_shield_idx != 0:
 		dup_squad_data.member_melee_weapon_idx = shield_melee_weapons[member_melee_weapon_idx]
 		
+	dup_squad_data.description = "Custom Squad" if not dup_squad_data.is_hero else "Hero"
+	
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())
 	

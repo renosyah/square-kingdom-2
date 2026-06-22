@@ -58,8 +58,8 @@
 [ext_resource path="res://assets/user_interface/popup_choose_potrait/popup_choose_potrait.tscn" type="PackedScene" id=56]
 [ext_resource path="res://assets/user_interface/icons/edit.png" type="Texture" id=57]
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.113725, 0.376471, 0, 1 )
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0, 0.215686, 0.372549, 1 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -70,8 +70,8 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0, 0.215686, 0.372549, 1 )
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.113725, 0.376471, 0, 1 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -201,38 +201,22 @@ rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
 margin_left = 152.0
-margin_right = 514.0
+margin_right = 498.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/MarginContainer"]
 margin_top = 12.0
-margin_right = 362.0
+margin_right = 346.0
 margin_bottom = 48.0
 custom_fonts/font = ExtResource( 51 )
 text = "Unit Editor"
 
-[node name="create_new" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 518.0
-margin_top = 7.0
-margin_right = 738.0
-margin_bottom = 52.0
-rect_min_size = Vector2( 220, 45 )
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 50 )
-custom_styles/hover = SubResource( 5 )
-custom_styles/pressed = SubResource( 5 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 5 )
-custom_styles/normal = SubResource( 5 )
-text = "Save As New "
-expand_icon = true
-
 [node name="delete" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
 modulate = Color( 1, 0, 0, 1 )
-margin_left = 742.0
-margin_right = 802.0
+margin_left = 502.0
+margin_right = 562.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 0 )
 icon = ExtResource( 28 )
@@ -241,15 +225,15 @@ icon_align = 1
 expand_icon = true
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 806.0
-margin_right = 818.0
+margin_left = 566.0
+margin_right = 578.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="save" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 822.0
+margin_left = 582.0
 margin_top = 7.0
-margin_right = 1012.0
+margin_right = 772.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 190, 45 )
 size_flags_vertical = 4
@@ -261,6 +245,28 @@ custom_styles/disabled = SubResource( 4 )
 custom_styles/normal = SubResource( 4 )
 text = "Save"
 icon = ExtResource( 12 )
+expand_icon = true
+
+[node name="MarginContainer5" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
+margin_left = 776.0
+margin_right = 788.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 12, 0 )
+
+[node name="create_new" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
+margin_left = 792.0
+margin_top = 7.0
+margin_right = 1012.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 220, 45 )
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 50 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+text = "Save As New "
 expand_icon = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
@@ -1504,9 +1510,9 @@ margin_right = 1024.0
 margin_bottom = 600.0
 
 [connection signal="pressed" from="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/back" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/create_new" to="." method="_on_create_new_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/delete" to="." method="_on_delete_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/create_new" to="." method="_on_create_new_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/change_potrait" to="." method="_on_change_potrait_pressed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/change_icon" to="." method="_on_change_icon_pressed"]
 [connection signal="text_changed" from="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/edit_name" to="." method="_on_edit_name_text_changed"]

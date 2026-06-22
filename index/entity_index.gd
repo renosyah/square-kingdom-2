@@ -34,6 +34,7 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/sword/sword_curve.tscn"), #11
 	preload("res://scenes/equipment/weapons/sword/sword_curve_shield.tscn"), #12
 	preload("res://scenes/equipment/weapons/mace/mace.tscn"), #13
+	preload("res://scenes/equipment/weapons/warhammer/warhammer.tscn"), #14
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -51,6 +52,7 @@ const melee_weapon_stats = {
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
+	14:{'attack_speed':2.38,'charge_bonus':0,'spawn_time':8},
 }
 
 const range_weapons = [

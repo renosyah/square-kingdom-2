@@ -72,6 +72,8 @@ func resurect():
 	leg_animation_state.start(_current_anim_walk)
 	
 func apply_equipment():
+	head.visible = true
+	
 	# remove currently equiped
 	var current = [_headgear, _melee_weapon, _shield, _armor, _range_weapon]
 	for i in current:
