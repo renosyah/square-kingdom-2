@@ -63,6 +63,10 @@ export var siege_engine_attack_damage :int
 export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
 
+
+# this is just carrier of something like bonus
+export var extra :Dictionary
+
 func spawn_time() -> int:
 	var sum = 15
 	sum += EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["spawn_time"]
@@ -202,6 +206,7 @@ func from_dictionary(_data : Dictionary):
 	is_commander = _data["v7"]
 	squad_ability_idx = _data["v8"]
 	range_fire_mode = _data["v9"]
+	extra = _data["extra"]
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -237,6 +242,7 @@ func to_dictionary() -> Dictionary :
 	_data["v7"] = is_commander
 	_data["v8"] = squad_ability_idx
 	_data["v9"] = range_fire_mode
+	_data["extra"] = extra
 	return _data
 	
 

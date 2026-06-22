@@ -231,7 +231,7 @@ const icon_zap = 12
 const icon_horn = 13
 const icon_headhurt = 14
 
-static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager):
+static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
 		return
@@ -240,84 +240,106 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 	if squad.get_ability_cooldown()[0]:
 		return
 		
+	var extra_buff_duration :float = 0
+	var extra_debuff_duration :float = 0
+	var extra_buff_value :float = 0
+	var extra_debuff_value :float = 0
+	
+	if extra.has("extra_buff_duration"):
+		extra_buff_duration = extra.has("extra_buff_duration")
+		
+	if extra.has("extra_debuff_duration"):
+		extra_debuff_duration = extra.has("extra_debuff_duration")
+		
+	if extra.has("extra_buff_value"):
+		extra_buff_value = extra.has("extra_buff_value")
+		
+	if extra.has("extra_debuff_value"):
+		extra_debuff_value = extra.has("extra_debuff_value")
+		
 	match squad_ability_idx:
 		1: # stop enemy and -50% speed for them
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_slowed]])
+					enemy.set_modifiers([[squad.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]])
 					enemy.stop()
 				
 		2: # enemy -50% attack speed for 25 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
+					var dur = (25 + extra_debuff_duration)
 					enemy.set_modifiers([
-						[squad.modifier_melee_speed, -0.50, 25, icon_null], # melee attack speed
-						[squad.modifier_range_speed, -0.50, 25, icon_zap] # range attack speed 
+						[squad.modifier_melee_speed, (-0.50 + extra_debuff_value), dur, icon_null], # melee attack speed
+						[squad.modifier_range_speed, (-0.50 + extra_debuff_value), dur, icon_zap] # range attack speed 
 					])
 				
 		3: # +50% melee attack speed and +20% movement speed, -25% damage resistance for 15 sec
+			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_melee_speed, 0.50, 15, icon_beserk], # melee attack speed
-				[squad.modifier_move_speed, 0.20, 25, icon_null], # movement speed
-				[squad.modifier_damage_receive, 0.25, 25, icon_null], # damage receive
+				[squad.modifier_melee_speed, (0.50 + extra_buff_value), dur, icon_beserk], # melee attack speed
+				[squad.modifier_move_speed, (0.20 + extra_buff_value), dur, icon_null], # movement speed
+				[squad.modifier_damage_receive, (0.25 + extra_buff_value), dur, icon_null], # damage receive
 			])
 			
 		4:# +50% range attack speed for 15 sec
-			squad.set_modifiers([[squad.modifier_range_speed, 0.50, 15, icon_buffed]]) # range attack speed 
+			squad.set_modifiers([[squad.modifier_range_speed, (0.50 + extra_buff_value), (15 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
 			# -50% speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[squad.modifier_move_speed, -0.15, 15, icon_slowed]]) # movement speed
+				enemy.set_modifiers([[squad.modifier_move_speed, (-0.15 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]) # movement speed
 				
 		5:# +50% speed for 10 sec
-			squad.set_modifiers([[squad.modifier_move_speed, 0.50, 10, icon_move_speed]]) # movement speed
+			squad.set_modifiers([[squad.modifier_move_speed, (0.50 + extra_buff_value), (10 + extra_buff_duration), icon_move_speed]]) # movement speed
 			
 		6: # set enemy flee
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[squad.modifier_move_speed, -0.50, 15, icon_scared]]) # movement speed
+					enemy.set_modifiers([[squad.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_scared]]) # movement speed
 					enemy.retreat()
 					
 		7: # -80% move speed for 15 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[squad.modifier_move_speed, -0.80, 15, icon_slowed]]) # movement speed
+				enemy.set_modifiers([[squad.modifier_move_speed, (-0.80 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]) # movement speed
 				
 		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
+			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_damage_receive, -0.50, 25, icon_defence_up], # damage receive
-				[squad.modifier_melee_speed, -0.50, 25, icon_null], # melee attack speed
-				[squad.modifier_range_speed, -0.50, 25, icon_null], # range attack speed 
-				[squad.modifier_move_speed, -0.25, 25, icon_null], # movement speed
+				[squad.modifier_damage_receive, -0.50, dur, icon_defence_up], # damage receive
+				[squad.modifier_melee_speed, -0.50, dur, icon_null], # melee attack speed
+				[squad.modifier_range_speed, -0.50, dur, icon_null], # range attack speed 
+				[squad.modifier_move_speed, -0.25, dur, icon_null], # movement speed
 			])
 			
 		9: # -50% range attack speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[squad.modifier_range_speed, -0.50, 10, icon_debuffed]]) # range attack speed
+				enemy.set_modifiers([[squad.modifier_range_speed, -0.50, 10 + extra_debuff_duration, icon_debuffed]]) # range attack speed
 				
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				enemy.set_modifiers([
-					[squad.modifier_move_speed, -0.50, 15, icon_null], # movement speed
-					[squad.modifier_damage_receive, 0.25, 15, icon_defence_down], # damage receive
+					[squad.modifier_move_speed, -0.50, (15 + extra_debuff_duration), icon_null], # movement speed
+					[squad.modifier_damage_receive, 0.25, (15 + extra_debuff_duration), icon_defence_down], # damage receive
 				])
 				
 		11,12,13: # 50% range damage, 50% slowest rate of fire
+			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_range_damage, 0.50, 15, icon_buffed], # damage deal
-				[squad.modifier_range_speed, -0.50, 15, icon_null], #  attack speed 
+				[squad.modifier_range_damage, 0.50, dur, icon_buffed], # damage deal
+				[squad.modifier_range_speed, -0.50, dur, icon_null], #  attack speed 
 			])
 			
 		14,15: # 50% melee damage, 50% slowest rate of fire
+			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_melee_damage, 0.50, 15, icon_buffed], # damage deal
-				[squad.modifier_melee_speed, -0.50, 15, icon_null], # attack speed 
+				[squad.modifier_melee_damage, 0.50, dur, icon_buffed], # damage deal
+				[squad.modifier_melee_speed, -0.50, dur, icon_null], # attack speed 
 			])
 			
 		16, 17, 18: # get nearby squads
@@ -332,24 +354,24 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						
 					elif squad_ability_idx == 17 and s != squad: # 25% attack speed, 15% speed and 15% attack damage for 10
 						s.set_modifiers([
-							[squad.modifier_melee_speed, 0.25, 25, icon_fist_up], 
-							[squad.modifier_range_speed, 0.25, 25, icon_null],
-							[squad.modifier_move_speed, 0.15, 25, icon_null],
-							[squad.modifier_melee_damage, 0.15, 25, icon_null],
-							[squad.modifier_range_damage, 0.15, 25, icon_null],
+							[squad.modifier_melee_speed, 0.25, (25 + extra_buff_duration), icon_fist_up], 
+							[squad.modifier_range_speed, 0.25, (25 + extra_buff_duration), icon_null],
+							[squad.modifier_move_speed, 0.15, (25 + extra_buff_duration), icon_null],
+							[squad.modifier_melee_damage, 0.15, (25 + extra_buff_duration), icon_null],
+							[squad.modifier_range_damage, 0.15, (25 + extra_buff_duration), icon_null],
 						])
 						
 					elif squad_ability_idx == 18: # remove all modifier
 						s.set_modifiers([], true)
 						
 		19:# +15% melee speed & enemy 25% melee speed for 10 sec
-			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, 10, icon_buffed]]) # range attack speed 
+			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, (10 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				enemy.set_modifiers([
-					[squad.modifier_damage_receive, 0.25, 15, icon_null],
-					[squad.modifier_melee_speed, -0.25, 10, icon_headhurt]
+					[squad.modifier_damage_receive, 0.25, (15 + extra_debuff_duration), icon_null],
+					[squad.modifier_melee_speed, -0.25, (10 + extra_debuff_duration), icon_headhurt]
 				])
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])

@@ -16,6 +16,16 @@ func add_spawn_queue(armies :Array):
 	
 func _add_queue(s :SquadData):
 	var spawn_time = 5.0 if s.is_commander else float(s.spawn_time())
+	
+	# bonus by extra
+	if s.extra.has("spawn_time_decrease_percentage"):
+		spawn_time = spawn_time / s.extra["spawn_time_decrease_percentage"]
+		
+	if s.extra.has("spawn_time_decrease_value"):
+		spawn_time = spawn_time - s.extra["spawn_time_decrease_value"]
+	
+	spawn_time = max(spawn_time, 1.0)
+	
 	var timer = Timer.new()
 	timer.wait_time = spawn_time
 	timer.autostart = false

@@ -329,7 +329,7 @@ var spawn_point_forts :Dictionary = {
 	4:[true, 2], # center of map
 }
 
-func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
+func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, extra :Dictionary = {}) -> Array:
 	var datas = []
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, spawn_pos, 1
@@ -340,7 +340,7 @@ func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData) -> Array:
 			tile_idx = 0
 		
 		var tile_id = tiles[tile_idx]
-		var squad :SquadData = prepare_squad(idx, army[idx], player, tile_id)
+		var squad :SquadData = prepare_squad(idx, army[idx], player, tile_id, extra)
 		datas.append(squad)
 		
 		tile_idx += 1
@@ -354,8 +354,9 @@ func _sort_by_order(a, b):
 	return current_squads[a].sort_order < current_squads[b].sort_order
 
 # idx is from current_army
-func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2) -> SquadData:
+func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary) -> SquadData:
 	var data :SquadData = current_squads[squad_idx].duplicate()
+	data.extra = extra
 	data.squad_id = i
 	data.sort_order = i
 	data.network_id = player.player_network_id

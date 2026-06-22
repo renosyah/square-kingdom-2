@@ -36,3 +36,5 @@ range_fire_mode = 1
 siege_engine_attack_damage = 0
 siege_engine_attack_speed = 0.0
 siege_engine_attack_range = 0
+extra = {
+}
