@@ -1114,15 +1114,20 @@ func _get_speed() -> float:
 	return speed * (1.0 + speed_mul)
 	
 func _get_melee_attack_speed() -> float:
-	return max(melee_attack_speed / (1.0 + melee_attack_speed_mul), 0.11) # prevent below 0.1
+	var _min = 0.11 # prevent below 0.11
+	var _v = max((1.0 + melee_attack_speed_mul), 0.01)
+	return max(melee_attack_speed / _v, _min)
 	
 func _get_range_attack_speed() -> float:
+	var _min = 0.12 # prevent below 0.12
+	var _v = max((1.0 + range_attack_speed_mul), 0.01)
+	
 	if rapid_fire_mode:
 		var count = max(member_alive, 1)
 		var spd = clamp(range_attack_speed / count * 1.1, 0.1, range_attack_speed)
-		return max(spd / (1.0 + range_attack_speed_mul), 0.1) # prevent below 0.1
+		return max(spd / _v, _min)
 		
-	return max(range_attack_speed / (1.0 + range_attack_speed_mul), 0.11) # prevent below 0.1
+	return max(range_attack_speed / _v, _min)
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position

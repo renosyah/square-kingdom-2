@@ -7,8 +7,8 @@
 
 [node name="bolt" type="Spatial"]
 script = ExtResource( 1 )
-speed = 9.0
-max_range = 2.0
+speed = 6.0
+max_range = 3.0
 
 [node name="Spatial" type="Spatial" parent="."]
 

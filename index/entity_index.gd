@@ -152,6 +152,8 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/light.png"),#13
 	preload("res://assets/user_interface/icons/squad/shield.png"),#14
 	preload("res://assets/user_interface/icons/squad/hammer.png"),#15
+	preload("res://assets/user_interface/icons/squad/axe_2.png"),
+	preload("res://assets/user_interface/icons/squad/hammer_2.png"),
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0
@@ -166,20 +168,17 @@ const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_1.png"), #9
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_2.png"), #10
 	preload("res://assets/user_interface/squad_potrait/infantry/knight_3.png"), #11
-	
 	preload("res://assets/user_interface/squad_potrait/cavalry/spear_cav.png"), #12
 	preload("res://assets/user_interface/squad_potrait/cavalry/sword_cav.png"), #13
 	preload("res://assets/user_interface/squad_potrait/cavalry/archer_cav.png"), #14
 	preload("res://assets/user_interface/squad_potrait/cavalry/heavy_spear_cav.png"),#15
 	preload("res://assets/user_interface/squad_potrait/cavalry/heavy_sword_cav.png"),#16
 	preload("res://assets/user_interface/squad_potrait/cavalry/royal_cav.png"), #17
-	
 	preload("res://assets/user_interface/squad_potrait/siege_engine/catapult.png"),#18
 	preload("res://assets/user_interface/squad_potrait/siege_engine/balista.png"),#19
 	preload("res://assets/user_interface/squad_potrait/siege_engine/trebuchet.png"),#20
 	preload("res://assets/user_interface/squad_potrait/siege_engine/ram.png"),#21
 	preload("res://assets/user_interface/squad_potrait/siege_engine/siege_tower.png"),#22
-	
 	preload("res://assets/user_interface/squad_potrait/infantry/arabian_archer.png"),#23
 	preload("res://assets/user_interface/squad_potrait/infantry/arabian_spearman.png"),#24
 	preload("res://assets/user_interface/squad_potrait/infantry/arabian_swordman.png"),#25
@@ -225,7 +224,16 @@ const squad_potraits = [
 	preload("res://assets/user_interface/potrait/40.png"), 
 	preload("res://assets/user_interface/potrait/41.png"), 
 	preload("res://assets/user_interface/potrait/42.png"), 
-	preload("res://assets/user_interface/potrait/43.png")
+	preload("res://assets/user_interface/potrait/43.png"),
+	preload("res://assets/user_interface/potrait/44.png"),
+	preload("res://assets/user_interface/potrait/45.png"),
+	preload("res://assets/user_interface/potrait/46.png"),
+	preload("res://assets/user_interface/potrait/47.png"),
+	preload("res://assets/user_interface/potrait/48.png"),
+	preload("res://assets/user_interface/potrait/49.png"),
+	preload("res://assets/user_interface/potrait/50.png"),
+	preload("res://assets/user_interface/potrait/51.png"),
+	preload("res://assets/user_interface/potrait/52.png")
 ]
 
 const army_cards = [
