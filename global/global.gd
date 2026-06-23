@@ -276,6 +276,11 @@ var current_army_cards :Array = [] #[ArmyCardData]
 
 # run once
 func set_default_squad_army():
+	for i in 4:
+		var c = ArmyCardData.new()
+		c.generate_card()
+		current_army_cards.append(c)
+	
 	if not current_squads.empty(): # chech
 		return
 		

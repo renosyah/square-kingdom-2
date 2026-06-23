@@ -1,0 +1,143 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/user_interface/icons/equipment/dagger.png" type="Texture" id=1]
+[ext_resource path="res://menus/unit_edit/equipment_item/ability_item.gd" type="Script" id=2]
+[ext_resource path="res://assets/user_interface/icons/cooldown.png" type="Texture" id=3]
+
+[node name="ability_item" type="MarginContainer"]
+margin_right = 80.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 80, 100 )
+mouse_filter = 2
+script = ExtResource( 2 )
+
+[node name="bg" type="ColorRect" parent="."]
+margin_right = 80.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+
+[node name="overlay" type="ColorRect" parent="."]
+visible = false
+margin_right = 80.0
+margin_bottom = 100.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.760784 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 80.0
+margin_bottom = 100.0
+mouse_filter = 2
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 98.0
+mouse_filter = 2
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 7
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+margin_left = 42.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 36, 36 )
+size_flags_horizontal = 8
+size_flags_vertical = 0
+color = Color( 0, 0, 0, 0.686275 )
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="cooldown" type="Label" parent="MarginContainer/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -8.0
+margin_top = -7.0
+margin_right = 8.0
+margin_bottom = 7.0
+text = "12"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 98.0
+size_flags_vertical = 1
+
+[node name="hurt_color_stats" type="ColorRect" parent="MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 98.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 78.0
+margin_bottom = 98.0
+mouse_filter = 2
+custom_constants/separation = 0
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer2"]
+margin_top = 40.0
+margin_right = 76.0
+margin_bottom = 96.0
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer2/MarginContainer"]
+margin_right = 76.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 0, 22 )
+mouse_filter = 2
+size_flags_vertical = 9
+color = Color( 0, 0, 0, 0.709804 )
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer2/MarginContainer"]
+margin_right = 76.0
+margin_bottom = 56.0
+mouse_filter = 2
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="equipment_name" type="Label" parent="MarginContainer/VBoxContainer2/MarginContainer/MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 72.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 22, 0 )
+text = "aaaaaaaaaaaaaaaaaaaaaa"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Button" type="Button" parent="."]
+margin_right = 80.0
+margin_bottom = 100.0
+mouse_filter = 1
+flat = true
+
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

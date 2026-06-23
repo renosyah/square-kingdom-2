@@ -4,6 +4,7 @@ signal close
 signal save_current_squads(squads, armies)
 
 const equipment_item_scene = preload("res://menus/unit_edit/equipment_item/equipment_item.tscn")
+const ability_item_scene = preload("res://menus/unit_edit/equipment_item/ability_item.tscn")
 
 # {weapon_index_entity:[0, name, icon]}
 const melee_weapons = {
@@ -35,7 +36,7 @@ const headgears = {
 	8 :["Hood", preload("res://assets/user_interface/icons/equipment/hood.png")],
 	9 :["Hood Cross", preload("res://assets/user_interface/icons/equipment/hood.png")],
 	2 :["Kettle", preload("res://assets/user_interface/icons/equipment/helmet_2.png")], 
-	3 :["Steel Helm 1", preload("res://assets/user_interface/icons/equipment/headgear.png")], 
+	3 :["Steel Helm 1",  preload("res://assets/user_interface/icons/equipment/helm.png")], 
 	4 :["Steel Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_3.png")], 
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
 	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
@@ -305,10 +306,11 @@ func display_abilities(s :SquadData, selected_index :int):
 		
 		var is_selected = (idx == selected_index)
 		
-		var item = equipment_item_scene.instance()
+		var item = ability_item_scene.instance()
 		item.index = idx
 		item.icon = abilities[idx]["icon"]
 		item.item_name = abilities[idx]["name"]
+		item.cooldown = '%s' % int(abilities[idx]["cooldown"])
 		item.connect("selected", self, "_on_ability_selected", [idx])
 		abilities_holder.add_child(item)
 		item.set_selected(is_selected)
@@ -316,10 +318,11 @@ func display_abilities(s :SquadData, selected_index :int):
 		if is_selected:
 			ability_desc.text = abilities[selected_index]["detail"]
 			
-	var item_commander = equipment_item_scene.instance()
+	var item_commander = ability_item_scene.instance()
 	item_commander.index = AbilityHandle.commander_only_ability
 	item_commander.icon = abilities[item_commander.index]["icon"]
 	item_commander.item_name = abilities[item_commander.index]["name"]
+	item_commander.cooldown = '%s' % int(abilities[item_commander.index]["cooldown"])
 	item_commander.connect("selected", self, "_on_ability_selected", [item_commander.index])
 	abilities_holder.add_child(item_commander)
 	item_commander.set_selected(item_commander.index == selected_index)

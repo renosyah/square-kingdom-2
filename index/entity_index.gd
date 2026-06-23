@@ -38,7 +38,7 @@ const melee_weapons = [
 ]
 # weapon attack speed
 const melee_weapon_stats = {
-	0:{'attack_speed':2.45,'charge_bonus':0,'spawn_time':3},
+	0:{'attack_speed':0.45,'charge_bonus':0,'spawn_time':3},
 	1:{'attack_speed':1.92,'charge_bonus':2,'spawn_time':2},
 	2:{'attack_speed':0.81,'charge_bonus':9,'spawn_time':4},
 	3:{'attack_speed':0.92,'charge_bonus':7,'spawn_time':4},
@@ -47,8 +47,8 @@ const melee_weapon_stats = {
 	6:{'attack_speed':0.68,'charge_bonus':0,'spawn_time':5},
 	7:{'attack_speed':0.87,'charge_bonus':0,'spawn_time':7},
 	8:{'attack_speed':1.85,'charge_bonus':0,'spawn_time':7},
-	9:{'attack_speed':1.98,'charge_bonus':0,'spawn_time':8},
-	10:{'attack_speed':1.78,'charge_bonus':0,'spawn_time':9},
+	9:{'attack_speed':1.98,'charge_bonus':8,'spawn_time':8},
+	10:{'attack_speed':1.78,'charge_bonus':7,'spawn_time':9},
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
@@ -156,6 +156,7 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/hammer.png"),#15
 	preload("res://assets/user_interface/icons/squad/axe_2.png"),
 	preload("res://assets/user_interface/icons/squad/hammer_2.png"),
+	preload("res://assets/user_interface/icons/squad/mace.png"),
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0

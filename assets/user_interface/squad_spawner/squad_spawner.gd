@@ -19,7 +19,7 @@ func _add_queue(s :SquadData):
 	
 	# bonus by extra
 	if s.extra.has("spawn_time_decrease_percentage"):
-		spawn_time = spawn_time / s.extra["spawn_time_decrease_percentage"]
+		spawn_time = spawn_time / (1.0 + s.extra["spawn_time_decrease_percentage"])
 		
 	if s.extra.has("spawn_time_decrease_value"):
 		spawn_time = spawn_time - s.extra["spawn_time_decrease_value"]
