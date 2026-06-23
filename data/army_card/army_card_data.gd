@@ -235,18 +235,31 @@ func sum(extra :Dictionary):
 	
 func get_extra() -> Dictionary:
 	var _data :Dictionary = .to_dictionary()
-	_data["spawn_time_decrease_percentage"] = spawn_time_decrease_percentage
+	
+	if spawn_time_decrease_percentage > 0:
+		_data["spawn_time_decrease_percentage"] = spawn_time_decrease_percentage
 	_data["spawn_time_decrease_value"] = spawn_time_decrease_value
-	_data["speed_bonus_percentage"] = speed_bonus_percentage
+		
+	if speed_bonus_percentage > 0:
+		_data["speed_bonus_percentage"] = speed_bonus_percentage
 	_data["speed_bonus_value"] = speed_bonus_value
-	_data["melee_speed_bonus_percentage"] = melee_speed_bonus_percentage
+		
+	if melee_speed_bonus_percentage >	0:
+		_data["melee_speed_bonus_percentage"] = melee_speed_bonus_percentage
 	_data["melee_speed_bonus_value"] = melee_speed_bonus_value
-	_data["range_speed_bonus_percentage"] = range_speed_bonus_percentage
+	
+	if range_speed_bonus_percentage > 0:
+		_data["range_speed_bonus_percentage"] = range_speed_bonus_percentage
 	_data["range_speed_bonus_value"] = range_speed_bonus_value
-	_data["hp_bonus_percentage"] = hp_bonus_percentage
+	
+	if hp_bonus_percentage > 0:
+		_data["hp_bonus_percentage"] = hp_bonus_percentage
 	_data["hp_bonus_value"] = hp_bonus_value
-	_data["heal_bonus_percentage"] = heal_bonus_percentage
+	
+	if heal_bonus_percentage > 0:
+		_data["heal_bonus_percentage"] = heal_bonus_percentage
 	_data["heal_bonus_value"] = heal_bonus_value
+	
 	return _data
 
 
