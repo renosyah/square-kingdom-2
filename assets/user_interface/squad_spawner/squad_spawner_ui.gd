@@ -7,6 +7,7 @@ export var spawner :NodePath
 onready var _spawner :SquadSpawner = get_node_or_null(spawner)
 onready var holder = $MarginContainer/VBoxContainer/holder
 onready var margin_container = $MarginContainer
+onready var label = $MarginContainer/VBoxContainer/HBoxContainer/Label
 
 func _ready():
 	var ok = spawner != null
@@ -15,6 +16,9 @@ func _ready():
 	if ok:
 		_spawner.connect("on_squads_ready", self, "_on_squads_ready")
 		_spawner.connect("on_queue_update", self, "_on_queue_update")
+	
+func set_label(v :String):
+	label.text = v
 	
 func _process(delta):
 	for i in holder.get_children():

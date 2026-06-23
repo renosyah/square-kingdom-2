@@ -84,6 +84,7 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/cape/hood.tscn"),#8
 	preload("res://scenes/equipment/headgear/cape/hood_white.tscn"),#9
 	preload("res://scenes/equipment/headgear/helm/helm_3_cross.tscn"),#10
+	preload("res://scenes/equipment/headgear/helm/helm_3_cross_horn.tscn"),#11
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
@@ -97,6 +98,7 @@ const head_armors_stats = {
 	8:{'hp':5,'speed':0,'spawn_time':1},
 	9:{'hp':5,'speed':0,'spawn_time':1},
 	10:{'hp':28,'speed':-0.062,'spawn_time':4},
+	11:{'hp':35,'speed':-0.068,'spawn_time':5},
 }
 
 const heavy_armor_idxs = [2, 5]

@@ -39,6 +39,7 @@ const headgears = {
 	4 :["Steel Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_3.png")], 
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
 	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
+	11 :["Helm 3 Cross Horn", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
 	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
 }

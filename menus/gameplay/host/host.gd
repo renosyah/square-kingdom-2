@@ -165,6 +165,9 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	if not is_bot:
 		return
 		
+	if squad.current_tile in squad.reinfoce_tiles:
+		return
+		
 	var conditions = [
 		data.is_commander,
 		randf() < bot_cowardices[squad.player_id], # coward tendencies
@@ -185,6 +188,11 @@ func _on_bot_bandit_spawner_timer_timeout():
 	if bot_bandit_squads.size() > spawn_size_treshold:
 		return
 		
+	var spawn_id = player_spawn_points[bot_bandit.player_id]
+	var closed = not tile_position_manager.get_positions()[spawn_id].empty()
+	if closed:
+		return
+		
 	var enemy_idx = bandit_troops[enemy_type_idx].pick_random()
 	var data :SquadData = Global.template_squads[enemy_idx].duplicate()
 	data.network_id = 1
@@ -197,7 +205,7 @@ func _on_bot_bandit_spawner_timer_timeout():
 	data.current_tile = spawn_pos.pick_random()
 	data.color_idx = 10
 	data.team = -1
-	data.current_tile = player_spawn_points[bot_bandit.player_id]
+	data.current_tile = spawn_id
 	spawn_squad(data)
 	
 func _on_bot_action_timer_timeout():

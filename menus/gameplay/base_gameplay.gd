@@ -307,6 +307,10 @@ func start_spawn_army():
 		current_player,
 		Global.get_total_cards_extra_bonuses(Global.current_army_cards)
 	)
+	
+	var is_fort = spawn_point_forts[current_player.spawn_position][0]
+	
+	ui.squad_spawner_ui.set_label("Preparing" if is_fort else "Entering")
 	ui.squad_spawner.add_spawn_queue(armies)
 	
 func _on_squad_spawner_squads_ready(squads :Array):
