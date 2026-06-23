@@ -7,7 +7,9 @@ func _ready():
 	setup_transition()
 	load_player_data()
 	setup_tick()
-	load_custom_squad()
+	load_squads()
+	load_army()
+	set_default_squad_army()
 	setup_music()
 	load_Setting()
 	
@@ -234,7 +236,8 @@ func hide_transition():
 	transition.hide_transition()
 	
 ##########################################  army editor  ############################################
-const custom_squads_filepath :String = "custom_squads.dat"
+const default_squads_filepath :String = "custom_squads.dat"
+const default_army_filepath :String = "custom_army.dat"
 
 const template_squads = [
 	preload("res://data/squad_data/peasant.tres"),#0
@@ -267,39 +270,51 @@ const template_squads = [
 # so if anything in custom_squads update
 # current_army will also updated too
 var current_player :PlayerData # specific for game session
-var current_army :Array = [] # [int]
 var current_squads :Array = [] # [SquadData] copied
+var current_army :Array = [] # [int]
+var current_army_cards :Array = [] #[ArmyCardData]
 
+# run once
 func set_default_squad_army():
+	if not current_squads.empty(): # chech
+		return
+		
 	for i in template_squads:
 		current_squads.append(i.duplicate())
 		
 	current_army = [3,3,4,4,5,5,11,15]
 	sort_army(current_army)
 	
-func load_custom_squad():
-	var data = SaveLoad.load_save(custom_squads_filepath, true)
-	if data == null:
-		set_default_squad_army()
-		save_custom_squad()
-		return
-		
-	current_squads = []
-	for i in data["s"]:
-		var s :SquadData = SquadData.new()
-		s.from_dictionary(i)
-		current_squads.append(s)
-		
-	current_army = data["a"]
+	save_squads()
+	save_army()
 	
-func save_custom_squad():
+func load_squads(filepath :String = default_squads_filepath):
+	current_squads = []
+	var data = SaveLoad.load_save(filepath, true)
+	if data != null:
+		for i in data["s"]:
+			var s :SquadData = SquadData.new()
+			s.from_dictionary(i)
+			current_squads.append(s)
+	
+func save_squads(filepath :String = default_squads_filepath):
 	var datas = []
 	for i in current_squads:
 		var s :SquadData = i
 		datas.append(s.to_dictionary())
 		
-	var data :Dictionary = {"s":datas,"a":current_army}
-	SaveLoad.save(custom_squads_filepath, data, true)
+	var data :Dictionary = {"s":datas}
+	SaveLoad.save(filepath, data, true)
+	
+func load_army(filepath :String = default_army_filepath):
+	current_army = []
+	var data = SaveLoad.load_save(filepath, true)
+	if data != null:
+		current_army = data["a"]
+		
+func save_army(filepath :String = default_army_filepath):
+	var data :Dictionary = {"a":current_army}
+	SaveLoad.save(filepath, data, true)
 	
 ##########################################  lobby & gameplay  ############################################
 const max_army_size :int = 9
@@ -328,6 +343,14 @@ var spawn_point_forts :Dictionary = {
 	3:[true, 2], # DOWN
 	4:[true, 2], # center of map
 }
+
+func get_total_cards_extra_bonuses(cards :Array) -> Dictionary:
+	var c = ArmyCardData.new()
+	for i in cards:
+		var _c :ArmyCardData = i
+		c.sum(_c.get_extra())
+		
+	return c.get_extra()
 
 func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, extra :Dictionary = {}) -> Array:
 	var datas = []

@@ -228,6 +228,26 @@ const squad_potraits = [
 	preload("res://assets/user_interface/potrait/43.png")
 ]
 
+const army_cards = [
+	preload("res://assets/user_interface/army_cards/army_tradition.png"), #0
+	preload("res://assets/user_interface/army_cards/arrow_drill_card.png"), #1
+	preload("res://assets/user_interface/army_cards/camp_healer_card.png"), #2
+	preload("res://assets/user_interface/army_cards/combat_training_card.png"), #3
+	preload("res://assets/user_interface/army_cards/field_hospital_card.png"), #4
+	preload("res://assets/user_interface/army_cards/fletcher_guild_card.png"), #5
+	preload("res://assets/user_interface/army_cards/force_march_card.png"), #6
+	preload("res://assets/user_interface/army_cards/hardy_folk_card.png"), #7
+	preload("res://assets/user_interface/army_cards/master_archer_card.png"), #8
+	preload("res://assets/user_interface/army_cards/mercenary_company_card.png"), #9
+	preload("res://assets/user_interface/army_cards/season_veteran_card.png"), #10
+	preload("res://assets/user_interface/army_cards/singing_march_card.png"), #11
+	preload("res://assets/user_interface/army_cards/stamina_training_card.png"), #12
+	preload("res://assets/user_interface/army_cards/strong_constitution_card.png"), #13
+	preload("res://assets/user_interface/army_cards/swift_advance_card.png"), #14
+	preload("res://assets/user_interface/army_cards/veteran_survivor_card.png"), #15
+	preload("res://assets/user_interface/army_cards/veteran_warrior_card.png") #16
+]
+
 const player_colors = [
 	Color("#2B5D9D"),
 	Color("#982D2D"),

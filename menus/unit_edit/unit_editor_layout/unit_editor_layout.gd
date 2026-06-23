@@ -494,20 +494,31 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	infantry_member.apply_equipment()
 	
 func _on_change_icon_pressed():
-	dup_squad_data.icon_idx += 1
-	if dup_squad_data.icon_idx > EntityIndex.squad_icon.size() - 1:
-		dup_squad_data.icon_idx = 0
-		 
-	display_attribute()
-
-func _on_change_potrait_pressed():
+	popup_choose_potrait.list = EntityIndex.squad_icon
+	popup_choose_potrait.set_title("Choose Icon")
+	popup_choose_potrait.display()
+	popup_choose_potrait.selected(dup_squad_data.icon_idx)
+	
 	popup_choose_potrait.visible = true
 	
-#	dup_squad_data.potrait_idx += 1
-#	if dup_squad_data.potrait_idx > EntityIndex.squad_potraits.size() - 1:
-#		dup_squad_data.potrait_idx = 0
-#
-#	display_attribute()
+	if popup_choose_potrait.is_connected("selected", self, "_on_popup_choose_potrait_selected"):
+		popup_choose_potrait.disconnect("selected", self, "_on_popup_choose_potrait_selected")
+		
+	if not popup_choose_potrait.is_connected("selected", self, "_on_popup_choose_icon_selected"):
+		popup_choose_potrait.connect("selected", self, "_on_popup_choose_icon_selected")
+
+func _on_change_potrait_pressed():
+	popup_choose_potrait.list = EntityIndex.squad_potraits
+	popup_choose_potrait.set_title("Choose Potrait")
+	popup_choose_potrait.display()
+	popup_choose_potrait.selected(dup_squad_data.potrait_idx)
+	popup_choose_potrait.visible = true
+	
+	if popup_choose_potrait.is_connected("selected", self, "_on_popup_choose_icon_selected"):
+		popup_choose_potrait.disconnect("selected", self, "_on_popup_choose_icon_selected")
+		
+	if not popup_choose_potrait.is_connected("selected", self, "_on_popup_choose_potrait_selected"):
+		popup_choose_potrait.connect("selected", self, "_on_popup_choose_potrait_selected")
 
 func _on_button_random_name_pressed():
 	edit_name.text = RandomNameGenerator.generate_name()
@@ -528,7 +539,7 @@ func _on_create_new_pressed():
 	dup.from_dictionary(dup_squad_data.to_dictionary())
 	
 	current_squads.append(dup)
-	Global.save_custom_squad()
+	emit_signal("save_current_squads", current_squads, current_army)
 	
 	display_current_squad()
 	var idx = current_squads.size() - 1
@@ -588,4 +599,9 @@ func _on_popup_choose_potrait_close():
 func _on_popup_choose_potrait_selected(idx):
 	popup_choose_potrait.visible = false
 	dup_squad_data.potrait_idx = idx
+	display_attribute()
+	
+func _on_popup_choose_icon_selected(idx):
+	popup_choose_potrait.visible = false
+	dup_squad_data.icon_idx = idx
 	display_attribute()

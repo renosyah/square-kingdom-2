@@ -30,4 +30,7 @@ func _on_army_editor_layout_close():
 
 func _on_army_editor_layout_save(temp_current_army):
 	Global.current_army = temp_current_army
-	Global.save_custom_squad()
+	Global.save_army()
+	
+	army_editor_layout.armies = Global.current_army
+	army_editor_layout.display()

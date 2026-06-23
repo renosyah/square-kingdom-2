@@ -112,6 +112,8 @@ var _tile_indicator :Spatial
 var _move_to_indicator :Spatial
 
 var _send_rpc_pending_timer :Timer
+var _send_unreliable_rpc_pending_timer :Timer
+
 var _taking_damages_pending :Array = [] # [[]]
 var _member_deads_pending :Array = [] # [[]]
 var _pending_modifier_send :Array = [] # [[]]
@@ -174,6 +176,12 @@ func _ready():
 	_send_rpc_pending_timer.autostart = false
 	_send_rpc_pending_timer.wait_time = 0.2
 	add_child(_send_rpc_pending_timer)
+	
+	_send_unreliable_rpc_pending_timer = Timer.new()
+	_send_unreliable_rpc_pending_timer.one_shot = true
+	_send_unreliable_rpc_pending_timer.autostart = false
+	_send_unreliable_rpc_pending_timer.wait_time = 0.08
+	add_child(_send_unreliable_rpc_pending_timer)
 	
 	_ability_cooldown = Timer.new()
 	_ability_cooldown.one_shot = true
@@ -486,22 +494,26 @@ func moving(delta :float) -> void:
 # prevent bursh of damage info send over network
 # check all the pending and send all at once
 func _send_rpc_pending():
-	if not _send_rpc_pending_timer.is_stopped():
-		return
+	# unrelaible
+	if _send_unreliable_rpc_pending_timer.is_stopped():
+		if not _taking_damages_pending.empty():
+			rpc_unreliable("_taking_damages", _taking_damages_pending)
+			_taking_damages_pending.clear()
 		
-	if not _taking_damages_pending.empty():
-		rpc_unreliable("_taking_damages", _taking_damages_pending)
-		_taking_damages_pending.clear()
+		_send_unreliable_rpc_pending_timer.start()
+	
+	# relaible
+	if _send_rpc_pending_timer.is_stopped():
+		if not _member_deads_pending.empty():
+			rpc("_on_members_dead", _member_deads_pending)
+			_member_deads_pending.clear()
 		
-	if not _member_deads_pending.empty():
-		rpc("_on_members_dead", _member_deads_pending)
-		_member_deads_pending.clear()
+		if not _pending_modifier_send.empty():
+			rpc("_set_modifiers", _pending_modifier_send)
+			_pending_modifier_send.clear()
 		
-	if not _pending_modifier_send.empty():
-		rpc("_set_modifiers", _pending_modifier_send)
-		_pending_modifier_send.clear()
+		_send_rpc_pending_timer.start()
 		
-	_send_rpc_pending_timer.start()
 	
 func _on_walking(delta :float):
 	pass

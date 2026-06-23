@@ -95,7 +95,6 @@ margin_right = 712.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
-text = "Choose Potrait"
 align = 1
 
 [node name="close" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]

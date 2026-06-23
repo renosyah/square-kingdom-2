@@ -28,6 +28,7 @@ func _on_unit_editor_layout_close():
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", false)
 
 func _on_unit_editor_layout_save_current_squads(squads, armies):
-	Global.current_squads = squads
 	Global.current_army = armies
-	Global.save_custom_squad()
+	Global.current_squads = squads
+	Global.save_squads()
+	Global.save_army()

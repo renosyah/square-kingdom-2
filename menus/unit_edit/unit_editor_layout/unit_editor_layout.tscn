@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://menus/unit_edit/unit_editor_layout/unit_editor_layout.gd" type="Script" id=1]
 [ext_resource path="res://assets/user_interface/icons/squad/commander.png" type="Texture" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://assets/user_interface/icons/group_cavalry.png" type="Texture" id=26]
 [ext_resource path="res://assets/user_interface/icons/equipment/helmet_4.png" type="Texture" id=27]
 [ext_resource path="res://assets/user_interface/icons/delete.png" type="Texture" id=28]
-[ext_resource path="res://assets/user_interface/icons/refresh.png" type="Texture" id=29]
 [ext_resource path="res://assets/user_interface/icons/equipment/great_sword.png" type="Texture" id=30]
 [ext_resource path="res://assets/user_interface/icons/equipment/throwing_axe.png" type="Texture" id=31]
 [ext_resource path="res://assets/user_interface/icons/equipment/helmet_5.png" type="Texture" id=32]
@@ -1260,7 +1259,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-texture = ExtResource( 29 )
+texture = ExtResource( 57 )
 expand = true
 
 [node name="change_icon" type="Button" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5"]
@@ -1518,4 +1517,3 @@ margin_bottom = 600.0
 [connection signal="text_changed" from="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/edit_name" to="." method="_on_edit_name_text_changed"]
 [connection signal="pressed" from="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer2/button_random_name" to="." method="_on_button_random_name_pressed"]
 [connection signal="close" from="popup_choose_potrait" to="." method="_on_popup_choose_potrait_close"]
-[connection signal="selected" from="popup_choose_potrait" to="." method="_on_popup_choose_potrait_selected"]

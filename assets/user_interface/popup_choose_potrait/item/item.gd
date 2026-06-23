@@ -8,6 +8,7 @@ onready var selected_2 = $MarginContainer/selected2
 
 func _ready():
 	icn.texture = image
+	set_selected(false)
 	
 func set_selected(v :bool):
 	selected.visible = v

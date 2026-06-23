@@ -8,6 +8,7 @@ const dragable_card_scene = preload("res://assets/user_interface/dragable_card/d
 export var squads :Array
 export var armies :Array
 export var save_on_back :bool
+export var show_squad_panel :bool = true
 
 onready var army_label = $Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/Label2
 
@@ -23,6 +24,7 @@ onready var army_highlight =  $Control/VBoxContainer/HBoxContainer/VBoxContainer
 onready var squad_highlight = $Control/VBoxContainer/HBoxContainer/squad_container/highlight
 
 onready var dragable_item = $dragable_item
+onready var rng_army = $Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/rng_army
 
 onready var info = $Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/info
 onready var snack_bar = $snack_bar
@@ -41,6 +43,8 @@ var temp_current_army :Array = []
 
 func _ready():
 	save_button.visible = not save_on_back
+	squad_container.visible = show_squad_panel
+	rng_army.visible = show_squad_panel
 
 func display():
 	temp_current_army = armies.duplicate()
@@ -180,7 +184,7 @@ func _on_card_on_release(card, pos, idx, type_drag):
 			
 		# asume drag from army container to trash or back to squad
 		# which honestly work the same as removing it
-		if (areas[trash_area].visible or areas[squad_container].visible):
+		if areas[trash_area].visible or (areas[squad_container].visible and show_squad_panel):
 			if temp_current_army.size() > 0:
 				temp_current_army.remove(idx)
 			
@@ -255,6 +259,8 @@ func _on_back_pressed():
 			return
 		
 		emit_signal("save", temp_current_army)
+		emit_signal("close")
+		return
 		
 	display()
 	emit_signal("close")

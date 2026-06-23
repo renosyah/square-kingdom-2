@@ -31,8 +31,11 @@ onready var right_panels = [
 onready var popup_choose_potrait = $popup_choose_potrait
 
 func _ready():
-	popup_choose_potrait.visible = false
+	popup_choose_potrait.set_title("Choose Potrait")
+	popup_choose_potrait.list = EntityIndex.squad_potraits
+	popup_choose_potrait.display()
 	popup_choose_potrait.selected(Global.player_data.potrait_idx)
+	popup_choose_potrait.visible = false
 	
 	right_panels[3].popup_choose_potrait = popup_choose_potrait
 	popup_choose_potrait.connect("selected", right_panels[3], "_on_popup_choose_potrait_selected")

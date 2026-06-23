@@ -5,20 +5,32 @@ const item_scene = preload("res://assets/user_interface/popup_choose_potrait/ite
 signal selected(idx)
 signal close
 
+export var list :Array
+
+onready var label = $MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/Label
 onready var grid_container = $MarginContainer/VBoxContainer/MarginContainer3/ScrollContainer/GridContainer
+
 var _prev_item
 
-func _ready():
-	for idx in EntityIndex.squad_potraits.size():
+func display():
+	for i in grid_container.get_children():
+		grid_container.remove_child(i)
+		i.queue_free()
+	
+	for idx in list.size():
 		var item = item_scene.instance()
-		item.image = EntityIndex.squad_potraits[idx]
+		item.image = list[idx]
 		item.connect("pressed", self, "_on_item_press", [idx, item])
 		grid_container.add_child(item)
 		
+func set_title(v:String):
+	label.text = v
+		
 func selected(idx :int):
 	var conditions = [
+		list.empty(),
 		idx < 0,
-		idx > EntityIndex.squad_potraits.size() - 1
+		idx > list.size() - 1
 	]
 	if conditions.has(true):
 		return
