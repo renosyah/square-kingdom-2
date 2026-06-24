@@ -1043,6 +1043,10 @@ func on_set_modifiers(datas :Array, remove_all :bool):
 		var expired :float = i[2]
 		var icon_idx :int = i[3]
 		
+		# waiting time minus? we dont add this nonesense
+		if expired < 0: 
+			continue
+		
 		var id :int = i.back()
 		
 		var _expired = Timer.new()
@@ -1114,12 +1118,12 @@ func _get_speed() -> float:
 	return speed * (1.0 + speed_mul)
 	
 func _get_melee_attack_speed() -> float:
-	var _min = 0.11 # prevent below 0.11
+	var _min = 0.11 # prevent below 0.11 wait time
 	var _v = max((1.0 + melee_attack_speed_mul), 0.01)
 	return max(melee_attack_speed / _v, _min)
 	
 func _get_range_attack_speed() -> float:
-	var _min = 0.12 # prevent below 0.12
+	var _min = 0.12 # prevent below 0.12 wait time
 	var _v = max((1.0 + range_attack_speed_mul), 0.01)
 	
 	if rapid_fire_mode:

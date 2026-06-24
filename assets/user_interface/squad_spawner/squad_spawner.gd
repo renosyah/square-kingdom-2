@@ -19,12 +19,13 @@ func _add_queue(s :SquadData):
 	
 	# bonus by extra
 	if s.extra.has("spawn_time_decrease_percentage"):
-		spawn_time = spawn_time / (1.0 + s.extra["spawn_time_decrease_percentage"])
+		var _v = max(1.0 + s.extra["spawn_time_decrease_percentage"],0.01)
+		spawn_time = spawn_time / _v  # dont allow divide by 0
 		
 	if s.extra.has("spawn_time_decrease_value"):
 		spawn_time = spawn_time - s.extra["spawn_time_decrease_value"]
 	
-	spawn_time = max(spawn_time, 1.0)
+	spawn_time = max(spawn_time, 1.0) # min cap is 1 second
 	
 	var timer = Timer.new()
 	timer.wait_time = spawn_time

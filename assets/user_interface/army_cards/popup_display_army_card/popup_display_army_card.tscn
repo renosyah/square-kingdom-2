@@ -117,23 +117,27 @@ mouse_filter = 2
 size_flags_vertical = 3
 custom_constants/margin_right = 14
 custom_constants/margin_top = 12
-custom_constants/margin_left = 14
+custom_constants/margin_left = 18
 custom_constants/margin_bottom = 12
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MarginContainer3"]
-margin_left = 14.0
+margin_left = 18.0
 margin_top = 12.0
 margin_right = 846.0
 margin_bottom = 382.0
+rect_clip_content = false
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource( 4 )
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/MarginContainer3/ScrollContainer"]
-margin_right = 832.0
+margin_right = 828.0
 margin_bottom = 370.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/hseparation = 6
 columns = 5
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]

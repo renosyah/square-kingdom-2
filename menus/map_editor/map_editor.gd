@@ -7,9 +7,7 @@ onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
 onready var batch_spawner = $batch_spawner
 onready var batch_despawner = $batch_despawner
-onready var untouch_tiles = TileIndex.generate_spawn_points(
-	Global.current_tile_map_manifest_data.map_size
-)
+onready var untouch_tiles = [] #TileIndex.generate_spawn_points(Global.current_tile_map_manifest_data.map_size)
 
 onready var setting :SettingData = Global.setting_data
 

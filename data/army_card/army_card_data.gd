@@ -32,10 +32,10 @@ export var heal_bonus_percentage :float # 0.1 - 1.0
 export var heal_bonus_value :int # 1 - 100
 
 export var extra_buff_duration:float # 1.0 - 100.0
-export var extra_debuff_duration:float # 1.0 - 100.0
+export var extra_buff_value: float # 0.1 - 1.0
 
-export var extra_buff_value: float # 1.0 - 100.0
-export var extra_debuff_value :float # 1.0 - 100.0
+export var extra_debuff_duration:float # 1.0 - 100.0
+export var extra_debuff_value :float  # 0.1 - 1.0
 
 func generate_card(_is_buff :bool = true):
 	is_buff = _is_buff
@@ -331,6 +331,10 @@ func sum(extra :Dictionary):
 	hp_bonus_value += extra.get("hp_bonus_value", 0)
 	heal_bonus_percentage += extra.get("heal_bonus_percentage", 0.0)
 	heal_bonus_value += extra.get("heal_bonus_value", 0)
+	extra_buff_duration += extra.get("extra_buff_duration", 0.0)
+	extra_buff_value += extra.get("extra_buff_value", 0.0)
+	extra_debuff_duration += extra.get("extra_debuff_duration", 0.0)
+	extra_debuff_value += extra.get("extra_debuff_value", 0.0)
 	
 func get_extra() -> Dictionary:
 	var _data :Dictionary = .to_dictionary()
@@ -343,7 +347,7 @@ func get_extra() -> Dictionary:
 		_data["speed_bonus_percentage"] = speed_bonus_percentage
 	_data["speed_bonus_value"] = speed_bonus_value
 		
-	if abs(melee_speed_bonus_percentage) >	0:
+	if abs(melee_speed_bonus_percentage) > 0:
 		_data["melee_speed_bonus_percentage"] = melee_speed_bonus_percentage
 	_data["melee_speed_bonus_value"] = melee_speed_bonus_value
 	
@@ -359,6 +363,12 @@ func get_extra() -> Dictionary:
 		_data["heal_bonus_percentage"] = heal_bonus_percentage
 	_data["heal_bonus_value"] = heal_bonus_value
 	
+	_data["extra_buff_duration"] = extra_buff_duration
+	_data["extra_buff_value"] = extra_buff_value
+	
+	_data["extra_debuff_duration"] = extra_debuff_duration
+	_data["extra_debuff_value"] = extra_debuff_value
+		
 	return _data
 
 
@@ -381,6 +391,10 @@ func from_dictionary(_data : Dictionary):
 	heal_bonus_percentage = _data.get("k", 0.0)
 	heal_bonus_value = _data.get("k1", 0)
 	is_buff = _data.get("l", false)
+	extra_buff_duration = _data.get("m", 0.0)
+	extra_buff_value = _data.get("m1", 0.0)
+	extra_debuff_duration = _data.get("n", 0.0)
+	extra_debuff_value = _data.get("n1", 0.0)
 
 func to_dictionary() -> Dictionary:
 	var _data :Dictionary = .to_dictionary()
@@ -401,4 +415,8 @@ func to_dictionary() -> Dictionary:
 	_data["k"] = heal_bonus_percentage
 	_data["k1"] = heal_bonus_value
 	_data["l"] = is_buff
+	_data["m"] = extra_buff_duration
+	_data["m1"] = extra_buff_value
+	_data["n"] = extra_debuff_duration
+	_data["n1"] = extra_debuff_value
 	return _data

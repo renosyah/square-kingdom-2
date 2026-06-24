@@ -52,17 +52,47 @@ margin_right = 50.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 50, 0 )
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
-margin_right = 50.0
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+margin_left = 13.0
+margin_top = 18.0
+margin_right = 37.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 24, 24 )
+rect_pivot_offset = Vector2( 12, 12 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -30.0
+margin_right = 30.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 60, 60 )
+rect_rotation = 45.0
+rect_pivot_offset = Vector2( 30, 30 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control/MarginContainer"]
+margin_right = 60.0
 margin_bottom = 60.0
 color = Color( 0.382813, 0, 0, 1 )
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
-margin_left = 9.0
-margin_top = 14.0
-margin_right = 41.0
-margin_bottom = 46.0
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 16.0
+margin_bottom = 16.0
 rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 16, 16 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 expand = true
@@ -75,8 +105,9 @@ rect_min_size = Vector2( 4, 0 )
 
 [node name="title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 62.0
+margin_top = 10.0
 margin_right = 162.0
-margin_bottom = 60.0
+margin_bottom = 49.0
 rect_min_size = Vector2( 100, 0 )
 custom_fonts/font = ExtResource( 3 )
 text = "The Tradition........."
@@ -86,6 +117,7 @@ autowrap = true
 max_lines_visible = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+show_behind_parent = true
 margin_top = 60.0
 margin_right = 192.0
 margin_bottom = 222.0
@@ -107,25 +139,25 @@ size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
 margin_right = 192.0
-margin_bottom = 30.0
+margin_bottom = 47.0
 rect_min_size = Vector2( 0, 24 )
 size_flags_vertical = 3
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 34.0
+margin_top = 51.0
 margin_right = 192.0
 margin_bottom = 162.0
 rect_min_size = Vector2( 0, 32 )
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2"]
 margin_right = 192.0
-margin_bottom = 128.0
+margin_bottom = 111.0
 size_flags_vertical = 3
 color = Color( 0, 0, 0, 0.619608 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2"]
 margin_right = 192.0
-margin_bottom = 128.0
+margin_bottom = 111.0
 size_flags_vertical = 8
 custom_constants/margin_right = 4
 custom_constants/margin_top = 8
@@ -133,10 +165,11 @@ custom_constants/margin_left = 4
 custom_constants/margin_bottom = 4
 
 [node name="detail" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/MarginContainer2"]
+modulate = Color( 1, 0, 0, 1 )
 margin_left = 4.0
 margin_top = 8.0
 margin_right = 188.0
-margin_bottom = 124.0
+margin_bottom = 107.0
 size_flags_vertical = 0
 text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaddddddddddssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
 autowrap = true

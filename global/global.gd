@@ -351,16 +351,21 @@ var spawn_point_forts :Dictionary = {
 	4:[true, 2], # center of map
 }
 
-func get_total_cards_extra_bonuses(cards :Array) -> Dictionary:
+func get_total_cards_extra_bonuses(cards :Array) -> ArmyCardData:
 	var c = ArmyCardData.new()
 	for i in cards:
 		var _c :ArmyCardData = i
 		c.sum(_c.get_extra())
 		
-	return c.get_extra()
+	return c
 
-func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, extra :Dictionary = {}) -> Array:
+func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, sum_card :ArmyCardData = null) -> Array:
 	var datas = []
+	
+	var extra = {}
+	if sum_card != null:
+		extra = sum_card.to_dictionary()
+		
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, spawn_pos, 1
 	)
@@ -384,7 +389,7 @@ func _sort_by_order(a, b):
 	return current_squads[a].sort_order < current_squads[b].sort_order
 
 # idx is from current_army
-func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary) -> SquadData:
+func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary = {}) -> SquadData:
 	var data :SquadData = current_squads[squad_idx].duplicate()
 	data.extra = extra
 	data.squad_id = i

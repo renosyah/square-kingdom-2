@@ -299,13 +299,16 @@ func _on_tile_map_ready():
 		movable_camera.translation.z = tile.pos.z + 1
 	
 ########################################## players army spawn mechanism  ############################################
+var total_cards_extra :ArmyCardData
 
 func start_spawn_army():
+	total_cards_extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards)
+	
 	var armies :Array = Global.prepare_army(
 		Global.current_army, 
 		player_spawn_points[current_player.player_id], 
 		current_player,
-		Global.get_total_cards_extra_bonuses(Global.current_army_cards)
+		total_cards_extra
 	)
 	
 	var is_fort = spawn_point_forts[current_player.spawn_position][0]
@@ -616,7 +619,7 @@ func _on_ui_route_button_pressed():
 		
 func _on_use_ability():
 	var squad :BaseSquad = ui.squad_with_ability
-	AbilityHandle.use_squad_ability(squad, tile_position_manager)
+	AbilityHandle.use_squad_ability(squad, tile_position_manager, total_cards_extra.get_extra())
 	
 	if not setting.lock_command:
 		squad.click() # unselected
@@ -681,37 +684,44 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	
 	var squad_attribute = data.squad_attribute()
 	
+	var card_bonus :ArmyCardData = ArmyCardData.new()
+	card_bonus.from_dictionary(data.extra)
+	var _extra :Dictionary = card_bonus.get_extra()
+	
 	var speed = data.speed() # move speed + bonus by extra
-	if data.extra.has("speed_bonus_percentage"):
-		speed = speed * (1.0 + data.extra["speed_bonus_percentage"])
-	if data.extra.has("speed_bonus_value"):
-		speed = speed + data.extra["speed_bonus_value"]
+	if _extra.has("speed_bonus_percentage"):
+		speed = speed * (1.0 + _extra["speed_bonus_percentage"])
+	if _extra.has("speed_bonus_value"):
+		speed = speed + _extra["speed_bonus_value"]
+	speed = max(speed, 0.1)
 	
 	var melee_attack_speed = data.melee_attack_speed() # melee speed + bonus by extra
-	if data.extra.has("melee_speed_bonus_percentage"):
-		melee_attack_speed = melee_attack_speed / (1.0 + data.extra["melee_speed_bonus_percentage"])
-	if data.extra.has("melee_speed_bonus_value"):
-		melee_attack_speed = melee_attack_speed - data.extra["melee_speed_bonus_value"]
-	melee_attack_speed = max(melee_attack_speed, 0.2) # clamp it to 0.2
+	if _extra.has("melee_speed_bonus_percentage"):
+		var _v = max((1.0 + _extra["melee_speed_bonus_percentage"]), 0.01)
+		melee_attack_speed = melee_attack_speed / _v # dont allow divide by 0
+	if _extra.has("melee_speed_bonus_value"):
+		melee_attack_speed = melee_attack_speed - _extra["melee_speed_bonus_value"]
+	melee_attack_speed = max(melee_attack_speed, 0.11) # clamp it to 0.2
 	
 	var range_attack_speed = data.range_attack_speed() # range speed + bonus by extra
-	if data.extra.has("range_speed_bonus_percentage"):
-		range_attack_speed = range_attack_speed / (1.0 + data.extra["range_speed_bonus_percentage"])
-	if data.extra.has("range_speed_bonus_value"):
-		range_attack_speed = range_attack_speed - data.extra["range_speed_bonus_value"]
-	range_attack_speed = max(range_attack_speed, 0.4) # clamp it to 0.4
+	if _extra.has("range_speed_bonus_percentage"):
+		var _v = max(1.0 + _extra["range_speed_bonus_percentage"], 0.01)
+		range_attack_speed = range_attack_speed / _v # dont allow divide by 0
+	if _extra.has("range_speed_bonus_value"):
+		range_attack_speed = range_attack_speed - _extra["range_speed_bonus_value"]
+	range_attack_speed = max(range_attack_speed, 0.12) # clamp it to 0.4
 	
 	var member_hp = data.member_hp()
-	if data.extra.has("hp_bonus_percentage"):
-		member_hp = int(member_hp * (1.0 + data.extra["hp_bonus_percentage"]))
-	if data.extra.has("hp_bonus_value"):
-		member_hp = member_hp + data.extra["hp_bonus_value"]
+	if _extra.has("hp_bonus_percentage"):
+		member_hp = int(member_hp * (1.0 + _extra["hp_bonus_percentage"]))
+	if _extra.has("hp_bonus_value"):
+		member_hp = member_hp + _extra["hp_bonus_value"]
 
 	var heal_amount = data.heal_amount() # heal hp + bonus by extra
-	if data.extra.has("heal_bonus_percentage"):
-		heal_amount = int(heal_amount * (1.0 + data.extra["heal_bonus_percentage"]))
-	if data.extra.has("heal_bonus_value"):
-		heal_amount = heal_amount + data.extra["heal_bonus_value"]
+	if _extra.has("heal_bonus_percentage"):
+		heal_amount = int(heal_amount * (1.0 + _extra["heal_bonus_percentage"]))
+	if _extra.has("heal_bonus_value"):
+		heal_amount = heal_amount + _extra["heal_bonus_value"]
 	heal_amount = int(clamp(heal_amount, 0,member_hp)) # clamp it to member hp
 	
 	match (Global.biom):
