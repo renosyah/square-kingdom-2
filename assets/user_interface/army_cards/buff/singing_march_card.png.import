@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/field_hospital_card.png-97c88b6a4b098a2d7c5b80c46ee5957e.stex"
+path="res://.import/singing_march_card.png-a7d1ef47f248429608c0450eefe6cc42.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/field_hospital_card.png"
-dest_files=[ "res://.import/field_hospital_card.png-97c88b6a4b098a2d7c5b80c46ee5957e.stex" ]
+source_file="res://assets/user_interface/army_cards/buff/singing_march_card.png"
+dest_files=[ "res://.import/singing_march_card.png-a7d1ef47f248429608c0450eefe6cc42.stex" ]
 
 [params]
 

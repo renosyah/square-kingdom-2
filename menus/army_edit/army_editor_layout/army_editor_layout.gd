@@ -30,6 +30,7 @@ onready var info = $Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContai
 onready var snack_bar = $snack_bar
 onready var confirm_popup = $confirm_popup
 onready var save_button = $Control/VBoxContainer/MarginContainer/HBoxContainer/save
+onready var popup_display_army_card = $popup_display_army_card
 
 onready var areas = {
 	trash_area:trash_highlight,
@@ -45,6 +46,7 @@ func _ready():
 	save_button.visible = not save_on_back
 	squad_container.visible = show_squad_panel
 	rng_army.visible = show_squad_panel
+	popup_display_army_card.visible = false
 
 func display():
 	temp_current_army = armies.duplicate()
@@ -265,6 +267,10 @@ func _on_back_pressed():
 	display()
 	emit_signal("close")
 
+func _on_cards_pressed():
+	popup_display_army_card.army_cards = Global.current_army_cards
+	popup_display_army_card.display()
+	popup_display_army_card.visible = true
 
-
-
+func _on_popup_display_army_card_close():
+	popup_display_army_card.visible = false

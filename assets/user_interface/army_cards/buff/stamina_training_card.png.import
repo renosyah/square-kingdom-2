@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hardy_folk_card.png-f353e1dac95af14a6e9c375f1210aa4a.stex"
+path="res://.import/stamina_training_card.png-20cdaf4b049cb088687b64e9e307593c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/hardy_folk_card.png"
-dest_files=[ "res://.import/hardy_folk_card.png-f353e1dac95af14a6e9c375f1210aa4a.stex" ]
+source_file="res://assets/user_interface/army_cards/buff/stamina_training_card.png"
+dest_files=[ "res://.import/stamina_training_card.png-20cdaf4b049cb088687b64e9e307593c.stex" ]
 
 [params]
 

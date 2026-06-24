@@ -2,7 +2,6 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
 	yield(_unload_preset_map(),"completed")
 	Global.change_scene("res://menus/main_menu/main_menu.tscn", true)
 	

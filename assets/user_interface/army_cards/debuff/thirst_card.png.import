@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fletcher_guild_card.png-ecb6fc1d395160b7bb07ac2d62b0786e.stex"
+path="res://.import/thirst_card.png-ed30702c511fa18e98232c2b55cdac98.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/fletcher_guild_card.png"
-dest_files=[ "res://.import/fletcher_guild_card.png-ecb6fc1d395160b7bb07ac2d62b0786e.stex" ]
+source_file="res://assets/user_interface/army_cards/debuff/thirst_card.png"
+dest_files=[ "res://.import/thirst_card.png-ed30702c511fa18e98232c2b55cdac98.stex" ]
 
 [params]
 

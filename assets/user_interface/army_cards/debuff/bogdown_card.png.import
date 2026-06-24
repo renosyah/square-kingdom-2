@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/veteran_survivor_card.png-e94b97331d8041c845f83aa7dcb2c1ed.stex"
+path="res://.import/bogdown_card.png-31fcc2978c8e2e2757bd3383f7b55163.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/veteran_survivor_card.png"
-dest_files=[ "res://.import/veteran_survivor_card.png-e94b97331d8041c845f83aa7dcb2c1ed.stex" ]
+source_file="res://assets/user_interface/army_cards/debuff/bogdown_card.png"
+dest_files=[ "res://.import/bogdown_card.png-31fcc2978c8e2e2757bd3383f7b55163.stex" ]
 
 [params]
 

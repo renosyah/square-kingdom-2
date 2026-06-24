@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/master_archer_card.png-a9505b721108e71360a3028a4bea621b.stex"
+path="res://.import/force_march_card.png-1b4584519b91a974467ae8cd45e10de9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/master_archer_card.png"
-dest_files=[ "res://.import/master_archer_card.png-a9505b721108e71360a3028a4bea621b.stex" ]
+source_file="res://assets/user_interface/army_cards/buff/force_march_card.png"
+dest_files=[ "res://.import/force_march_card.png-1b4584519b91a974467ae8cd45e10de9.stex" ]
 
 [params]
 

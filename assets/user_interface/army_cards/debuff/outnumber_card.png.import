@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/singing_march_card.png-a1ad509b4390181c45aa04693e97a33e.stex"
+path="res://.import/outnumber_card.png-f496bd684283b0aacc6ff36e4b8ee0f8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/singing_march_card.png"
-dest_files=[ "res://.import/singing_march_card.png-a1ad509b4390181c45aa04693e97a33e.stex" ]
+source_file="res://assets/user_interface/army_cards/debuff/outnumber_card.png"
+dest_files=[ "res://.import/outnumber_card.png-f496bd684283b0aacc6ff36e4b8ee0f8.stex" ]
 
 [params]
 

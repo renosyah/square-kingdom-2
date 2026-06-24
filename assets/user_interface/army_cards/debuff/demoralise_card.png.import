@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/camp_healer_card.png-d6605b13d12b09b4f0c65b110911c4c0.stex"
+path="res://.import/demoralise_card.png-27fda54f6abd09fd72cd1743906859d6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/camp_healer_card.png"
-dest_files=[ "res://.import/camp_healer_card.png-d6605b13d12b09b4f0c65b110911c4c0.stex" ]
+source_file="res://assets/user_interface/army_cards/debuff/demoralise_card.png"
+dest_files=[ "res://.import/demoralise_card.png-27fda54f6abd09fd72cd1743906859d6.stex" ]
 
 [params]
 

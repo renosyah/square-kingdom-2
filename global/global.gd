@@ -1,6 +1,8 @@
 extends Node
 
 func _ready():
+	randomize()
+	
 	SaveLoad.ensure_dir("user://%s/" % map_dir)
 	
 	init_save_load_map()
@@ -278,7 +280,7 @@ var current_army_cards :Array = [] #[ArmyCardData]
 func set_default_squad_army():
 	for i in 4:
 		var c = ArmyCardData.new()
-		c.generate_card()
+		c.generate_card(randf() < 0.5)
 		current_army_cards.append(c)
 	
 	if not current_squads.empty(): # chech

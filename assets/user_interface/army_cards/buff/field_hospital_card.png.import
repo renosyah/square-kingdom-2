@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/season_veteran_card.png-2e28d53f8c523c04c44e605c56cf3e80.stex"
+path="res://.import/field_hospital_card.png-b0f1cbb4495d5e2cb1ab3f9bf6919d32.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/season_veteran_card.png"
-dest_files=[ "res://.import/season_veteran_card.png-2e28d53f8c523c04c44e605c56cf3e80.stex" ]
+source_file="res://assets/user_interface/army_cards/buff/field_hospital_card.png"
+dest_files=[ "res://.import/field_hospital_card.png-b0f1cbb4495d5e2cb1ab3f9bf6919d32.stex" ]
 
 [params]
 

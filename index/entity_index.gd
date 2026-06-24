@@ -240,23 +240,37 @@ const squad_potraits = [
 ]
 
 const army_cards = [
-	preload("res://assets/user_interface/army_cards/army_tradition.png"), #0
-	preload("res://assets/user_interface/army_cards/arrow_drill_card.png"), #1
-	preload("res://assets/user_interface/army_cards/camp_healer_card.png"), #2
-	preload("res://assets/user_interface/army_cards/combat_training_card.png"), #3
-	preload("res://assets/user_interface/army_cards/field_hospital_card.png"), #4
-	preload("res://assets/user_interface/army_cards/fletcher_guild_card.png"), #5
-	preload("res://assets/user_interface/army_cards/force_march_card.png"), #6
-	preload("res://assets/user_interface/army_cards/hardy_folk_card.png"), #7
-	preload("res://assets/user_interface/army_cards/master_archer_card.png"), #8
-	preload("res://assets/user_interface/army_cards/mercenary_company_card.png"), #9
-	preload("res://assets/user_interface/army_cards/season_veteran_card.png"), #10
-	preload("res://assets/user_interface/army_cards/singing_march_card.png"), #11
-	preload("res://assets/user_interface/army_cards/stamina_training_card.png"), #12
-	preload("res://assets/user_interface/army_cards/strong_constitution_card.png"), #13
-	preload("res://assets/user_interface/army_cards/swift_advance_card.png"), #14
-	preload("res://assets/user_interface/army_cards/veteran_survivor_card.png"), #15
-	preload("res://assets/user_interface/army_cards/veteran_warrior_card.png") #16
+	# buff list
+	preload("res://assets/user_interface/army_cards/buff/army_tradition.png"), #0
+	preload("res://assets/user_interface/army_cards/buff/arrow_drill_card.png"), #1
+	preload("res://assets/user_interface/army_cards/buff/camp_healer_card.png"), #2
+	preload("res://assets/user_interface/army_cards/buff/combat_training_card.png"), #3
+	preload("res://assets/user_interface/army_cards/buff/field_hospital_card.png"), #4
+	preload("res://assets/user_interface/army_cards/buff/fletcher_guild_card.png"), #5
+	preload("res://assets/user_interface/army_cards/buff/force_march_card.png"), #6
+	preload("res://assets/user_interface/army_cards/buff/hardy_folk_card.png"), #7
+	preload("res://assets/user_interface/army_cards/buff/master_archer_card.png"), #8
+	preload("res://assets/user_interface/army_cards/buff/mercenary_company_card.png"), #9
+	preload("res://assets/user_interface/army_cards/buff/season_veteran_card.png"), #10
+	preload("res://assets/user_interface/army_cards/buff/singing_march_card.png"), #11
+	preload("res://assets/user_interface/army_cards/buff/stamina_training_card.png"), #12
+	preload("res://assets/user_interface/army_cards/buff/strong_constitution_card.png"), #13
+	preload("res://assets/user_interface/army_cards/buff/swift_advance_card.png"), #14
+	preload("res://assets/user_interface/army_cards/buff/veteran_survivor_card.png"), #15
+	preload("res://assets/user_interface/army_cards/buff/veteran_warrior_card.png"), #16
+	
+	# debuff
+	preload("res://assets/user_interface/army_cards/debuff/attrition_card.png"), #17
+	preload("res://assets/user_interface/army_cards/debuff/bad_weather_card.png"), #18
+	preload("res://assets/user_interface/army_cards/debuff/bogdown_card.png"), #19
+	preload("res://assets/user_interface/army_cards/debuff/demoralise_card.png"), #20
+	preload("res://assets/user_interface/army_cards/debuff/disorganize_card.png"), #21
+	preload("res://assets/user_interface/army_cards/debuff/exhaustion_card.png"), #22
+	preload("res://assets/user_interface/army_cards/debuff/hunger_card.png"), #23
+	preload("res://assets/user_interface/army_cards/debuff/outnumber_card.png"), #24
+	preload("res://assets/user_interface/army_cards/debuff/sickness_card.png"), #25
+	preload("res://assets/user_interface/army_cards/debuff/supply_shortage_card.png"), #26
+	preload("res://assets/user_interface/army_cards/debuff/thirst_card.png") #27
 ]
 
 const player_colors = [

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/swift_advance_card.png-0aba1abe1f80d8aef0e2c3e5af756585.stex"
+path="res://.import/arrow_drill_card.png-6da4fc1ec803a1990c3d624bc21ec076.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/swift_advance_card.png"
-dest_files=[ "res://.import/swift_advance_card.png-0aba1abe1f80d8aef0e2c3e5af756585.stex" ]
+source_file="res://assets/user_interface/army_cards/buff/arrow_drill_card.png"
+dest_files=[ "res://.import/arrow_drill_card.png-6da4fc1ec803a1990c3d624bc21ec076.stex" ]
 
 [params]
 

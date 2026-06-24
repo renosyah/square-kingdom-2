@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/combat_training_card.png-63abc200959757ea939b037b3e971d9a.stex"
+path="res://.import/supply_shortage_card.png-abbdbab0c2cceb4d004dba94b9ae8771.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/user_interface/army_cards/combat_training_card.png"
-dest_files=[ "res://.import/combat_training_card.png-63abc200959757ea939b037b3e971d9a.stex" ]
+source_file="res://assets/user_interface/army_cards/debuff/supply_shortage_card.png"
+dest_files=[ "res://.import/supply_shortage_card.png-abbdbab0c2cceb4d004dba94b9ae8771.stex" ]
 
 [params]
 
