@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/wall_ramp_half.obj-f73c50ccfdb5cf9a84089e02adf9d59e.mesh"
+
+[deps]
+
+files=[ "res://.import/wall_ramp_half.obj-f73c50ccfdb5cf9a84089e02adf9d59e.mesh" ]
+
+source_file="res://scenes/buildings/walls/wall_ramp_half.obj"
+dest_files=[ "res://.import/wall_ramp_half.obj-f73c50ccfdb5cf9a84089e02adf9d59e.mesh", "res://.import/wall_ramp_half.obj-f73c50ccfdb5cf9a84089e02adf9d59e.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

@@ -16,9 +16,13 @@ onready var detail =  $MarginContainer/VBoxContainer/MarginContainer/VBoxContain
 onready var color_rect_2 = $ColorRect2
 onready var color_rect_3 = $MarginContainer/ColorRect3
 
-onready var color_rect =  $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control/MarginContainer/ColorRect
-onready var texture_rect = $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control/TextureRect
-onready var margin_container = $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/Control/MarginContainer
+onready var buf_container = $MarginContainer/VBoxContainer/HBoxContainer/buf_container
+onready var debuff_container = $MarginContainer/VBoxContainer/HBoxContainer/debuff_container
+
+onready var icon_bgs = [
+	$MarginContainer/VBoxContainer/HBoxContainer/buf_container/Control/MarginContainer/ColorRect,
+	$MarginContainer/VBoxContainer/HBoxContainer/debuff_container/ColorRect
+]
 
 func _ready():
 	if card:
@@ -27,7 +31,10 @@ func _ready():
 		detail.text = card.get_detail()
 		detail.modulate = Color.green if card.is_buff else Color.red
 		color_rect_2.color = rarity_colors[card.rarity]
-		color_rect.color = rarity_colors[card.rarity]
-		texture_rect.texture = AbilityHandle.buff_debuff_icons[AbilityHandle.icon_fist_up] if card.is_buff else preload("res://assets/user_interface/icons/dead.png") 
-		margin_container.rect_rotation = 45 if card.is_buff else 0
+		
+		buf_container.visible = card.is_buff
+		debuff_container.visible = not card.is_buff
+		
+		for i in icon_bgs:
+			i.color = rarity_colors[card.rarity]
 

@@ -345,27 +345,34 @@ func setup_bandit_mob():
 	bot_bandit.team = -1
 	bot_bandit.color_idx = 10
 	bot_bandit.spawn_position = 4 # default set last one
-
+	
 func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 	if not spawn_point_fort[0]:
 		return
 		
 	var fort_size :int = spawn_point_fort[1]
+	var fort_type :int = spawn_point_fort[2]
 	var point :Vector2 = player_spawn_points[p.player_id]
 	
 	var tiles = TileIndex.generate_player_spawn_tiles(point, fort_size)
 	for id in tiles:
 		var current :TileMapData = tile_map.get_tile(id)
 		current.rotation_idx = 0
-		current.scene_idx = 2
+		current.scene_idx = 2 #12 if fort_type == 2 else 2
 		tile_map.update_spawned_tile(current)
 		nav.enable_nav_tile(0, id, true)
 		
 	player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, fort_size) + [point]
-	setup_base(p, point, fort_size)
+	setup_base(p, point, fort_size, fort_type)
 	
 const wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
+const wall_ramp_scene = preload("res://scenes/buildings/walls/wall_ramp.tscn")
+const stone_wall_ramp_scene = preload("res://scenes/buildings/walls/stone_wall_ramp.tscn")
+
 const wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
+const wall_corner_ramp_scene = preload("res://scenes/buildings/walls/wall_corner_ramp.tscn")
+const stone_wall_corner_ramp_scene = preload("res://scenes/buildings/walls/stone_wall_corner_ramp.tscn")
+
 const tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
 const gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
 const camps = [
@@ -382,7 +389,7 @@ remotesync func _spawn_camps(datas :Array):
 		nav.enable_nav_tile(0, id, false)
 		w.rotation_degrees.y = i[2]
 	
-func setup_base(p :PlayerData, tile_id :Vector2, size :int):
+func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int):
 	var rotations = [0,-90, 90, 180]
 	var camp_positions = [
 		Vector2.UP + Vector2.LEFT,
@@ -406,7 +413,17 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int):
 		
 		match (data["type"]):
 			"wall":
-				var w = wall_scene.instance()
+				var w
+				match fort_type:
+					0:
+						w = wall_scene.instance()
+					1:
+						w = wall_ramp_scene.instance()
+						nav.get_nav_data(id).pos.y = 0.40 # elevation
+					2:
+						w = stone_wall_ramp_scene.instance()
+						nav.get_nav_data(id).pos.y = 0.40 # elevation
+						
 				w.material = Global.player_materials[p.color_idx]
 				tile_map.get_tile_instance(id).add_child(w)
 				w.rotation_degrees.y = rotation
@@ -415,19 +432,29 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int):
 					nav.set_point_connection(0, id, outside, false)
 				
 			"corner":
-				nav.get_nav_data(id).pos.y = 1.04 # elevation
+				var w
+				nav.enable_nav_tile(0, id, false)
 				
-				var w = wall_corner_scene.instance()
+				match fort_type:
+					0:
+						w = wall_corner_scene.instance()
+						nav.get_nav_data(id).pos.y = 1.04 # elevation
+					1:
+						w = wall_corner_ramp_scene.instance()
+						nav.get_nav_data(id).pos.y = 1.04 # elevation
+					2:
+						w = stone_wall_corner_ramp_scene.instance()
+						nav.get_nav_data(id).pos.y = 0.40 # elevation
+						
 				w.material = Global.player_materials[p.color_idx]
 				tile_map.get_tile_instance(id).add_child(w)
 				w.rotation_degrees.y = rotation
 				
-				var t = tower_scene.instance()
-				t.material = Global.player_materials[p.color_idx]
-				tile_map.get_tile_instance(id).add_child(t)
-				tower_buildings[id] = t
-				
-				nav.enable_nav_tile(0, id, false)
+				if fort_type in [0,1]:
+					var t = tower_scene.instance()
+					t.material = Global.player_materials[p.color_idx]
+					tile_map.get_tile_instance(id).add_child(t)
+					tower_buildings[id] = t
 				
 				for outside in outsides:
 					nav.set_point_connection(0, id, outside, false)
@@ -460,7 +487,8 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int):
 							blocked_tiles[team].append(id)
 	
 func _destroy_tower(tile :Vector2):
-	tower_buildings[tile].destroy()
+	if tower_buildings.has(tile):
+		tower_buildings[tile].destroy()
 	
 ########################################## gameplay win condition  ############################################
 var is_end :bool = false

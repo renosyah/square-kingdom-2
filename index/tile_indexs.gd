@@ -29,6 +29,8 @@ const tiles = [
 	preload("res://scenes/tiles/rock_1.tscn"),
 	preload("res://scenes/tiles/rock_2.tscn"),
 	preload("res://scenes/tiles/rock_3.tscn"),
+	
+	preload("res://scenes/tiles/stone_road.tscn")
 ]
 
 const tiles2d = [
@@ -46,6 +48,10 @@ const tiles2d = [
 	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
 	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
 	preload("res://assets/user_interface/minimap/tile_2d/rock.tscn"),
+	
+	preload("res://assets/user_interface/minimap/tile_2d/stone_road.tscn")
+	
+	
 ]
 
 static func generate_spawn_points(map_size :int, range_size :int = 2, edge_offset :int = 3) -> Array:

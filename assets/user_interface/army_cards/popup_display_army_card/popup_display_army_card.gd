@@ -22,6 +22,15 @@ func display():
 		item.card = c
 		grid_container.add_child(item)
 
-
 func _on_close_pressed():
 	emit_signal("close")
+
+func _on_roll_pressed():
+	army_cards.clear()
+	
+	for i in 4:
+		var c = ArmyCardData.new()
+		c.generate_card(randf() < 0.5)
+		army_cards.append(c)
+		
+	display()

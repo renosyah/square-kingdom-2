@@ -262,23 +262,11 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 	if squad.get_ability_cooldown()[0]:
 		return
 		
-	var extra_buff_duration :float = 0
-	var extra_debuff_duration :float = 0
-	var extra_buff_value :float = 0
-	var extra_debuff_value :float = 0
+	var extra_buff_duration :float = extra.get("extra_buff_duration", 0.0)
+	var extra_debuff_duration :float = extra.get("extra_debuff_duration", 0.0)
+	var extra_buff_value :float = extra.get("extra_buff_value", 0.0)
+	var extra_debuff_value :float = extra.get("extra_debuff_value", 0.0)
 	
-	if extra.has("extra_buff_duration"):
-		extra_buff_duration = extra.has("extra_buff_duration")
-		
-	if extra.has("extra_debuff_duration"):
-		extra_debuff_duration = extra.has("extra_debuff_duration")
-		
-	if extra.has("extra_buff_value"):
-		extra_buff_value = extra.has("extra_buff_value")
-		
-	if extra.has("extra_debuff_value"):
-		extra_debuff_value = extra.has("extra_debuff_value")
-		
 	match squad_ability_idx:
 		1: # stop enemy and -50% speed for them
 			var enemy = squad.enemy
