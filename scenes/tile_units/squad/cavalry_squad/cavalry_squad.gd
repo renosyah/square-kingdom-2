@@ -189,9 +189,13 @@ func _cav_charge(tile_id :Vector2, attack_damage :int):
 		if enemy_squad == self: # or enemy_squad.team == team:
 			continue
 			
-		# if there enemy squad with spear? fking hell!
-		if enemy_squad.team != team and enemy_squad.squad_attribute[1] == 1:
-			_get_reflected_damage(attack_damage, enemy_squad.get_path())
+		# if there enemy squad with spear and pointing at our direction? fking hell!
+		var is_not_our = enemy_squad.team != team
+		var not_on_flank = not _is_on_flank_of(enemy_squad)
+		var has_spear = enemy_squad.squad_attribute[1] == 1
+		
+		if is_not_our and not_on_flank and has_spear:
+			_get_reflected_damage(attack_damage, enemy_squad.get_path()) # sucked
 			return
 			
 		var members :Array = enemy_squad.get_members(true)

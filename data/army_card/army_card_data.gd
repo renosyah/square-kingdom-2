@@ -353,12 +353,12 @@ func get_detail() -> String:
 	if abs(extra_buff_duration) > 0:
 		parts.append("%s%s Buff Duration" % ["+" if is_buff else "-",stepify(abs(extra_buff_duration), 0.01)])
 	if abs(extra_buff_value) > 0:
-		parts.append("%s%d Buff Effect" % ["+" if is_buff else "-",stepify(abs(extra_buff_value), 0.01)])
+		parts.append("%s%s Buff Effect" % ["+" if is_buff else "-",stepify(abs(extra_buff_value), 0.01)])
 		
 	if abs(extra_debuff_duration) > 0:
 		parts.append("%s%s Debuff Duration" % ["+" if is_buff else "-",stepify(abs(extra_debuff_duration), 0.01)])
 	if abs(extra_debuff_value) > 0:
-		parts.append("%s%d Debuff Effect" % ["+" if is_buff else "-",stepify(abs(extra_debuff_value), 0.01)])
+		parts.append("%s%s Debuff Effect" % ["+" if is_buff else "-",stepify(abs(extra_debuff_value), 0.01)])
 		
 	return "\n".join(parts)
 	

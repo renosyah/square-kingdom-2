@@ -117,17 +117,17 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "Bodkin Point",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Armor-piercing bodkin points increase ranged damage by 50% for 10 seconds.",
+		"detail": "Fit hardened bodkin bolts and fire for maximum penetration. Increase ranged damage by 70% but reduce ranged attack speed by 50% for 10 seconds. Best used with volley fire for devastating burst damage.",
 		"type": "range",
 		"weapon_idx": 5,
-		"cooldown" : 25.0,
+		"cooldown" : 45.0,
 		"required_enemy": false,
 	},
 	{
 		# range javeline  weapon 13
 		"name": "Yeet!",
 		"icon": preload("res://assets/user_interface/ability/heavy_javeline_ability.png"),
-		"detail": "Throw with reckless force, increasing ranged damage by 50% but reducing attack speed by 50% for 10 seconds.",
+		"detail": "Stop aiming and start throwing. Javelins deal 25% less damage, but this squad hurls them 50% faster for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 1,
 		"cooldown" : 25.0,
@@ -212,6 +212,16 @@ const squad_abilities = [
 		"weapon_idx": 14, 
 		"cooldown" : 35.0,
 		"required_enemy": false,
+	},
+	{
+		# all shield 22
+		"name": "Taunt!",
+		"icon": preload("res://assets/user_interface/ability/taunting.png"),
+		"detail": "Bash your shields and hurl insults, forcing the enemy to focus on you. The target’s active ability cooldown is reset back to full, as if it had just been used.",
+		"type": "shield",
+		"weapon_idx": 0, # <- ignore this
+		"cooldown" : 35.0,
+		"required_enemy": true,
 	},
 ]
 
@@ -352,11 +362,18 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				if s.team == squad.team and s != squad:
 					s.set_modifiers([ [s.modifier_range_damage, 0.10, dur, icon_buffed]])
 					
-		12,13: # 50% range damage, 50% slowest rate of fire
+		12: # 70% range damage, 50% slowest rate of fire
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_range_damage, 0.50, dur, icon_buffed], # damage deal
+				[squad.modifier_range_damage, 0.70, dur, icon_buffed], # damage deal
 				[squad.modifier_range_speed, -0.50, dur, icon_null], #  attack speed 
+			])
+			
+		13: # -50% range damage, +50% rate of fire
+			var dur = (15 + extra_buff_duration)
+			squad.set_modifiers([
+				[squad.modifier_range_damage, -0.25, dur, icon_null], # damage deal
+				[squad.modifier_range_speed, 0.50, dur, icon_buffed], #  attack speed 
 			])
 			
 		14: # 50% melee damage, 50% slowest rate of fire & remove melee speed & movement speed effect (self)
@@ -440,6 +457,14 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						[s.modifier_damage_receive, 0.20, (15 + extra_debuff_duration), icon_null],
 						[s.modifier_melee_speed, -0.20, (15 + extra_debuff_duration), icon_bonebreak]
 					])
+		22: # reset enemy cooldown
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				if enemy.squad_ability_idx != 0:
+					squad.set_modifiers([[squad.modifier_damage_receive, 0.25, 5, icon_null]]) # damage receive
+					enemy.set_modifiers([[enemy.modifier_move_speed, -0.10, 2, icon_zap]]) # just for indicator
+					
+					enemy.start_ability_cooldown(squad_abilities[enemy.squad_ability_idx]["cooldown"])
 				
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 

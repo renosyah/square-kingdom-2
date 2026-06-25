@@ -1000,10 +1000,17 @@ func get_ability_cooldown() -> Array:
 		_ability_cooldown.wait_time
 	]
 	
-func start_ability_cooldown(v :float):
-	if _ability_cooldown.is_stopped():
-		_ability_cooldown.wait_time = v
-		_ability_cooldown.start()
+func start_ability_cooldown(v :float, use_rpc :bool = true):
+	if _is_master or not use_rpc:
+		_start_ability_cooldown(v)
+		return
+		
+	# call _start_ability_cooldown, tell master to stop from other peer
+	rpc_id(get_network_master(), "_start_ability_cooldown", v)
+	
+remote func _start_ability_cooldown(v :float):
+	_ability_cooldown.wait_time = v
+	_ability_cooldown.start()
 	
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 

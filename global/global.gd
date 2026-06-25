@@ -346,11 +346,11 @@ var biom :int
 #	enable fort, 
 #	spawn size: 2 & 3, 
 #	type: 0=camp,1=village,2=city,
-#	gate_stat: 0=none,1:exist,2:destroyed 
+#	gate_stat: 0=none,1:closed,2:open,3:destroyed
 #]
 var spawn_point_forts :Dictionary = {
 	0:[true, 2, 0, 1], # TOP
-	1:[true, 2, 0, 1], # LEFT
+	1:[true, 2, 0, 3], # LEFT
 	2:[true, 2, 0, 1], # RIGHT
 	3:[true, 2, 0, 1], # DOWN
 	4:[true, 2, 0, 0], # center of map

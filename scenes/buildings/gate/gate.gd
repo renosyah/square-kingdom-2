@@ -23,13 +23,17 @@ func _ready():
 	mesh_instance.set_surface_material(1, material)
 	door.set_surface_material(1, material)
 	door_2.set_surface_material(1, material)
-	Global.connect("on_global_tick", self, "_on_global_tick")
+	
+	if not keep_open:
+		Global.connect("on_global_tick", self, "_on_global_tick")
+	else:
+		queue.add_task(self, "open_gate")
 	
 func _on_global_tick():
 	if _operating:
 		return
 		
-	var at_gate = _squad_at_gates(not keep_open)
+	var at_gate = _friendly_squad_at_gates()
 	if at_gate and not is_open:
 		_operating = true
 		queue.add_task(self, "open_gate")
@@ -38,12 +42,8 @@ func _on_global_tick():
 		_operating = true
 		queue.add_task(self, "close_gate")
 	
-func _squad_at_gates(same_team :bool) -> bool:
+func _friendly_squad_at_gates() -> bool:
 	for id in tile_ids:
-		if not same_team:
-			if not unit_position[id].empty():
-				return true
-				
 		if unit_position[id].empty():
 			continue
 			

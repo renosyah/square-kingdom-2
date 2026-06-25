@@ -373,10 +373,13 @@ const stone_wall_ramp_scene = preload("res://scenes/buildings/walls/stone_wall_r
 
 const wall_corner_scene = preload("res://scenes/buildings/walls/wall_corner.tscn")
 const wall_corner_ramp_scene = preload("res://scenes/buildings/walls/wall_corner_ramp.tscn")
-const stone_wall_corner_ramp_scene = preload("res://scenes/buildings/walls/stone_wall_corner_ramp.tscn")
-
+ 
 const tower_scene = preload("res://scenes/buildings/tower/tower.tscn")
+const stone_tower_scene = preload("res://scenes/buildings/tower/stone_tower.tscn")
+
 const gate_scene = preload("res://scenes/buildings/gate/gate.tscn")
+const gate_destroyed_scene = preload("res://scenes/buildings/gate/gate_destroyed.tscn")
+
 const camps = [
 	preload("res://scenes/buildings/camp/tent_1.tscn"),
 	preload("res://scenes/buildings/camp/tent_2.tscn"),
@@ -434,29 +437,34 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int, gate
 					nav.set_point_connection(0, id, outside, false)
 				
 			"corner":
-				var w
-				nav.enable_nav_tile(0, id, false)
+				nav.get_nav_data(id).pos.y = 1.04 # elevation
 				
+				var t
 				match fort_type:
 					0:
-						w = wall_corner_scene.instance()
-						nav.get_nav_data(id).pos.y = 1.04 # elevation
-					1:
-						w = wall_corner_ramp_scene.instance()
-						nav.get_nav_data(id).pos.y = 1.04 # elevation
-					2:
-						w = stone_wall_corner_ramp_scene.instance()
-						nav.get_nav_data(id).pos.y = 0.40 # elevation
+						t = tower_scene.instance()
+						nav.enable_nav_tile(0, id, false)
 						
-				w.material = Global.player_materials[p.color_idx]
-				tile_map.get_tile_instance(id).add_child(w)
-				w.rotation_degrees.y = rotation
+						var w = wall_corner_scene.instance()
+						w.material = Global.player_materials[p.color_idx]
+						tile_map.get_tile_instance(id).add_child(w)
+						w.rotation_degrees.y = rotation
+						
+					1:
+						t = tower_scene.instance()
+						nav.enable_nav_tile(0, id, false)
+						
+						var w = wall_corner_ramp_scene.instance()
+						w.material = Global.player_materials[p.color_idx]
+						tile_map.get_tile_instance(id).add_child(w)
+						w.rotation_degrees.y = rotation
+						
+					2:
+						t = stone_tower_scene.instance()
 				
-				if fort_type in [0,1]:
-					var t = tower_scene.instance()
-					t.material = Global.player_materials[p.color_idx]
-					tile_map.get_tile_instance(id).add_child(t)
-					tower_buildings[id] = t
+				t.material = Global.player_materials[p.color_idx]
+				tile_map.get_tile_instance(id).add_child(t)
+				tower_buildings[id] = t
 				
 				for outside in outsides:
 					nav.set_point_connection(0, id, outside, false)
@@ -476,6 +484,7 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int, gate
 					var g = gate_scene.instance()
 					g.unit_position = tile_position_manager.get_positions()
 					g.material = Global.player_materials[p.color_idx]
+					g.keep_open = (gate_state == 2)
 					tile_map.get_tile_instance(id).add_child(g)
 					g.rotation_degrees.y = rotation
 					g.tile_ids = outsides + [id]
@@ -487,7 +496,14 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int, gate
 						for team in blocked_tiles.keys():
 							if team != p.team:
 								blocked_tiles[team].append(id)
-	
+								
+				if gate_state == 3:
+					var g = gate_destroyed_scene.instance()
+					g.material = Global.player_materials[p.color_idx]
+					tile_map.get_tile_instance(id).add_child(g)
+					g.rotation_degrees.y = rotation
+					
+					
 func _destroy_tower(tile :Vector2):
 	if tower_buildings.has(tile):
 		tower_buildings[tile].destroy()

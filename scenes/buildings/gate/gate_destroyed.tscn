@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=1]
+[ext_resource path="res://scenes/buildings/gate/gate.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/buildings/gate/gate_destroyed.gd" type="Script" id=3]
+[ext_resource path="res://scenes/buildings/gate/gate_door.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://scenes/equipment/material/sorban.tres" type="Material" id=6]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=7]
+
+[node name="gate_destroyed" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.971305, -0.237838, 0, 0.237838, 0.971305, 0, 0, 0, 1, 0, 0.229938, -0.5 )
+cast_shadow = 0
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/2 = ExtResource( 6 )
+
+[node name="door" type="MeshInstance" parent="."]
+transform = Transform( -0.0982611, 0.082028, 0.991774, 0.216494, 0.97449, -0.0591491, -0.971326, 0.208901, -0.113513, 0.504659, 0.333722, -0.369026 )
+cast_shadow = 0
+mesh = ExtResource( 4 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 7 )
+
+[node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 0.94918, -0.313563, 0.0271297, 0.0330797, 0.0136697, -0.999359, 0.312991, 0.949469, 0.0233476, -0.707911, 0.0719209, -0.0472932 )
+
+[node name="door2" type="MeshInstance" parent="Spatial"]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.000224292, 0.000225037, -0.000316501 )
+cast_shadow = 0
+mesh = ExtResource( 4 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )

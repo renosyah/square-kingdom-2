@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=1]
+[ext_resource path="res://scenes/buildings/tower/stone_tower.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=3]
+[ext_resource path="res://scenes/buildings/tower/stone_tower.gd" type="Script" id=4]
+[ext_resource path="res://scenes/tiles/materials/road_material.tres" type="Material" id=6]
+
+[node name="tower" type="Spatial"]
+script = ExtResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451227, 0 )
+cast_shadow = 0
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 6 )
+material/2 = ExtResource( 3 )
+material/3 = ExtResource( 1 )
