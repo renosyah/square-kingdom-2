@@ -352,6 +352,8 @@ func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 		
 	var fort_size :int = spawn_point_fort[1]
 	var fort_type :int = spawn_point_fort[2]
+	var gate_state :int = spawn_point_fort[3]
+	
 	var point :Vector2 = player_spawn_points[p.player_id]
 	
 	var tiles = TileIndex.generate_player_spawn_tiles(point, fort_size)
@@ -363,7 +365,7 @@ func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 		nav.enable_nav_tile(0, id, true)
 		
 	player_reinfoce_tiles[p.player_id] = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), point, fort_size) + [point]
-	setup_base(p, point, fort_size, fort_type)
+	setup_base(p, point, fort_size, fort_type, gate_state)
 	
 const wall_scene = preload("res://scenes/buildings/walls/wall.tscn")
 const wall_ramp_scene = preload("res://scenes/buildings/walls/wall_ramp.tscn")
@@ -389,7 +391,7 @@ remotesync func _spawn_camps(datas :Array):
 		nav.enable_nav_tile(0, id, false)
 		w.rotation_degrees.y = i[2]
 	
-func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int):
+func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int, gate_state :int):
 	var rotations = [0,-90, 90, 180]
 	var camp_positions = [
 		Vector2.UP + Vector2.LEFT,
@@ -470,8 +472,7 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int):
 					tower_datas.append(guard_tower)
 					
 			"gate":
-				var is_bandit = p.player_id == bot_bandit.player_id
-				if not is_bandit:
+				if gate_state in [1, 2]:
 					var g = gate_scene.instance()
 					g.unit_position = tile_position_manager.get_positions()
 					g.material = Global.player_materials[p.color_idx]
@@ -482,9 +483,10 @@ func setup_base(p :PlayerData, tile_id :Vector2, size :int, fort_type :int):
 					
 					# append to blocked tile
 					# to team that nots in this gate
-					for team in blocked_tiles.keys():
-						if team != p.team:
-							blocked_tiles[team].append(id)
+					if gate_state == 1:
+						for team in blocked_tiles.keys():
+							if team != p.team:
+								blocked_tiles[team].append(id)
 	
 func _destroy_tower(tile :Vector2):
 	if tower_buildings.has(tile):
@@ -996,14 +998,13 @@ func _on_squad_set_modifier(squad :BaseSquad, i :Array):
 			ui_sound.play()
 	
 func _on_squad_modifier_clear(squad :BaseSquad):
-	
-	# special indicator, all stats modifier removed
-	if squad.player_id == current_player.player_id:
-		var ind = modifier_indicator.instance()
-		ind.icon = AbilityHandle.buff_debuff_icons[AbilityHandle.icon_horn]
-		ind.is_buff = true
-		ind.squad = squad
-		add_child(ind)
+	var is_player = squad.player_id == current_player.player_id
+	var icn = AbilityHandle.buff_debuff_icons[AbilityHandle.icon_horn] if is_player else AbilityHandle.buff_debuff_icons[AbilityHandle.icon_zap]
+	var ind = modifier_indicator.instance()
+	ind.icon = icn
+	ind.is_buff = is_player
+	ind.squad = squad
+	add_child(ind)
 	
 func _on_squad_member_resurect(squad :BaseSquad, member):
 	pass

@@ -4,6 +4,7 @@ class_name SquadSpawner
 signal on_queue_update
 signal on_squads_ready(datas)
 
+export var can_spawn :bool = true
 export var max_batch :int = 2
 onready var pending_timer = $pending_timer
 
@@ -45,7 +46,7 @@ func _process(delta):
 		_datas.pop_front()
 		_datas.shuffle() # little bit chaos
 		
-	if not _pending_spawns.empty() and pending_timer.is_stopped():
+	if not _pending_spawns.empty() and pending_timer.is_stopped() and can_spawn:
 		pending_timer.start()
 		
 		for s in _pending_spawns:

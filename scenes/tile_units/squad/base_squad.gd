@@ -496,25 +496,28 @@ func moving(delta :float) -> void:
 func _send_rpc_pending():
 	# unrelaible
 	if _send_unreliable_rpc_pending_timer.is_stopped():
-		if not _taking_damages_pending.empty():
-			rpc_unreliable("_taking_damages", _taking_damages_pending)
-			_taking_damages_pending.clear()
-		
+		_send_rpc_unreliable_pending()
 		_send_unreliable_rpc_pending_timer.start()
 	
 	# relaible
 	if _send_rpc_pending_timer.is_stopped():
-		if not _member_deads_pending.empty():
-			rpc("_on_members_dead", _member_deads_pending)
-			_member_deads_pending.clear()
-		
-		if not _pending_modifier_send.empty():
-			rpc("_set_modifiers", _pending_modifier_send)
-			_pending_modifier_send.clear()
-		
+		_send_rpc_reliable_pending()
 		_send_rpc_pending_timer.start()
 		
+func _send_rpc_unreliable_pending():
+	if not _taking_damages_pending.empty():
+		rpc_unreliable("_taking_damages", _taking_damages_pending)
+		_taking_damages_pending.clear()
+		
+func _send_rpc_reliable_pending():
+	if not _member_deads_pending.empty():
+		rpc("_on_members_dead", _member_deads_pending)
+		_member_deads_pending.clear()
 	
+	if not _pending_modifier_send.empty():
+		rpc("_set_modifiers", _pending_modifier_send)
+		_pending_modifier_send.clear()
+		
 func _on_walking(delta :float):
 	pass
 	
@@ -1005,14 +1008,14 @@ func start_ability_cooldown(v :float):
 # type :int, value :float, expired :float, icon_idx
 # type buff debuff : 
 # 0=melee speed, 1:range speed, 2:move speed, 3:damage receive, 4:melee damage, 5:range damage, value is percentage
-func set_modifiers(datas :Array, remove_all :bool = false):
+func set_modifiers(datas :Array, remove_modifier :Array = []):
 	for data in datas:
 		var id = int(rand_range(-100, 100))
 		data.append(id)
 		
-	_pending_modifier_send.append([datas, remove_all])
+	_pending_modifier_send.append([datas, remove_modifier])
 	
-	# type modifier
+# type modifier
 const modifier_melee_speed = 0
 const modifier_range_speed = 1
 const modifier_move_speed = 2
@@ -1026,14 +1029,14 @@ remotesync func _set_modifiers(datas :Array):
 	for i in datas:
 		on_set_modifiers(i[0], i[1])
 		
-func on_set_modifiers(datas :Array, remove_all :bool):
-	if remove_all:
-		for type in _modifiers.keys():
-			_modifiers[type].clear()
-			_update_multiplier(type)
+func on_set_modifiers(datas :Array, remove_modifier :Array):
+	if not remove_modifier.empty():
+		for type in remove_modifier:
+			if _modifiers.has(type):
+				_modifiers[type].clear()
+				_update_multiplier(type)
 			
 		emit_signal("on_squad_modifier_clear", self)
-		return
 		
 	var additional :float = 1.0
 	

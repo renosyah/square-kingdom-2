@@ -280,7 +280,7 @@ var current_army_cards :Array = [] #[ArmyCardData]
 func set_default_squad_army():
 	for i in 4:
 		var c = ArmyCardData.new()
-		c.generate_card(randf() < 0.5)
+		c.generate_card([], randf() < 0.5)
 		current_army_cards.append(c)
 	
 	if not current_squads.empty(): # chech
@@ -342,13 +342,18 @@ var enable_fort :bool = true # just for MP BATTLE
 var enable_bandit :bool = true
 var biom :int
 
-# position:[enable fort, spawn size, type: 0:camp,1:village,2:city ]
+# position:[
+#	enable fort, 
+#	spawn size: 2 & 3, 
+#	type: 0=camp,1=village,2=city,
+#	gate_stat: 0=none,1:exist,2:destroyed 
+#]
 var spawn_point_forts :Dictionary = {
-	0:[true, 2, 0], # TOP
-	1:[true, 2, 0], # LEFT
-	2:[true, 2, 0], # RIGHT
-	3:[true, 2, 0], # DOWN
-	4:[true, 2, 0], # center of map
+	0:[true, 2, 0, 1], # TOP
+	1:[true, 2, 0, 1], # LEFT
+	2:[true, 2, 0, 1], # RIGHT
+	3:[true, 2, 0, 1], # DOWN
+	4:[true, 2, 0, 0], # center of map
 }
 
 func get_total_cards_extra_bonuses(cards :Array) -> ArmyCardData:

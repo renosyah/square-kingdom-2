@@ -30,7 +30,7 @@ func _on_roll_pressed():
 	
 	for i in 4:
 		var c = ArmyCardData.new()
-		c.generate_card(randf() < 0.5)
+		c.generate_card([], randf() < 0.5)
 		army_cards.append(c)
 		
 	display()

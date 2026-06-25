@@ -37,7 +37,7 @@ export var extra_buff_value: float # 0.1 - 1.0
 export var extra_debuff_duration:float # 1.0 - 100.0
 export var extra_debuff_value :float  # 0.1 - 1.0
 
-func generate_card(_is_buff :bool = true):
+func generate_card(stats :Array = [], _is_buff :bool = true, roll :float = randf()):
 	is_buff = _is_buff
 	id = randi()
 	
@@ -67,7 +67,6 @@ func generate_card(_is_buff :bool = true):
 	extra_buff_value = 0.0
 	extra_debuff_value = 0.0
 
-	var roll = randf()
 	var stat_count = 1
 
 	if roll <= 0.50:
@@ -85,21 +84,21 @@ func generate_card(_is_buff :bool = true):
 	else:
 		rarity = LEGENDARY
 		stat_count = 5
-
-	var stats = [
-		"spawn",
-		"speed",
-		"melee",
-		"range",
-		"hp",
-		"heal"
-	]
-
-	stats.shuffle()
-
-	for i in range(stat_count):
-		_apply_stat(stats[i])
-
+		
+	var _stats = stats.duplicate()
+	if _stats.empty():
+		_stats = ["spawn", "speed", "melee", "range", "hp", "heal", "ability"]
+		
+	_stats.shuffle()
+	
+	var idx = 0
+	for _i in range(stat_count):
+		if idx > _stats.size() - 1:
+			idx = 0
+			
+		_apply_stat(_stats[idx])
+		idx += 1
+	
 	var _name_icon = _generate_name_icon() if is_buff else _generate_name_icon_debuff()
 	card_name = _name_icon[0]
 	icon_index = _name_icon[1]
@@ -107,84 +106,119 @@ func generate_card(_is_buff :bool = true):
 func _apply_stat(stat :String):
 	match stat:
 		"spawn":
-			spawn_time_decrease_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				spawn_time_decrease_percentage = -spawn_time_decrease_percentage
+			if is_buff:
+				spawn_time_decrease_percentage += rand_range(0.02, 0.08)
+			else:
+				spawn_time_decrease_percentage += -rand_range(0.02, 0.08)
 			
 			if randf() < 0.16:
-				spawn_time_decrease_value = rand_range(0.1,0.6)
-				if not is_buff:
-					spawn_time_decrease_value = -spawn_time_decrease_value
+				if is_buff:
+					spawn_time_decrease_value += rand_range(0.1,0.6)
+				else:
+					spawn_time_decrease_value += -rand_range(0.1,0.6)
 				
 				if randf() < 0.26:
 					spawn_time_decrease_percentage = 0.0
 				
 				
 		"speed":
-			speed_bonus_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				speed_bonus_percentage = -speed_bonus_percentage
+			if is_buff:
+				speed_bonus_percentage += rand_range(0.02, 0.08)
+			else:
+				speed_bonus_percentage += -rand_range(0.02, 0.08)
 			
 			if randf() < 0.10:
-				speed_bonus_value = rand_range(0.1,0.2)
-				if not is_buff:
-					speed_bonus_value = -speed_bonus_value
+				if is_buff:
+					speed_bonus_value += rand_range(0.1,0.2)
+				else:
+					speed_bonus_value += -rand_range(0.1,0.2)
 				
 				if randf() < 0.16:
 					speed_bonus_percentage = 0.0
 				
 		"melee":
-			melee_speed_bonus_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				melee_speed_bonus_percentage = -melee_speed_bonus_percentage
+			if is_buff:
+				melee_speed_bonus_percentage += rand_range(0.02, 0.08)
+			else:
+				melee_speed_bonus_percentage += -rand_range(0.02, 0.08)
 				
 			if randf() < 0.12:
-				melee_speed_bonus_value = rand_range(0.1,0.3)
-				if not is_buff:
-					melee_speed_bonus_value = -melee_speed_bonus_value
+				if is_buff:
+					melee_speed_bonus_value += rand_range(0.1,0.3)
+				else:
+					melee_speed_bonus_value += -rand_range(0.1,0.3)
 				
 				if randf() < 0.11:
 					melee_speed_bonus_percentage = 0.0
 					
 		"range":
-			range_speed_bonus_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				range_speed_bonus_percentage = -range_speed_bonus_percentage
+			if is_buff:
+				range_speed_bonus_percentage += rand_range(0.02, 0.08)
+			else:
+				range_speed_bonus_percentage += -rand_range(0.02, 0.08)
 			
 			if randf() < 0.11:
-				range_speed_bonus_value = rand_range(0.1,0.3)
-				if not is_buff:
-					range_speed_bonus_value = -range_speed_bonus_value
+				if is_buff:
+					range_speed_bonus_value += rand_range(0.1,0.3)
+				else:
+					range_speed_bonus_value += -rand_range(0.1,0.3)
 				
 				if randf() < 0.13:
 					range_speed_bonus_percentage = 0.0
 				
 		"hp":
-			hp_bonus_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				hp_bonus_percentage = -hp_bonus_percentage
+			if is_buff:
+				hp_bonus_percentage += rand_range(0.02, 0.08)
+			else:
+				hp_bonus_percentage += -rand_range(0.02, 0.08)
 				
 			if randf() < 0.12:
-				hp_bonus_value = randi() % 41 + 10
-				if not is_buff:
-					hp_bonus_value = -hp_bonus_value
+				if is_buff:
+					hp_bonus_value += randi() % 41 + 10
+				else:
+					hp_bonus_value += -(randi() % 41 + 10)
 				
 				if randf() < 0.16:
 					hp_bonus_percentage = 0.0
 				
 		"heal":
-			heal_bonus_percentage = rand_range(0.02, 0.08)
-			if not is_buff:
-				heal_bonus_percentage = -heal_bonus_percentage
+			if is_buff:
+				heal_bonus_percentage += rand_range(0.02, 0.08)
+			else:
+				heal_bonus_percentage += -rand_range(0.02, 0.08)
 			
 			if randf() < 0.13:
-				heal_bonus_value = randi() % 21 + 5
-				if not is_buff:
-					heal_bonus_value = -heal_bonus_value
+				if is_buff:
+					heal_bonus_value += randi() % 21 + 5
+				else:
+					heal_bonus_value += -(randi() % 21 + 5)
 				
 				if randf() < 0.12:
 					heal_bonus_percentage = 0.0
 					
+		"ability":
+			if is_buff:
+				extra_buff_duration += rand_range(0.05, 0.2)
+				if randf() < 0.13:
+					extra_buff_value += rand_range(0.01, 0.03)
+					
+				if randf() < 0.5:
+					extra_debuff_duration += rand_range(0.05, 0.2)
+					
+					if randf() < 0.23:
+						extra_debuff_value += rand_range(0.01, 0.03)
+			else:
+				extra_buff_duration += -rand_range(0.05, 0.2)
+				if randf() < 0.13:
+					extra_buff_value += -rand_range(0.01, 0.03)
+					
+				if randf() < 0.5:
+					extra_debuff_duration += -rand_range(0.05, 0.2)
+					
+					if randf() < 0.23:
+						extra_debuff_value += -rand_range(0.01, 0.03)
+						
+			
 func _generate_name_icon_debuff() -> Array:
 	if speed_bonus_percentage < 0 and spawn_time_decrease_percentage < 0:
 		return ["Bog Down", 19]
@@ -289,22 +323,22 @@ func get_detail() -> String:
 	if abs(spawn_time_decrease_percentage) > 0:
 		parts.append("%s%d%% Spawn Time" % ["-" if is_buff else "+",int(abs(spawn_time_decrease_percentage) * 100)])
 	if abs(spawn_time_decrease_value) > 0:
-		parts.append("%s%s Spawn Time" % ["-" if is_buff else "+", stepify(abs(spawn_time_decrease_value), 0.1)])
+		parts.append("%s%s Spawn Time" % ["-" if is_buff else "+", stepify(abs(spawn_time_decrease_value), 0.01)])
 
 	if abs(speed_bonus_percentage) > 0:
 		parts.append("%s%d%% Movement Speed" % ["+" if is_buff else "-",int(abs(speed_bonus_percentage) * 100)])
 	if abs(speed_bonus_value) > 0:
-		parts.append("%s%s Movement Speed" % ["+" if is_buff else "-",stepify(abs(speed_bonus_value), 0.1)])
+		parts.append("%s%s Movement Speed" % ["+" if is_buff else "-",stepify(abs(speed_bonus_value), 0.01)])
 		
 	if abs(melee_speed_bonus_percentage) > 0:
 		parts.append("%s%d%% Melee Attack Speed" % ["+" if is_buff else "-",int(abs(melee_speed_bonus_percentage) * 100)])
 	if abs(melee_speed_bonus_value) > 0:
-		parts.append("%s%s Melee Attack Speed" % ["+" if is_buff else "-",stepify(abs(melee_speed_bonus_value), 0.1)])
+		parts.append("%s%s Melee Attack Speed" % ["+" if is_buff else "-",stepify(abs(melee_speed_bonus_value), 0.01)])
 
 	if abs(range_speed_bonus_percentage) > 0:
 		parts.append("%s%d%% Ranged Attack Speed" % ["+" if is_buff else "-",int(abs(range_speed_bonus_percentage) * 100)])
 	if abs(range_speed_bonus_value) > 0:
-		parts.append("%s%s Ranged Attack Speed" % ["+" if is_buff else "-",stepify(abs(range_speed_bonus_value), 0.1)])
+		parts.append("%s%s Ranged Attack Speed" % ["+" if is_buff else "-",stepify(abs(range_speed_bonus_value), 0.01)])
 		
 	if abs(hp_bonus_percentage) > 0:
 		parts.append("%s%d%% HP" % ["+" if is_buff else "-",int(abs(hp_bonus_percentage) * 100)])
@@ -315,6 +349,16 @@ func get_detail() -> String:
 		parts.append("%s%d%% Healing" % ["+" if is_buff else "-",int(abs(heal_bonus_percentage) * 100)])
 	if abs(heal_bonus_value) > 0:
 		parts.append("%s%d Healing" % ["+" if is_buff else "-",abs(heal_bonus_value)])
+		
+	if abs(extra_buff_duration) > 0:
+		parts.append("%s%s Buff Duration" % ["+" if is_buff else "-",stepify(abs(extra_buff_duration), 0.01)])
+	if abs(extra_buff_value) > 0:
+		parts.append("%s%d Buff Effect" % ["+" if is_buff else "-",stepify(abs(extra_buff_value), 0.01)])
+		
+	if abs(extra_debuff_duration) > 0:
+		parts.append("%s%s Debuff Duration" % ["+" if is_buff else "-",stepify(abs(extra_debuff_duration), 0.01)])
+	if abs(extra_debuff_value) > 0:
+		parts.append("%s%d Debuff Effect" % ["+" if is_buff else "-",stepify(abs(extra_debuff_value), 0.01)])
 		
 	return "\n".join(parts)
 	

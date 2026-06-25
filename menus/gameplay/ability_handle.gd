@@ -107,7 +107,7 @@ const squad_abilities = [
 		# range longbow weapon 11
 		"name": "Heavy Draw",
 		"icon": preload("res://assets/user_interface/ability/heavy_draw_ability.png"),
-		"detail": "Draw with maximum force, increasing ranged damage by 50% but reducing ranged attack speed by 50% for 15 seconds.",
+		"detail": "Draw with maximum force, increasing ranged damage by 40% but reducing ranged attack speed by 50% for 15 seconds. Inspire by this, neaby friendly range unit also receive +10% range damage",
 		"type": "range",
 		"weapon_idx": 4,
 		"cooldown" : 30.0,
@@ -137,7 +137,7 @@ const squad_abilities = [
 		# melee great sword 14
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
-		"detail": "Deliver a carefully aimed strike, increasing melee damage by 50% but reducing attack speed by 50% for 15 seconds.",
+		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack 15% slower for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 35.0,
@@ -147,7 +147,7 @@ const squad_abilities = [
 		# melee great axe 15
 		"name": "Cleave!",
 		"icon": preload("res://assets/user_interface/ability/cleave_ability.png"),
-		"detail": "Swing with overwhelming force, increasing melee damage by 50% but reducing attack speed by 50% for 15 seconds.",
+		"detail": "Swing with overwhelming force, +50% melee damage, -50% melee attack speed & All enemy squads in the target tile suffer -25% damage resistance for 15 seconds",
 		"type": "melee",
 		"weapon_idx": 9,
 		"cooldown" : 35.0,
@@ -338,19 +338,46 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 					[enemy.modifier_damage_receive, 0.25, (15 + extra_debuff_duration), icon_defence_down], # damage receive
 				])
 				
-		11,12,13: # 50% range damage, 50% slowest rate of fire
+		11: # 40% range damage, 50% slowest rate of fire and buff range damage nearby by 10%
+			var dur = (15 + extra_buff_duration)
+			squad.set_modifiers([
+				[squad.modifier_range_damage, 0.40, dur, icon_buffed], # damage deal
+				[squad.modifier_range_speed, -0.50, dur, icon_null], #  attack speed 
+			])
+			
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+			for i in squads:
+				var s :BaseSquad = i
+				if s.team == squad.team and s != squad:
+					s.set_modifiers([ [s.modifier_range_damage, 0.10, dur, icon_buffed]])
+					
+		12,13: # 50% range damage, 50% slowest rate of fire
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
 				[squad.modifier_range_damage, 0.50, dur, icon_buffed], # damage deal
 				[squad.modifier_range_speed, -0.50, dur, icon_null], #  attack speed 
 			])
 			
-		14,15: # 50% melee damage, 50% slowest rate of fire
+		14: # 50% melee damage, 50% slowest rate of fire & remove melee speed & movement speed effect (self)
+			var dur = (15 + extra_buff_duration)
+			var _mods = [ squad.modifier_melee_speed, squad.modifier_move_speed ]
+			squad.set_modifiers([
+				[squad.modifier_melee_damage, 0.25, dur, icon_buffed], # damage deal
+				[squad.modifier_melee_speed, -0.15, dur, icon_null], # attack speed 
+			], _mods)
+			
+		15: # 50% melee damage, 50% slowest rate of fire & weaken anyone in front of it
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
 				[squad.modifier_melee_damage, 0.50, dur, icon_buffed], # damage deal
 				[squad.modifier_melee_speed, -0.50, dur, icon_null], # attack speed 
 			])
+			
+			dur = (15 + extra_debuff_duration)
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), [squad.tile_front()])
+			for s in squads:
+				s.set_modifiers([[s.modifier_damage_receive, 0.25, dur, icon_defence_down]])
 			
 		16, 17, 18, 21: # get nearby squads
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
@@ -376,7 +403,15 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 							])
 					18:
 						if same_team: # to all ally and yourself
-							s.set_modifiers([], true)
+							var _mods = [
+								s.modifier_melee_speed,
+								s.modifier_range_speed,
+								s.modifier_move_speed,
+								s.modifier_damage_receive,
+								s.modifier_melee_damage,
+								s.modifier_range_damage,
+							]
+							s.set_modifiers([], _mods)
 					21:
 						if same_team:
 							if ability_caster:

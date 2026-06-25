@@ -67,6 +67,8 @@ func _ready():
 	selection_mode.icon = icon_lock if setting.lock_command else icon_uncheck
 	
 func _process(delta):
+	#squad_spawner.can_spawn = player_squads.size() < 9 # prevent spawn more
+	
 	var on_select = selected_squads.size() == 1
 	movable_camera_ui.detect_in_out = on_select
 	cinematic.visible = on_select or (on_cinematic_mode and not on_select)
