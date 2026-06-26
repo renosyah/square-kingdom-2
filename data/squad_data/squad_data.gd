@@ -149,7 +149,7 @@ func range_attack_speed():
 	if biom == 2:
 		_range_attack_speed = _range_attack_speed + (_range_attack_speed * 0.20)
 		
-	return max(_range_attack_speed, 0.12) # prevent below 0.4
+	return max(_range_attack_speed, 0.12) # prevent below 0.12
 	
 func melee_attack_speed():
 	var _squad_attribute = squad_attribute()
@@ -165,7 +165,7 @@ func melee_attack_speed():
 	if biom == 1 and _squad_attribute[3] == 3:
 		_melee_attack_speed = _melee_attack_speed + (_melee_attack_speed * 0.15)
 		
-	return max(_melee_attack_speed, 0.11) # prevent below 0.2
+	return max(_melee_attack_speed, 0.11) # prevent below 0.11
 
 func speed() -> float:
 	var _squad_attribute = squad_attribute()

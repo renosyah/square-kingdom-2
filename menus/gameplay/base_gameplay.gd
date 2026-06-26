@@ -299,16 +299,13 @@ func _on_tile_map_ready():
 		movable_camera.translation.z = tile.pos.z + 1
 	
 ########################################## players army spawn mechanism  ############################################
-var total_cards_extra :ArmyCardData
 
 func start_spawn_army():
-	total_cards_extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards)
-	
 	var armies :Array = Global.prepare_army(
 		Global.current_army, 
 		player_spawn_points[current_player.player_id], 
 		current_player,
-		total_cards_extra
+		Global.get_total_cards_extra_bonuses(Global.current_army_cards)
 	)
 	
 	var is_fort = spawn_point_forts[current_player.spawn_position][0]
@@ -665,7 +662,8 @@ func _on_ui_route_button_pressed():
 		
 func _on_use_ability():
 	var squad :BaseSquad = ui.squad_with_ability
-	AbilityHandle.use_squad_ability(squad, tile_position_manager, total_cards_extra.get_extra())
+	var data :SquadData = squad_datas[squad]
+	AbilityHandle.use_squad_ability(squad, tile_position_manager, data.extra)
 	
 	if not setting.lock_command:
 		squad.click() # unselected
@@ -710,15 +708,15 @@ var selected_squads :Array = []
 # list of player got screw of their commander ded
 var player_debuf :Array = [] 
 
-func spawn_squads(squad_datas :Array):
+func spawn_squads(s :Array):
 	var list_bytes :Array = []
-	for i in squad_datas:
+	for i in s:
 		list_bytes.append(i.to_bytes())
 		
 	rpc("_spawn_squads", list_bytes)
 	
-func spawn_squad(squad_data :SquadData):
-	rpc("_spawn_squad", squad_data.to_bytes())
+func spawn_squad(d :SquadData):
+	rpc("_spawn_squad", d.to_bytes())
 	
 remotesync func _spawn_squads(list_bytes :Array):
 	for bytes in list_bytes:

@@ -172,16 +172,22 @@ func _on_unit_role_button(key):
 		dup_squad_data.total_member = 4
 		dup_squad_data.is_mounted = true
 		
+		var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
+		horse_armored.visible = use_heavy_armor
+		horse.visible = not use_heavy_armor
+		
 	else:
 		dup_squad_data.scene_idx = 0
 		dup_squad_data.member_scene_idx = 0
 		dup_squad_data.total_member = 9
 		dup_squad_data.is_mounted = false
 		
+		horse_armored.visible = false
+		horse.visible = false
+		
 	if dup_squad_data.is_hero:
 		dup_squad_data.total_member = 1
 		
-	horse.visible = dup_squad_data.is_mounted
 	dup_squad_data.squad_role = key
 	display_role(dup_squad_data.squad_role)
 	
@@ -429,6 +435,11 @@ func _on_headgear_selected(index :int):
 func _on_armors_selected(index :int):
 	dup_squad_data.member_armor_idx = index
 	display_armor(index)
+	
+	var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
+	horse_armored.visible = use_heavy_armor
+	horse.visible = not use_heavy_armor
+	
 	infantry_member.armor = EntityIndex.armors[index]
 	infantry_member.apply_equipment()
 	
@@ -485,9 +496,15 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	infantry_member.range_weapon = EntityIndex.range_weapons[dup_squad_data.member_range_weapon_idx]
 	infantry_member.material = player_material
 	
-	var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
-	horse.visible = dup_squad_data.is_mounted and not use_heavy_armor
-	horse_armored.visible = dup_squad_data.is_mounted and use_heavy_armor
+	if dup_squad_data.is_mounted:
+		var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
+		horse_armored.visible = use_heavy_armor
+		horse.visible = not use_heavy_armor
+		
+	else:
+		horse_armored.visible = false
+		horse.visible = false
+		
 	horse_armored_body.set_surface_material(3, player_material)
 	
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)

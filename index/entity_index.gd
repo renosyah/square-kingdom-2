@@ -52,7 +52,7 @@ const melee_weapon_stats = {
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
-	14:{'attack_speed':2.38,'charge_bonus':0,'spawn_time':8},
+	14:{'attack_speed':1.38,'charge_bonus':0,'spawn_time':8},
 }
 
 const range_weapons = [

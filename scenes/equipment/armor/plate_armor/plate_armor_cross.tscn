@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/equipment/material/white.tres" type="Material" id=1]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=2]
 [ext_resource path="res://scenes/equipment/equipment.gd" type="Script" id=3]
 [ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=4]
 [ext_resource path="res://scenes/equipment/armor/plate_armor/armor_heavy_cross.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://scenes/equipment/material/sorban.tres" type="Material" id=6]
 
 [node name="plate_armor" type="Spatial"]
 script = ExtResource( 3 )
@@ -17,3 +18,4 @@ software_skinning_transform_normals = false
 material/0 = ExtResource( 2 )
 material/1 = ExtResource( 1 )
 material/2 = ExtResource( 4 )
+material/3 = ExtResource( 6 )

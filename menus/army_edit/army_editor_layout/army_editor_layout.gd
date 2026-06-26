@@ -53,7 +53,12 @@ func display():
 	
 	display_current_squad()
 	display_current_army()
-	info.display_info(squads[0])
+	
+	var dup = SquadData.new()
+	dup.from_dictionary(squads[0].to_dictionary())
+	dup.extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra()
+	
+	info.display_info(dup)
 	
 func _process(delta):
 	var pos = dragable_item.rect_position
@@ -126,7 +131,11 @@ func _on_card_on_grab(card, pos, container, data):
 	dragable_item.add_child(container.duplicate(true))
 	set_process(true)
 	
-	info.display_info(data)
+	var dup = SquadData.new()
+	dup.from_dictionary(data.to_dictionary())
+	dup.extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra()
+	
+	info.display_info(dup)
 	
 	target_holder = null
 	
@@ -274,3 +283,6 @@ func _on_cards_pressed():
 
 func _on_popup_display_army_card_close():
 	popup_display_army_card.visible = false
+
+func _on_popup_display_army_card_cards_updated():
+	pass # Replace with function body.

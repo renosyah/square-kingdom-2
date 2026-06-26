@@ -7,7 +7,7 @@ const squad_abilities = [
 		# melee pike weapon 1
 		"name": "Hold'em",
 		"icon": preload("res://assets/user_interface/ability/pike_up_ability.png"),
-		"detail": "Hold the line! Stop enemies in their tracks and reduce their movement speed by 50% for 15 seconds.",
+		"detail": "Hold the line! Stop enemies in their tracks and reduce their movement speed by -50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 4,
 		"cooldown" : 15.0,
@@ -17,7 +17,7 @@ const squad_abilities = [
 		# melee great sword weapon 2
 		"name": "Fear!",
 		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
-		"detail": "Strike fear into the enemy, reducing all attack speeds by 50% for 15 seconds.",
+		"detail": "Strike fear into the enemy, reducing all attack speeds by -50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 30.0,
@@ -27,7 +27,7 @@ const squad_abilities = [
 		# melee axe weapon 3
 		"name": "Beserk!",
 		"icon": preload("res://assets/user_interface/ability/beserk_ability.png"),
-		"detail": "Unleash a furious assault, increasing melee attack speed by 50% and movement speed by 25%, but suffer 25% more incoming damage for 15 seconds.",
+		"detail": "Unleash a furious assault, increasing melee attack speed by +50% and movement speed by +25%, but suffer -25% more incoming damage for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 7,
 		"cooldown" : 35.0,
@@ -37,7 +37,7 @@ const squad_abilities = [
 		# range longbow weapon 4
 		"name": "Rain Arrows!",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
-		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by 50% while slowing affected enemies by 15% for 15 seconds.",
+		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by +50% while slowing affected enemies by -15% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 4,
 		"cooldown" : 40.0,
@@ -47,7 +47,7 @@ const squad_abilities = [
 		# range javeline weapon 5
 		"name": "Chase!",
 		"icon": preload("res://assets/user_interface/ability/chase_ability.png"),
-		"detail": "Don't let them escape! Increase movement speed by 50% for 10 seconds.",
+		"detail": "Don't let them escape! Increase movement speed by +50% for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 1,
 		"cooldown" : 25.0,
@@ -67,7 +67,7 @@ const squad_abilities = [
 		# range crossbow weapon 7
 		"name": "Pin'em!",
 		"icon": preload("res://assets/user_interface/ability/pinned_ability.png"),
-		"detail": "Pin the enemy down, reducing their movement speed by 80% for 15 seconds.",
+		"detail": "Pin the enemy down, cripple reducing their movement speed by -80% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 65.0,
@@ -77,7 +77,7 @@ const squad_abilities = [
 		# all shield 8
 		"name": "Shield Up!",
 		"icon": preload("res://assets/user_interface/ability/shield_ability.png"),
-		"detail": "Raise your shields! Reduce incoming damage by 50%, but decrease attack speed by 50% and movement speed by 70% for 25 seconds.",
+		"detail": "Raise your shields! Gain +50% damage resistance, but decrease attack speed by -50% and movement speed by -70% for 25 seconds.",
 		"type": "shield",
 		"weapon_idx": 0, # <- ignore this
 		"cooldown" : 30.0,
@@ -87,17 +87,17 @@ const squad_abilities = [
 		# range bow weapon 9
 		"name": "Suppress!",
 		"icon": preload("res://assets/user_interface/ability/suppress_ability.png"),
-		"detail": "Keep enemy archers under pressure, reducing their ranged attack speed by 50% for 10 seconds.",
+		"detail": "Keep enemy archers under pressure, reducing their ranged attack speed by -50% for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 3,
-		"cooldown" : 50.0,
+		"cooldown" : 40.0,
 		"required_enemy": true,
 	},
 	{
 		# melee pitchfork weapon 10
 		"name": "Riot!",
 		"icon": preload("res://assets/user_interface/ability/riot_ability.png"),
-		"detail": "Overwhelm the enemy with chaos and confusion, reducing their defense by 25% and movement speed by 50% for 15 seconds.",
+		"detail": "Overwhelm the enemy with chaos and confusion, reducing their defense by -25% and movement speed by -50% for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 60.0,
@@ -107,7 +107,7 @@ const squad_abilities = [
 		# range longbow weapon 11
 		"name": "Heavy Draw",
 		"icon": preload("res://assets/user_interface/ability/heavy_draw_ability.png"),
-		"detail": "Draw with maximum force, increasing ranged damage by 40% but reducing ranged attack speed by 50% for 15 seconds. Inspire by this, neaby friendly range unit also receive +10% range damage",
+		"detail": "Draw with maximum force, increasing ranged damage by +40% but reducing ranged attack speed by -50% for 15 seconds. Inspire by this, neaby friendly range unit also receive +10% range damage",
 		"type": "range",
 		"weapon_idx": 4,
 		"cooldown" : 30.0,
@@ -117,7 +117,7 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "Bodkin Point",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened bodkin bolts and fire for maximum penetration. Increase ranged damage by 70% but reduce ranged attack speed by 50% for 10 seconds. Best used with volley fire for devastating burst damage.",
+		"detail": "Fit hardened bodkin bolts, aim carefully then fire for maximum penetration. Increase ranged damage by +70% but reduce ranged attack speed by -50% for 10 seconds. Best used with volley fire for devastating burst damage.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -127,7 +127,7 @@ const squad_abilities = [
 		# range javeline  weapon 13
 		"name": "Yeet!",
 		"icon": preload("res://assets/user_interface/ability/heavy_javeline_ability.png"),
-		"detail": "Stop aiming and start throwing. Javelins deal 25% less damage, but this squad hurls them 50% faster for 10 seconds.",
+		"detail": "Stop aiming and start throwing. Javelins deal -25% less damage, but this squad hurls them +50% faster for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 1,
 		"cooldown" : 25.0,
@@ -137,7 +137,7 @@ const squad_abilities = [
 		# melee great sword 14
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
-		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack 15% slower for 15 seconds.",
+		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 35.0,
@@ -157,7 +157,7 @@ const squad_abilities = [
 		# melee pitchfork weapon 16
 		"name": "Offering!",
 		"icon": preload("res://assets/user_interface/ability/give_food_ability.png"),
-		"detail": "Carry food, water, and supplies to nearby allies, restoring 15% of their health even while in combat.",
+		"detail": "Carry food, water, and supplies to nearby allies, restoring +15% of their health even while in combat.",
 		"type": "melee",
 		"weapon_idx": 1,
 		"cooldown" : 15.0,
@@ -177,7 +177,7 @@ const squad_abilities = [
 		# special for commander only 18
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
-		"detail": "(Commander Default Ability) Restore discipline and order, removing all active buffs and debuffs from nearby allies. Automatically equipped if no other ability is selected.",
+		"detail": "(Commander Default Ability) Automatically equipped if no other ability is selected. Restore discipline and order, removing all active buffs and debuffs from nearby allies.",
 		"type": "commander",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 70.0,
@@ -187,7 +187,7 @@ const squad_abilities = [
 		# melee mace weapon 19
 		"name": "Bonk!",
 		"icon": preload("res://assets/user_interface/ability/bonk.png"),
-		"detail": "Delivers blow to the enemy head. reducing their damage resistance and melee attack speed by 15%, while your melee attack speed increase by 15% for 10 seconds.",
+		"detail": "Delivers blow to the enemy head. reducing their damage resistance and melee attack speed by -15%, while your melee attack speed increase by +15% for 10 seconds.",
 		"type": "melee",
 		"weapon_idx": 13, 
 		"cooldown" : 35.0,
@@ -207,7 +207,7 @@ const squad_abilities = [
 		# melee warhammer weapon 21
 		"name": "Inspiring!",
 		"icon": preload("res://assets/user_interface/ability/bone_breaker.png"),
-		"detail": "Display unmatched strength and courage, inspiring nearby warriors to fight harder. Gain +30% melee attack speed, while nearby allies gain +10% melee attack speed for 15 seconds.",
+		"detail": "Display unmatched strength and courage, inspiring nearby warriors to fight harder. Gain +30% melee attack speed, while nearby allies gain +10% attack speed for 15 seconds.",
 		"type": "melee",
 		"weapon_idx": 14, 
 		"cooldown" : 35.0,
@@ -359,7 +359,10 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 		9: # -50% range attack speed for enemy
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				enemy.set_modifiers([[enemy.modifier_range_speed, -0.50, 10 + extra_debuff_duration, icon_debuffed]]) # range attack speed
+				var squads :Array = _get_squad_in_range(position_manager.get_positions(), [enemy.current_tile])
+				for s in squads:
+					if s.team != squad.team:
+						s.set_modifiers([[s.modifier_range_speed, -0.50, 10 + extra_debuff_duration, icon_debuffed]]) # range attack speed
 				
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
@@ -454,8 +457,12 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						if same_team:
 							if ability_caster:
 								s.set_modifiers([ [s.modifier_melee_speed, 0.30, 15, icon_buffed]]) # just for indicator
+								
 							else:
-								s.set_modifiers([ [s.modifier_melee_speed, 0.10, 15, icon_fist_up]]) # just for indicator
+								s.set_modifiers([ 
+									[s.modifier_melee_speed, 0.10, 15, icon_null],
+									[s.modifier_range_speed, 0.10, 15, icon_fist_up]
+								])
 						
 		19:# +15% melee speed & enemy 25% melee speed for 10 sec
 			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, (10 + extra_buff_duration), icon_buffed]]) # range attack speed 

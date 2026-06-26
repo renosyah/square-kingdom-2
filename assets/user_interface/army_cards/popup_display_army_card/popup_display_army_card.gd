@@ -2,6 +2,7 @@ extends Control
 
 const item_scene = preload("res://assets/user_interface/army_cards/popup_display_army_card/item/item.tscn")
 
+signal cards_updated
 signal close
 
 export var army_cards :Array
@@ -34,3 +35,4 @@ func _on_roll_pressed():
 		army_cards.append(c)
 		
 	display()
+	emit_signal("cards_updated")

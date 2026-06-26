@@ -39,6 +39,13 @@ const death_sounds = [
 	preload("res://assets/sounds/memes/wilhem_scream.wav")
 ]
 
+const MIN_MELEE_SPEED = 0.11
+const MIN_RANGE_SPEED = 0.12
+const MIN_MOVE_SPEED = 0.14
+const MAX_MELEE_SPEED = 3.0
+const MAX_RANGE_SPEED = 5.0
+const MAX_MOVE_SPEED = 3.0
+
 export var member_scene :PackedScene
 export var can_attack :bool
 export var turning_speed :float = 8
@@ -692,7 +699,7 @@ func healing():
 		if m.hp >= member_max_hp:
 			continue
 			
-		_members[idx].hp = int(clamp(_members[idx].hp + heal_amount, 0, member_max_hp))
+		_members[idx].hp = int(min(_members[idx].hp + heal_amount, member_max_hp))
 		datas.append([ _members[idx].hp, idx])
 		
 	if not datas.empty():
@@ -1121,27 +1128,24 @@ func _get_attack_damage(type:int, unmod :int) -> int:
 	return unmod
 	
 func _get_damage_receive(unmod :int) -> int:
-	var _v = unmod * (1.0 + damage_receive_mul)
-	return int(max(_v, 1))
+	return int(max(unmod * (1.0 + damage_receive_mul), 1))
 	
 func _get_speed() -> float:
-	return speed * (1.0 + speed_mul)
+	return clamp(speed * (1.0 + speed_mul), MIN_MOVE_SPEED, MAX_MOVE_SPEED)
 	
 func _get_melee_attack_speed() -> float:
-	var _min = 0.11 # prevent below 0.11 wait time
-	var _v = max((1.0 + melee_attack_speed_mul), 0.01)
-	return max(melee_attack_speed / _v, _min)
+	var _v = 1.0 + melee_attack_speed_mul
+	return clamp(melee_attack_speed / _v, MIN_MELEE_SPEED, MAX_MELEE_SPEED)
 	
 func _get_range_attack_speed() -> float:
-	var _min = 0.12 # prevent below 0.12 wait time
-	var _v = max((1.0 + range_attack_speed_mul), 0.01)
+	var spd = range_attack_speed
+	var _v = 1.0 + range_attack_speed_mul
 	
 	if rapid_fire_mode:
 		var count = max(member_alive, 1)
-		var spd = clamp(range_attack_speed / count * 1.1, 0.1, range_attack_speed)
-		return max(spd / _v, _min)
+		spd = clamp(range_attack_speed / count * 1.1, MIN_RANGE_SPEED, MAX_RANGE_SPEED)
 		
-	return max(range_attack_speed / _v, _min)
+	return clamp(spd / _v, MIN_RANGE_SPEED, MAX_RANGE_SPEED)
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position

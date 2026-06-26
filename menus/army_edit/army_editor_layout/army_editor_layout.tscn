@@ -543,4 +543,5 @@ visible = false
 [connection signal="pressed" from="Control/VBoxContainer/MarginContainer/HBoxContainer/cards" to="." method="_on_cards_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/MarginContainer/HBoxContainer/save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/HBoxContainer/VBoxContainer/army_container/VBoxContainer/HBoxContainer2/rng_army" to="." method="_on_rng_army_pressed"]
+[connection signal="cards_updated" from="popup_display_army_card" to="." method="_on_popup_display_army_card_cards_updated"]
 [connection signal="close" from="popup_display_army_card" to="." method="_on_popup_display_army_card_close"]
