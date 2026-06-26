@@ -38,3 +38,4 @@ siege_engine_attack_speed = 0.0
 siege_engine_attack_range = 0
 extra = {
 }
+biom = 0

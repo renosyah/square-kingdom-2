@@ -728,73 +728,8 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	var data :SquadData = SquadData.new()
 	data.from_bytes(bytes)
 	
-	var squad_attribute = data.squad_attribute()
+	data.biom = Global.biom
 	
-	var card_bonus :ArmyCardData = ArmyCardData.new()
-	card_bonus.from_dictionary(data.extra)
-	var _extra :Dictionary = card_bonus.get_extra()
-	
-	var speed = data.speed() # move speed + bonus by extra
-	if _extra.has("speed_bonus_percentage"):
-		speed = speed * (1.0 + _extra["speed_bonus_percentage"])
-	if _extra.has("speed_bonus_value"):
-		speed = speed + _extra["speed_bonus_value"]
-	speed = max(speed, 0.1)
-	
-	var melee_attack_speed = data.melee_attack_speed() # melee speed + bonus by extra
-	if _extra.has("melee_speed_bonus_percentage"):
-		var _v = max((1.0 + _extra["melee_speed_bonus_percentage"]), 0.01)
-		melee_attack_speed = melee_attack_speed / _v # dont allow divide by 0
-	if _extra.has("melee_speed_bonus_value"):
-		melee_attack_speed = melee_attack_speed - _extra["melee_speed_bonus_value"]
-	melee_attack_speed = max(melee_attack_speed, 0.11) # clamp it to 0.2
-	
-	var range_attack_speed = data.range_attack_speed() # range speed + bonus by extra
-	if _extra.has("range_speed_bonus_percentage"):
-		var _v = max(1.0 + _extra["range_speed_bonus_percentage"], 0.01)
-		range_attack_speed = range_attack_speed / _v # dont allow divide by 0
-	if _extra.has("range_speed_bonus_value"):
-		range_attack_speed = range_attack_speed - _extra["range_speed_bonus_value"]
-	range_attack_speed = max(range_attack_speed, 0.12) # clamp it to 0.4
-	
-	var member_hp = data.member_hp()
-	if _extra.has("hp_bonus_percentage"):
-		member_hp = int(member_hp * (1.0 + _extra["hp_bonus_percentage"]))
-	if _extra.has("hp_bonus_value"):
-		member_hp = member_hp + _extra["hp_bonus_value"]
-
-	var heal_amount = data.heal_amount() # heal hp + bonus by extra
-	if _extra.has("heal_bonus_percentage"):
-		heal_amount = int(heal_amount * (1.0 + _extra["heal_bonus_percentage"]))
-	if _extra.has("heal_bonus_value"):
-		heal_amount = heal_amount + _extra["heal_bonus_value"]
-	heal_amount = int(clamp(heal_amount, 0,member_hp)) # clamp it to member hp
-	
-	match (Global.biom):
-		1:
-			# using heavy armor, speed reduce by -10%
-			# using heavy armor, attack speed slower -15%
-			if squad_attribute[3] == 3:
-				speed = speed - (speed * 0.10)
-				speed = max(speed, 0.01)
-				
-				melee_attack_speed = melee_attack_speed + (melee_attack_speed * 0.15)
-				
-			# healing reduce by 25%
-			heal_amount = int(heal_amount - (heal_amount * 0.25))
-			
-		2:
-			# using no armor, speed reduce by -10%
-			if squad_attribute[3] == 0:
-				speed = speed - (speed * 0.10)
-				speed = max(speed, 0.01)
-				
-			# attack range speed slower -20%
-			# healing reduce by 10%
-			range_attack_speed = range_attack_speed + (range_attack_speed * 0.20)
-			heal_amount = int(heal_amount - (heal_amount * 0.10))
-		
-		
 	var squad :BaseSquad = EntityIndex.squads[data.scene_idx].instance()
 	squad.name = data.node_name
 	squad.network_id = data.network_id
@@ -805,14 +740,14 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.unit_name = data.squad_name
 	squad.team = data.team
 	squad.color = EntityIndex.player_colors[data.color_idx]
-	squad.speed = speed
+	squad.speed = data.speed()
 
 	# squad data
 	squad.member_scene = EntityIndex.members[data.member_scene_idx]
 	squad.can_attack = true
 	squad.turning_speed = data.turning_speed
-	squad.melee_attack_speed = melee_attack_speed
-	squad.range_attack_speed = range_attack_speed
+	squad.melee_attack_speed = data.melee_attack_speed()
+	squad.range_attack_speed = data.range_attack_speed()
 	squad.formation_density = data.formation_density
 	squad.spotting_range = data.spotting_range
 	squad.attack_range = data.attack_range()
@@ -821,7 +756,9 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	if player_debuf.has(data.player_id):
 		squad.melee_attack_speed += squad.melee_attack_speed
 		squad.range_attack_speed += squad.range_attack_speed
-
+		
+	var member_hp = data.member_hp()
+	
 	# squad member
 	squad.member_headgear = EntityIndex.head_armors[data.member_headgear_idx]
 	squad.member_armor = EntityIndex.armors[data.member_armor_idx]
@@ -831,11 +768,11 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.member_material = Global.player_materials[data.color_idx]
 	squad.member_hp = member_hp
 	squad.member_max_hp = member_hp
-	squad.heal_amount = heal_amount
+	squad.heal_amount = data.heal_amount()
 	squad.total_member = data.total_member
 	squad.squad_role = data.squad_role
 	squad.squad_icon = EntityIndex.squad_icon[data.icon_idx]
-	squad.squad_attribute = squad_attribute
+	squad.squad_attribute = data.squad_attribute()
 	squad.squad_ability_idx = data.squad_ability_idx
 	squad.rapid_fire_mode = (data.range_fire_mode == 1) and (not data.is_hero)
 	squad.is_hero = data.is_hero

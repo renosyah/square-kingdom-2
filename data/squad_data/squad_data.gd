@@ -63,26 +63,37 @@ export var siege_engine_attack_damage :int
 export var siege_engine_attack_speed :float
 export var siege_engine_attack_range :int
 
-
 # this is just carrier of something like bonus
-export var extra :Dictionary
+export var extra :Dictionary # ArmyCardData {}
+export var biom :int # for modifier base by biom
 
-func spawn_time() -> int:
-	var sum = 15
-	sum += EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["spawn_time"]
-	sum += EntityIndex.range_weapon_stats[member_range_weapon_idx]["spawn_time"]
-	sum += EntityIndex.head_armors_stats[member_headgear_idx]["spawn_time"]
-	sum += EntityIndex.armors_stats[member_armor_idx]["spawn_time"]
-	sum += EntityIndex.shield_stats[member_shield_idx]["spawn_time"]
+func spawn_time() -> float:
+	if is_commander:
+		return 5.0 # commander always 5 second
+		
+	var _spawn_time = 15.0
+	_spawn_time += EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["spawn_time"]
+	_spawn_time += EntityIndex.range_weapon_stats[member_range_weapon_idx]["spawn_time"]
+	_spawn_time += EntityIndex.head_armors_stats[member_headgear_idx]["spawn_time"]
+	_spawn_time += EntityIndex.armors_stats[member_armor_idx]["spawn_time"]
+	_spawn_time += EntityIndex.shield_stats[member_shield_idx]["spawn_time"]
 	
 	if is_mounted:
-		sum += 10
+		_spawn_time += 10.0
 		
 	# this must be siege unit
 	if not scene_idx in [0, 1]:
-		sum += 25
+		_spawn_time += 25.0
+		
+	# bonus by extra
+	if extra.has("spawn_time_decrease_percentage"):
+		var _v = clamp(1.0 + extra["spawn_time_decrease_percentage"], 0.01, 1.99)
+		_spawn_time = _spawn_time / _v  # dont allow divide by 0
+		
+	if extra.has("spawn_time_decrease_value"):
+		_spawn_time = _spawn_time - extra["spawn_time_decrease_value"]
 	
-	return sum
+	return max(_spawn_time, 1.0) # prevent below 1 second
 
 func squad_attribute() -> Array:
 	# base by index
@@ -128,49 +139,109 @@ func attack_range():
 	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["range"]
 
 func range_attack_speed():
-	return EntityIndex.range_weapon_stats[member_range_weapon_idx]["attack_speed"]
+	var _range_attack_speed = EntityIndex.range_weapon_stats[member_range_weapon_idx]["attack_speed"]
+	if extra.has("range_speed_bonus_percentage"):
+		var _v = clamp(1.0 + extra["range_speed_bonus_percentage"], 0.01, 1.99)
+		_range_attack_speed = _range_attack_speed / _v
+	if extra.has("range_speed_bonus_value"):
+		_range_attack_speed = _range_attack_speed - extra["range_speed_bonus_value"]
+		
+	if biom == 2:
+		_range_attack_speed = _range_attack_speed + (_range_attack_speed * 0.20)
+		
+	return max(_range_attack_speed, 0.12) # prevent below 0.4
 	
 func melee_attack_speed():
-	return EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["attack_speed"]
+	var _squad_attribute = squad_attribute()
+	var _melee_attack_speed = EntityIndex.melee_weapon_stats[member_melee_weapon_idx]["attack_speed"]
+	if extra.has("melee_speed_bonus_percentage"):
+		var _v = clamp((1.0 + extra["melee_speed_bonus_percentage"]), 0.01, 1.99)
+		_melee_attack_speed = _melee_attack_speed / _v
+	if extra.has("melee_speed_bonus_value"):
+		_melee_attack_speed = _melee_attack_speed - extra["melee_speed_bonus_value"]
+		
+	# in biom desert
+	# using heavy armor, attack speed slower -15%
+	if biom == 1 and _squad_attribute[3] == 3:
+		_melee_attack_speed = _melee_attack_speed + (_melee_attack_speed * 0.15)
+		
+	return max(_melee_attack_speed, 0.11) # prevent below 0.2
 
 func speed() -> float:
-	var sum = EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
-	sum += EntityIndex.armors_stats[member_armor_idx]["speed"]
-	sum += EntityIndex.shield_stats[member_shield_idx]["speed"]
+	var _squad_attribute = squad_attribute()
+	var _speed = EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
+	_speed += EntityIndex.armors_stats[member_armor_idx]["speed"]
+	_speed += EntityIndex.shield_stats[member_shield_idx]["speed"]
+	
+	if extra.has("speed_bonus_percentage"):
+		_speed = _speed * (1.0 + extra["speed_bonus_percentage"])
+	if extra.has("speed_bonus_value"):
+		_speed = _speed + extra["speed_bonus_value"]
+		
+	_speed = max(_speed, 0.1)
 	
 	# siege engine
 	if not scene_idx in [0, 1]:
-		return 0.34 + sum
+		return 0.34 + _speed
 		
 	 # 0.5 is base speed of cav
 	if is_mounted:
-		return 1.85 + sum
+		return 1.85 + _speed
+		
+	# in biom desert
+	# using heavy armor, speed reduce by -10%
+	if biom == 1 and _squad_attribute[3] == 3:
+		_speed = _speed - (_speed * 0.10)
+		
+	# in biom winter
+	# using no armor, speed reduce by -10%
+	elif biom == 2 and _squad_attribute[3] == 0:
+		_speed = _speed - (_speed * 0.10)
+		
+	_speed = max(_speed, 0.01)
 		
 	 # 0.5 is base speed of infantry
-	return 0.75 + sum
+	return 0.75 + _speed
 	
 func member_hp() -> int:
 	# 120 is is base hp cav
-	var sum = 120 if is_mounted else 45 # 45 is base hp 
-	sum += EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
-	sum += EntityIndex.armors_stats[member_armor_idx]["hp"]
-	sum += EntityIndex.shield_stats[member_shield_idx]["hp"]
+	var _member_hp = 120 if is_mounted else 45 # 45 is base hp 
+	_member_hp += EntityIndex.head_armors_stats[member_headgear_idx]["hp"]
+	_member_hp += EntityIndex.armors_stats[member_armor_idx]["hp"]
+	_member_hp += EntityIndex.shield_stats[member_shield_idx]["hp"]
 	
 	# give double HP if commander
 	if is_commander:
-		sum += sum
+		_member_hp += _member_hp
 		
 	 # special hp for singular unit
 	if is_hero:
-		sum += 1000
+		_member_hp += 1000
 		
-	return sum
+	if extra.has("hp_bonus_percentage"):
+		_member_hp = int(_member_hp * (1.0 + extra["hp_bonus_percentage"]))
+	if extra.has("hp_bonus_value"):
+		_member_hp = _member_hp + extra["hp_bonus_value"]
+		
+	return int(max(_member_hp, 1)) # prevent below 1 LOL
 
 func heal_amount() -> int:
-	if is_hero:
-		return int(member_hp() * 0.25)
+	var _member_hp = member_hp()
+	var _heal_amount = int(_member_hp * (0.25 if is_hero else 0.15))
+	
+	if extra.has("heal_bonus_percentage"):
+		var _v = clamp((1.0 + extra["heal_bonus_percentage"]), 0.99, 1.99)
+		_heal_amount = _heal_amount * _v
+	if extra.has("heal_bonus_value"):
+		_heal_amount = _heal_amount + extra["heal_bonus_value"]
 		
-	return int(member_hp() * 0.15)
+	# in the desert, 25% less heal
+	if biom == 1:
+		_heal_amount = int(_heal_amount - (_heal_amount * 0.25))
+	elif biom == 2:
+		_heal_amount = int(_heal_amount - (_heal_amount * 0.10))
+	
+	return int(clamp(_heal_amount, 0, _member_hp))
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)

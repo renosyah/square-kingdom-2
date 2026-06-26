@@ -32,9 +32,15 @@ func _ready():
 	ui.movable_camera_minimap.camera_limit_bound = Vector3(map_size, 0, map_size)
 	ui.movable_camera_minimap.detect_in_out = false
 	
+	editable_tile_map.biom = 0
 	editable_tile_map.tile_scenes = TileIndex.tiles
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
 	
+	ui.biom_buttons[0].disabled = true
+	
+	for idx in ui.biom_buttons.size():
+		ui.biom_buttons[idx].connect("pressed", self, "_on_biom_button_press", [idx])
+		
 func _on_setting_updated(d :SettingData):
 	ui.movable_camera_ui.move_speed = d.camera_move_speed
 	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
@@ -164,9 +170,17 @@ func _on_ui_on_nav_card_dropped(posv2, enable):
 	nav.enable_nav_tile(0, tile.id, enable)
 	nav_tiles[tile.id].enable(enable)
 
-
-
-
+func _on_biom_button_press(idx):
+	editable_tile_map.biom = idx
+	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
+	ui.minimap.load_data_map(Global.current_tile_map_file_data)
+	ui.loading_screen.visible = true
+	
+	for i in ui.biom_buttons.size():
+		ui.biom_buttons[i].disabled = false
+		
+	ui.option_biom.visible = false
+	ui.biom_buttons[idx].disabled = true
 
 
 

@@ -350,7 +350,7 @@ var biom :int
 #]
 var spawn_point_forts :Dictionary = {
 	0:[true, 2, 0, 1], # TOP
-	1:[true, 2, 0, 3], # LEFT
+	1:[true, 2, 0, 1], # LEFT
 	2:[true, 2, 0, 1], # RIGHT
 	3:[true, 2, 0, 1], # DOWN
 	4:[true, 2, 0, 0], # center of map
@@ -369,7 +369,7 @@ func prepare_army(army :Array, spawn_pos :Vector2, player :PlayerData, sum_card 
 	
 	var extra = {}
 	if sum_card != null:
-		extra = sum_card.to_dictionary()
+		extra = sum_card.get_extra()
 		
 	var tiles = [spawn_pos] + TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.ARROW_DIRECTIONS, spawn_pos, 1
@@ -394,7 +394,7 @@ func _sort_by_order(a, b):
 	return current_squads[a].sort_order < current_squads[b].sort_order
 
 # idx is from current_army
-func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary = {}) -> SquadData:
+func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary) -> SquadData:
 	var data :SquadData = current_squads[squad_idx].duplicate()
 	data.extra = extra
 	data.squad_id = i

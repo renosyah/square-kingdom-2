@@ -17,6 +17,8 @@ onready var list_map = $CanvasLayer/Control/list_map_bg/list_map
 onready var confirm_popup = $CanvasLayer/Control/confirm_popup
 onready var map_name = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/map_name
 onready var loading_screen = $CanvasLayer/loading_screen
+onready var option_biom = $CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/biom/option_biom
+
 onready var minimap_size = minimap.rect_size
 
 onready var tile_cards = [
@@ -42,6 +44,12 @@ onready var tile_cards_contents = [
 	$CanvasLayer/Control/VBoxContainer/HBoxContainer2/Control/VBoxContainer/HBoxContainer/nav_off_card/nav_off
 ]
 
+onready var biom_buttons = [
+	$CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/biom/option_biom/MarginContainer/MarginContainer/VBoxContainer/normal_biom,
+	$CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/biom/option_biom/MarginContainer/MarginContainer/VBoxContainer/desert_biom,
+	$CanvasLayer/Control/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer4/HBoxContainer/biom/option_biom/MarginContainer/MarginContainer/VBoxContainer/winter_biom
+]
+
 var nav_show :bool
 
 # Called when the node enters the scene tree for the first time.
@@ -51,6 +59,7 @@ func _ready():
 	
 	list_map_bg.visible = false
 	confirm_popup.visible = false
+	option_biom.visible = false
 	
 	minimap.tile_scenes = TileIndex.tiles2d
 	minimap.load_data_map(Global.current_tile_map_file_data)
@@ -172,6 +181,10 @@ func _on_delete_pressed():
 func _on_list_map_new_map(nm):
 	Global.current_tile_map_manifest_data.map_name = nm
 	Global.change_scene("res://menus/map_editor/map_editor.tscn", true)
+
+func _on_biom_pressed():
+	option_biom.visible = not option_biom.visible
+
 
 
 
