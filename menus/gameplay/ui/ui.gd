@@ -130,7 +130,7 @@ func _check_squad_ability():
 	
 	if ability["required_enemy"]:
 		ability_button.required_enemy_in_melee = ability["type"] in ["melee", "shield"]
-		ability_button.required_enemy_in_range = ability["type"] in ["range", "shield"]
+		ability_button.required_enemy_in_range = ability["type"] == "range"
 		
 	else:
 		ability_button.required_enemy_in_melee = false

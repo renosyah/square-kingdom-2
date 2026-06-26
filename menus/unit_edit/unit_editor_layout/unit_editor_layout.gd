@@ -318,16 +318,24 @@ func display_abilities(s :SquadData, selected_index :int):
 		if is_selected:
 			ability_desc.text = abilities[selected_index]["detail"]
 			
-	var item_commander = ability_item_scene.instance()
-	item_commander.index = AbilityHandle.commander_only_ability
-	item_commander.icon = abilities[item_commander.index]["icon"]
-	item_commander.item_name = abilities[item_commander.index]["name"]
-	item_commander.cooldown = '%s' % int(abilities[item_commander.index]["cooldown"])
-	item_commander.connect("selected", self, "_on_ability_selected", [item_commander.index])
-	abilities_holder.add_child(item_commander)
-	item_commander.set_selected(item_commander.index == selected_index)
-	if item_commander.index == selected_index:
-		ability_desc.text = abilities[selected_index]["detail"]
+	var specials = [ AbilityHandle.commander_only_ability ]
+	if dup_squad_data.is_mounted:
+		specials.append(AbilityHandle.cavalry_gameplay)
+		
+	for idx in specials:
+		var item_special = ability_item_scene.instance()
+		item_special.index = idx
+		item_special.icon = abilities[idx]["icon"]
+		item_special.item_name = abilities[idx]["name"]
+		
+		if abilities[idx]["cooldown"] > 0:
+			item_special.cooldown = '%s' % int(abilities[idx]["cooldown"])
+			
+		item_special.connect("selected", self, "_on_ability_selected", [idx])
+		abilities_holder.add_child(item_special)
+		item_special.set_selected(item_special.index == selected_index)
+		if idx == selected_index:
+			ability_desc.text = abilities[idx]["detail"]
 		
 func display_role(role :int):
 	for k in unit_role_buttons.keys():
@@ -439,7 +447,7 @@ func _on_fire_mode_selected(index :int):
 	display_fire_mode(index)
 	
 func _on_ability_selected(index :int):
-	if index != AbilityHandle.commander_only_ability:
+	if not index in [AbilityHandle.commander_only_ability, AbilityHandle.cavalry_gameplay]:
 		dup_squad_data.squad_ability_idx = index
 		
 	display_abilities(dup_squad_data, index)

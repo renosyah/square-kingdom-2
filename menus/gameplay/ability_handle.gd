@@ -223,9 +223,30 @@ const squad_abilities = [
 		"cooldown" : 35.0,
 		"required_enemy": true,
 	},
+	{
+		# all shield 23
+		"name": "Drive By!",
+		"icon": preload("res://assets/user_interface/ability/fight_and_ride_ability.png"),
+		"detail": "(Cavalry Feature) This is my horse, my horse is amazing. Mounted units can attack and fire ranged weapons without stopping. Enable Attack Move mode to make full use of their mobility and hit-and-run tactics.",
+		"type": "cavalry",
+		"weapon_idx": 0, # <- ignore this
+		"cooldown" : -1.0,
+		"required_enemy": false,
+	},
+	{
+		# melee axe weapon 24
+		"name": "Shield Breaker!",
+		"icon": preload("res://assets/user_interface/ability/shield_breaker_ability.png"),
+		"detail": "Use your axe to carve through enemy's shield, make them vulnerable by -60% for 15 seconds.",
+		"type": "melee",
+		"weapon_idx": 7,
+		"cooldown" : 35.0,
+		"required_enemy": true,
+	},
 ]
 
 const commander_only_ability = 18
+const cavalry_gameplay = 23
 
 const buff_debuff_icons = [
 	null,
@@ -460,12 +481,29 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 		22: # reset enemy cooldown
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
-				if enemy.squad_ability_idx != 0:
-					squad.set_modifiers([[squad.modifier_damage_receive, 0.25, 5, icon_null]]) # damage receive
-					enemy.set_modifiers([[enemy.modifier_move_speed, -0.10, 2, icon_zap]]) # just for indicator
-					
-					enemy.start_ability_cooldown(squad_abilities[enemy.squad_ability_idx]["cooldown"])
 				
+				# stop, just stop
+				if enemy.squad_ability_idx == 0:
+					squad.start_ability_cooldown(2.0)
+					return 
+					
+				squad.set_modifiers([[squad.modifier_damage_receive, 0.25, 5, icon_null]]) # damage receive
+				enemy.set_modifiers([[enemy.modifier_move_speed, -0.10, 2, icon_zap]]) # just for indicator
+				
+				enemy.start_ability_cooldown(squad_abilities[enemy.squad_ability_idx]["cooldown"])
+					
+		24: # check if nemey have shield, if do, break them, drop resistance by -60% for 15 sec
+			var enemy = squad.enemy
+			if is_instance_valid(enemy):
+				
+				# stop, just stop
+				if not enemy.squad_attribute[4]:
+					squad.start_ability_cooldown(2.0)
+					return 
+					
+				enemy.set_modifiers([[ enemy.modifier_damage_receive, 0.60, (15 + extra_debuff_duration), icon_defence_down ]])
+		
+		
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
