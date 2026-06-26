@@ -18,6 +18,7 @@ onready var leg_animation_state = $leg_animation_tree.get("parameters/playback")
 onready var body_animation_state = $body_animation_tree.get("parameters/playback")
 onready var tween = $Tween
 
+onready var pivot = $pivot
 onready var headgear_holder = $pivot/body/head
 onready var armor_holder = $pivot/body
 onready var weapon_holder = $pivot/body/hand_r/weapon_holder
@@ -56,6 +57,8 @@ func _ready():
 	
 func resurect():
 	.resurect()
+	
+	visible = true
 	
 	if _headgear:
 		_headgear.visible = true
@@ -327,6 +330,12 @@ func set_dead():
 	
 	body_animation_state.start(_current_anim_body)
 	leg_animation_state.start(_current_anim_walk)
+	
+func _on_died_anim():
+	if Global.current_root.has_method("stash_corpses"):
+		Global.current_root.stash_corpses(Utils.clone_spatial(pivot))
+		
+	visible = false
 
 func _on_auto_iddle_timer_timeout():
 	iddle = true

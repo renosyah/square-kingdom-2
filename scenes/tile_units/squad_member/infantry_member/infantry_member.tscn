@@ -164,7 +164,7 @@ tracks/11/keys = {
 
 [sub_resource type="Animation" id=50]
 resource_name = "die"
-length = 0.5
+length = 0.6
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/body:translation")
 tracks/0/interp = 1
@@ -308,6 +308,20 @@ tracks/11/keys = {
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( -12.9531, -91.264, 89.9084 ), Vector3( -6.56937, -127.869, 107.972 ), Vector3( 16.2357, -173.913, 120.58 ) ]
+}
+tracks/12/type = "method"
+tracks/12/path = NodePath(".")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_on_died_anim"
+} ]
 }
 
 [sub_resource type="Animation" id=1]
@@ -3387,7 +3401,7 @@ states/weapon_trust_attack/node = SubResource( 37 )
 states/weapon_trust_attack/position = Vector2( -46, -17.3508 )
 transitions = [ "iddle", "walk", SubResource( 17 ), "walk", "iddle", SubResource( 18 ), "iddle", "walk_weapon_hold", SubResource( 21 ), "walk_weapon_hold", "iddle", SubResource( 22 ), "iddle", "iddle_weapon_hold", SubResource( 25 ), "iddle_weapon_hold", "iddle", SubResource( 26 ), "iddle_weapon_hold", "walk_weapon_hold", SubResource( 27 ), "walk_weapon_hold", "iddle_weapon_hold", SubResource( 28 ), "iddle", "weapon_ready", SubResource( 31 ), "weapon_ready", "iddle", SubResource( 32 ), "weapon_ready", "weapon_trust_attack", SubResource( 38 ), "weapon_trust_attack", "weapon_ready", SubResource( 39 ), "weapon_slash_attack", "weapon_ready", SubResource( 42 ), "weapon_ready", "weapon_slash_attack", SubResource( 43 ), "iddle", "shot_range_weapon", SubResource( 46 ), "shot_range_weapon", "iddle", SubResource( 47 ), "iddle", "die", SubResource( 53 ), "iddle", "throw_range_weapon", SubResource( 59 ), "throw_range_weapon", "iddle", SubResource( 60 ), "range_weapon_ready", "shot_range_weapon_2", SubResource( 67 ), "shot_range_weapon_2", "range_weapon_ready", SubResource( 68 ), "iddle", "throw_range_weapon_2", SubResource( 74 ), "throw_range_weapon_2", "iddle", SubResource( 75 ), "range_weapon_hold", "range_weapon_ready", SubResource( 78 ), "range_weapon_ready", "range_weapon_hold", SubResource( 79 ), "iddle", "range_weapon_hold", SubResource( 80 ), "range_weapon_hold", "iddle", SubResource( 81 ), "iddle", "weapon_2_ready", SubResource( 89 ), "weapon_2_ready", "iddle", SubResource( 90 ), "weapon_2_ready", "weapon_2_slash_left", SubResource( 91 ), "weapon_2_slash_left", "weapon_2_ready", SubResource( 92 ), "weapon_2_ready", "weapon_2_slash_right", SubResource( 93 ), "weapon_2_slash_right", "weapon_2_ready", SubResource( 94 ), "iddle", "weapon_2_hold", SubResource( 97 ), "weapon_2_hold", "iddle", SubResource( 98 ), "weapon_2_hold", "weapon_2_slash_right", SubResource( 99 ), "weapon_2_slash_right", "weapon_2_hold", SubResource( 100 ), "weapon_2_hold", "weapon_2_slash_left", SubResource( 101 ), "weapon_2_slash_left", "weapon_2_hold", SubResource( 102 ) ]
 start_node = "iddle"
-graph_offset = Vector2( -445.212, 86.6831 )
+graph_offset = Vector2( -445.212, -189.461 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=13]
 
@@ -3497,7 +3511,7 @@ transform = Transform( 3.83797e-08, -0.478615, -0.878025, -2.09209e-08, -0.87802
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.043, 0.0608012 )
 
 [node name="leg_r" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, -0.1, 0 )
+transform = Transform( 1, 0, 0, 0, -0.0697391, -0.997565, 0, 0.997565, -0.0697391, 0.05, -0.22416, 0.179342 )
 
 [node name="leg_r" type="MeshInstance" parent="pivot/leg_r"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
@@ -3508,7 +3522,7 @@ software_skinning_transform_normals = false
 material/1 = ExtResource( 6 )
 
 [node name="leg_l" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, -0.1, 0 )
+transform = Transform( 1, 0, 0, 0, -0.0306606, -0.99953, 0, 0.99953, -0.0306606, -0.05, -0.22416, 0.179342 )
 
 [node name="leg_l" type="MeshInstance" parent="pivot/leg_l"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )

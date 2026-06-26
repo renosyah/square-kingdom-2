@@ -56,6 +56,8 @@ func _on_all_player_ready():
 func _on_global_tick():
 	if not is_end:
 		Global.battle_time += 1
+		
+	clean_corpse()
 	
 ########################################## proccess  ############################################
 
@@ -1066,9 +1068,20 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 func _on_cav_charge(squad : CavalrySquad):
 	if squad.player_id == current_player.player_id:
 		unit_charged_impact(true)
+	
+var corpses = []
 
+func stash_corpses(corpse :Spatial):
+	add_child(corpse)
+	corpse.translation.y = 0.25
+	corpses.append(corpse)
 
-
+func clean_corpse():
+	if corpses.size() > 25:
+		for i in corpses:
+			i.queue_free()
+			
+		corpses.clear()
 
 
 
