@@ -470,7 +470,7 @@ remote func _retreat():
 	chase_enemy = null
 	
 	if reinfoce_tiles.empty():
-		_move_to(current_tile + -tile_front() * 2, true) # move back
+		_move_to(current_tile - _dir_front() * 2, true) # move back
 		return
 		
 	_move_to(reinfoce_tiles.pick_random(), true)
@@ -525,7 +525,7 @@ func _send_rpc_reliable_pending():
 		rpc("_set_modifiers", _pending_modifier_send)
 		_pending_modifier_send.clear()
 		
-func _on_walking(delta :float):
+func _on_walking(_delta :float):
 	pass
 	
 func _ajust_formation(pos :Vector3, delta :float):
@@ -585,7 +585,7 @@ func get_avg_member_pos(pos :Vector3) -> Vector3:
 		
 	return npos / (m.size() + 1)
 	
-func _set_floating_info_pos(pos :Vector3, delta :float):
+func _set_floating_info_pos(pos :Vector3, _delta :float):
 	# track floating ui
 	if not _member_spawned or not floating_info:
 		return
@@ -1058,7 +1058,7 @@ func on_set_modifiers(datas :Array, remove_modifier :Array):
 		var type :int = i[0]
 		var value :float = clamp(i[1], -0.99, 0.99)
 		var expired :float = i[2]
-		var icon_idx :int = i[3]
+		#var icon_idx :int = i[3]
 		
 		# waiting time minus? we dont add this nonesense
 		if expired < 0: 
@@ -1149,14 +1149,11 @@ func _get_range_attack_speed() -> float:
 	
 func _rotate_to_look(delta :float, pos :Vector3, to :Vector3, dir_to :Vector3):
 	# look at enemy position
-	if _can_look_at(pos, to, dir_to):
+	if _can_look_at(dir_to):
 		var t:Transform = transform.looking_at(to, Vector3.UP)
 		transform = transform.interpolate_with(t, turning_speed * delta)
 		
-func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
-	var _pos = pos
-	_pos.y = pos.y
-	
+func _can_look_at(dir :Vector3) -> bool:
 	if dir.length() > 0.001:
 		var dot = abs(dir.dot(Vector3.UP))
 		return dot < 0.999

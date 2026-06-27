@@ -6,6 +6,7 @@ signal close
 const scoreboard_item_scene = preload("res://assets/user_interface/scoreboard/item/scoreboard_item.tscn")
 
 class ScoreData:
+	var squad_id:int
 	var squad_potrait_idx :int
 	var squad_name :String
 	var is_dead :bool
@@ -66,20 +67,21 @@ func init_scoreboard(players :Array):
 		scores[p].player_data = PlayerData.new()
 		scores[p].player_data.from_dictionary(p.to_dictionary())
 		
-	ui_update() 
+	ui_update()
+	
+func register_squad(p :PlayerData, s :SquadData):
+	if not scores.has(p):
+		return
+		
+	_register_squad(p,s)
+	_pending_score_update.append(p)
 	
 func add_kill(p :PlayerData, s :SquadData, v :int):
 	if not scores.has(p):
 		return
 		
-	if not scores[p].squads.has(s.node_name):
-		var d = ScoreData.new()
-		d.squad_potrait_idx = s.potrait_idx
-		d.squad_name = s.squad_name
-		d.is_dead = false
-		
-		scores[p].squads[s.node_name] = d
-		
+	_register_squad(p,s)
+	
 	scores[p].squads[s.node_name].kill += v
 	_pending_score_update.append(p)
 	
@@ -105,14 +107,14 @@ func set_squad_dead(p :PlayerData, s :SquadData):
 	if not scores.has(p):
 		return
 		
-	_register_squad(p,s)
-	
-	scores[p].squads[s.node_name].is_dead = true
-	_pending_score_update.append(p)
+	if scores[p].squads.has(s.node_name):
+		scores[p].squads[s.node_name].is_dead = true
+		_pending_score_update.append(p)
 	
 func _register_squad(p,s):
 	if not scores[p].squads.has(s.node_name):
 		var d = ScoreData.new()
+		d.squad_id = s.squad_id
 		d.squad_potrait_idx = s.potrait_idx
 		d.squad_name = s.squad_name
 		d.is_dead = false

@@ -6,9 +6,14 @@ export var color :Color
 export var floating_hurt :bool
 export var total_member :int
 export var is_mounted :bool
+export var side_state :int # 0:own, 1:friendly, 2:enemy
 
 var selected_squads :Array # refrences
 var squad # refrences of BaseSquad
+
+onready var _bg_color = $Control2/MarginContainer/ColorRect
+onready var _bg_color_icn = $Control2/MarginContainer/mounted/color
+
 
 onready var _color = $Control2/MarginContainer/MarginContainer/color
 onready var _icon = $Control2/MarginContainer/MarginContainer/MarginContainer2/icon
@@ -36,6 +41,11 @@ func _ready():
 	_mounted.visible = is_mounted
 	_icon.texture = icon
 	_color.color = color
+	
+	var side_color = Color(0.615686, 0, 0) if side_state == 2 else (Color(0, 0.058824, 0.698039) if side_state == 1 else Color.black)
+	_bg_color.color = side_color
+	_bg_color_icn.color = side_color
+	
 	
 	squad.connect("on_squad_taking_damage", self, "_on_squad_taking_damage")
 	squad.connect("on_squad_taking_heal", self, "_on_squad_taking_heal")
@@ -71,7 +81,7 @@ func _on_squad_taking_heal(s):
 		_update_bar_colors()
 		
 	if _hp_bar.visible:
-		var hp = s.get_members()[0].hp
+		var hp = s.get_members(true)[0].hp
 		_hp_bar.tint_progress = _get_hp_color(hp, _hp_bar.max_value)
 		_hp_bar.value = hp
 		
@@ -83,7 +93,7 @@ func _on_squad_taking_damage(s, amount):
 		_update_bar_colors()
 		
 	if _hp_bar.visible:
-		var hp = s.get_members()[0].hp
+		var hp = s.get_members(true)[0].hp
 		_hp_bar.tint_progress = _get_hp_color(hp, _hp_bar.max_value)
 		_hp_bar.value = hp
 		

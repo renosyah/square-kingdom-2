@@ -321,7 +321,7 @@ func moving(delta :float):
 			_current_anim_walk = anim
 			leg_animation_state.travel(_current_anim_walk)
 			
-
+	
 func set_dead():
 	.set_dead()
 	
@@ -332,6 +332,9 @@ func set_dead():
 	leg_animation_state.start(_current_anim_walk)
 	
 func _on_died_anim():
+	if not Global.current_root:
+		return
+		
 	if Global.current_root.has_method("stash_corpses"):
 		Global.current_root.stash_corpses(Utils.clone_spatial(pivot))
 		

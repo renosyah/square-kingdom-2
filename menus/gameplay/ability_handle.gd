@@ -115,9 +115,9 @@ const squad_abilities = [
 	},
 	{
 		# range crossbow weapon 12
-		"name": "Bodkin Point",
+		"name": "AP Bolts",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened bodkin bolts, aim carefully then fire for maximum penetration. Increase ranged damage by +70% but reduce ranged attack speed by -50% for 10 seconds. Best used with volley fire for devastating burst damage.",
+		"detail": "Fit hardened Armor-Piercing (AP) bodkin bolts for maximum penetration. Increase ranged damage by +40% for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -386,11 +386,10 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				if s.team == squad.team and s != squad:
 					s.set_modifiers([ [s.modifier_range_damage, 0.10, dur, icon_buffed]])
 					
-		12: # 70% range damage, 50% slowest rate of fire
-			var dur = (15 + extra_buff_duration)
+		12: # 40% range damage
+			var dur = (10 + extra_buff_duration)
 			squad.set_modifiers([
-				[squad.modifier_range_damage, 0.70, dur, icon_buffed], # damage deal
-				[squad.modifier_range_speed, -0.50, dur, icon_null], #  attack speed 
+				[squad.modifier_range_damage, 0.40, dur, icon_buffed], # damage deal
 			])
 			
 		13: # -50% range damage, +50% rate of fire

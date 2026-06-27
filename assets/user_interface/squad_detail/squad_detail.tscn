@@ -168,12 +168,11 @@ size_flags_vertical = 3
 margin_top = 78.0
 margin_right = 696.0
 margin_bottom = 118.0
-custom_constants/separation = 8
+custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 116.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 110, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
 margin_right = 40.0
@@ -193,10 +192,9 @@ size_flags_horizontal = 5
 text = "HP | Regen"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 124.0
-margin_right = 261.0
+margin_left = 128.0
+margin_right = 265.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 110, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
 margin_right = 40.0
@@ -216,10 +214,9 @@ size_flags_horizontal = 5
 text = "Melee | Range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 269.0
-margin_right = 369.0
+margin_left = 277.0
+margin_right = 360.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 100, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
 margin_right = 40.0
@@ -239,10 +236,9 @@ size_flags_horizontal = 5
 text = "Speed"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 377.0
-margin_right = 477.0
+margin_left = 372.0
+margin_right = 446.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 100, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer4"]
 margin_right = 40.0

@@ -165,14 +165,15 @@ func remove_squad_card(squad :BaseSquad):
 func _sort_squad_by_order(a, b) -> bool:
 	return a.data.sort_order < b.data.sort_order
 	
-func add_squad_floating_info(squad :BaseSquad, data :SquadData, p :PlayerData):
+func add_squad_floating_info(squad :BaseSquad, data :SquadData, current_player :PlayerData):
 	var _floating_info :FloatingSquadInfo = floating_squad_info_scene.instance()
 	_floating_info.selected_squads = selected_squads
 	_floating_info.squad = squad
 	_floating_info.name = "info_%s" % name
 	_floating_info.color = squad.color
 	_floating_info.icon = EntityIndex.squad_icon[data.icon_idx]
-	_floating_info.floating_hurt = squad.player_id == p.player_id
+	_floating_info.floating_hurt = squad.player_id == current_player.player_id
+	_floating_info.side_state = 2 if squad.team != current_player.team else (1 if squad.player_id != current_player.player_id else 0)
 	_floating_info.total_member = data.total_member
 	_floating_info.is_mounted = data.is_mounted
 	overlay_ui.add_child(_floating_info)

@@ -837,6 +837,8 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 		squad.nav_layer = 1 # diffrent path
 		return
 		
+	ui.scoreboard.register_squad(player_ids[squad.player_id], data)
+	
 	squad_datas[squad] = data
 	squads.append(squad)
 	
@@ -898,17 +900,24 @@ func _on_squad_taking_damage(squad :BaseSquad, amount :int):
 		ui.log_event.add_log_damage(squad, amount)
 	
 func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadData):
+	var is_guard_tower = squad is GuardTowerSquad
+	
 	if setting.show_feed:
 		ui.log_event.add_log_member_lost(squad, member)
 		
-	if player_ids.has(squad.player_id):
+	if player_ids.has(squad.player_id) and (not is_guard_tower):
 		ui.scoreboard.add_dead(player_ids[squad.player_id], data, 1)
 	
 	var from :BaseSquad = get_node_or_null(member.attacked_by)
 	if not is_instance_valid(from):
 		return
 		
-	if not player_ids.has(from.player_id) or not squad_datas.has(from):
+	var conditions = [
+		not player_ids.has(from.player_id),
+		not squad_datas.has(from),
+		from is GuardTowerSquad
+	]
+	if conditions.has(true):
 		return
 		
 	var from_player :PlayerData = player_ids[from.player_id]

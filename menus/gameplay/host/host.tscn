@@ -15,7 +15,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="bot_squad_spawner" parent="." instance=ExtResource( 2 )]
-max_batch = 4
+max_batch = 6
 
 [connection signal="timeout" from="bot_bandit_spawner_timer" to="." method="_on_bot_bandit_spawner_timer_timeout"]
 [connection signal="timeout" from="bot_action_timer" to="." method="_on_bot_action_timer_timeout"]

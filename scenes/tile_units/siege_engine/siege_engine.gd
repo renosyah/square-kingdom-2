@@ -32,10 +32,7 @@ func moving(delta :float):
 func _process(delta):
 	moving(delta)
 
-func _can_look_at(pos :Vector3, to_pos :Vector3, dir :Vector3) -> bool:
-	var _pos = pos
-	_pos.y = pos.y
-	
+func _can_look_at(dir :Vector3) -> bool:
 	if dir.length() > 0.001:
 		var dot = abs(dir.dot(Vector3.UP))
 		return dot < 0.999

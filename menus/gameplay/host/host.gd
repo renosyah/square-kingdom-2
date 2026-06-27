@@ -28,8 +28,11 @@ var bot_aggresives :Dictionary = {}
 var spawn_size_treshold :int = 1
 
 var bot_squad_heroes = []
+var random_centers = []
 
 func _ready():
+	random_centers = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), Vector2.ZERO, 5)
+	
 	for i in bot_players:
 		bot_cowardices[i.player_id] = rand_range(0.3, 0.7)
 		bot_aggresives[i.player_id] = rand_range(0.3, 0.8)
@@ -65,6 +68,11 @@ func bot_attack_command(squad :BaseSquad, enemy :BaseSquad):
 		return
 		
 	if is_instance_valid(squad.enemy):
+		return
+		
+	if not is_instance_valid(enemy):
+		squad.attack_move = true
+		squad.move_to(random_centers.pick_random())
 		return
 		
 	if squad is CavalrySquad and randf() < 0.4:
@@ -230,8 +238,12 @@ func _bot_bandit_action():
 	var count = int(rand_range(1, 6))
 	for _i in count:
 		var s = bot_bandit_squads.pick_random()
+		var e = enemies.pick_random()
+		if randf() < 0.3:
+			e = null
+		
 		if not s.is_moving():
-			bot_attack_command(s, enemies.pick_random())
+			bot_attack_command(s, e)
 	
 func _bot_players_action():
 	if bot_squads.empty():
@@ -260,7 +272,10 @@ func _bot_players_action():
 	for _i in count:
 		var go = randf() < bot_aggresive
 		var e = enemies.pick_random()
+		if not go:
+			e = null
 		
+		go = randf() < bot_aggresive
 		var i :BaseSquad = s.pick_random()
 		if i.member_alive < i.total_member or not go:
 			continue
