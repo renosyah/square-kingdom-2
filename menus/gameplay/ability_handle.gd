@@ -243,6 +243,26 @@ const squad_abilities = [
 		"cooldown" : 35.0,
 		"required_enemy": true,
 	},
+	{
+		# melee excalibur weapon 25
+		"name": "Encore!",
+		"icon":  preload("res://assets/user_interface/ability/encore_ability.png"),
+		"detail": "Instantly refresh the ability cooldown of every nearby squad, friend or foe. Heroes are unaffected.",
+		"type": "melee",
+		"weapon_idx": 15,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
+	{
+		# melee excalibur weapon 26
+		"name": "Resurrect!",
+		"icon": preload("res://assets/user_interface/ability/resurection_ability.png"),
+		"detail": "Resurrect fallen members in each squad, regardless of allegiance.",
+		"type": "melee",
+		"weapon_idx": 15,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -509,7 +529,23 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 					
 				enemy.set_modifiers([[ enemy.modifier_damage_receive, 0.60, (15 + extra_debuff_duration), icon_defence_down ]])
 		
-		
+		25,26: # get nearby squads
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+			for i in squads:
+				var s :BaseSquad = i
+				if s.is_hero or (s == squad):
+					continue
+					
+				match squad_ability_idx:
+					25: # reset ability cooldown, ALL
+						s.set_modifiers([[s.modifier_move_speed, 0.10, 2, icon_fist_up]]) # just for indicator
+						s.start_ability_cooldown(1.0)
+						
+					26: # resurect
+						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
+						s.resurecting(true)
+						
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:

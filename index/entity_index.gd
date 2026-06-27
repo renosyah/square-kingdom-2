@@ -35,6 +35,8 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/sword/sword_curve_shield.tscn"), #12
 	preload("res://scenes/equipment/weapons/mace/mace.tscn"), #13
 	preload("res://scenes/equipment/weapons/warhammer/warhammer.tscn"), #14
+	preload("res://scenes/equipment/weapons/great_sword/excalibur.tscn"), #15
+	
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -53,6 +55,7 @@ const melee_weapon_stats = {
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
 	14:{'attack_speed':1.38,'charge_bonus':0,'spawn_time':8},
+	15:{'attack_speed':0.88,'charge_bonus':12,'spawn_time':4},
 }
 
 const range_weapons = [
@@ -85,6 +88,7 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/cape/hood_white.tscn"),#9
 	preload("res://scenes/equipment/headgear/helm/helm_3_cross.tscn"),#10
 	preload("res://scenes/equipment/headgear/helm/helm_3_cross_horn.tscn"),#11
+	preload("res://scenes/equipment/headgear/helm/helm_crown.tscn"),#12
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
@@ -99,6 +103,7 @@ const head_armors_stats = {
 	9:{'hp':5,'speed':0,'spawn_time':1},
 	10:{'hp':28,'speed':-0.062,'spawn_time':4},
 	11:{'hp':35,'speed':-0.068,'spawn_time':5},
+	12:{'hp':12,'speed':-0.008,'spawn_time':2},
 }
 
 const heavy_armor_idxs = [2, 5]

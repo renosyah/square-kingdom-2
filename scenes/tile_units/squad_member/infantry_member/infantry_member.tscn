@@ -3511,7 +3511,7 @@ transform = Transform( 3.83797e-08, -0.478615, -0.878025, -2.09209e-08, -0.87802
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.043, 0.0608012 )
 
 [node name="leg_r" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, -0.0697391, -0.997565, 0, 0.997565, -0.0697391, 0.05, -0.22416, 0.179342 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, -0.1, 0 )
 
 [node name="leg_r" type="MeshInstance" parent="pivot/leg_r"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
@@ -3522,7 +3522,7 @@ software_skinning_transform_normals = false
 material/1 = ExtResource( 6 )
 
 [node name="leg_l" type="Spatial" parent="pivot"]
-transform = Transform( 1, 0, 0, 0, -0.0306606, -0.99953, 0, 0.99953, -0.0306606, -0.05, -0.22416, 0.179342 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, -0.1, 0 )
 
 [node name="leg_l" type="MeshInstance" parent="pivot/leg_l"]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )

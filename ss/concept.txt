@@ -1,0 +1,89 @@
+campaign mode
+
+map
+- randomly generated
+- tile map : land (normal, desert & snow) & sea
+
+cities
+- fort & building
+
+armies
+- commander, hero and squads
+- army cards
+
+
+cities
+- administrative
+	- Manor >> Keep >> Castle >> Stronghold (add more building slot) (2,4,6,8)
+
+- military
+	- Training field >> Barrack (% cheaper melee equiped unit) (10%, 25%)
+	- Practice Range >> Hunting Camp (% cheaper range equiped unit) (10%, 25%)
+	- Horse pasture >> Horse Stable (unlock & % cheaper mounted unit) (0%, 15%)
+	- Blacksmith >> Weaponsmith (unlock melee weapon) 
+	- Bow maker >> Fletcher (unlock range weapon) 
+	- Tanner >> Armorer (unlock helm & body armor) 
+
+- farm & industry
+	- Market (+100 income - commerce)
+	- Farm (+100 income - farm)
+	- Mill >> Granary (% income from farm) (25%, 50%)
+
+equipment
+	melee weapon :
+		- (no requirement) : dagger, pitchfork, spear, axe
+		- blacksmith : pike, sword, mace
+		- weaponsmith : great sword, great axe, Warhammer
+
+	range weapon : 
+		- (no requirement) : javelin, throwing axe
+		- bow maker : bow
+		- fletcher : crossbow, longbow
+
+	head armor : 
+		- (no requirement) : cape, hood
+		- Tanner : kettle, helm 1, helm 2, leather armor, medium armor, shields
+		- Armorer : helm 3, plate armor
+
+
+city or town slot : 
+[fort], [building 1], [building 2], ...
+
+recruitment : 
+to recruit unit, unlock building to unlock equipment that unit required, once requirement is satisfy
+player can recruit unit from that city, recruiting unit cost money + population
+
+info : 
+symbol (>>) upgrade building
+
+list melee weapon : 
+tier 1 : (no requirement) : dagger, pitchfork, spear, axe
+tier 2 : (blacksmith) : pike, sword, mace
+tier 3 : (blacksmith >> weaponsmith) : great sword, great axe, Warhammer
+
+list range weapon : 
+tier 1 : (no requirement) : javelin, throwing axe
+tier 2 : (bow maker) : bow
+tier 3 : (bow maker >> fletcher) :
+
+armor :
+tier 1 : (no requirement) : cape, hood
+tier 2 : (blacksmith) : kettle, helm 1, helm 2, leather armor, medium armor, shields
+tier 3 : (blacksmith >> armorer) : helm 3, plate armor
+
+horse : 
+(stable) : cavalry unit
+
+town and eco : 
+(manor(2) >> keep(4) >> castle(6) >> stronghold(8)) : +building slot
+([empty] >> housing 1 >> housing 2) : % +population
+([empty] >> farm/mine) : $ +income 
+([empty] >> market(10%) >> guild(15%)) : % +income
+([empty] >> warehouse(5%) >> armory(10%)) : cheaper unit (inf & cav)
+([empty] >> stable(0%) >> pasture(5%)) : cheaper cavalry unit (cav)
+
+
+[fort], [barrack], [archery range], [pasture], [armory], [weaponsmith], [fletcher], [armorer]
+
+
+make it note of it, darling, i dont need you to do anything yet

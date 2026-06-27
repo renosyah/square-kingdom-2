@@ -682,11 +682,21 @@ func _on_heal_timer():
 	if _has_enemy or _is_moving:
 		return
 		
-	_resurecting()
-	healing()
-
-func healing():
-	if not _is_master or is_dead:
+	if (current_tile in reinfoce_tiles):
+		resurecting(false, false) # set false, no need to use RPC
+		
+	healing(false) # set false, no need to use RPC
+	
+func healing(use_rpc :bool = true):
+	if _is_master or not use_rpc:
+		_healing()
+		return
+		
+	# call stop, tell master to stop from other peer
+	rpc_id(get_network_master(), "_healing")
+	
+remote func _healing():
+	if is_dead:
 		return
 	
 	# heal first
@@ -704,17 +714,33 @@ func healing():
 		
 	if not datas.empty():
 		rpc_unreliable("_taking_heal", datas)
-	
-func _resurecting():
-	if not (current_tile in reinfoce_tiles):
+		
+func resurecting(all :bool = false, use_rpc :bool = true):
+	if _is_master or not use_rpc:
+		_resurecting(all)
 		return
 		
+	# call stop, tell master to stop from other peer
+	rpc_id(get_network_master(), "_resurecting", all)
+	
+remote func _resurecting(all :bool):
+	if is_dead:
+		return
+		
+	var list :Array = []
+	
 	# resurect the dead
 	for idx in _members.size():
 		var m = _members[idx]
 		if m.is_dead:
-			rpc("_resurect", idx)
-			return
+			if all:
+				list.append(idx)
+				
+			else:
+				rpc("_resurect", [idx])
+				return
+				
+	rpc("_resurect", list)
 	
 func _is_on_flank_of(target) -> bool:
 	var dir = target.current_tile.direction_to(current_tile)
@@ -743,19 +769,20 @@ func take_damage(amount :int, member_idx :int, from :NodePath):
 	
 	_taking_damages_pending.append([dmg, m.hp, member_idx, from])
 	
-remotesync func _resurect(member_idx :int):
-	if member_idx > _members.size() - 1 or member_idx == -1:
-		return
+remotesync func _resurect(member_idxs :Array):
+	for member_idx in member_idxs:
+		if member_idx > _members.size() - 1 or member_idx == -1:
+			continue
+			
+		var m :SquadMember = _members[member_idx]
+		m.resurect()
 		
-	var m :SquadMember = _members[member_idx]
-	m.resurect()
-	
-	if not _alive_members.has(m):
-		_alive_members.append(m)
+		if not _alive_members.has(m):
+			_alive_members.append(m)
+			
+		member_alive = _alive_members.size()
 		
-	member_alive = _alive_members.size()
-	
-	emit_signal("on_squad_member_resurect", self, m)
+		emit_signal("on_squad_member_resurect", self, m)
 	
 remotesync func _taking_heal(datas :Array):
 	for i in datas:

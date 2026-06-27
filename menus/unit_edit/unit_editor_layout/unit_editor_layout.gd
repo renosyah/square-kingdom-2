@@ -19,7 +19,9 @@ const melee_weapons = {
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png")],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png")],
 	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png")],
+	15 :["Holy Excalibur!", preload("res://assets/user_interface/icons/equipment/excalibur.png")],
 }
+const hero_weapons = [15]
 const shield_melee_weapons = { 2:3,5:6,7:8,11:12 } # {unshield_varian:shield_variant}
 
 const range_weapons = {
@@ -41,6 +43,7 @@ const headgears = {
 	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
 	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
 	11 :["Helm 3 Cross Horn", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
+	12 :["Crown Helm",  preload("res://assets/user_interface/icons/equipment/crown_helm.png")], 
 	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
 	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
 }
@@ -153,11 +156,24 @@ func _on_set_as_hero(v :bool):
 	dup_squad_data.is_hero = v
 	
 	var is_mounted = dup_squad_data.is_mounted
+	
 	if v:
 		dup_squad_data.total_member = 1
 		
 	else:
 		dup_squad_data.total_member = 4 if is_mounted else 9
+		
+		# dont use hero weapon on squad
+		var use_hero_weapon = dup_squad_data.member_melee_weapon_idx in hero_weapons
+		if use_hero_weapon:
+			dup_squad_data.member_melee_weapon_idx = 0
+			dup_squad_data.member_shield_idx = 0
+			
+			display_melee_weapons(0)
+			
+			infantry_member.melee_weapon = EntityIndex.melee_weapons[0]
+			infantry_member.shield = EntityIndex.shields[0]
+			infantry_member.apply_equipment()
 		
 	display_hero(dup_squad_data.is_hero)
 	
@@ -197,6 +213,9 @@ func display_melee_weapons(selected_index :int):
 		i.queue_free()
 		
 	for key in melee_weapons.keys():
+		if key in hero_weapons and not dup_squad_data.is_hero:
+			continue
+			
 		var item = equipment_item_scene.instance()
 		item.index = key
 		item.icon = melee_weapons[key][1]
