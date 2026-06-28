@@ -630,13 +630,11 @@ func _on_delete_pressed():
 	
 	current_squads.remove(selected_index)
 	
-	while current_army.has(selected_index):
-		current_army.erase(selected_index)
-	
 	# replace it with peasant
-	while current_army.size() < 4:
-		current_army.append(0)
-	
+	for idx in current_army.size():
+		if current_army[idx] == selected_index:
+			current_army[idx] = 0
+			
 	emit_signal("save_current_squads", current_squads, current_army)
 	
 	selected_index = 0
