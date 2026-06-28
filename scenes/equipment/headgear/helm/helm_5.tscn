@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=2]
+[ext_resource path="res://scenes/equipment/headgear/headgear.gd" type="Script" id=3]
+[ext_resource path="res://scenes/equipment/headgear/helm/stell_helm_5.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://scenes/tiles/materials/desert_rock.tres" type="Material" id=5]
+
+[node name="helm" type="Spatial"]
+script = ExtResource( 3 )
+show_head = false
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 4 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 1 )
+material/2 = ExtResource( 5 )

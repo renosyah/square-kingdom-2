@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/equipment/headgear/helm/stell_helm_4.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=2]
+[ext_resource path="res://scenes/equipment/headgear/headgear.gd" type="Script" id=3]
+
+[node name="helm" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+cast_shadow = 0
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 2 )

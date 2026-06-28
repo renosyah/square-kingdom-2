@@ -89,6 +89,8 @@ const head_armors = [
 	preload("res://scenes/equipment/headgear/helm/helm_3_cross.tscn"),#10
 	preload("res://scenes/equipment/headgear/helm/helm_3_cross_horn.tscn"),#11
 	preload("res://scenes/equipment/headgear/helm/helm_crown.tscn"),#12
+	preload("res://scenes/equipment/headgear/helm/helm_4.tscn"),#13
+	preload("res://scenes/equipment/headgear/helm/helm_5.tscn"),#14
 ]
 const head_armors_stats = {
 	0:{'hp':0,'speed':0,'spawn_time':1},
@@ -104,6 +106,8 @@ const head_armors_stats = {
 	10:{'hp':28,'speed':-0.062,'spawn_time':4},
 	11:{'hp':35,'speed':-0.068,'spawn_time':5},
 	12:{'hp':12,'speed':-0.008,'spawn_time':2},
+	13:{'hp':27,'speed':-0.067,'spawn_time':4},
+	14:{'hp':28,'speed':-0.065,'spawn_time':4},
 }
 
 const heavy_armor_idxs = [2, 5]
@@ -118,11 +122,11 @@ const armors = [
 ]
 const armors_stats = {
 	0:{'hp':0,'speed':0,'mass':0,'spawn_time':1},
-	1:{'hp':25,'speed':-0.08,'mass':0.4,'spawn_time':4},
-	2:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
-	3:{'hp':45,'speed':-0.09,'mass':1.6,'spawn_time':6},
-	4:{'hp':40,'speed':-0.06,'mass':1.5,'spawn_time':5},
-	5:{'hp':65,'speed':-0.13,'mass':2.6,'spawn_time':8},
+	1:{'hp':45,'speed':-0.08,'mass':0.4,'spawn_time':4},
+	2:{'hp':165,'speed':-0.13,'mass':2.6,'spawn_time':8},
+	3:{'hp':85,'speed':-0.09,'mass':1.6,'spawn_time':6},
+	4:{'hp':50,'speed':-0.06,'mass':1.5,'spawn_time':5},
+	5:{'hp':165,'speed':-0.13,'mass':2.6,'spawn_time':8},
 }
 
 const shields = [

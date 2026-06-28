@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/stell_helm_4.obj-e6647ec1fb2a6631d9fd7e5193f80314.mesh"
+
+[deps]
+
+files=[ "res://.import/stell_helm_4.obj-e6647ec1fb2a6631d9fd7e5193f80314.mesh" ]
+
+source_file="res://scenes/equipment/headgear/helm/stell_helm_4.obj"
+dest_files=[ "res://.import/stell_helm_4.obj-e6647ec1fb2a6631d9fd7e5193f80314.mesh", "res://.import/stell_helm_4.obj-e6647ec1fb2a6631d9fd7e5193f80314.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

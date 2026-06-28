@@ -38,14 +38,16 @@ const headgears = {
 	8 :["Hood", preload("res://assets/user_interface/icons/equipment/hood.png")],
 	9 :["Hood Cross", preload("res://assets/user_interface/icons/equipment/hood.png")],
 	2 :["Kettle", preload("res://assets/user_interface/icons/equipment/helmet_2.png")], 
-	3 :["Steel Helm 1",  preload("res://assets/user_interface/icons/equipment/helm.png")], 
-	4 :["Steel Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_3.png")], 
-	5 :["Steel Helm 3", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
-	10 :["Helm 3 Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
-	11 :["Helm 3 Cross Horn", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
+	3 :["Stell A",  preload("res://assets/user_interface/icons/equipment/helm.png")], 
+	4 :["Stell B", preload("res://assets/user_interface/icons/equipment/helmet_3.png")], 
+	13 :["Guard A", preload("res://assets/user_interface/icons/equipment/helm_4.png")], 
+	14 :["Guard B", preload("res://assets/user_interface/icons/equipment/helm_5.png")], 
+	5 :["Bucket", preload("res://assets/user_interface/icons/equipment/helmet_4.png")], 
+	10 :["Bucket Cross", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
+	11 :["Bucket Cross Horn", preload("res://assets/user_interface/icons/equipment/helm_3_cross.png")],
 	12 :["Crown Helm",  preload("res://assets/user_interface/icons/equipment/crown_helm.png")], 
-	6 :["Arabian Helm 1", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
-	7 :["Arabian Helm 2", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
+	6 :["Arabian A", preload("res://assets/user_interface/icons/equipment/helmet_5.png")], 
+	7 :["Arabian B", preload("res://assets/user_interface/icons/equipment/helmet_6.png")], 
 }
 const armors = {
 	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png")], 
@@ -169,12 +171,11 @@ func _on_set_as_hero(v :bool):
 			dup_squad_data.member_melee_weapon_idx = 0
 			dup_squad_data.member_shield_idx = 0
 			
-			display_melee_weapons(0)
-			
 			infantry_member.melee_weapon = EntityIndex.melee_weapons[0]
 			infantry_member.shield = EntityIndex.shields[0]
 			infantry_member.apply_equipment()
-		
+			
+	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
 	display_hero(dup_squad_data.is_hero)
 	
 	# nah just set it to none if changes
@@ -455,9 +456,10 @@ func _on_armors_selected(index :int):
 	dup_squad_data.member_armor_idx = index
 	display_armor(index)
 	
-	var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
-	horse_armored.visible = use_heavy_armor
-	horse.visible = not use_heavy_armor
+	if dup_squad_data.is_mounted:
+		var use_heavy_armor = dup_squad_data.member_armor_idx in EntityIndex.heavy_armor_idxs
+		horse_armored.visible = use_heavy_armor
+		horse.visible = not use_heavy_armor
 	
 	infantry_member.armor = EntityIndex.armors[index]
 	infantry_member.apply_equipment()

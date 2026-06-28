@@ -2,6 +2,7 @@ extends MeleeWeapon
 
 func get_attack_damage(enemy_squad_attribute :Array) -> int:
 	var dmg = attack_damage
+	
 	if enemy_squad_attribute[4]: # have shield
 		dmg += attack_damage * bonus_damage
 		

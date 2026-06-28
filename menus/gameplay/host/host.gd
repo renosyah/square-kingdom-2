@@ -241,8 +241,13 @@ func _bot_bandit_action():
 		var e = enemies.pick_random()
 		if randf() < 0.3:
 			e = null
-		
+			
 		if not s.is_moving():
+			var from :BaseSquad = get_node_or_null(s.attacked_by)
+			if is_instance_valid(from):
+				bot_attack_command(s, from)
+				continue
+			
 			bot_attack_command(s, e)
 	
 func _bot_players_action():
@@ -274,7 +279,7 @@ func _bot_players_action():
 		var e = enemies.pick_random()
 		if not go:
 			e = null
-		
+			
 		go = randf() < bot_aggresive
 		var i :BaseSquad = s.pick_random()
 		if i.member_alive < i.total_member or not go:
@@ -289,6 +294,11 @@ func _bot_players_action():
 			continue
 			
 		if not i.is_moving():
+			var from :BaseSquad = get_node_or_null(i.attacked_by)
+			if is_instance_valid(from):
+				bot_attack_command(i, from)
+				continue
+			
 			bot_attack_command(i, e)
 
 
