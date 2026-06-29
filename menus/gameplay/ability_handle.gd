@@ -263,6 +263,16 @@ const squad_abilities = [
 		"cooldown" : 75.0,
 		"required_enemy": false,
 	},
+	{
+		# melee grimhart weapon 27
+		"name": "Death Mark!",
+		"icon": preload("res://assets/user_interface/ability/mark_of_dead_ability.png"),
+		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance for 50 seconds. Nearby squads sacrifice a combined 200 HP, distributed evenly among them. The wielder suffers -80% Movement Speed while invoking the curse.",
+		"type": "melee",
+		"weapon_idx": 16,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -285,6 +295,7 @@ const buff_debuff_icons = [
 	preload("res://assets/user_interface/icons/modifier_effect/horn.png"),#13
 	preload("res://assets/user_interface/icons/modifier_effect/headhurt.png"),#14
 	preload("res://assets/user_interface/icons/modifier_effect/bone_break.png"),#15
+	preload("res://assets/user_interface/icons/dead.png"),#16
 ]
 
 const icon_null = 0
@@ -303,6 +314,7 @@ const icon_zap = 12
 const icon_horn = 13
 const icon_headhurt = 14
 const icon_bonebreak = 15
+const icon_death = 15
 
 static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -517,6 +529,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				enemy.set_modifiers([[enemy.modifier_move_speed, -0.10, 2, icon_zap]]) # just for indicator
 				
 				enemy.start_ability_cooldown(squad_abilities[enemy.squad_ability_idx]["cooldown"])
+				
 					
 		24: # check if nemey have shield, if do, break them, drop resistance by -60% for 15 sec
 			var enemy = squad.enemy
@@ -546,6 +559,27 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
 						s.resurecting(true)
 						
+		27:
+			var enemy = squad.enemy
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) # + [squad.current_tile] exluded
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+			
+			# stop, just stop if no enemy found
+			if not is_instance_valid(enemy) or squads.empty():
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			squad.set_modifiers([[squad.modifier_move_speed, -0.80, 15, icon_slowed]])
+			var curse :Dictionary = calculate_mark_of_death_sacrifice(squads)
+			
+			for squad_data in curse.sacrifice:
+				for member_data in squad_data.members:
+					var idx :int = member_data.member_index
+					var dmg :int = member_data.damage
+					squad.take_damage(dmg, idx, squad.get_path())
+			
+			enemy.set_modifiers([ [enemy.modifier_damage_receive, curse["curse_effectiveness"], 50, icon_death]])
+		
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
@@ -564,9 +598,95 @@ static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Arr
 					squads.append(unit)
 			
 	return squads
+	
+	
+static func calculate_mark_of_death_sacrifice(squads:Array) -> Dictionary:
+	var REQUIRED_HP := 200
+	var living_members := []
 
+	# Collect all living members
+	for s in squads:
+		var squad:BaseSquad = s
+		var members = squad.get_members(true)
 
+		for i in range(members.size()):
+			var member = members[i]
 
+			if member.is_dead:
+				continue
+
+			living_members.append({
+				"squad": squad,
+				"member_index": i,
+				"remaining_hp": int(member.hp)
+			})
+
+	if living_members.empty():
+		return {
+			"curse_effectiveness": 0.0,
+			"sacrifice": []
+		}
+
+	# Calculate available HP
+	var total_hp := 0
+	for m in living_members:
+		total_hp += m.remaining_hp
+
+	var sacrifice_hp := min(REQUIRED_HP, total_hp)
+	var effectiveness := float(sacrifice_hp) / float(REQUIRED_HP)
+	
+	# squad -> member damages
+	var squad_map := {}
+	var remaining := sacrifice_hp
+	var remaining_members = living_members.duplicate(true)
+
+	while remaining > 0 and remaining_members.size() > 0:
+		var share := max(1, int(remaining / remaining_members.size()))
+		for i in range(remaining_members.size() - 1, -1, -1):
+			if remaining <= 0:
+				break
+				
+			var m = remaining_members[i]
+			var damage := min(share, m.remaining_hp)
+			if damage <= 0:
+				remaining_members.remove(i)
+				continue
+
+			m.remaining_hp -= damage
+			remaining -= damage
+
+			# Create squad entry
+			if !squad_map.has(m.squad):
+				squad_map[m.squad] = {}
+
+			# Accumulate damage on same member
+			if !squad_map[m.squad].has(m.member_index):
+				squad_map[m.squad][m.member_index] = 0
+
+			squad_map[m.squad][m.member_index] += damage
+
+			if m.remaining_hp <= 0:
+				remaining_members.remove(i)
+
+	# Convert to requested format
+	var sacrifice := []
+	for squad in squad_map.keys():
+		var members := []
+		for member_index in squad_map[squad].keys():
+			members.append({
+				"member_index": member_index,
+				"damage": squad_map[squad][member_index]
+			})
+
+		sacrifice.append({
+			"squad": squad,
+			"members": members
+		})
+
+	return {
+		"curse_effectiveness": effectiveness,
+		"sacrifice": sacrifice
+	}
 
 
 

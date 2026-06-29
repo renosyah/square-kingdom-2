@@ -1,0 +1,40 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/TrailRender/TrailRender.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/equipment/weapons/spear/spear.gd" type="Script" id=2]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
+[ext_resource path="res://scenes/equipment/weapons/pike/pike.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://addons/TrailRender/TrailRender.gd" type="Script" id=5]
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=6]
+[ext_resource path="res://scenes/equipment/material/grimhart_edge.tres" type="Material" id=7]
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0.472727 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="grimhart" type="Spatial"]
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": ""
+}
+attack_damage = 19
+show_on_stored = false
+bonus_damage = 7
+walk_animation = "walk_weapon_hold"
+attack_animation = "weapon_trust_attack"
+attack_animations = [ "weapon_2_slash_left", "weapon_trust_attack", "weapon_2_slash_right" ]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+cast_shadow = 0
+mesh = ExtResource( 4 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 7 )
+material/1 = ExtResource( 3 )
+material/2 = ExtResource( 6 )
+
+[node name="TrailRender" type="Spatial" parent="." instance=ExtResource( 1 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.398677, 0.0928324 )
+script = ExtResource( 5 )
+width = 0.3
+width_curve = SubResource( 3 )
+max_points = 15
+material = ExtResource( 7 )

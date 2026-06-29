@@ -36,6 +36,7 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/mace/mace.tscn"), #13
 	preload("res://scenes/equipment/weapons/warhammer/warhammer.tscn"), #14
 	preload("res://scenes/equipment/weapons/great_sword/excalibur.tscn"), #15
+	preload("res://scenes/equipment/weapons/pike/grimhart.tscn"), #16
 	
 ]
 # weapon attack speed
@@ -55,7 +56,8 @@ const melee_weapon_stats = {
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
 	14:{'attack_speed':1.38,'charge_bonus':0,'spawn_time':8},
-	15:{'attack_speed':0.88,'charge_bonus':12,'spawn_time':4},
+	15:{'attack_speed':0.88,'charge_bonus':6,'spawn_time':4},
+	16:{'attack_speed':0.997,'charge_bonus':8,'spawn_time':7},
 }
 
 const range_weapons = [

@@ -222,10 +222,8 @@ func _on_bot_action_timer_timeout():
 		
 	bot_action_timer.start()
 	_bot_players_action()
+	_bot_bandit_action()
 	
-	if Global.enable_bandit:
-		_bot_bandit_action()
-		
 func _bot_bandit_action():
 	var enemies = []
 	for i in squads:
