@@ -87,11 +87,18 @@ const memes = [
 	preload("res://assets/sounds/memes/saya_akan_lawan.wav"),#2
 	preload("res://assets/sounds/memes/antek_asing.wav"),#3
 	preload("res://assets/sounds/memes/lho_kaget.wav"),#4
+	preload("res://assets/sounds/memes/jkw_pidato_jogja_1.wav"),
+	preload("res://assets/sounds/memes/jkw_pidato_jogja_2.wav"),
+	preload("res://assets/sounds/memes/jkw_pidato_jogja_3.wav")
+	
 ]
 const memes2 = [
 	preload("res://assets/sounds/memes/akh.wav"),
 	preload("res://assets/sounds/memes/boom.wav"),
-	preload("res://assets/sounds/memes/faa.wav")
+	preload("res://assets/sounds/memes/faa.wav"),
+	preload("res://assets/sounds/memes/ayam_teriak.wav"),
+	preload("res://assets/sounds/memes/bruh.wav"),
+	preload("res://assets/sounds/memes/cat_laught.wav"),
 ]
 const regroup = preload("res://assets/sounds/gameplay/regroup.wav")
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")

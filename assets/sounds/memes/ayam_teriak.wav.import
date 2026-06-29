@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/ayam_teriak.wav-967d82d3270f3a83c2898cac225e8c3a.sample"
+
+[deps]
+
+source_file="res://assets/sounds/memes/ayam_teriak.wav"
+dest_files=[ "res://.import/ayam_teriak.wav-967d82d3270f3a83c2898cac225e8c3a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
