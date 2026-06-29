@@ -274,7 +274,7 @@ func _on_tile_map_ready():
 	# this function only be called
 	# if tile map is ready and setup properly
 	var map_size :int = current_tile_map_manifest_data.map_size
-	var all_players = players + bot_players + ([bot_bandit] if Global.enable_bandit else [])
+	var all_players = players + bot_players + [bot_bandit]
 	
 	for index in all_players.size():
 		var p :PlayerData = all_players[index]
@@ -351,6 +351,7 @@ func setup_bandit_mob():
 	bot_bandit.team = -1
 	bot_bandit.color_idx = 10
 	bot_bandit.spawn_position = 4 # default set last one
+	
 	
 func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 	if not spawn_point_fort[0]:
@@ -672,7 +673,7 @@ func _on_ui_route_button_pressed():
 func _on_use_ability():
 	var squad :BaseSquad = ui.squad_with_ability
 	var data :SquadData = squad_datas[squad]
-	AbilityHandle.use_squad_ability(squad, tile_position_manager, data.extra)
+	AbilityHandle.use_squad_ability(self, squad, tile_position_manager, data.extra)
 	
 	if not setting.lock_command:
 		squad.click() # unselected
@@ -1098,15 +1099,65 @@ func clean_corpse():
 			i.queue_free()
 			
 		corpses.clear()
+	
+	
+# special order, off map artilery
+func drop_boulder(targets :Array, by :NodePath):
+	rpc("_drop_boulder", NetworkLobbyManager.get_id(), targets, by)
+	
+remotesync func _drop_boulder(from_id :int, targets :Array, by :NodePath):
+	var boulder_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
+	var is_master = (from_id == NetworkLobbyManager.get_id())
+	for tiles in targets:
+		_on_boulder_droping(boulder_projectile_scene, tiles, by, is_master)
+		yield(get_tree().create_timer(1), "timeout")
 
+func _on_boulder_droping(scene :PackedScene, tile :Vector2, by :NodePath, is_master :bool):
+	var target_position = nav.get_pos_v3(tile)
+	var boulder :BaseProjectile = scene.instance()
+	Global.current_root.add_child(boulder)
+	boulder.translation = target_position + (Vector3.UP * 15) + (Vector3.FORWARD * 10)
+	boulder.to = target_position + Vector3.ONE * rand_range(-0.5,0.5)
+	boulder.launch()
+	
+	if not is_master:
+		return
+		
+	yield(boulder, "on_reach")
+	_on_boulder_impact(tile, by)
+	
+func _on_boulder_impact(center_tile_id :Vector2, by :NodePath):
+	var unit_position = tile_position_manager.get_positions()
+	var tiles :Array = TileMapUtils.get_adjacent_tiles(
+		TileMapUtils.get_directions(), center_tile_id, 1
+	) + [center_tile_id]
+	
+	for tile_id in tiles:
+		if not unit_position.has(tile_id):
+			continue
+			
+		var unit_positions :Array = unit_position[tile_id]
+		if unit_positions.empty():
+			continue
+			
+		_on_boulder_impact_damage(unit_positions, 65, by)
 
-
-
-
-
-
-
-
+func _on_boulder_impact_damage(unit_positions:Array, dmg :int, by :NodePath):
+	for enemy_squad in unit_positions:
+		if not is_instance_valid(enemy_squad):
+			continue
+			
+		var members :Array = enemy_squad.get_members()
+		if members.empty():
+			continue
+			
+		# set damage to random member
+		var t = randi() % members.size()
+		t = int(clamp(t, 1, members.size()))
+		
+		for _i in t:
+			var idx :int = enemy_squad.get_member_index(members.pick_random())
+			enemy_squad.take_damage(dmg, idx, by)
 
 
 

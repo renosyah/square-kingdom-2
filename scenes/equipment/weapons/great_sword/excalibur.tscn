@@ -25,7 +25,6 @@ __meta__ = {
 "_editor_description_": ""
 }
 attack_damage = 16
-show_on_stored = false
 bonus_damage = 4
 walk_animation = "weapon_2_ready"
 ready_animation = "weapon_2_ready"

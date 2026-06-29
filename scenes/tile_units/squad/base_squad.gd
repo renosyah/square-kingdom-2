@@ -470,7 +470,7 @@ remote func _retreat():
 	chase_enemy = null
 	
 	if reinfoce_tiles.empty():
-		_move_to(current_tile - _dir_front() * 2, true) # move back
+		_move_to(current_tile - dir_front() * 2, true) # move back
 		return
 		
 	_move_to(reinfoce_tiles.pick_random(), true)

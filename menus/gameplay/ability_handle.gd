@@ -267,9 +267,39 @@ const squad_abilities = [
 		# melee grimhart weapon 27
 		"name": "Death Mark!",
 		"icon": preload("res://assets/user_interface/ability/mark_of_dead_ability.png"),
-		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance for 50 seconds. Nearby squads sacrifice a combined 200 HP, distributed evenly among them. The wielder suffers -80% Movement Speed while invoking the curse.",
+		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance and -80% move speed for 50 seconds. Nearby squads sacrifice a combined 1000 HP, distributed evenly among them. The wielder suffers -40% Movement Speed for 15 second after invoking the curse.",
 		"type": "melee",
 		"weapon_idx": 16,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
+	{
+		# melee grimhart weapon 28
+		"name": "Summon!",
+		"icon": preload("res://assets/user_interface/ability/summon_ability.png"),
+		"detail": "War itself answers the call. at cost of -50% HP Summon a Random Rogue Squad on the target tile.",
+		"type": "melee",
+		"weapon_idx": 16,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
+	{
+		# melee grimhart weapon 29
+		"name": "Broken Arrow!",
+		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
+		"detail": "When the Bow of Ages abandons precision, it calls upon history's oldest answer: overwhelming firepower. Random trebuchet strikes bombard the battlefield around the caster while suffer -40% movement speed to avoid getting killed by shrapnel. Friend and foe alike must endure the storm.",
+		"type": "range",
+		"weapon_idx": 6,
+		"cooldown" : 75.0,
+		"required_enemy": false,
+	},
+	{
+		# melee grimhart weapon 30
+		"name": "Go Home!",
+		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
+		"detail": "Even the bravest eventually choose to leave. Force every nearby squad into a Routing state. Affects allies and enemies.",
+		"type": "range",
+		"weapon_idx": 6,
 		"cooldown" : 75.0,
 		"required_enemy": false,
 	},
@@ -316,7 +346,7 @@ const icon_headhurt = 14
 const icon_bonebreak = 15
 const icon_death = 15
 
-static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
+static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
 		return
@@ -337,6 +367,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 				if squad.is_in_melee_range(enemy):
 					enemy.set_modifiers([[enemy.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]])
 					enemy.stop()
+					
 				
 		2: # enemy -50% attack speed for 25 sec
 			var enemy = squad.enemy
@@ -516,6 +547,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						[s.modifier_damage_receive, 0.20, (15 + extra_debuff_duration), icon_null],
 						[s.modifier_melee_speed, -0.20, (15 + extra_debuff_duration), icon_bonebreak]
 					])
+					
 		22: # reset enemy cooldown
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
@@ -542,7 +574,7 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 					
 				enemy.set_modifiers([[ enemy.modifier_damage_receive, 0.60, (15 + extra_debuff_duration), icon_defence_down ]])
 		
-		25,26: # get nearby squads
+		25,26, 30: # get nearby squads
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			for i in squads:
@@ -559,29 +591,73 @@ static func use_squad_ability(squad :BaseSquad, position_manager :TilePositionMa
 						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
 						s.resurecting(true)
 						
-		27:
-			var enemy = squad.enemy
-			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) # + [squad.current_tile] exluded
+					30: # retreat
+						s.set_modifiers([[s.modifier_move_speed, 0.25, 10, icon_move_speed]]) # just for indicator
+						s.retreat()
+						
+		27: # put curse
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			
 			# stop, just stop if no enemy found
-			if not is_instance_valid(enemy) or squads.empty():
+			var enemy = squad.enemy
+			if not is_instance_valid(enemy) or squads.size() <= 2: # [self, target]? NOPE
 				squad.start_ability_cooldown(10.0)
 				return
 				
-			squad.set_modifiers([[squad.modifier_move_speed, -0.80, 15, icon_slowed]])
+			if squads.has(enemy): # the target cannot be subject of sacrifice
+				squads.erase(enemy)
+			
+			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			var curse :Dictionary = calculate_mark_of_death_sacrifice(squads)
 			
 			for squad_data in curse.sacrifice:
+				var sac_squad :BaseSquad = squad_data["squad"]
 				for member_data in squad_data.members:
 					var idx :int = member_data.member_index
 					var dmg :int = member_data.damage
-					squad.take_damage(dmg, idx, squad.get_path())
-			
-			enemy.set_modifiers([ [enemy.modifier_damage_receive, curse["curse_effectiveness"], 50, icon_death]])
+					sac_squad.take_damage(dmg, idx, squad.get_path())
+					
+			var speed_debuff = min(curse["curse_effectiveness"], 0.80)
+			enemy.set_modifiers([ 
+				[enemy.modifier_move_speed, (-speed_debuff + extra_debuff_value), (50 + extra_debuff_duration), icon_null],
+				[enemy.modifier_damage_receive, curse["curse_effectiveness"], (50 + extra_debuff_duration), icon_death]
+			])
 		
+		28: # spawn random crap
+			var dmg :int = int(squad.member_max_hp * 0.5)
+			squad.set_modifiers([[squad.modifier_move_speed, -0.10, 5, icon_zap]])
+			squad.take_damage(dmg, 0, squad.get_path())
+			
+			var target_tile = squad.current_tile + squad.dir_front() * 2
+			var pawn :SquadData = Global.current_squads.pick_random().duplicate()
+			pawn.network_id = 1
+			pawn.squad_name = "Summon Warrior"
+			pawn.player_id = "bot_bandit"
+			pawn.node_name = Utils.create_unique_id()
+			pawn.current_tile = target_tile
+			pawn.color_idx = 10
+			pawn.team = -1
+			gameplay.call_deferred("spawn_squad", pawn)
+			
+		29: # calling a fking offmap support
+			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 3) + [squad.current_tile]
+			var target_tiles = []
+			var amount = int(rand_range(6, 12))
+			var get_positions = position_manager.get_positions()
+			
+			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
+			
+			for _i in amount:
+				var t = tiles.pick_random()
+				if get_positions.has(t):
+					target_tiles.append(t)
+				
+			gameplay.call_deferred("drop_boulder", target_tiles, squad.get_path())
+			
+			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
-
+	
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
 	var squads = []
 	for pos in ranges:
@@ -607,11 +683,13 @@ static func calculate_mark_of_death_sacrifice(squads:Array) -> Dictionary:
 	# Collect all living members
 	for s in squads:
 		var squad:BaseSquad = s
+		if squad.is_hero:
+			continue
+			
 		var members = squad.get_members(true)
-
 		for i in range(members.size()):
 			var member = members[i]
-
+			
 			if member.is_dead:
 				continue
 

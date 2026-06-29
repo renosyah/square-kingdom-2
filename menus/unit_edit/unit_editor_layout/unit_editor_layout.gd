@@ -32,7 +32,10 @@ const range_weapons = {
 	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png")],
 	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png")],
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png")],
+	6 :["Auriel", preload("res://assets/user_interface/icons/equipment/auriel.png")],
 }
+const hero_range_weapons = [6]
+
 const headgears = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
 	1 :["Cape", preload("res://assets/user_interface/icons/equipment/helmet_1.png")], 
@@ -168,12 +171,18 @@ func _on_set_as_hero(v :bool):
 		
 		# dont use hero weapon on squad
 		var use_hero_weapon = dup_squad_data.member_melee_weapon_idx in hero_weapons
+		var use_hero_range_weapon = dup_squad_data.member_range_weapon_idx in hero_range_weapons
+		
 		if use_hero_weapon:
 			dup_squad_data.member_melee_weapon_idx = 0
 			dup_squad_data.member_shield_idx = 0
-			
 			infantry_member.melee_weapon = EntityIndex.melee_weapons[0]
 			infantry_member.shield = EntityIndex.shields[0]
+			
+		if use_hero_range_weapon:
+			infantry_member.range_weapon = 0
+			
+		if use_hero_weapon or use_hero_range_weapon:
 			infantry_member.apply_equipment()
 			
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
@@ -232,6 +241,9 @@ func display_range_weapons(selected_index :int):
 		i.queue_free()
 		
 	for key in range_weapons.keys():
+		if key in hero_range_weapons and not dup_squad_data.is_hero:
+			continue
+		
 		var item = equipment_item_scene.instance()
 		item.index = key
 		item.icon = range_weapons[key][1]

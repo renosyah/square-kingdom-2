@@ -287,7 +287,7 @@ func _bot_players_action():
 		if i.in_melee_engagement() or i.in_range_engagement():
 			if i.squad_ability_idx != 0:
 				var data :SquadData = squad_datas[i]
-				AbilityHandle.use_squad_ability(i, tile_position_manager, data.extra)
+				AbilityHandle.use_squad_ability(self, i, tile_position_manager, data.extra)
 				
 			continue
 			

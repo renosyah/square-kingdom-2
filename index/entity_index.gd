@@ -67,6 +67,7 @@ const range_weapons = [
 	preload("res://scenes/equipment/weapons/bow/bow.tscn"), #3
 	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #4
 	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #5
+	preload("res://scenes/equipment/weapons/bow/auriel.tscn"), #6
 ]
 const range_weapon_stats = {
 	0:{'range':1,'attack_speed':0.1,'spawn_time':1}, # 1 default
@@ -75,6 +76,7 @@ const range_weapon_stats = {
 	3:{'range':4,'attack_speed':1.8,'spawn_time':4},
 	4:{'range':6,'attack_speed':2.86,'spawn_time':6},
 	5:{'range':4,'attack_speed':4.85,'spawn_time':5},
+	6:{'range':6,'attack_speed':0.45,'spawn_time':2},
 }
 
 const head_armors = [
