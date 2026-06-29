@@ -267,7 +267,7 @@ const squad_abilities = [
 		# melee grimhart weapon 27
 		"name": "Death Mark!",
 		"icon": preload("res://assets/user_interface/ability/mark_of_dead_ability.png"),
-		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance and -80% move speed for 50 seconds. Nearby squads sacrifice a combined 1000 HP, distributed evenly among them. The wielder suffers -40% Movement Speed for 15 second after invoking the curse.",
+		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance and -80% move speed for 50 seconds. Nearby squads sacrifice a combined 500 HP, distributed evenly among them. The wielder suffers -40% Movement Speed for 15 second after invoking the curse.",
 		"type": "melee",
 		"weapon_idx": 16,
 		"cooldown" : 75.0,
@@ -609,7 +609,7 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 				squads.erase(enemy)
 			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
-			var curse :Dictionary = calculate_mark_of_death_sacrifice(squads)
+			var curse :Dictionary = calculate_mark_of_death_sacrifice(500, squads)
 			
 			for squad_data in curse.sacrifice:
 				var sac_squad :BaseSquad = squad_data["squad"]
@@ -676,8 +676,7 @@ static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Arr
 	return squads
 	
 	
-static func calculate_mark_of_death_sacrifice(squads:Array) -> Dictionary:
-	var REQUIRED_HP := 200
+static func calculate_mark_of_death_sacrifice(required_hp :int, squads:Array) -> Dictionary:
 	var living_members := []
 
 	# Collect all living members
@@ -710,8 +709,8 @@ static func calculate_mark_of_death_sacrifice(squads:Array) -> Dictionary:
 	for m in living_members:
 		total_hp += m.remaining_hp
 
-	var sacrifice_hp := min(REQUIRED_HP, total_hp)
-	var effectiveness := float(sacrifice_hp) / float(REQUIRED_HP)
+	var sacrifice_hp := min(required_hp, total_hp)
+	var effectiveness := float(sacrifice_hp) / float(required_hp)
 	
 	# squad -> member damages
 	var squad_map := {}
