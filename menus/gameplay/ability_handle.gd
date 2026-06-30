@@ -277,7 +277,7 @@ const squad_abilities = [
 		# melee grimhart weapon 28
 		"name": "Summon!",
 		"icon": preload("res://assets/user_interface/ability/summon_ability.png"),
-		"detail": "War itself answers the call. Every soul summoned demands an equal sacrifice. The wielder loses HP equal to the total health of the summoned Random Rogue Squad. The summoned squad is hostile to all. but Not every lost soul returns with hatred (6% chance join your cause)",
+		"detail": "Summon one random squad from your squad pools. required sacrifice HP from nearby unit based on the summoned squad's total health. Summoned squad is Hostile but Not every lost soul returns with hatred (6% chance join your cause). wielder suffers -40% Movement Speed for 15 second after invoking the ritual.",
 		"type": "melee",
 		"weapon_idx": 16,
 		"cooldown" : 75.0,
@@ -627,8 +627,8 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				
 			var sigils :Array = [ [sigil_color_red, enemy.current_tile, 5.0] ]
 			
-			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
-			var curse :Dictionary = calculate_mark_of_death_sacrifice(500, squads)
+			
+			var curse :Dictionary = calculate_hp_sacrifice(500, squads)
 			
 			for squad_data in curse.sacrifice:
 				var sac_squad :BaseSquad = squad_data["squad"]
@@ -643,6 +643,8 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[enemy.modifier_move_speed, -speed_debuff, (50 + extra_debuff_duration), icon_null],
 				[enemy.modifier_damage_receive, curse["curse_effectiveness"], (50 + extra_debuff_duration), icon_death]
 			])
+			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
+			
 			gameplay.call_deferred("spawn_sigils", sigils)
 			squad.stop()
 		
@@ -651,12 +653,9 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			var target_tile = tiles.pick_random()
 			
 			if not position_manager.get_positions().has(target_tile):
-				squad.start_ability_cooldown(10.0)
+				squad.start_ability_cooldown(5.0)
 				return
 				
-			squad.stop()
-			squad.set_modifiers([[squad.modifier_move_speed, -0.10, 5, icon_horn]])
-			
 			var pawn :SquadData = Global.current_squads.pick_random().duplicate()
 			pawn.squad_id = -1
 			pawn.network_id = 1
@@ -673,12 +672,37 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				pawn.player_id = squad.player_id
 				pawn.team = squad.team
 				pawn.color_idx = player.color_idx
+				
+			squad.stop()
 			
-			var dmg :int = pawn.member_hp() * pawn.total_member
-			squad.take_damage(dmg, 0, squad.get_path())
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			
+			if squads.has(squad):
+				squads.erase(squad)
+			
+			var hp_cost :int = pawn.member_hp() * pawn.total_member
+			var payment :Dictionary = calculate_hp_sacrifice(hp_cost, squads)
+			
+			if payment["curse_effectiveness"] < 0.80:
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			var sigils :Array = [
+				[sigil_color_purple, target_tile, 5.0]
+			]
+			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_horn]])
+			
+			for squad_data in payment.sacrifice:
+				var sac_squad :BaseSquad = squad_data["squad"]
+				for member_data in squad_data.members:
+					var idx :int = member_data.member_index
+					var dmg :int = member_data.damage
+					sac_squad.take_damage(dmg, idx, squad.get_path())
+					sigils.append([sigil_color_red, sac_squad.current_tile, 5.0])
+					
 			gameplay.call_deferred("spawn_squad", pawn)
-			gameplay.call_deferred("spawn_sigils", [ [sigil_color_purple, target_tile, 5.0] ])
+			gameplay.call_deferred("spawn_sigils",sigils)
 			
 		29: # calling a fking offmap support
 			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 3) + [squad.current_tile]
@@ -715,7 +739,7 @@ static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Arr
 	return squads
 	
 	
-static func calculate_mark_of_death_sacrifice(required_hp :int, squads:Array) -> Dictionary:
+static func calculate_hp_sacrifice(required_hp :int, squads:Array) -> Dictionary:
 	var living_members := []
 
 	# Collect all living members
