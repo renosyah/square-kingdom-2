@@ -280,8 +280,11 @@ func _bot_players_action():
 			
 		go = randf() < bot_aggresive
 		var i :BaseSquad = s.pick_random()
-		if i.member_alive < i.total_member or not go:
-			continue
+		
+		# wait to heal
+		if i.current_tile in i.reinfoce_tiles:
+			if i.member_alive < i.total_member or not go:
+				continue
 			
 		# make bot use ability if in combat
 		if i.in_melee_engagement() or i.in_range_engagement():
@@ -291,13 +294,16 @@ func _bot_players_action():
 				
 			continue
 			
-		if not i.is_moving():
-			var from :BaseSquad = get_node_or_null(i.attacked_by)
-			if is_instance_valid(from):
-				bot_attack_command(i, from)
-				continue
+		if i.is_moving():
+			continue
 			
-			bot_attack_command(i, e)
+		# retailiate
+		var from :BaseSquad = get_node_or_null(i.attacked_by)
+		if is_instance_valid(from):
+			bot_attack_command(i, from)
+			continue
+		
+		bot_attack_command(i, e)
 
 
 

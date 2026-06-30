@@ -287,7 +287,7 @@ const squad_abilities = [
 		# melee grimhart weapon 29
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
-		"detail": "When the Bow of Ages abandons precision, it calls upon history's oldest answer: overwhelming firepower. Random trebuchet strikes bombard the battlefield around the caster while suffer -40% movement speed to avoid getting killed by shrapnel. Friend and foe alike must endure the storm.",
+		"detail": "Fire Auriel high into the sky, signaling an emergency artillery barrage. Nearby trebuchet batteries answer the call, bombarding random locations around the wielder. The bombardment is indiscriminate and may strike friend and foe alike.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -295,9 +295,9 @@ const squad_abilities = [
 	},
 	{
 		# melee grimhart weapon 30
-		"name": "Go Home!",
+		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
-		"detail": "Even the bravest eventually choose to leave. Force every nearby squad into a Routing state. Affects allies and enemies.",
+		"detail": "The sight of Auriel's signal sends nearby warriors scrambling for safety. Friend and foe alike abandon their positions, believing an artillery barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -345,6 +345,11 @@ const icon_horn = 13
 const icon_headhurt = 14
 const icon_bonebreak = 15
 const icon_death = 15
+
+const sigil_color_red = Color(0.784314, 0, 0)
+const sigil_color_purple = Color(0.968627, 0, 1)
+const sigil_color_yellow = Color(0.992157, 1, 0)
+const sigil_color_cyan = Color(0, 0.882813, 1)
 
 static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -574,9 +579,11 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 					
 				enemy.set_modifiers([[ enemy.modifier_damage_receive, 0.60, (15 + extra_debuff_duration), icon_defence_down ]])
 		
-		25,26, 30: # get nearby squads
+		25,26,30: # get nearby squads
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+			var sigils = []
+			
 			for i in squads:
 				var s :BaseSquad = i
 				if s.is_hero or (s == squad):
@@ -586,15 +593,20 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 					25: # reset ability cooldown, ALL
 						s.set_modifiers([[s.modifier_move_speed, 0.10, 2, icon_fist_up]]) # just for indicator
 						s.start_ability_cooldown(1.0)
+						sigils.append([sigil_color_cyan, s.current_tile, 5.0])
 						
 					26: # resurect
 						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
 						s.resurecting(true)
+						sigils.append([sigil_color_yellow, s.current_tile, 5.0])
 						
 					30: # retreat
 						s.set_modifiers([[s.modifier_move_speed, 0.25, 10, icon_move_speed]]) # just for indicator
 						s.retreat()
 						
+			if not sigils.empty():
+				gameplay.call_deferred("spawn_sigils", sigils)
+			
 		27: # put curse
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
@@ -607,6 +619,10 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 				
 			if squads.has(enemy): # the target cannot be subject of sacrifice
 				squads.erase(enemy)
+				
+			var sigils = [
+				[sigil_color_red, enemy.current_tile, 5.0], 
+			]
 			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			var curse :Dictionary = calculate_mark_of_death_sacrifice(500, squads)
@@ -617,19 +633,30 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 					var idx :int = member_data.member_index
 					var dmg :int = member_data.damage
 					sac_squad.take_damage(dmg, idx, squad.get_path())
+					sigils.append([sigil_color_purple, sac_squad.current_tile, 5.0])
 					
-			var speed_debuff = min(curse["curse_effectiveness"], 0.80)
+			var speed_debuff = min(curse["curse_effectiveness"] + extra_debuff_value, 0.80)
 			enemy.set_modifiers([ 
-				[enemy.modifier_move_speed, (-speed_debuff + extra_debuff_value), (50 + extra_debuff_duration), icon_null],
+				[enemy.modifier_move_speed, -speed_debuff, (50 + extra_debuff_duration), icon_null],
 				[enemy.modifier_damage_receive, curse["curse_effectiveness"], (50 + extra_debuff_duration), icon_death]
 			])
+			gameplay.call_deferred("spawn_sigils", sigils)
+			squad.stop()
 		
-		28: # spawn random crap
+		28: # spawn random crap at random tile position
+			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 2)
+			var target_tile = tiles.pick_random()
+			
+			if not position_manager.get_positions().has(target_tile):
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			squad.stop()
+			
 			var dmg :int = int(squad.member_max_hp * 0.5)
-			squad.set_modifiers([[squad.modifier_move_speed, -0.10, 5, icon_zap]])
+			squad.set_modifiers([[squad.modifier_move_speed, -0.10, 5, icon_horn]])
 			squad.take_damage(dmg, 0, squad.get_path())
 			
-			var target_tile = squad.current_tile + squad.dir_front() * 2
 			var pawn :SquadData = Global.current_squads.pick_random().duplicate()
 			pawn.network_id = 1
 			pawn.squad_name = "Summon Warrior"
@@ -638,12 +665,14 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 			pawn.current_tile = target_tile
 			pawn.color_idx = 10
 			pawn.team = -1
+			
 			gameplay.call_deferred("spawn_squad", pawn)
+			gameplay.call_deferred("spawn_sigils", [ [sigil_color_purple, target_tile, 5.0] ])
 			
 		29: # calling a fking offmap support
-			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 3) + [squad.current_tile]
+			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 3) + [squad.current_tile]
 			var target_tiles = []
-			var amount = int(rand_range(6, 12))
+			var amount = int(rand_range(12, 24))
 			var get_positions = position_manager.get_positions()
 			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
@@ -653,8 +682,7 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 				if get_positions.has(t):
 					target_tiles.append(t)
 				
-			gameplay.call_deferred("drop_boulder", target_tiles, squad.get_path())
-			
+			gameplay.call_deferred("drop_boulders", target_tiles, squad.get_path())
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	

@@ -1100,12 +1100,27 @@ func clean_corpse():
 			
 		corpses.clear()
 	
+# special spawning & cursing bullcrapt
+# [type_sigil :int, at_tile :Vector2, duration :float]
+func spawn_sigils(datas :Array):
+	rpc("_spawn_sigils", datas)
 	
+remotesync func _spawn_sigils(datas :Array):
+	for data in datas:
+		var sigil_color :int = data[0] # 0:curse, 1:gate
+		var at_tile :Vector2 = data[1]
+		var duration :float = data[2]
+		
+		var sigil = preload("res://assets/sigil/sigil.tscn").instance()
+		sigil.color = sigil_color
+		add_child(sigil)
+		sigil.translation = nav.get_pos_v3(at_tile)
+		
 # special order, off map artilery
-func drop_boulder(targets :Array, by :NodePath):
-	rpc("_drop_boulder", NetworkLobbyManager.get_id(), targets, by)
+func drop_boulders(targets :Array, by :NodePath):
+	rpc("_drop_boulders", NetworkLobbyManager.get_id(), targets, by)
 	
-remotesync func _drop_boulder(from_id :int, targets :Array, by :NodePath):
+remotesync func _drop_boulders(from_id :int, targets :Array, by :NodePath):
 	var boulder_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
 	var is_master = (from_id == NetworkLobbyManager.get_id())
 	for tiles in targets:
