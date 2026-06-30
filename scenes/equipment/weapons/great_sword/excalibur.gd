@@ -1,9 +1,17 @@
 extends MeleeWeapon
 
 onready var trail_render = $TrailRender
+var _visible :bool
+
+func _ready():
+	_visible = get_parent().visible
+	trail_render.render = _visible
 
 func _process(delta):
-	trail_render.render = get_parent().visible
+	var _v = get_parent().visible
+	if _visible != _v:
+		_visible = _v
+		trail_render.render = _v
 
 func get_attack_damage(enemy_squad_attribute :Array) -> int:
 	var dmg = attack_damage

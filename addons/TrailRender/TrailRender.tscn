@@ -8,3 +8,4 @@ script = ExtResource( 1 )
 [node name="Node" type="Node" parent="."]
 
 [node name="Render" type="MeshInstance" parent="Node"]
+software_skinning_transform_normals = false

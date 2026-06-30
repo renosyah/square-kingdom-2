@@ -1107,7 +1107,7 @@ func spawn_sigils(datas :Array):
 	
 remotesync func _spawn_sigils(datas :Array):
 	for data in datas:
-		var sigil_color :int = data[0] # 0:curse, 1:gate
+		var sigil_color :Color = data[0] # 0:curse, 1:gate
 		var at_tile :Vector2 = data[1]
 		var duration :float = data[2]
 		
