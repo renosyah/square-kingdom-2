@@ -277,7 +277,7 @@ const squad_abilities = [
 		# melee grimhart weapon 28
 		"name": "Summon!",
 		"icon": preload("res://assets/user_interface/ability/summon_ability.png"),
-		"detail": "War itself answers the call. at cost of -50% HP Summon a Random Rogue Squad on the target tile.",
+		"detail": "War itself answers the call. Every soul summoned demands an equal sacrifice. The wielder loses HP equal to the total health of the summoned Random Rogue Squad. The summoned squad is hostile to all. but Not every lost soul returns with hatred (6% chance join your cause)",
 		"type": "melee",
 		"weapon_idx": 16,
 		"cooldown" : 75.0,
@@ -351,7 +351,7 @@ const sigil_color_purple = Color(0.968627, 0, 1)
 const sigil_color_yellow = Color(0.992157, 1, 0)
 const sigil_color_cyan = Color(0, 0.882813, 1)
 
-static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
+static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
 	if squad_ability_idx == 0:
 		return
@@ -608,21 +608,24 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 				gameplay.call_deferred("spawn_sigils", sigils)
 			
 		27: # put curse
+			var enemy = squad.enemy
+			var enemy_valid :bool = is_instance_valid(enemy)
+			
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			
-			# stop, just stop if no enemy found
-			var enemy = squad.enemy
-			if not is_instance_valid(enemy) or squads.size() <= 2: # [self, target]? NOPE
+			if squads.has(squad):
+				squads.erase(squad)
+				
+			if enemy_valid:
+				if squads.has(enemy):
+					squads.erase(enemy)
+				
+			if not enemy_valid or squads.empty():
 				squad.start_ability_cooldown(10.0)
 				return
 				
-			if squads.has(enemy): # the target cannot be subject of sacrifice
-				squads.erase(enemy)
-				
-			var sigils = [
-				[sigil_color_red, enemy.current_tile, 5.0], 
-			]
+			var sigils :Array = [ [sigil_color_red, enemy.current_tile, 5.0] ]
 			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			var curse :Dictionary = calculate_mark_of_death_sacrifice(500, squads)
@@ -652,19 +655,27 @@ static func use_squad_ability(gameplay, squad :BaseSquad, position_manager :Tile
 				return
 				
 			squad.stop()
-			
-			var dmg :int = int(squad.member_max_hp * 0.5)
 			squad.set_modifiers([[squad.modifier_move_speed, -0.10, 5, icon_horn]])
-			squad.take_damage(dmg, 0, squad.get_path())
 			
 			var pawn :SquadData = Global.current_squads.pick_random().duplicate()
+			pawn.squad_id = -1
 			pawn.network_id = 1
-			pawn.squad_name = "Summon Warrior"
 			pawn.player_id = "bot_bandit"
+			pawn.team = -1
+			pawn.squad_name = "Summoned %s" % pawn.squad_name
 			pawn.node_name = Utils.create_unique_id()
 			pawn.current_tile = target_tile
 			pawn.color_idx = 10
-			pawn.team = -1
+			
+			# chance will be friend
+			if randf() < 0.06:
+				pawn.network_id = player.player_network_id
+				pawn.player_id = squad.player_id
+				pawn.team = squad.team
+				pawn.color_idx = player.color_idx
+			
+			var dmg :int = pawn.member_hp() * pawn.total_member
+			squad.take_damage(dmg, 0, squad.get_path())
 			
 			gameplay.call_deferred("spawn_squad", pawn)
 			gameplay.call_deferred("spawn_sigils", [ [sigil_color_purple, target_tile, 5.0] ])

@@ -49,6 +49,8 @@ onready var uniforms = [
 var _last_pos :Vector3
 var _current_anim_body :String
 var _current_anim_walk :String
+var _squad_current_tile :Vector2
+
 
 func _ready():
 	apply_equipment()
@@ -331,14 +333,17 @@ func set_dead():
 	body_animation_state.start(_current_anim_body)
 	leg_animation_state.start(_current_anim_walk)
 	
+	_squad_current_tile = squad.current_tile
+	
 func _on_died_anim():
 	if not Global.current_root:
 		return
 		
 	if Global.current_root.has_method("stash_corpses"):
-		Global.current_root.stash_corpses(Utils.clone_spatial(pivot))
+		Global.current_root.stash_corpses(pivot, _squad_current_tile)
 		
 	visible = false
+	
 
 func _on_auto_iddle_timer_timeout():
 	iddle = true

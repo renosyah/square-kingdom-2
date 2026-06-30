@@ -56,8 +56,6 @@ func _on_all_player_ready():
 func _on_global_tick():
 	if not is_end:
 		Global.battle_time += 1
-		
-	clean_corpse()
 	
 ########################################## proccess  ############################################
 
@@ -673,7 +671,7 @@ func _on_ui_route_button_pressed():
 func _on_use_ability():
 	var squad :BaseSquad = ui.squad_with_ability
 	var data :SquadData = squad_datas[squad]
-	AbilityHandle.use_squad_ability(self, squad, tile_position_manager, data.extra)
+	AbilityHandle.use_squad_ability(self, current_player, squad, tile_position_manager, data.extra)
 	
 	if not setting.lock_command:
 		squad.click() # unselected
@@ -1085,20 +1083,27 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 func _on_cav_charge(squad : CavalrySquad):
 	if squad.player_id == current_player.player_id:
 		unit_charged_impact(true)
-	
+
 var corpses = []
 
-func stash_corpses(corpse :Spatial):
-	add_child(corpse)
-	corpse.translation.y = 0.25
-	corpses.append(corpse)
+func stash_corpses(pivot :Spatial, current_tile :Vector2):
+	var old_global_transform = pivot.global_transform
+	var old_global_rot = pivot.global_transform.basis
 
-func clean_corpse():
+	var tile :BaseTile = tile_map.get_tile_instance(current_tile)
+	var corpse = pivot.duplicate()
+	tile.add_child(corpse)
+	
+	corpse.global_transform = old_global_transform
+	corpse.global_transform.basis = old_global_rot
+	corpse.translation.y = 0.25
+
 	if corpses.size() > 25:
-		for i in corpses:
-			i.queue_free()
-			
-		corpses.clear()
+		var f = corpses.front()
+		corpses.pop_front()
+		f.queue_free()
+		
+	corpses.append(corpse)
 	
 # special spawning & cursing bullcrapt
 # [type_sigil :int, at_tile :Vector2, duration :float]
@@ -1130,7 +1135,7 @@ remotesync func _drop_boulders(from_id :int, targets :Array, by :NodePath):
 func _on_boulder_droping(scene :PackedScene, tile :Vector2, by :NodePath, is_master :bool):
 	var target_position = nav.get_pos_v3(tile)
 	var boulder :BaseProjectile = scene.instance()
-	Global.current_root.add_child(boulder)
+	add_child(boulder)
 	boulder.translation = target_position + (Vector3.UP * 15) + (Vector3.FORWARD * 10)
 	boulder.to = target_position + Vector3.ONE * rand_range(-0.5,0.5)
 	boulder.launch()

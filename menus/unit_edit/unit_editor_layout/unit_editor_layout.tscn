@@ -1160,20 +1160,24 @@ mouse_filter = 2
 margin_top = 66.0
 margin_right = 264.0
 margin_bottom = 185.0
+mouse_filter = 2
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
 margin_right = 111.0
 margin_bottom = 119.0
+mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="player_color_display" type="ColorRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4"]
 margin_right = 111.0
 margin_bottom = 119.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4"]
 margin_right = 111.0
 margin_bottom = 119.0
+mouse_filter = 2
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
 custom_constants/margin_left = 6
@@ -1184,6 +1188,7 @@ margin_left = 6.0
 margin_top = 6.0
 margin_right = 105.0
 margin_bottom = 113.0
+mouse_filter = 2
 texture = ExtResource( 42 )
 expand = true
 stretch_mode = 7
@@ -1194,6 +1199,7 @@ margin_top = 6.0
 margin_right = 105.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 32, 32 )
+mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 texture = ExtResource( 57 )
@@ -1202,6 +1208,7 @@ expand = true
 [node name="change_potrait" type="Button" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4"]
 margin_right = 111.0
 margin_bottom = 119.0
+mouse_filter = 1
 flat = true
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer"]
@@ -1214,22 +1221,26 @@ rect_min_size = Vector2( 2, 0 )
 margin_left = 121.0
 margin_right = 264.0
 margin_bottom = 119.0
+mouse_filter = 2
 
 [node name="MarginContainer5" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer"]
 margin_right = 60.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
+mouse_filter = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="icon_color_display" type="ColorRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5"]
 margin_right = 60.0
 margin_bottom = 60.0
+mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5"]
 margin_right = 60.0
 margin_bottom = 60.0
+mouse_filter = 2
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
 custom_constants/margin_left = 6
@@ -1240,6 +1251,7 @@ margin_left = 6.0
 margin_top = 6.0
 margin_right = 54.0
 margin_bottom = 54.0
+mouse_filter = 2
 texture = ExtResource( 46 )
 expand = true
 stretch_mode = 7
@@ -1250,6 +1262,7 @@ margin_top = 6.0
 margin_right = 54.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 22, 22 )
+mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 color = Color( 0, 0, 0, 0.47451 )
@@ -1257,14 +1270,19 @@ color = Color( 0, 0, 0, 0.47451 )
 [node name="ColorRect2" type="TextureRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/MarginContainer2/colorec"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 texture = ExtResource( 57 )
 expand = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
 
 [node name="change_icon" type="Button" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5"]
 margin_right = 60.0
 margin_bottom = 60.0
+mouse_filter = 1
 flat = true
 
 [node name="MarginContainer6" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer"]
@@ -1283,6 +1301,7 @@ margin_bottom = 119.0
 margin_right = 45.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 45, 45 )
+mouse_filter = 1
 icon = ExtResource( 26 )
 expand_icon = true
 
@@ -1291,6 +1310,7 @@ margin_left = 49.0
 margin_right = 94.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 45, 45 )
+mouse_filter = 1
 icon = ExtResource( 34 )
 expand_icon = true
 
@@ -1299,6 +1319,7 @@ margin_left = 98.0
 margin_right = 143.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 45, 45 )
+mouse_filter = 1
 icon = ExtResource( 36 )
 expand_icon = true
 
@@ -1329,6 +1350,7 @@ margin_left = 204.0
 margin_right = 264.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 0 )
+mouse_filter = 1
 icon = ExtResource( 52 )
 expand_icon = true
 
@@ -1348,6 +1370,7 @@ margin_bottom = 345.0
 margin_right = 130.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
+mouse_filter = 1
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 custom_styles/hover = SubResource( 7 )
@@ -1364,6 +1387,7 @@ margin_left = 134.0
 margin_right = 264.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
+mouse_filter = 1
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
 custom_styles/hover = SubResource( 6 )

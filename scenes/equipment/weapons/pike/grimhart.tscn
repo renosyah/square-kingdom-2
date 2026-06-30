@@ -2,8 +2,8 @@
 
 [ext_resource path="res://addons/TrailRender/TrailRender.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/equipment/weapons/pike/grimhart.gd" type="Script" id=2]
-[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
-[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=3]
+[ext_resource path="res://scenes/tiles/materials/city_road_material.tres" type="Material" id=4]
 [ext_resource path="res://scenes/equipment/weapons/pike/grimhart.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://scenes/equipment/material/grimhart_edge.tres" type="Material" id=7]
 
