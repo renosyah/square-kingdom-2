@@ -1,8 +1,24 @@
 extends Control
 
+const bgs = [
+	preload("res://assets/background/round_table.png"),
+	preload("res://assets/background/siege_1.png"),
+	preload("res://assets/background/siege_2.png"),
+	preload("res://assets/background/siege_3.png"),
+	preload("res://assets/background/siege_4.png"),
+	preload("res://assets/background/siege_5.png"),
+	preload("res://assets/background/siege_6.png"),
+	preload("res://assets/background/victory.png")
+]
+
 onready var list_map = $CanvasLayer/Control/VBoxContainer/Control/list_map
 onready var play = $CanvasLayer/Control/VBoxContainer/Control/play
+onready var animation_player = $AnimationPlayer
+onready var timer = $Timer
+onready var texture_rect = $CanvasLayer/Control/TextureRect
 
+onready var _bgs = bgs.duplicate()
+var bg_idx :int = 0
 var map_selected_type :String = "PLAY" # PLAY or EDITOR
 
 # Called when the node enters the scene tree for the first time.
@@ -15,6 +31,13 @@ func _ready():
 	Global.hide_transition()
 	
 	hide_all()
+	
+	_bgs.shuffle()
+	
+	bg_idx = randi() % _bgs.size()
+	texture_rect.texture = _bgs[bg_idx]
+	
+	timer.start()
 	
 func _notification(what):
 	match what:
@@ -96,3 +119,15 @@ func _on_unit_pressed():
 
 func _on_campaign_pressed():
 	pass # Replace with function body.
+
+func _on_Timer_timeout():
+	timer.start()
+	
+	bg_idx += 1
+	if bg_idx > _bgs.size() - 1:
+		bg_idx = 0
+		
+	animation_player.play("change_bg")
+
+func _on_change_bg():
+	texture_rect.texture = _bgs[bg_idx]
