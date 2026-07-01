@@ -344,7 +344,7 @@ const icon_zap = 12
 const icon_horn = 13
 const icon_headhurt = 14
 const icon_bonebreak = 15
-const icon_death = 15
+const icon_death = 16
 
 const sigil_color_red = Color(0.784314, 0, 0)
 const sigil_color_purple = Color(0.968627, 0, 1)
@@ -407,7 +407,10 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[enemy.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_scared]]) # movement speed
+					enemy.set_modifiers([
+						[enemy.modifier_move_speed, 0.45, 10, icon_null],
+						[enemy.modifier_move_speed, -0.05, 10, icon_scared],
+					]) # movement speed
 					enemy.retreat()
 					
 		7: # -80% move speed for 15 sec
@@ -601,7 +604,10 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 						sigils.append([sigil_color_yellow, s.current_tile, 5.0])
 						
 					30: # retreat
-						s.set_modifiers([[s.modifier_move_speed, 0.25, 10, icon_move_speed]]) # just for indicator
+						s.set_modifiers([
+							[s.modifier_move_speed, 0.30, 10, icon_null],
+							[s.modifier_move_speed, -0.05, 10, icon_scared],
+						])
 						s.retreat()
 						
 			if not sigils.empty():
@@ -626,8 +632,6 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				return
 				
 			var sigils :Array = [ [sigil_color_red, enemy.current_tile, 5.0] ]
-			
-			
 			var curse :Dictionary = calculate_hp_sacrifice(500, squads)
 			
 			for squad_data in curse.sacrifice:
@@ -683,8 +687,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			
 			var hp_cost :int = pawn.member_hp() * pawn.total_member
 			var payment :Dictionary = calculate_hp_sacrifice(hp_cost, squads)
-			
-			if payment["curse_effectiveness"] < 0.80:
+			if payment["curse_effectiveness"] < 0.10:
 				squad.start_ability_cooldown(10.0)
 				return
 				
@@ -710,7 +713,10 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			var amount = int(rand_range(12, 24))
 			var get_positions = position_manager.get_positions()
 			
-			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
+			squad.set_modifiers([
+				[squad.modifier_move_speed, -0.40, 15, icon_null],
+				[squad.modifier_move_speed, 0.05, 15, icon_horn]
+			])
 			
 			for _i in amount:
 				var t = tiles.pick_random()

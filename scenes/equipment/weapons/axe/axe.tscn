@@ -8,7 +8,6 @@
 [node name="axe" type="Spatial"]
 script = ExtResource( 2 )
 attack_damage = 8
-bonus_damage = 4
 ready_animation = "iddle"
 attack_animation = "weapon_slash_attack"
 

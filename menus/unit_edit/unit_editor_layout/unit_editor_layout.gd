@@ -8,31 +8,31 @@ const ability_item_scene = preload("res://menus/unit_edit/equipment_item/ability
 
 # {weapon_index_entity:[0, name, icon]}
 const melee_weapons = {
-	0 :["Dagger",preload("res://assets/user_interface/icons/equipment/dagger.png")], 
-	1 :["Pitchfork",preload("res://assets/user_interface/icons/equipment/pitchfork.png")],
-	2 :["Spear",preload("res://assets/user_interface/icons/equipment/spear.png")],
-	4 :["Pike",preload("res://assets/user_interface/icons/equipment/pike.png")],
-	5 :["Sword",preload("res://assets/user_interface/icons/equipment/sword.png")],
-	11 :["Arabian Sword",preload("res://assets/user_interface/icons/equipment/sword_curve.png")],
-	7 :["Axe",preload("res://assets/user_interface/icons/equipment/axe.png")],
-	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png")],
-	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png")],
-	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png")],
-	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png")],
-	15 :["Excalibur", preload("res://assets/user_interface/icons/equipment/excalibur.png")],
-	16 :["Grimhart", preload("res://assets/user_interface/icons/equipment/grimhart.png")],
+	0 :["Dagger",preload("res://assets/user_interface/icons/equipment/dagger.png"),"Small, quick, and always within reach.\n\nNo bonus"], 
+	1 :["Pitchfork",preload("res://assets/user_interface/icons/equipment/pitchfork.png"),"A humble farming tool turned desperate weapon.\n\nNo bonus"],
+	2 :["Spear",preload("res://assets/user_interface/icons/equipment/spear.png"),"The classic answer to a cavalry charge.\n\n+bonus vs Cavalry"],
+	4 :["Pike",preload("res://assets/user_interface/icons/equipment/pike.png"),"A wall of steel no horse dares to cross.\n\n++bonus vs Cavalry"],
+	5 :["Sword",preload("res://assets/user_interface/icons/equipment/sword.png"),"Balanced and reliable on any battlefield.\n\n+bonus vs Infantry"],
+	11 :["Arabian Sword",preload("res://assets/user_interface/icons/equipment/sword_curve.png"),"Swift curved steel favored by eastern warriors.\n\n+bonus vs Infantry"],
+	7 :["Axe",preload("res://assets/user_interface/icons/equipment/axe.png"),"Built to split shields and crush heavy swings.\n\n+bonus vs Shields\n+bonus vs Two-Handed"],
+	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png"),"Crushes armor instead of cutting through it.\n\n+bonus vs Heavy Armor\n- No bonus vs Cavalry"],
+	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png"),"One devastating swing can break an entire battle line.\n\n+bonus vs Cavalry\n++bonus vs Shields\nSplash Damage"],
+	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png"),"A massive blade made for carving through formations.\n\n++bonus vs Infantry\nSplash Damage"],
+	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png"),"Forged to shatter even the strongest armor.\n\n++bonus vs Heavy Armor\nSplash Damage\nNo bonus vs Cavalry"],
+	15 :["Excalibur", preload("res://assets/user_interface/icons/equipment/excalibur.png"),"The legendary blade of hope and divine light.\n\n+bonus vs Infantry\nUnique Ability"],
+	16 :["Grimhart", preload("res://assets/user_interface/icons/equipment/grimhart.png"),"A cursed scythe that harvests both souls and wars.\n\n+bonus vs Cavalry\nUnique Ability"],
 }
 const hero_weapons = [15,16]
 const shield_melee_weapons = { 2:3,5:6,7:8,11:12 } # {unshield_varian:shield_variant}
 
 const range_weapons = {
-	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
-	1 :["Javeline",preload("res://assets/user_interface/icons/equipment/javeline.png")],
-	2 :["Throwing Axe",preload("res://assets/user_interface/icons/equipment/throwing_axe.png")],
-	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png")],
-	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png")],
-	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png")],
-	6 :["Auriel", preload("res://assets/user_interface/icons/equipment/auriel.png")],
+	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png"),"Range weapon Not set"], 
+	1 :["Javeline",preload("res://assets/user_interface/icons/equipment/javeline.png"),"A deadly throw before the enemy reaches you.\n\n+bonus vs Bow\n+bonus vs Longbow\n+bonus vs Crossbow"],
+	2 :["Throwing Axe",preload("res://assets/user_interface/icons/equipment/throwing_axe.png"),"Spins through the air to smash shields apart.\n\n+bonus vs Shields"],
+	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png"),"Simple, dependable, and deadly at range.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
+	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png"),"Its immense draw turns disciplined volleys into devastation.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
+	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png"),"Armor means little against a steel bolt.\n\n+bonus vs Heavy Armor\n(Includes Cavalry)"],
+	6 :["Auriel", preload("res://assets/user_interface/icons/equipment/auriel.png"),"The legendary signal bow feared across every battlefield.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 }
 const hero_range_weapons = [6]
 
@@ -126,6 +126,9 @@ onready var snack_bar = $Control/Control/snack_bar
 onready var delete = $Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/delete
 onready var confirm_popup = $confirm_popup
 onready var popup_choose_potrait = $popup_choose_potrait
+
+onready var melee_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer/MarginContainer/melee_weap_desc
+onready var range_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2/MarginContainer/range_weap_desc
 
 var selected_index :int
 var dup_squad_data :SquadData
@@ -227,13 +230,17 @@ func display_melee_weapons(selected_index :int):
 		if key in hero_weapons and not dup_squad_data.is_hero:
 			continue
 			
+		var is_selected = (key == selected_index)
 		var item = equipment_item_scene.instance()
 		item.index = key
 		item.icon = melee_weapons[key][1]
 		item.item_name = melee_weapons[key][0]
 		item.connect("selected", self, "_on_melee_weapon_selected", [key])
 		weapon_holder.add_child(item)
-		item.set_selected(key == selected_index)
+		item.set_selected(is_selected)
+		
+		if is_selected:
+			melee_weap_desc.text = melee_weapons[key][2]
 	
 func display_range_weapons(selected_index :int):
 	for i in range_weapon_holder.get_children():
@@ -243,15 +250,19 @@ func display_range_weapons(selected_index :int):
 	for key in range_weapons.keys():
 		if key in hero_range_weapons and not dup_squad_data.is_hero:
 			continue
-		
+			
+		var is_selected = (key == selected_index)
 		var item = equipment_item_scene.instance()
 		item.index = key
 		item.icon = range_weapons[key][1]
 		item.item_name = range_weapons[key][0]
 		item.connect("selected", self, "_on_range_weapon_selected", [key])
 		range_weapon_holder.add_child(item)
-		item.set_selected(key == selected_index)
-	
+		item.set_selected(is_selected)
+		
+		if is_selected:
+			range_weap_desc.text = range_weapons[key][2]
+			
 func display_headgear(selected_index :int):
 	for i in headgear_holder.get_children():
 		headgear_holder.remove_child(i)
@@ -643,10 +654,13 @@ func _on_delete_pressed():
 	
 	current_squads.remove(selected_index)
 	
-	# replace it with peasant
-	for idx in current_army.size():
-		if current_army[idx] == selected_index:
-			current_army[idx] = 0
+	# remove from army
+	var _temps = current_army.duplicate()
+	current_army.clear()
+	
+	for v in _temps:
+		if v != selected_index:
+			current_army.append(v)
 			
 	emit_signal("save_current_squads", current_squads, current_army)
 	

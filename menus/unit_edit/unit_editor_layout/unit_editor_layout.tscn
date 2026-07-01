@@ -663,7 +663,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer"]
 margin_right = 288.0
-margin_bottom = 2401.0
+margin_bottom = 2549.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/margin_right = 12
@@ -672,13 +672,13 @@ custom_constants/margin_left = 12
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer"]
 margin_left = 12.0
 margin_right = 276.0
-margin_bottom = 2401.0
+margin_bottom = 2549.0
 mouse_filter = 2
 custom_constants/separation = 12
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
 margin_right = 264.0
-margin_bottom = 864.0
+margin_bottom = 1012.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
@@ -782,10 +782,43 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 16 )
 expand = true
 
-[node name="shield_option" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
 margin_top = 302.0
 margin_right = 264.0
-margin_bottom = 472.0
+margin_bottom = 372.0
+mouse_filter = 2
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+
+[node name="ColorRect" type="ColorRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer"]
+visible = false
+margin_left = 8.0
+margin_right = 256.0
+margin_bottom = 70.0
+mouse_filter = 2
+color = Color( 0.109804, 0.109804, 0.109804, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer"]
+margin_left = 8.0
+margin_right = 256.0
+margin_bottom = 70.0
+mouse_filter = 2
+custom_constants/margin_top = 12
+custom_constants/margin_bottom = 12
+
+[node name="melee_weap_desc" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer/MarginContainer"]
+margin_top = 12.0
+margin_right = 248.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 4 )
+text = "..."
+autowrap = true
+
+[node name="shield_option" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
+margin_top = 376.0
+margin_right = 264.0
+margin_bottom = 546.0
 
 [node name="Label5" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/shield_option"]
 margin_right = 264.0
@@ -840,18 +873,18 @@ expand = true
 stretch_mode = 7
 
 [node name="Label4" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
-margin_top = 476.0
+margin_top = 550.0
 margin_right = 264.0
-margin_bottom = 522.0
+margin_bottom = 596.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 51 )
 text = "Range weapon"
 valign = 2
 
 [node name="MarginContainer6" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
-margin_top = 526.0
+margin_top = 600.0
 margin_right = 264.0
-margin_bottom = 690.0
+margin_bottom = 764.0
 rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 custom_constants/margin_right = 8
@@ -915,10 +948,43 @@ rect_min_size = Vector2( 80, 80 )
 texture = ExtResource( 25 )
 expand = true
 
-[node name="fire_mode_option" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
-margin_top = 694.0
+[node name="MarginContainer2" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
+margin_top = 768.0
 margin_right = 264.0
-margin_bottom = 864.0
+margin_bottom = 838.0
+mouse_filter = 2
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+
+[node name="ColorRect" type="ColorRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2"]
+visible = false
+margin_left = 8.0
+margin_right = 256.0
+margin_bottom = 70.0
+mouse_filter = 2
+color = Color( 0.109804, 0.109804, 0.109804, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2"]
+margin_left = 8.0
+margin_right = 256.0
+margin_bottom = 70.0
+mouse_filter = 2
+custom_constants/margin_top = 12
+custom_constants/margin_bottom = 12
+
+[node name="range_weap_desc" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2/MarginContainer"]
+margin_top = 12.0
+margin_right = 248.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 4 )
+text = "..."
+autowrap = true
+
+[node name="fire_mode_option" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2"]
+margin_top = 842.0
+margin_right = 264.0
+margin_bottom = 1012.0
 
 [node name="Label5" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option"]
 margin_right = 264.0
@@ -973,9 +1039,9 @@ expand = true
 stretch_mode = 7
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
-margin_top = 876.0
+margin_top = 1024.0
 margin_right = 264.0
-margin_bottom = 1484.0
+margin_bottom = 1632.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer"]
@@ -1136,9 +1202,9 @@ expand = true
 stretch_mode = 7
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
-margin_top = 1496.0
+margin_top = 1644.0
 margin_right = 264.0
-margin_bottom = 1923.0
+margin_bottom = 2071.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3"]
@@ -1423,9 +1489,9 @@ rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
-margin_top = 1935.0
+margin_top = 2083.0
 margin_right = 264.0
-margin_bottom = 2401.0
+margin_bottom = 2549.0
 rect_min_size = Vector2( 0, 400 )
 mouse_filter = 2
 

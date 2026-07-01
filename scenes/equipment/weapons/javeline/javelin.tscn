@@ -3,11 +3,14 @@
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=1]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=2]
 [ext_resource path="res://scenes/equipment/weapons/javeline/javeline.obj" type="ArrayMesh" id=3]
-[ext_resource path="res://scenes/equipment/weapons/throwing_axe/throwing_axe.gd" type="Script" id=4]
+[ext_resource path="res://scenes/equipment/weapons/javeline/javelin.gd" type="Script" id=4]
 [ext_resource path="res://scenes/projectiles/javeline_projectile.tscn" type="PackedScene" id=5]
 
 [node name="javelin" type="Spatial"]
 script = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": ""
+}
 projectile = ExtResource( 5 )
 attack_damage = 8
 show_on_stored = false

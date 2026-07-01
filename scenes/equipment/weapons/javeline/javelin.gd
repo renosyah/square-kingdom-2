@@ -1,24 +1,21 @@
 extends RangeWeapon
 
 onready var mesh_instance = $MeshInstance
-onready var mesh_instance_2 = $MeshInstance2
 
 func _ready():
-	release()
+	mesh_instance.visible = true
 	
 func pull():
 	.pull()
 	
-	mesh_instance.visible = false
-	mesh_instance_2.visible = true
+	mesh_instance.visible = true
 	
 func release():
 	.release()
 	
-	mesh_instance.visible = true
-	mesh_instance_2.visible = false
+	mesh_instance.visible = false
 	
 func get_projectile_damage(_target, enemy_squad_attribute :Array) -> int:
-	if enemy_squad_attribute[3] in [2,3]: # medium or heavy armor
+	if enemy_squad_attribute[2] == 2: # using bow/crossbow
 		return attack_damage + int(attack_damage * bonus_damage)
 	return attack_damage

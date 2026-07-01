@@ -18,13 +18,11 @@ func release():
 	mesh_instance.visible = true
 	mesh_instance_2.visible = false
 	
-func get_attack_damage(enemy_squad_attribute :Array) -> int:
-	var dmg = attack_damage
+func get_projectile_damage(_target, enemy_squad_attribute :Array) -> int:
+	if enemy_squad_attribute[4]: # have shield, return normal
+		return attack_damage
 	
-	if enemy_squad_attribute[3] == 0: # no armor
-		dmg += attack_damage * bonus_damage
+	if enemy_squad_attribute[1] in [1, 2]: # two handed or spear
+		return attack_damage + int(attack_damage * bonus_damage)
 		
-	if enemy_squad_attribute[1] in [1, 2] and not enemy_squad_attribute[4] == 0: # spear weapon or 2 handed & no shield
-		dmg += attack_damage * bonus_damage
-		
-	return dmg
+	return attack_damage
