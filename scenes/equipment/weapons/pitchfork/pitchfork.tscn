@@ -5,10 +5,9 @@
 [ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=4]
 
-[node name="spear" type="Spatial"]
+[node name="pitchfork" type="Spatial"]
 script = ExtResource( 2 )
 attack_damage = 2
-bonus_damage = 2
 walk_animation = "walk_weapon_hold"
 attack_animation = "weapon_trust_attack"
 

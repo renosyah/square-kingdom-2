@@ -13,10 +13,7 @@ func _process(delta):
 		_visible = _v
 		trail_render.render = _v
 
-func get_attack_damage(enemy_squad_attribute :Array) -> int:
-	var dmg = attack_damage
-	
+func get_attack_damage(target, enemy_squad_attribute :Array) -> int:
 	if enemy_squad_attribute[0] == 1: # is cavalry
-		dmg += attack_damage * bonus_damage
-
-	return dmg
+		return attack_damage + (target.hp * bonus_damage)
+	return attack_damage

@@ -19,8 +19,8 @@ const melee_weapons = {
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png")],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png")],
 	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png")],
-	15 :["Holy Excalibur!", preload("res://assets/user_interface/icons/equipment/excalibur.png")],
-	16 :["Grimhart!", preload("res://assets/user_interface/icons/equipment/grimhart.png")],
+	15 :["Excalibur", preload("res://assets/user_interface/icons/equipment/excalibur.png")],
+	16 :["Grimhart", preload("res://assets/user_interface/icons/equipment/grimhart.png")],
 }
 const hero_weapons = [15,16]
 const shield_melee_weapons = { 2:3,5:6,7:8,11:12 } # {unshield_varian:shield_variant}

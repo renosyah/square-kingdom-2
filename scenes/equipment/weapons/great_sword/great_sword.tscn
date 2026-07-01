@@ -12,6 +12,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 attack_damage = 10
+bonus_damage = 0.25
 walk_animation = "weapon_2_ready"
 ready_animation = "weapon_2_ready"
 attack_animation = "weapon_2_slash_left"

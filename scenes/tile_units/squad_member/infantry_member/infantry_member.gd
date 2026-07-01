@@ -220,7 +220,7 @@ func _on_melee_attack_performed():
 		yield(tween,"tween_completed")
 		
 	if is_instance_valid(enemy):
-		var melee_dmg = _melee_weapon.get_attack_damage(enemy.squad.squad_attribute)
+		var melee_dmg = _melee_weapon.get_attack_damage(enemy, enemy.squad.squad_attribute)
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)
 		
 		if _melee_weapon.has_splash_damage:
@@ -265,12 +265,14 @@ func _on_release_bow():
 		return
 		
 	var target_tile = enemy.squad.current_tile
+	var attack_damage = _range_weapon.attack_damage
 	
 	if is_instance_valid(enemy):
+		attack_damage = _range_weapon.get_projectile_damage(enemy, enemy.squad.squad_attribute)
 		_range_weapon.shot_projectile(enemy.global_position, enemy.visible or squad.visible)
 		yield(_range_weapon,"on_hit")
 		
-	emit_signal("on_set_damage_to_tile", self, target_tile, _range_weapon.attack_damage)
+	emit_signal("on_set_damage_to_tile", self, target_tile, attack_damage)
 	
 func _on_range_attack_performed():
 	iddle = true
