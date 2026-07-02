@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/user_interface/icons/stop.png" type="Texture" id=1]
+[ext_resource path="res://assets/tile_highlight/spawn_tile_material.tres" type="Material" id=3]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2( 1, 1 )
+
+[node name="spawn_tile" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
+cast_shadow = 0
+mesh = SubResource( 1 )
+software_skinning_transform_normals = false
+material/0 = ExtResource( 3 )
+
+[node name="Label3D" type="Sprite3D" parent="."]
+transform = Transform( 0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0.1, 0 )
+billboard = 1
+double_sided = false
+no_depth_test = true
+texture = ExtResource( 1 )

@@ -1,6 +1,6 @@
 extends Node
 
-const is_dekstop =  ["Server", "Windows", "WinRT", "X11"]
+const dekstops =  ["Server", "Windows", "WinRT", "X11"]
 
 func _ready():
 	randomize()

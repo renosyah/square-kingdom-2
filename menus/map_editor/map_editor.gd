@@ -7,10 +7,11 @@ onready var clickable_floor = $clickable_floor
 onready var highlights = $highlights
 onready var batch_spawner = $batch_spawner
 onready var batch_despawner = $batch_despawner
-onready var untouch_tiles = [] #TileIndex.generate_spawn_points(Global.current_tile_map_manifest_data.map_size)
+onready var untouch_tiles = TileIndex.generate_spawn_points(Global.current_tile_map_manifest_data.map_size)
 
 onready var setting :SettingData = Global.setting_data
 
+var spawn_tiles :Array
 var nav_tiles :Dictionary
 var nav :NavTileMap
 
@@ -40,7 +41,8 @@ func _ready():
 	
 	for idx in ui.biom_buttons.size():
 		ui.biom_buttons[idx].connect("pressed", self, "_on_biom_button_press", [idx])
-		
+	
+	
 func _on_setting_updated(d :SettingData):
 	ui.movable_camera_ui.move_speed = d.camera_move_speed
 	ui.movable_camera_ui.zoom_speed= d.camera_zoom_speed
@@ -58,7 +60,7 @@ func _process(delta):
 	
 	ui.minimap.rotation_rad = movable_camera.rotation.y
 	ui.minimap.offset = Vector2(pos.x, pos.z) * 10
-
+	
 	
 func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100)):
 	var map_data :TileMapFileData = Global.current_tile_map_file_data
@@ -83,14 +85,14 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 		var in_untouch = x.id in untouch
 		
 		var value = 2 * abs(noise.get_noise_2dv(x.id))
-		if value > 0.4 and value < 0.5:
-			if rng.randf() < 0.2 and not in_untouch:
+		if value > 0.4 and value < 0.5 and not in_untouch:
+			if rng.randf() < 0.2:
 				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, rocks)
 				blocked.append(x.id)
 				
-		elif value > 0.3 and value < 0.4:
-			if rng.randf() < 0.4 and not in_untouch:
+		elif value > 0.3 and value < 0.4 and not in_untouch:
+			if rng.randf() < 0.4:
 				x.rotation_idx = Utils.get_random(rng, rotates)
 				x.scene_idx = Utils.get_random(rng, trees)
 				blocked.append(x.id)
@@ -99,7 +101,7 @@ func randomize_map_data(untouch :Array = [], _seed :int = rand_range(-100, 100))
 			x.scene_idx = TileIndex.tile_names[TileIndex.mud]
 		elif value > 0.1 and value < 0.2:
 			x.scene_idx = TileIndex.tile_names[TileIndex.sand]
-		elif value < 0.1:
+		elif value < 0.1 and not in_untouch:
 			x.scene_idx = TileIndex.tile_names[TileIndex.water]
 			blocked.append(x.id)
 			
@@ -116,6 +118,18 @@ func display_selected_nav(layer_id :int):
 		
 	batch_despawner.start(items, 16)
 	batch_spawner.start(Global.current_tile_map_file_data.navigations[layer_id], 16)
+	
+func display_untouch_tile():
+	for i in spawn_tiles:
+		i.queue_free()
+		
+	spawn_tiles.clear()
+	
+	for tile in untouch_tiles:
+		var h = preload("res://assets/tile_highlight/spawn_tile.tscn").instance()
+		add_child(h)
+		h.translation = nav.get_pos_v3(tile) * 1.02
+		spawn_tiles.append(h)
 	
 func _on_batch_spawner_on_spawn(n :NavigationData):
 	var h = preload("res://assets/tile_highlight/tile_highlight.tscn").instance()
@@ -138,6 +152,7 @@ func _on_nav_toggle_button_press():
 func _on_editable_tile_map_on_map_ready():
 	nav = editable_tile_map.get_nav_tile_map()
 	display_selected_nav(0)
+	display_untouch_tile()
 	ui.on_map_ready()
 	
 func _on_clickable_floor_on_floor_clicked(pos):
@@ -173,6 +188,8 @@ func _on_ui_on_nav_card_dropped(posv2, enable):
 func _on_biom_button_press(idx):
 	editable_tile_map.biom = idx
 	editable_tile_map.load_data_map(Global.current_tile_map_file_data, true)
+	
+	ui.minimap.biom = idx
 	ui.minimap.load_data_map(Global.current_tile_map_file_data)
 	ui.loading_screen.visible = true
 	
