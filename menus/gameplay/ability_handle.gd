@@ -287,7 +287,7 @@ const squad_abilities = [
 		# melee grimhart weapon 29
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
-		"detail": "Fire Auriel high into the sky, signaling an emergency artillery barrage. Nearby trebuchet batteries answer the call, bombarding random locations around the wielder. The bombardment is indiscriminate and may strike friend and foe alike.",
+		"detail": "Fire Flare's arrow high into the sky, signaling an emergency artillery barrage. Nearby trebuchet batteries answer the call, bombarding random locations around the wielder. The bombardment is indiscriminate and may strike friend and foe alike.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -297,7 +297,7 @@ const squad_abilities = [
 		# melee grimhart weapon 30
 		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
-		"detail": "The sight of Auriel's signal sends nearby warriors scrambling for safety. Friend and foe alike abandon their positions, believing an artillery barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
+		"detail": "The sight of Flare's signal sends nearby warriors scrambling for safety. Friend and foe alike abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
