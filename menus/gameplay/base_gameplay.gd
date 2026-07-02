@@ -1105,6 +1105,35 @@ func stash_corpses(pivot :Spatial, current_tile :Vector2):
 		
 	corpses.append(corpse)
 	
+# broadcast command by any peer
+func force_command(type_command :int, squads :Array):
+	rpc("_force_command", type_command, squads)
+	
+# broadcast to all, check if they own this unit by network id
+# just call it function locally to avoid burden network
+remotesync func _force_command(type_command :int, squads :Array):
+	var current_player_network_id :int = NetworkLobbyManager.get_id()
+	
+	for squad_path in squads:
+		var squad :BaseSquad = get_node_or_null(squad_path)
+		if not is_instance_valid(squad):
+			continue
+			
+		if squad.network_id != current_player_network_id:
+			continue
+			
+		match (type_command):
+			0:
+				squad.stop()
+			1:
+				squad.retreat()
+			2:
+				squad.resurecting(true)
+			3:
+				squad.start_ability_cooldown(1.0)
+			4:
+				squad.healing()
+				
 # special spawning & cursing bullcrapt
 # [type_sigil :int, at_tile :Vector2, duration :float]
 func spawn_sigils(datas :Array):

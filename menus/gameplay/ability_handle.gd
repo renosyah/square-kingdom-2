@@ -87,10 +87,10 @@ const squad_abilities = [
 		# range bow weapon 9
 		"name": "Suppress!",
 		"icon": preload("res://assets/user_interface/ability/suppress_ability.png"),
-		"detail": "Keep enemy archers under pressure, reducing their ranged attack speed by -50% for 10 seconds.",
+		"detail": "Keep enemy archers under pressure, reducing their ranged attack speed by -50% but doing -25% less damage for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 3,
-		"cooldown" : 40.0,
+		"cooldown" : 25.0,
 		"required_enemy": true,
 	},
 	{
@@ -431,16 +431,20 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				var squads :Array = _get_squad_in_range(position_manager.get_positions(), [enemy.current_tile])
+				squad.set_modifiers([
+					[squad.modifier_range_damage, -0.25, 10, icon_null], # less damage deal
+				])
+				
 				for s in squads:
-					if s.team != squad.team:
-						s.set_modifiers([[s.modifier_range_speed, -0.50, 10 + extra_debuff_duration, icon_debuffed]]) # range attack speed
+					s.set_modifiers([[s.modifier_range_speed, -0.50, (10 + extra_debuff_duration), icon_debuffed]]) # range attack speed
 				
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
+				var dur = (15 + extra_debuff_duration)
 				enemy.set_modifiers([
-					[enemy.modifier_move_speed, -0.50, (15 + extra_debuff_duration), icon_null], # movement speed
-					[enemy.modifier_damage_receive, 0.25, (15 + extra_debuff_duration), icon_defence_down], # damage receive
+					[enemy.modifier_move_speed, -0.50, dur, icon_null], # movement speed
+					[enemy.modifier_damage_receive, 0.25, dur, icon_defence_down], # damage receive
 				])
 				
 		11: # 40% range damage, 50% slowest rate of fire and buff range damage nearby by 10%
@@ -498,11 +502,13 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				var ability_caster :bool = (s == squad)
 				var same_team :bool = s.team == squad.team
 				
+				var healing_targets = []
+				
 				match squad_ability_idx:
 					16:
 						if not ability_caster and same_team:
 							s.set_modifiers([ [s.modifier_move_speed, 0.10, 2, icon_heal]]) # just for indicator
-							s.healing()
+							healing_targets.append(s.get_path())
 					17:
 						if not ability_caster and same_team:
 							s.set_modifiers([
@@ -533,7 +539,10 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 									[s.modifier_melee_speed, 0.10, 15, icon_null],
 									[s.modifier_range_speed, 0.10, 15, icon_fist_up]
 								])
-						
+					
+				if not healing_targets.empty():
+					gameplay.call_deferred("force_command", 4, healing_targets)
+					
 		19:# +15% melee speed & enemy 25% melee speed for 10 sec
 			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, (10 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
@@ -582,37 +591,38 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					
 				enemy.set_modifiers([[ enemy.modifier_damage_receive, 0.60, (15 + extra_debuff_duration), icon_defence_down ]])
 		
-		25,26,30: # get nearby squads
+		25,26: # get nearby squads
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
 			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			var sigils = []
+			
+			var _targets = []
+			var _type_command = 3 # squad_ability_idx == 25
+			
+			if squad_ability_idx == 26:
+				_type_command = 2
 			
 			for i in squads:
 				var s :BaseSquad = i
 				if s.is_hero or (s == squad):
 					continue
 					
+				_targets.append(s.get_path())
+				
 				match squad_ability_idx:
 					25: # reset ability cooldown, ALL
-						s.set_modifiers([[s.modifier_move_speed, 0.10, 2, icon_fist_up]]) # just for indicator
-						s.start_ability_cooldown(1.0)
 						sigils.append([sigil_color_cyan, s.current_tile, 5.0])
+						s.set_modifiers([[s.modifier_move_speed, 0.10, 2, icon_fist_up]]) # just for indicator
 						
 					26: # resurect
-						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
-						s.resurecting(true)
 						sigils.append([sigil_color_yellow, s.current_tile, 5.0])
-						
-					30: # retreat
-						s.set_modifiers([
-							[s.modifier_move_speed, 0.30, 10, icon_null],
-							[s.modifier_move_speed, -0.05, 10, icon_scared],
-						])
-						s.retreat()
-						
+						s.set_modifiers([ [s.modifier_damage_receive, -0.80, 5, icon_heal]]) # just for indicator
+			
+			gameplay.call_deferred("force_command", _type_command, _targets)
+			
 			if not sigils.empty():
 				gameplay.call_deferred("spawn_sigils", sigils)
-			
+				
 		27: # put curse
 			var enemy = squad.enemy
 			var enemy_valid :bool = is_instance_valid(enemy)
@@ -724,6 +734,24 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					target_tiles.append(t)
 				
 			gameplay.call_deferred("drop_boulders", target_tiles, squad.get_path())
+			
+		30: # force masive retreat
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 2) + [squad.current_tile]
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+			var targets = []
+			for i in squads:
+				var s :BaseSquad = i
+				if s == squad:
+					continue
+					
+				s.set_modifiers([
+					[s.modifier_move_speed, 0.30, 10, icon_null],
+					[s.modifier_move_speed, -0.05, 10, icon_scared],
+				])
+				
+				targets.append(s.get_path())
+				
+			gameplay.call_deferred("force_command", 1, targets)
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
