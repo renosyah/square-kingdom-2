@@ -147,7 +147,7 @@ const squad_abilities = [
 		# melee great axe 15
 		"name": "Cleave!",
 		"icon": preload("res://assets/user_interface/ability/cleave_ability.png"),
-		"detail": "Swing with overwhelming force, +50% melee damage, -50% melee attack speed & All enemy squads in the target tile suffer -25% damage resistance for 15 seconds",
+		"detail": "Swing with overwhelming force, +50% melee damage, -50% melee attack speed & All squads in the target tile suffer -25% damage resistance for 15 seconds",
 		"type": "melee",
 		"weapon_idx": 9,
 		"cooldown" : 35.0,

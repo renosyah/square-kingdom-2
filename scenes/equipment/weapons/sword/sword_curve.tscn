@@ -10,6 +10,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 attack_damage = 7
+ready_animation = "iddle"
 attack_animation = "weapon_slash_attack"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

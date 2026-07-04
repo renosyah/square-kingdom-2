@@ -83,11 +83,14 @@ const memes = [
 	preload("res://assets/sounds/memes/19_juta.wav"),#0
 	preload("res://assets/sounds/memes/hidup_jokowi.wav"),#1
 	preload("res://assets/sounds/memes/saya_akan_lawan.wav"),#2
-	preload("res://assets/sounds/memes/antek_asing.wav"),#3
-	preload("res://assets/sounds/memes/lho_kaget.wav"),#4
+	preload("res://assets/sounds/memes/akan_saya_lawan_2.wav"),#3
+	preload("res://assets/sounds/memes/antek_asing.wav"),
+	preload("res://assets/sounds/memes/lho_kaget.wav"),
 	preload("res://assets/sounds/memes/jkw_pidato_jogja_1.wav"),
 	preload("res://assets/sounds/memes/jkw_pidato_jogja_2.wav"),
-	preload("res://assets/sounds/memes/jkw_pidato_jogja_3.wav")
+	preload("res://assets/sounds/memes/jkw_pidato_jogja_3.wav"),
+	preload("res://assets/sounds/memes/bekerja_mati_matian.wav"),
+	preload("res://assets/sounds/memes/wewokdetok.wav")
 	
 ]
 const memes2 = [
@@ -1000,7 +1003,8 @@ func _on_unit_clicked(clicked_squad :BaseSquad):
 		if not ui_sound.playing:
 			ui_sound.stream = attack_sfx
 			if randf() < 0.23: # 0.23% chance of pria solo
-				ui_sound.stream = memes[2]
+				var s = [memes[2], memes[3]].pick_random()
+				ui_sound.stream = s
 				
 			ui_sound.play()
 			

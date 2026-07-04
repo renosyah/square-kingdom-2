@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bekerja_mati_matian.wav-46d4e07bce7162f1c7ae0dcde18d4957.sample"
+
+[deps]
+
+source_file="res://assets/sounds/memes/bekerja_mati_matian.wav"
+dest_files=[ "res://.import/bekerja_mati_matian.wav-46d4e07bce7162f1c7ae0dcde18d4957.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
