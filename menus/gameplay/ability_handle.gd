@@ -284,7 +284,7 @@ const squad_abilities = [
 		"required_enemy": false,
 	},
 	{
-		# melee grimhart weapon 29
+		# range umbriel weapon 29
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
 		"detail": "Fire Flare's arrow high into the sky, signaling an emergency artillery barrage. Nearby trebuchet batteries answer the call, bombarding random locations around the wielder. The bombardment is indiscriminate and may strike friend and foe alike.",
@@ -294,7 +294,7 @@ const squad_abilities = [
 		"required_enemy": false,
 	},
 	{
-		# melee grimhart weapon 30
+		# range umbriel weapon 30
 		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
 		"detail": "The sight of Flare's signal sends nearby warriors scrambling for safety. Friend and foe alike abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
@@ -302,6 +302,36 @@ const squad_abilities = [
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
 		"required_enemy": false,
+	},
+	{
+		# melee excalibur weapon 31
+		"name": "Flashbang",
+		"icon": preload("res://assets/user_interface/ability/flashbang_ability.png"),
+		"detail": "Blinds all units on the target tile. -70% Attack Speed for 10 seconds",
+		"type": "melee",
+		"weapon_idx": 15,
+		"cooldown" : 40.0,
+		"required_enemy": true,
+	},
+	{
+		# melee grimhart weapon 32
+		"name": "Hypnotic",
+		"icon": preload("res://assets/user_interface/ability/hypnotic_ability.png"),
+		"detail": "All squads in target tile immediately attack the nearest adjacent unit, friend or foe",
+		"type": "melee",
+		"weapon_idx": 16,
+		"cooldown" : 40.0,
+		"required_enemy": true,
+	},
+	{
+		# range umbriel weapon 33
+		"name": "Rainbolt",
+		"icon": preload("res://assets/user_interface/ability/rainbolt_ability.png"),
+		"detail": "Calls a long-range ballista strike on the target tile. The bolt may deviate slightly from the intended location. Damages friend and foe alike.",
+		"type": "range",
+		"weapon_idx": 6,
+		"cooldown" : 40.0,
+		"required_enemy": true,
 	},
 ]
 
@@ -733,7 +763,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				if get_positions.has(t):
 					target_tiles.append(t)
 				
-			gameplay.call_deferred("drop_boulders", target_tiles, squad.get_path())
+			gameplay.call_deferred("drop_projectiles", 0, target_tiles, squad.get_path())
 			
 		30: # force masive retreat
 			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 2) + [squad.current_tile]
@@ -753,6 +783,57 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				
 			gameplay.call_deferred("force_command", 1, targets)
 			
+		31,32,33: # check
+			var enemy = squad.enemy
+			if not is_instance_valid(enemy):
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), enemy.current_tile, 1) + [enemy.current_tile]
+			if squad_ability_idx == 33:
+				var target_tiles = []
+				var amount = int(rand_range(4, 8))
+				for i in amount:
+					target_tiles.append(ranges.pick_random())
+					
+				gameplay.call_deferred("drop_projectiles", 1, target_tiles, squad.get_path())
+				
+			else:
+				var targets = []
+				var sigils :Array = []
+				
+				var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+				for i in squads:
+					var s :BaseSquad = i
+					if s == squad:
+						continue
+						
+					targets.append(s.get_path())
+					
+					match squad_ability_idx:
+						31:
+							sigils.append([sigil_color_yellow, s.current_tile, 5.0])
+							s.set_modifiers([
+								[s.modifier_melee_speed, -0.70, 10, icon_null],
+								[s.modifier_range_speed, -0.70, 10, icon_debuffed],
+							])
+							
+						32:
+							s.set_modifiers([
+								[s.modifier_move_speed, -0.20, 10, icon_beserk],
+								[s.modifier_melee_speed, 0.40, 10, icon_null],
+								[s.modifier_range_speed, 0.40, 10, icon_null],
+							])
+							sigils.append([sigil_color_purple, s.current_tile, 5.0])
+						
+				gameplay.call_deferred("spawn_sigils", sigils)
+				
+				if squad_ability_idx == 31:
+					gameplay.call_deferred("force_command", 0, targets)
+					
+				elif squad_ability_idx == 32:
+					gameplay.call_deferred("force_command", 5, targets)
+					
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:

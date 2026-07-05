@@ -1137,6 +1137,12 @@ remotesync func _force_command(type_command :int, squads :Array):
 				squad.start_ability_cooldown(1.0)
 			4:
 				squad.healing()
+			5:
+				squad.stop()
+				
+				if squads.size() > 1:
+					squad.chase_enemy = get_node_or_null(squads.pick_random())
+					squad.chase_target()
 				
 # special spawning & cursing bullcrapt
 # [type_sigil :int, at_tile :Vector2, duration :float]
@@ -1155,35 +1161,55 @@ remotesync func _spawn_sigils(datas :Array):
 		sigil.translation = nav.get_pos_v3(at_tile)
 		
 # special order, off map artilery
-func drop_boulders(targets :Array, by :NodePath):
-	rpc("_drop_boulders", NetworkLobbyManager.get_id(), targets, by)
+func drop_projectiles(type_projectile :int, targets :Array, by :NodePath):
+	rpc("_drop_projectiles", NetworkLobbyManager.get_id(), type_projectile, targets, by)
 	
-remotesync func _drop_boulders(from_id :int, targets :Array, by :NodePath):
-	var boulder_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
+remotesync func _drop_projectiles(from_id :int, type_projectile :int, targets :Array, by :NodePath):
+	var _projectile_scene :PackedScene
+	
+	match type_projectile:
+		0:
+			_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
+		1:
+			_projectile_scene = preload("res://scenes/projectiles/balista_bolt.tscn")
+	
 	var is_master = (from_id == NetworkLobbyManager.get_id())
-	for tiles in targets:
-		_on_boulder_droping(boulder_projectile_scene, tiles, by, is_master)
+	for tile in targets:
+		_on_projectile_droping(_projectile_scene, type_projectile, tile, by, is_master)
 		yield(get_tree().create_timer(1), "timeout")
 
-func _on_boulder_droping(scene :PackedScene, tile :Vector2, by :NodePath, is_master :bool):
+func _on_projectile_droping(scene :PackedScene, type_projectile :int, tile :Vector2, by :NodePath, is_master :bool):
 	var target_position = nav.get_pos_v3(tile)
-	var boulder :BaseProjectile = scene.instance()
-	add_child(boulder)
-	boulder.translation = target_position + (Vector3.UP * 15) + (Vector3.FORWARD * 10)
-	boulder.to = target_position + Vector3.ONE * rand_range(-0.5,0.5)
-	boulder.launch()
+	var _projectile :BaseProjectile = scene.instance()
+	add_child(_projectile)
+	_projectile.translation = target_position + (Vector3.UP * 15) + (Vector3.FORWARD * 10)
+	_projectile.to = target_position + Vector3.ONE * rand_range(-0.5,0.5)
+	_projectile.launch()
 	
 	if not is_master:
 		return
 		
-	yield(boulder, "on_reach")
-	_on_boulder_impact(tile, by)
+	yield(_projectile, "on_reach")
 	
-func _on_boulder_impact(center_tile_id :Vector2, by :NodePath):
+	var damage :int = 0
+	var splash :bool = false
+	match type_projectile:
+		0:
+			damage = 65
+			splash = true
+		1:
+			damage = 45
+	
+	_on_projectile_impact(tile, damage, splash, by)
+	
+func _on_projectile_impact(center_tile_id :Vector2, damage :int, splash :bool, by :NodePath):
 	var unit_position = tile_position_manager.get_positions()
-	var tiles :Array = TileMapUtils.get_adjacent_tiles(
-		TileMapUtils.get_directions(), center_tile_id, 1
-	) + [center_tile_id]
+	var tiles :Array = [center_tile_id]
+	
+	if splash:
+		tiles += TileMapUtils.get_adjacent_tiles(
+			TileMapUtils.get_directions(), center_tile_id, 1
+		)
 	
 	for tile_id in tiles:
 		if not unit_position.has(tile_id):
@@ -1193,9 +1219,9 @@ func _on_boulder_impact(center_tile_id :Vector2, by :NodePath):
 		if unit_positions.empty():
 			continue
 			
-		_on_boulder_impact_damage(unit_positions, 65, by)
+		_on_projectile_impact_damage(unit_positions, damage, by)
 
-func _on_boulder_impact_damage(unit_positions:Array, dmg :int, by :NodePath):
+func _on_projectile_impact_damage(unit_positions:Array, dmg :int, by :NodePath):
 	for enemy_squad in unit_positions:
 		if not is_instance_valid(enemy_squad):
 			continue

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/projectiles/axe_projectile.gd" type="Script" id=1]
-[ext_resource path="res://scenes/equipment/weapons/axe/axe.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://scenes/equipment/weapons/throwing_axe/axe.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=3]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=4]
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=5]
 
 [node name="axe_projectile" type="Spatial"]
 script = ExtResource( 1 )
@@ -19,3 +20,4 @@ mesh = ExtResource( 2 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
+material/2 = ExtResource( 5 )

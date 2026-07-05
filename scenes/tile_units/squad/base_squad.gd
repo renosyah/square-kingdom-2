@@ -262,7 +262,7 @@ func chase_target():
 		# give up the chase if
 		# diffrent nav layer
 		# no path to it
-		if chase_enemy.nav_layer != nav_layer:
+		if chase_enemy.nav_layer != nav_layer or chase_enemy == self:
 			chase_enemy = null
 			return
 			
