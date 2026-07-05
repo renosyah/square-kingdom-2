@@ -117,7 +117,7 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "AP Bolts",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened Armor-Piercing (AP) bodkin bolts for maximum penetration. Increase ranged damage by +40% for 10 seconds.",
+		"detail": "Fit hardened Armor-Piercing (AP) bodkin bolts for maximum penetration. Increase ranged damage by +40%. enemy receive +3 bleeding damage each second for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -137,7 +137,7 @@ const squad_abilities = [
 		# melee great sword 14
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
-		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds.",
+		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds. enemy receive +3 bleeding damage each second for 10 second",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 35.0,
@@ -287,7 +287,7 @@ const squad_abilities = [
 		# range umbriel weapon 29
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
-		"detail": "Fire Flare's arrow high into the sky, signaling an emergency artillery barrage. Nearby trebuchet batteries answer the call, bombarding random locations around the wielder. The bombardment is indiscriminate and may strike friend and foe alike.",
+		"detail": "Signaling an emergency artillery barrage. Nearby trebuchet batteries bombarding random locations around. The bombardment is indiscriminate friend and foe alike.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -297,7 +297,7 @@ const squad_abilities = [
 		# range umbriel weapon 30
 		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
-		"detail": "The sight of Flare's signal sends nearby warriors scrambling for safety. Friend and foe alike abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
+		"detail": "Squads abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed but have 50% chance suffer +5 emotional damage for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -380,6 +380,8 @@ const sigil_color_red = Color(0.784314, 0, 0)
 const sigil_color_purple = Color(0.968627, 0, 1)
 const sigil_color_yellow = Color(0.992157, 1, 0)
 const sigil_color_cyan = Color(0, 0.882813, 1)
+
+const overtime_damage_scene = preload("res://assets/overtime_damage/overtime_damage.tscn")
 
 static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -497,6 +499,15 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[squad.modifier_range_damage, 0.40, dur, icon_buffed], # damage deal
 			])
 			
+			var enemy = squad.enemy
+			if is_instance_valid(enemy) and squad.in_range_engagement():
+				var bleed = overtime_damage_scene.instance()
+				bleed.squad = enemy
+				bleed.damage = 3
+				bleed.duration = dur
+				bleed.by = squad.get_path()
+				enemy.add_child(bleed)
+				
 		13: # -50% range damage, +50% rate of fire
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
@@ -512,6 +523,15 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[squad.modifier_melee_speed, -0.15, dur, icon_null], # attack speed 
 			], _mods)
 			
+			var enemy = squad.enemy
+			if is_instance_valid(enemy) and squad.in_melee_engagement():
+				var bleed = overtime_damage_scene.instance()
+				bleed.squad = enemy
+				bleed.damage = 3
+				bleed.duration = 10
+				bleed.by = squad.get_path()
+				enemy.add_child(bleed)
+				
 		15: # 50% melee damage, 50% slowest rate of fire & weaken anyone in front of it
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
@@ -682,11 +702,21 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					sac_squad.take_damage(dmg, idx, squad.get_path())
 					sigils.append([sigil_color_purple, sac_squad.current_tile, 5.0])
 					
-			var speed_debuff = min(curse["curse_effectiveness"] + extra_debuff_value, 0.80)
+			var curse_effectivenes :float = curse["curse_effectiveness"]
+			var speed_debuff = min(curse_effectivenes + extra_debuff_value, 0.80)
 			enemy.set_modifiers([ 
 				[enemy.modifier_move_speed, -speed_debuff, (50 + extra_debuff_duration), icon_null],
-				[enemy.modifier_damage_receive, curse["curse_effectiveness"], (50 + extra_debuff_duration), icon_death]
+				[enemy.modifier_damage_receive, curse_effectivenes, (50 + extra_debuff_duration), icon_death]
 			])
+			
+			if randf() < curse_effectivenes: # chance to get poison
+				var poison = overtime_damage_scene.instance()
+				poison.squad = enemy
+				poison.damage = 5
+				poison.duration = 10
+				poison.by = squad.get_path()
+				enemy.add_child(poison)
+			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			
 			gameplay.call_deferred("spawn_sigils", sigils)
@@ -774,6 +804,14 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				if s == squad:
 					continue
 					
+				if randf() < 0.5:
+					var emotional = overtime_damage_scene.instance()
+					emotional.squad = s
+					emotional.damage = 1
+					emotional.duration = 10
+					emotional.by = squad.get_path()
+					s.add_child(emotional)
+				
 				s.set_modifiers([
 					[s.modifier_move_speed, 0.30, 10, icon_null],
 					[s.modifier_move_speed, -0.05, 10, icon_scared],

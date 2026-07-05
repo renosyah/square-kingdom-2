@@ -513,8 +513,13 @@ func _send_rpc_pending():
 		
 func _send_rpc_unreliable_pending():
 	if not _taking_damages_pending.empty():
-		rpc_unreliable("_taking_damages", _taking_damages_pending)
-		_taking_damages_pending.clear()
+		var send_count = min(5, _taking_damages_pending.size())
+		
+		var chunk = []
+		for i in range(send_count):
+			chunk.append(_taking_damages_pending.pop_front())
+		
+		rpc_unreliable("_taking_damages", chunk)
 		
 func _send_rpc_reliable_pending():
 	if not _member_deads_pending.empty():
