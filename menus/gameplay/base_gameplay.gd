@@ -90,8 +90,9 @@ const memes = [
 	preload("res://assets/sounds/memes/jkw_pidato_jogja_2.wav"),
 	preload("res://assets/sounds/memes/jkw_pidato_jogja_3.wav"),
 	preload("res://assets/sounds/memes/bekerja_mati_matian.wav"),
-	preload("res://assets/sounds/memes/wewokdetok.wav")
-	
+	preload("res://assets/sounds/memes/wewokdetok.wav"),
+	preload("res://assets/sounds/memes/saya_masih_sangup_1.wav"),
+	preload("res://assets/sounds/memes/saya_masih_sangup_2.wav")
 ]
 const memes2 = [
 	preload("res://assets/sounds/memes/akh.wav"),
@@ -101,6 +102,9 @@ const memes2 = [
 	preload("res://assets/sounds/memes/bruh.wav"),
 	preload("res://assets/sounds/memes/cat_laught.wav"),
 ]
+
+const saya_akan_kembali = preload("res://assets/sounds/memes/saya_akan_kembali.wav")
+
 const regroup = preload("res://assets/sounds/gameplay/regroup.wav")
 const attack_sfx = preload("res://assets/sounds/gameplay/attack.wav")
 const buff = preload("res://assets/sounds/gameplay/buff.wav")
@@ -666,7 +670,12 @@ func _on_ui_route_button_pressed():
 	var dup :Array = selected_squads.duplicate() # must use dup pointer
 	if dup.empty():
 		return
-
+		
+	if not ui_sound.playing and randf() < 0.12:
+		ui_sound.stream = buff
+		ui_sound.stream = saya_akan_kembali
+		ui_sound.play()
+		
 	for squad in dup:
 		squad.retreat()
 		squad.click() # unselected
