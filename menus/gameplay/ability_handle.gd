@@ -117,7 +117,7 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "AP Bolts",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened Armor-Piercing (AP) bodkin bolts for maximum penetration. Increase ranged damage by +40%. enemy receive +3 bleeding damage each second for 10 seconds.",
+		"detail": "Fit hardened Armor-Piercing-Custom-Bodkin (APCB) bolts for maximum penetration. Increase ranged damage by +40% & inflict +3 bleeding damage each second for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -305,9 +305,9 @@ const squad_abilities = [
 	},
 	{
 		# melee excalibur weapon 31
-		"name": "Flashbang",
+		"name": "Blinding",
 		"icon": preload("res://assets/user_interface/ability/flashbang_ability.png"),
-		"detail": "Blinds all units on the target tile. -70% Attack Speed for 5 seconds",
+		"detail": "Using divine light to blinds all units on the target tile. -70% Attack Speed & Move speed for 5 seconds",
 		"type": "melee",
 		"weapon_idx": 15,
 		"cooldown" : 40.0,
@@ -500,13 +500,13 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			])
 			
 			var enemy = squad.enemy
-			if is_instance_valid(enemy) and squad.in_range_engagement():
-				var bleed = overtime_damage_scene.instance()
-				bleed.squad = enemy
-				bleed.damage = 3
-				bleed.duration = dur
-				bleed.by = squad.get_path()
-				enemy.add_child(bleed)
+			if is_instance_valid(enemy):
+				var bleed_damage = overtime_damage_scene.instance()
+				bleed_damage.squad = enemy
+				bleed_damage.damage = 3
+				bleed_damage.duration = dur
+				bleed_damage.by = squad.get_path()
+				squad.attach_target = bleed_damage
 				
 		13: # -50% range damage, +50% rate of fire
 			var dur = (15 + extra_buff_duration)
@@ -524,13 +524,13 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			], _mods)
 			
 			var enemy = squad.enemy
-			if is_instance_valid(enemy) and squad.in_melee_engagement():
-				var bleed = overtime_damage_scene.instance()
-				bleed.squad = enemy
-				bleed.damage = 3
-				bleed.duration = 10
-				bleed.by = squad.get_path()
-				enemy.add_child(bleed)
+			if is_instance_valid(enemy):
+				var bleed_damage = overtime_damage_scene.instance()
+				bleed_damage.squad = enemy
+				bleed_damage.damage = 3
+				bleed_damage.duration = 10
+				bleed_damage.by = squad.get_path()
+				squad.attach_target = bleed_damage
 				
 		15: # 50% melee damage, 50% slowest rate of fire & weaken anyone in front of it
 			var dur = (15 + extra_buff_duration)
@@ -709,13 +709,13 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[enemy.modifier_damage_receive, curse_effectivenes, (50 + extra_debuff_duration), icon_death]
 			])
 			
-			if randf() < curse_effectivenes: # chance to get poison
-				var poison = overtime_damage_scene.instance()
-				poison.squad = enemy
-				poison.damage = 5
-				poison.duration = 10
-				poison.by = squad.get_path()
-				enemy.add_child(poison)
+			if curse_effectivenes > 0.8 : # 80% to send poison damage
+				var curse_damage = overtime_damage_scene.instance()
+				curse_damage.squad = enemy
+				curse_damage.damage = 5
+				curse_damage.duration = 10
+				curse_damage.by = squad.get_path()
+				enemy.add_child(curse_damage)
 			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			
@@ -809,14 +809,6 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				if s == squad:
 					continue
 					
-				if randf() < 0.5:
-					var emotional = overtime_damage_scene.instance()
-					emotional.squad = s
-					emotional.damage = 1
-					emotional.duration = 10
-					emotional.by = squad.get_path()
-					s.add_child(emotional)
-				
 				s.set_modifiers([
 					[s.modifier_move_speed, 0.30, 10, icon_null],
 					[s.modifier_move_speed, -0.05, 10, icon_scared],
@@ -858,7 +850,8 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 							sigils.append([sigil_color_yellow, s.current_tile, 5.0])
 							s.set_modifiers([
 								[s.modifier_melee_speed, -0.70, 5, icon_null],
-								[s.modifier_range_speed, -0.70, 5, icon_debuffed],
+								[s.modifier_range_speed, -0.70, 5, icon_null],
+								[s.modifier_move_speed, -0.70, 5, icon_debuffed],
 							])
 							
 						32:
@@ -878,6 +871,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					gameplay.call_deferred("force_command", 5, targets)
 					
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
+	
 	
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
 	var squads = []

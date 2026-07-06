@@ -8,4 +8,8 @@ script = ExtResource( 1 )
 [node name="overtime" type="Timer" parent="."]
 one_shot = true
 
+[node name="timeout" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="overtime" to="." method="_on_overtime_timeout"]
+[connection signal="timeout" from="timeout" to="." method="_on_timeout_timeout"]
