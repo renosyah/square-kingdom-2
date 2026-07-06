@@ -1119,38 +1119,43 @@ func stash_corpses(pivot :Spatial, current_tile :Vector2):
 	corpses.append(corpse)
 	
 # broadcast command by any peer
-func force_command(type_command :int, squads :Array):
-	rpc("_force_command", type_command, squads)
+func force_command(_type_command :int, _squads :Array):
+	rpc("_force_command", _type_command, _squads)
 	
 # broadcast to all, check if they own this unit by network id
 # just call it function locally to avoid burden network
-remotesync func _force_command(type_command :int, squads :Array):
+remotesync func _force_command(_type_command :int, _squads :Array):
 	var current_player_network_id :int = NetworkLobbyManager.get_id()
 	
-	for squad_path in squads:
-		var squad :BaseSquad = get_node_or_null(squad_path)
+	for path in _squads:
+		var squad :BaseSquad = get_node_or_null(path)
 		if not is_instance_valid(squad):
 			continue
 			
 		if squad.network_id != current_player_network_id:
 			continue
 			
-		match (type_command):
-			0:
-				squad.stop()
-			1:
-				squad.retreat()
-			2:
-				squad.resurecting(true)
-			3:
-				squad.start_ability_cooldown(1.0)
-			4:
-				squad.healing()
-			5:
+		match (_type_command):
+			0: # stop squad
 				squad.stop()
 				
-				if squads.size() > 1:
-					squad.chase_enemy = get_node_or_null(squads.pick_random())
+			1: # retreat squad
+				squad.retreat()
+				
+			2: # revive all dead member 
+				squad.resurecting(true)
+				
+			3: # instant cooldown
+				squad.start_ability_cooldown(1.0)
+				
+			4: # heal all squad member 
+				squad.healing()
+				
+			5: # stop squad then re assign the target randomly
+				squad.stop()
+				
+				if not squads.empty():
+					squad.chase_enemy = squads.pick_random()
 					squad.chase_target()
 				
 # special spawning & cursing bullcrapt

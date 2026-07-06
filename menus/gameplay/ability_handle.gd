@@ -307,7 +307,7 @@ const squad_abilities = [
 		# melee excalibur weapon 31
 		"name": "Flashbang",
 		"icon": preload("res://assets/user_interface/ability/flashbang_ability.png"),
-		"detail": "Blinds all units on the target tile. -70% Attack Speed for 10 seconds",
+		"detail": "Blinds all units on the target tile. -70% Attack Speed for 5 seconds",
 		"type": "melee",
 		"weapon_idx": 15,
 		"cooldown" : 40.0,
@@ -317,7 +317,7 @@ const squad_abilities = [
 		# melee grimhart weapon 32
 		"name": "Hypnotic",
 		"icon": preload("res://assets/user_interface/ability/hypnotic_ability.png"),
-		"detail": "All squads in target tile immediately attack the nearest adjacent unit, friend or foe",
+		"detail": "All squads in target tile immediately choose and attack random squad on the map",
 		"type": "melee",
 		"weapon_idx": 16,
 		"cooldown" : 40.0,
@@ -723,7 +723,12 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			squad.stop()
 		
 		28: # spawn random crap at random tile position
-			var tiles :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 2)
+			var nav :NavTileMap = squad.nav
+			var nav_layer :int = squad.nav_layer
+			
+			var tiles :Array = TileMapUtils.get_astar_adjacent_tile(
+				nav.get_astar(nav_layer), nav.get_navigation_id(nav_layer, squad.current_tile), 2
+			)
 			var target_tile = tiles.pick_random()
 			
 			if not position_manager.get_positions().has(target_tile):
@@ -852,8 +857,8 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 						31:
 							sigils.append([sigil_color_yellow, s.current_tile, 5.0])
 							s.set_modifiers([
-								[s.modifier_melee_speed, -0.70, 10, icon_null],
-								[s.modifier_range_speed, -0.70, 10, icon_debuffed],
+								[s.modifier_melee_speed, -0.70, 5, icon_null],
+								[s.modifier_range_speed, -0.70, 5, icon_debuffed],
 							])
 							
 						32:
