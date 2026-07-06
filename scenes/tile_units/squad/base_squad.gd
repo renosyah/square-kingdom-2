@@ -390,13 +390,14 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 		
 	# bonus damage if attack from flank
 	var dmg :int = attack_damage
-	if _is_on_flank_of(target.squad):
+	var sq = target.squad
+	if _is_on_flank_of(sq):
 		dmg = attack_damage * 2
 		
-	target.squad.take_damage(_get_attack_damage(0, dmg), target_member_idx, get_path())
+	sq.take_damage(_get_attack_damage(0, dmg), target_member_idx, get_path())
 	
 	if attach_target:
-		target.squad.add_child(attach_target)
+		sq.add_child(attach_target)
 		attach_target = null
 		
 func _on_local_member_die(member :SquadMember, idx :int):
