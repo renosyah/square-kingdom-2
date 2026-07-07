@@ -117,7 +117,7 @@ const squad_abilities = [
 		# range crossbow weapon 12
 		"name": "AP Bolts",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened Armor-Piercing-Custom-Bodkin (APCB) bolts for maximum penetration. Increase ranged damage by +40% & inflict +3 bleeding damage each second for 10 seconds.",
+		"detail": "Fit hardened Armor-Piercing-Custom-Bodkin (APCB) bolts for maximum penetration. Increase ranged damage by +40% & inflict bleeding damage each second for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -137,7 +137,7 @@ const squad_abilities = [
 		# melee great sword 14
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
-		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds. enemy receive +3 bleeding damage each second for 10 second",
+		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds. inflict bleeding damage each second for 10 second",
 		"type": "melee",
 		"weapon_idx": 10,
 		"cooldown" : 35.0,
@@ -307,7 +307,7 @@ const squad_abilities = [
 		# melee excalibur weapon 31
 		"name": "Blinding",
 		"icon": preload("res://assets/user_interface/ability/flashbang_ability.png"),
-		"detail": "Using divine light to blinds all units on the target tile. -70% Attack Speed & Move speed for 5 seconds",
+		"detail": "Using divine light to blinds all units on the target tile. All affected squad get -70% Attack Speed & Move speed for 5 seconds",
 		"type": "melee",
 		"weapon_idx": 15,
 		"cooldown" : 40.0,
@@ -502,8 +502,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				var bleed_damage = overtime_damage_scene.instance()
-				bleed_damage.squad = enemy
-				bleed_damage.damage = 3
+				bleed_damage.damage = int(rand_range(6,8))
 				bleed_damage.duration = dur
 				bleed_damage.by = squad.get_path()
 				squad.attach_target = bleed_damage
@@ -517,18 +516,17 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			
 		14: # 50% melee damage, 50% slowest rate of fire & remove melee speed & movement speed effect (self)
 			var dur = (15 + extra_buff_duration)
-			var _mods = [ squad.modifier_melee_speed, squad.modifier_move_speed ]
+			var _remove_mods = [ squad.modifier_melee_speed, squad.modifier_move_speed ]
 			squad.set_modifiers([
-				[squad.modifier_melee_damage, 0.25, dur, icon_buffed], # damage deal
+				[squad.modifier_melee_damage, 0.25, dur, icon_null], # damage deal
 				[squad.modifier_melee_speed, -0.15, dur, icon_null], # attack speed 
-			], _mods)
+			], _remove_mods)
 			
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
 				var bleed_damage = overtime_damage_scene.instance()
-				bleed_damage.squad = enemy
-				bleed_damage.damage = 3
-				bleed_damage.duration = 10
+				bleed_damage.damage = int(rand_range(4,7))
+				bleed_damage.duration = dur
 				bleed_damage.by = squad.get_path()
 				squad.attach_target = bleed_damage
 				

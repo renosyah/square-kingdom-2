@@ -18,7 +18,7 @@ const melee_weapons = {
 	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png"),"Crushes armor instead of cutting through it.\n\n+bonus vs Heavy Armor\n- No bonus vs Cavalry"],
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png"),"One devastating swing can break an entire battle line.\n\n+bonus vs Cavalry\n++bonus vs Shields\nSplash Damage"],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png"),"A massive blade made for carving through formations.\n\n++bonus vs Infantry\nSplash Damage"],
-	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png"),"Forged to shatter even the strongest armor.\n\n++bonus vs Heavy Armor\nSplash Damage\nNo bonus vs Cavalry"],
+	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png"),"Forged to shatter even the strongest armor.\n\n++bonus vs Heavy Armor\n- No bonus vs Cavalry\nSplash Damage"],
 	15 :["Excalibur", preload("res://assets/user_interface/icons/equipment/excalibur.png"),"The legendary blade of hope and divine light.\n\n+bonus vs Infantry\nUnique Ability"],
 	16 :["Grimhart", preload("res://assets/user_interface/icons/equipment/grimhart.png"),"A cursed scythe that harvests both souls and wars.\n\n+bonus vs Cavalry\nUnique Ability"],
 }
@@ -515,6 +515,7 @@ func _on_armors_selected(index :int):
 func _on_personal_equipment_selected(index :int):
 	dup_squad_data.personal_equipment_idx = index
 	display_personal_equipment(index)
+	dup_squad_data.extra = EntityIndex.personal_equipments[index][3]
 	squad_info.display_info(dup_squad_data)
 	
 func _on_shield_selected(index :int):
