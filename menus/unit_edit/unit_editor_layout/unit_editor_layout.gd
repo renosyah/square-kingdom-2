@@ -73,6 +73,7 @@ const fire_modes = {
 	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 
 	1 :["Rappid!", preload("res://assets/user_interface/ability/rappid_fire.png")], 
 }
+onready var personal_equipments :Dictionary = EntityIndex.personal_equipments
 
 export var player_color_idx :int
 export var player_material :SpatialMaterial
@@ -105,6 +106,7 @@ onready var abilities_holder = $Control/Control/VBoxContainer2/HBoxContainer/Mar
 onready var ability_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer4/ability_desc
 onready var fire_mode_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option
 onready var fire_mode_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option/MarginContainer7/fire_mode_holder
+onready var personal_equipment_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer6/personal_equipment_holder
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -129,6 +131,7 @@ onready var popup_choose_potrait = $popup_choose_potrait
 
 onready var melee_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer/MarginContainer/melee_weap_desc
 onready var range_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2/MarginContainer/range_weap_desc
+onready var squad_info = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/info
 
 var selected_index :int
 var dup_squad_data :SquadData
@@ -190,6 +193,7 @@ func _on_set_as_hero(v :bool):
 			
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
 	display_hero(dup_squad_data.is_hero)
+	squad_info.display_info(dup_squad_data)
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -220,6 +224,7 @@ func _on_unit_role_button(key):
 		
 	dup_squad_data.squad_role = key
 	display_role(dup_squad_data.squad_role)
+	squad_info.display_info(dup_squad_data)
 	
 func display_melee_weapons(selected_index :int):
 	for i in weapon_holder.get_children():
@@ -290,6 +295,21 @@ func display_armor(selected_index :int):
 		item.connect("selected", self, "_on_armors_selected", [key])
 		armor_holder.add_child(item)
 		item.set_selected(key == selected_index)
+		
+func display_personal_equipment(selected_index :int):
+	for i in personal_equipment_holder.get_children():
+		personal_equipment_holder.remove_child(i)
+		i.queue_free()
+		
+	for key in personal_equipments.keys():
+		var item = equipment_item_scene.instance()
+		item.index = key
+		item.icon = personal_equipments[key][1]
+		item.item_name = personal_equipments[key][0]
+		item.connect("selected", self, "_on_personal_equipment_selected", [key])
+		personal_equipment_holder.add_child(item)
+		item.set_selected(key == selected_index)
+		
 		
 func display_shield(selected_index :int):
 	for i in shield_holder.get_children():
@@ -453,6 +473,7 @@ func _on_melee_weapon_selected(index :int):
 	infantry_member.melee_weapon = EntityIndex.melee_weapons[index]
 	infantry_member.shield = EntityIndex.shields[dup_squad_data.member_shield_idx]
 	infantry_member.apply_equipment()
+	squad_info.display_info(dup_squad_data)
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -465,6 +486,7 @@ func _on_range_weapon_selected(index :int):
 	
 	infantry_member.range_weapon = EntityIndex.range_weapons[index]
 	infantry_member.apply_equipment()
+	squad_info.display_info(dup_squad_data)
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -475,6 +497,7 @@ func _on_headgear_selected(index :int):
 	display_headgear(index)
 	infantry_member.headgear = EntityIndex.head_armors[index]
 	infantry_member.apply_equipment()
+	squad_info.display_info(dup_squad_data)
 	
 func _on_armors_selected(index :int):
 	dup_squad_data.member_armor_idx = index
@@ -487,12 +510,19 @@ func _on_armors_selected(index :int):
 	
 	infantry_member.armor = EntityIndex.armors[index]
 	infantry_member.apply_equipment()
+	squad_info.display_info(dup_squad_data)
+	
+func _on_personal_equipment_selected(index :int):
+	dup_squad_data.personal_equipment_idx = index
+	display_personal_equipment(index)
+	squad_info.display_info(dup_squad_data)
 	
 func _on_shield_selected(index :int):
 	dup_squad_data.member_shield_idx = index
 	display_shield(index)
 	infantry_member.shield = EntityIndex.shields[index]
 	infantry_member.apply_equipment()
+	squad_info.display_info(dup_squad_data)
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -516,10 +546,11 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	save.visible = (squad.squad_id != 0)
 	delete.visible = (squad.squad_id != 0)
 	template_squad_warning.visible = (squad.squad_id == 0)
-	
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())
 	dup_squad_data.squad_id = 1
+	
+	squad_info.display_info(dup_squad_data)
 	
 	# for shield scinanigan, 
 	# i regret made this shield and unshield varian 
@@ -556,6 +587,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_range_weapons(dup_squad_data.member_range_weapon_idx)
 	display_headgear(dup_squad_data.member_headgear_idx)
 	display_armor(dup_squad_data.member_armor_idx)
+	display_personal_equipment(dup_squad_data.personal_equipment_idx)
 	display_shield(dup_squad_data.member_shield_idx)
 	display_fire_mode(dup_squad_data.range_fire_mode)
 	display_role(dup_squad_data.squad_role)

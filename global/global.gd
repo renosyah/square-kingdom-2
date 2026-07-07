@@ -398,7 +398,8 @@ func _sort_by_order(a, b):
 # idx is from current_army
 func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2, extra :Dictionary) -> SquadData:
 	var data :SquadData = current_squads[squad_idx].duplicate()
-	data.extra = extra
+	data.append_extra(extra)
+	data.append_extra(EntityIndex.personal_equipments[data.personal_equipment_idx][3])
 	data.squad_id = i
 	data.sort_order = i
 	data.network_id = player.player_network_id

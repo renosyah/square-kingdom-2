@@ -56,7 +56,9 @@ func display():
 	
 	var dup = SquadData.new()
 	dup.from_dictionary(squads[0].to_dictionary())
-	dup.extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra()
+	
+	dup.append_extra(Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra())
+	dup.append_extra(EntityIndex.personal_equipments[dup.personal_equipment_idx][3])
 	
 	info.display_info(dup)
 	

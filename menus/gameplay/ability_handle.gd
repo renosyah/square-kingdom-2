@@ -709,14 +709,6 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[enemy.modifier_damage_receive, curse_effectivenes, (50 + extra_debuff_duration), icon_death]
 			])
 			
-			if curse_effectivenes > 0.8 : # 80% to send poison damage
-				var curse_damage = overtime_damage_scene.instance()
-				curse_damage.squad = enemy
-				curse_damage.damage = 5
-				curse_damage.duration = 10
-				curse_damage.by = squad.get_path()
-				enemy.add_child(curse_damage)
-			
 			squad.set_modifiers([[squad.modifier_move_speed, -0.40, 15, icon_slowed]])
 			
 			gameplay.call_deferred("spawn_sigils", sigils)

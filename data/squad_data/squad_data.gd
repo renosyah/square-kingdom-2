@@ -67,6 +67,19 @@ export var siege_engine_attack_range :int
 export var extra :Dictionary # ArmyCardData {}
 export var biom :int # for modifier base by biom
 
+export var personal_equipment_idx :int
+
+func append_extra(e :Dictionary):
+	if e.empty():
+		return
+		
+	for key in e.keys():
+		if extra.has(key):
+			extra[key] += e[key]
+			continue
+			
+		extra[key] = e[key]
+		
 func spawn_time() -> float:
 	if is_commander:
 		return 5.0 # commander always 5 second
@@ -169,7 +182,15 @@ func melee_attack_speed():
 
 func speed() -> float:
 	var _squad_attribute = squad_attribute()
-	var _speed = EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
+	var _speed = 0.75 # infantry
+	
+	if not scene_idx in [0, 1]: # sieges
+		_speed = 0.34
+	
+	if is_mounted: # cavalry
+		_speed = 1.85
+	
+	_speed += EntityIndex.head_armors_stats[member_headgear_idx]["speed"]
 	_speed += EntityIndex.armors_stats[member_armor_idx]["speed"]
 	_speed += EntityIndex.shield_stats[member_shield_idx]["speed"]
 	
@@ -177,16 +198,6 @@ func speed() -> float:
 		_speed = _speed * (1.0 + extra["speed_bonus_percentage"])
 	if extra.has("speed_bonus_value"):
 		_speed = _speed + extra["speed_bonus_value"]
-		
-	_speed = max(_speed, 0.1)
-	
-	# siege engine
-	if not scene_idx in [0, 1]:
-		return 0.34 + _speed
-		
-	 # 0.5 is base speed of cav
-	if is_mounted:
-		return 1.85 + _speed
 		
 	# in biom desert
 	# using heavy armor, speed reduce by -10%
@@ -198,10 +209,7 @@ func speed() -> float:
 	elif biom == 2 and _squad_attribute[3] == 0:
 		_speed = _speed - (_speed * 0.10)
 		
-	_speed = max(_speed, 0.01)
-		
-	 # 0.5 is base speed of infantry
-	return 0.75 + _speed
+	return clamp(_speed, 0.01, 2.0)
 	
 func member_hp() -> int:
 	# 120 is is base hp cav
@@ -245,39 +253,40 @@ func heal_amount() -> int:
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)
-	scene_idx = _data["a"]
-	node_name = _data["a2"]
-	current_tile = _data["a3"]
-	squad_id = _data["a5"]
-	squad_name = _data["a6"]
-	description = _data["a7"]
-	network_id = _data["b"]
-	player_id = _data["c"]
-	team = _data["d"]
-	color_idx = _data["e"]
-	spotting_range = _data["f1"]
-	sort_order = _data["f2"]
-	squad_role = _data["f3"]
-	member_scene_idx = _data["g"]
-	turning_speed = _data["j"]
-	formation_density = _data["l"]
-	icon_idx = _data["l1"]
-	potrait_idx = _data["l2"]
-	member_headgear_idx = _data["m"]
-	member_armor_idx = _data["n"]
-	member_shield_idx = _data["o"]
-	member_melee_weapon_idx = _data["p"]
-	member_range_weapon_idx = _data["q"]
-	total_member = _data["t"]
-	is_mounted = _data["v"]
-	siege_engine_attack_damage = _data["v1"]
-	siege_engine_attack_range = _data["v4"]
-	siege_engine_attack_speed = _data["v5"]
-	is_hero = _data["v6"]
-	is_commander = _data["v7"]
-	squad_ability_idx = _data["v8"]
-	range_fire_mode = _data["v9"]
-	extra = _data["extra"]
+	scene_idx = _data.get("a", 0)
+	node_name = _data.get("a2", "")
+	current_tile = _data.get("a3", Vector2())
+	squad_id = _data.get("a5", 0)
+	squad_name = _data.get("a6", "")
+	description = _data.get("a7", "")
+	network_id = _data.get("b", 0)
+	player_id = _data.get("c", "")
+	team = _data.get("d", 0)
+	color_idx = _data.get("e", 0)
+	spotting_range = _data.get("f1", 1)
+	sort_order = _data.get("f2", 0)
+	squad_role = _data.get("f3", 0)
+	member_scene_idx = _data.get("g", 0)
+	turning_speed = _data.get("j", 8.0)
+	formation_density = _data.get("l", 0.35)
+	icon_idx = _data.get("l1", 0)
+	potrait_idx = _data.get("l2", 0)
+	member_headgear_idx = _data.get("m", 0)
+	member_armor_idx = _data.get("n", 0)
+	member_shield_idx = _data.get("o", 0)
+	member_melee_weapon_idx = _data.get("p", 0)
+	member_range_weapon_idx = _data.get("q", 0)
+	total_member = _data.get("t", 9)
+	is_mounted = _data.get("v", false)
+	siege_engine_attack_damage = _data.get("v1", 0)
+	siege_engine_attack_range = _data.get("v4", 0)
+	siege_engine_attack_speed = _data.get("v5", 0.0)
+	is_hero = _data.get("v6", false)
+	is_commander = _data.get("v7", false)
+	squad_ability_idx = _data.get("v8", 0)
+	range_fire_mode = _data.get("v9", 0)
+	extra = _data.get("extra", {})
+	personal_equipment_idx = _data.get("v10", 0)
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -314,6 +323,7 @@ func to_dictionary() -> Dictionary :
 	_data["v8"] = squad_ability_idx
 	_data["v9"] = range_fire_mode
 	_data["extra"] = extra
+	_data["v10"] = personal_equipment_idx
 	return _data
 	
 

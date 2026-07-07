@@ -150,6 +150,34 @@ const shield_stats = {
 	5:{'hp':13,'speed':-0.05,'spawn_time':3},
 }
 
+
+# name, icon, desc, extra
+const personal_equipments = {
+	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png"),"Not set", {}], 
+	1 :["Improve Armor", preload("res://assets/user_interface/icons/personal_equipment/improve_armor.png"),"Better metal quality", {
+		"hp_bonus_value": 40,
+		"speed_bonus_percentage" : -0.03,
+	}],
+	2 :["Extra Boots", preload("res://assets/user_interface/icons/personal_equipment/improve_boots.png"),"So comfortable to wear", {
+		"speed_bonus_percentage" : 0.08,
+	}],
+	3 :["Water Canteen",preload("res://assets/user_interface/icons/personal_equipment/improve_canteen.png") ,"Extra water always need", {
+		"heal_bonus_percentage" :0.15
+	}],
+	4 :["Extra Food Ration", preload("res://assets/user_interface/icons/personal_equipment/improve_food.png"),"Energy for both fight and march",{
+		"melee_speed_bonus_percentage" : 0.05,
+		"range_speed_bonus_percentage" : 0.05,
+		"hp_bonus_value": 10,
+	}],
+	5 :["Basic Medicine", preload("res://assets/user_interface/icons/personal_equipment/improve_med.png"),"Herbs and bandage to heal wound",{
+		"heal_bonus_percentage" :0.25,
+	}],
+	6 :["Better Bedroll", preload("res://assets/user_interface/icons/personal_equipment/improve_bedroll.png"),"Sleep tonight and ready for tomorrow",{
+		"heal_bonus_value" :15,
+		"heal_bonus_percentage" :0.10,
+	}],
+}
+
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0
 	preload("res://assets/user_interface/icons/squad/spear.png"), #1

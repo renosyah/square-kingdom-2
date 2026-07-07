@@ -1,5 +1,7 @@
 extends MarginContainer
 
+export var simplified :bool = false
+
 onready var _info_bg = $VBoxContainer/HBoxContainer/MarginContainer3/squad_card/info_bg
 onready var _info_potrait = $VBoxContainer/HBoxContainer/MarginContainer3/squad_card/MarginContainer/info_potrait
 onready var _info_name = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/info_name
@@ -14,9 +16,23 @@ onready var _info_icon_color2 = $VBoxContainer/HBoxContainer/VBoxContainer2/moun
 onready var _info_layout = $info_layout
 onready var _spawn_time = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer4/spawn_time
 
-func _ready():
-	_info_layout.visible = false
+onready var _top_bar = $VBoxContainer/HBoxContainer2
+onready var _pic = $VBoxContainer/HBoxContainer/MarginContainer3
+onready var _icons = $VBoxContainer/HBoxContainer/VBoxContainer2
+onready var _spawn = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer4
+onready var _name = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer
+onready var _infos = $VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2
 
+func _ready():
+	_top_bar.visible = not simplified
+	_pic.visible = not simplified
+	_icons.visible = not simplified
+	_spawn.visible = not simplified
+	_name.visible = not simplified
+	_infos.alignment = BoxContainer.ALIGN_BEGIN if not simplified else BoxContainer.ALIGN_CENTER
+	
+	_info_layout.visible = false
+	
 func display_info(data :SquadData):
 	_info_layout.visible = false
 	_info_bg.color = EntityIndex.player_colors[data.color_idx]
@@ -28,7 +44,7 @@ func display_info(data :SquadData):
 	_spawn_time.text = Utils.format_time(data.spawn_time())
 	_hp.text = "%s | %s" % [data.member_hp(),data.heal_amount()]
 	_attack.text = "%s | %s" % _get_attack_values(data)
-	_speed.text = "%s" % data.speed()
+	_speed.text = "%.2f" % data.speed()
 	_mounted.visible = data.is_mounted
 	_info_icon_color2.color = EntityIndex.player_colors[data.color_idx]
 	

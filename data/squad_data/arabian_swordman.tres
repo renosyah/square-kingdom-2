@@ -39,3 +39,4 @@ siege_engine_attack_range = 0
 extra = {
 }
 biom = 0
+personal_equipment_idx = 0

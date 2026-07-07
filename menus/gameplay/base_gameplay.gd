@@ -102,7 +102,6 @@ const memes2 = [
 	preload("res://assets/sounds/memes/bruh.wav"),
 	preload("res://assets/sounds/memes/cat_laught.wav"),
 ]
-
 const saya_akan_kembali = preload("res://assets/sounds/memes/saya_akan_kembali.wav")
 
 const regroup = preload("res://assets/sounds/gameplay/regroup.wav")
@@ -136,17 +135,29 @@ const announce_squad_killed = [
 const announce_squad_lost = [
 	preload("res://assets/sounds/announcement/squad_lost_1.wav"), preload("res://assets/sounds/announcement/squad_lost_2.wav"), preload("res://assets/sounds/announcement/squad_lost_3.wav"), preload("res://assets/sounds/announcement/squad_lost_4.wav"), preload("res://assets/sounds/announcement/squad_lost_5.wav"), preload("res://assets/sounds/announcement/squad_lost_6.wav")
 ]
+const announce_guard_lost = [
+	preload("res://assets/sounds/announcement/guard_lost_1.wav"), preload("res://assets/sounds/announcement/guard_lost_2.wav"), preload("res://assets/sounds/announcement/guard_lost_3.wav"), preload("res://assets/sounds/announcement/guard_lost_4.wav"), preload("res://assets/sounds/announcement/guard_lost_5.wav")
+]
 const announce_commander_killed = [
 	preload("res://assets/sounds/announcement/commander_kill_1.wav"), preload("res://assets/sounds/announcement/commander_kill_2.wav"), preload("res://assets/sounds/announcement/commander_kill_3.wav"), preload("res://assets/sounds/announcement/commander_kill_4.wav"), preload("res://assets/sounds/announcement/commander_kill_5.wav"), preload("res://assets/sounds/announcement/commander_kill_6.wav")
 ]
 const announce_commander_lost = [
 	preload("res://assets/sounds/announcement/commander_lost_1.wav"), preload("res://assets/sounds/announcement/commander_lost_2.wav"), preload("res://assets/sounds/announcement/commander_lost_3.wav"), preload("res://assets/sounds/announcement/commander_lost_4.wav"), preload("res://assets/sounds/announcement/commander_lost_5.wav"), preload("res://assets/sounds/announcement/commander_lost_6.wav")
 ]
+const announce_hero_killed = [
+	preload("res://assets/sounds/announcement/hero_kill_1.wav"), preload("res://assets/sounds/announcement/hero_kill_2.wav"), preload("res://assets/sounds/announcement/hero_kill_3.wav"), preload("res://assets/sounds/announcement/hero_kill_4.wav"), preload("res://assets/sounds/announcement/hero_kill_5.wav")
+]
+const announce_hero_lost = [
+	preload("res://assets/sounds/announcement/hero_lost_1.wav"), preload("res://assets/sounds/announcement/hero_lost_2.wav"), preload("res://assets/sounds/announcement/hero_lost_3.wav"), preload("res://assets/sounds/announcement/hero_lost_4.wav"), preload("res://assets/sounds/announcement/hero_lost_5.wav")
+]
 const announce_squad_spawned = [
 	preload("res://assets/sounds/announcement/reinforcement_1.wav"), preload("res://assets/sounds/announcement/reinforcement_2.wav"), preload("res://assets/sounds/announcement/reinforcement_3.wav"), preload("res://assets/sounds/announcement/reinforcement_4.wav"), preload("res://assets/sounds/announcement/reinforcement_5.wav"), preload("res://assets/sounds/announcement/reinforcement_6.wav")
 ]
 const announce_commander_spawned = [
 	preload("res://assets/sounds/announcement/commander_arrive _1.wav"), preload("res://assets/sounds/announcement/commander_arrive _2.wav"), preload("res://assets/sounds/announcement/commander_arrive _3.wav"), preload("res://assets/sounds/announcement/commander_arrive _4.wav"), preload("res://assets/sounds/announcement/commander_arrive _5.wav"), preload("res://assets/sounds/announcement/commander_arrive _6.wav")
+]
+const announce_hero_spawned = [
+	preload("res://assets/sounds/announcement/hero_arrive_1.wav"), preload("res://assets/sounds/announcement/hero_arrive_2.wav"), preload("res://assets/sounds/announcement/hero_arrive_3.wav"), preload("res://assets/sounds/announcement/hero_arrive_4.wav"), preload("res://assets/sounds/announcement/hero_arrive_5.wav")
 ]
 
 var ui_sound :AudioStreamPlayer
@@ -212,31 +223,49 @@ func unit_charged_impact(w :bool = false):
 	unit_sound.stream = cav_charged.pick_random()
 	unit_sound.play()
 	
-func play_squad_lost(is_commander :bool):
+func play_squad_lost(is_commander :bool, is_hero :bool, is_guard :bool):
 	if announce_lost_idx > (announce_squad_lost.size() - 1):
 		announce_lost_idx = 0
 		
 	if not annoucer_sound.playing:
-		var v = announce_commander_lost[announce_lost_idx] if is_commander else announce_squad_lost[announce_lost_idx]
-		annoucer_sound.stream = v
+		if (is_commander and is_hero) or is_commander:
+			annoucer_sound.stream = announce_commander_lost[announce_lost_idx]
+		elif is_hero:
+			annoucer_sound.stream = announce_hero_lost[announce_lost_idx]
+		elif is_guard:
+			annoucer_sound.stream = announce_guard_lost[announce_lost_idx]
+		else:
+			annoucer_sound.stream = announce_squad_lost[announce_lost_idx]
+			
 		annoucer_sound.play()
 	
 	announce_lost_idx += 1
 
-func play_squad_killed(is_commander :bool):
+func play_squad_killed(is_commander :bool, is_hero :bool):
 	if announce_killed_idx > (announce_squad_killed.size() - 1):
 		announce_killed_idx = 0
 		
 	if not annoucer_sound.playing:
-		var v = announce_commander_killed[announce_killed_idx] if is_commander else announce_squad_killed[announce_killed_idx]
-		annoucer_sound.stream = v
+		if (is_commander and is_hero) or is_commander:
+			annoucer_sound.stream = announce_commander_killed[announce_lost_idx]
+		elif is_hero:
+			annoucer_sound.stream = announce_hero_killed[announce_lost_idx]
+		else:
+			annoucer_sound.stream = announce_squad_killed[announce_lost_idx]
+			
 		annoucer_sound.play()
 	
 	announce_killed_idx += 1
 	
-func play_squad_spawn(is_commander :bool):
+func play_squad_spawn(is_commander :bool, is_hero :bool):
 	if not annoucer_sound.playing:
-		annoucer_sound.stream = announce_commander_spawned.pick_random() if is_commander else announce_squad_spawned.pick_random()
+		if (is_commander and is_hero) or is_commander:
+			annoucer_sound.stream = announce_commander_spawned.pick_random()
+		elif is_hero:
+			annoucer_sound.stream = announce_hero_spawned.pick_random()
+		else:
+			annoucer_sound.stream = announce_squad_spawned.pick_random()
+			
 		annoucer_sound.play()
 		
 ########################################## position manager ############################################
@@ -869,7 +898,7 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
-		play_squad_spawn(data.is_commander)
+		play_squad_spawn(data.is_commander,data.is_hero)
 		
 	if squad.squad_ability_idx != 0:
 		squad.start_ability_cooldown(AbilityHandle.squad_abilities[squad.squad_ability_idx]["cooldown"])
@@ -1055,6 +1084,7 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	
 	# cheap ass way to detect commander
 	var is_commander :bool = data.is_commander
+	var is_hero :bool = data.is_hero
 
 	# apply debuf, 50% slower attack speed
 	if is_commander and not player_debuf.has(squad.player_id):
@@ -1072,14 +1102,14 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)
 		
-		play_squad_lost(is_commander)
+		play_squad_lost(is_commander, is_hero, squad is GuardTowerSquad)
 		
 	# confirm the kill was yours
 	if squad.team != current_player.team:
 		var attacked_by :BaseSquad = get_node_or_null(squad.attacked_by)
 		if is_instance_valid(attacked_by):
 			if attacked_by.player_id == current_player.player_id:
-				play_squad_killed(is_commander)
+				play_squad_killed(is_commander, is_hero)
 				
 	if squad.floating_info:
 		squad.floating_info.visible = false
