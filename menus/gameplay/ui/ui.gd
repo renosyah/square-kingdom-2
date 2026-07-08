@@ -100,10 +100,15 @@ func _check_movement_mode():
 			
 	if mode_normal > 0 and mode_attack == 0:
 		movement_mode.icon = icon_normal_movement_mode
+		current_movement_mode = 0
+		
 	elif mode_normal == 0 and mode_attack > 0:
 		movement_mode.icon = icon_attack_move_mode
+		current_movement_mode = 1
+		
 	else:
 		movement_mode.icon = icon_unknown_mode
+		current_movement_mode = 0
 		
 func _check_squad_ability():
 	ability_container.visible = false

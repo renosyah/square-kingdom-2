@@ -249,7 +249,7 @@ func heal_amount() -> int:
 	elif biom == 2:
 		_heal_amount = int(_heal_amount - (_heal_amount * 0.10))
 	
-	return int(clamp(_heal_amount, 0, _member_hp))
+	return int(clamp(_heal_amount, 5, _member_hp))
 
 func from_dictionary(_data : Dictionary):
 	.from_dictionary(_data)

@@ -17,6 +17,7 @@ func _ready():
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
 	
+	setup_bandit_mob()
 	setup_ambient_audio()
 	setup_unit_position_manager()
 	spawn_tile_map()
@@ -296,8 +297,6 @@ func spawn_tile_map():
 func _on_tile_map_ready():
 	nav = tile_map.get_nav_tile_map()
 	
-	setup_bandit_mob()
-	
 	# this function only be called
 	# if tile map is ready and setup properly
 	var map_size :int = current_tile_map_manifest_data.map_size
@@ -378,7 +377,6 @@ func setup_bandit_mob():
 	bot_bandit.team = -1
 	bot_bandit.color_idx = 10
 	bot_bandit.spawn_position = 4 # default set last one
-	
 	
 func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 	if not spawn_point_fort[0]:
@@ -1091,6 +1089,7 @@ func _on_squad_dead(squad :BaseSquad, data :SquadData):
 	if squad.player_id == current_player.player_id:
 		if selected_squads.has(squad):
 			selected_squads.erase(squad)
+			ui.selected_squads_updated()
 			
 		player_squads.erase(squad)
 		ui.remove_squad_card(squad)

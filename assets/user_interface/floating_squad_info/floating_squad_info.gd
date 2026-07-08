@@ -158,7 +158,7 @@ func _sort_by_hp(a, b):
 func _on_unit_clicked(_v):
 	_overlay.visible = squad in selected_squads
 	
-	if is_mounted:
+	if is_mounted and side_state == 0:
 		_color2.color = Color("#ffffff") if _overlay.visible else Color("#000000")
 		_icon2.modulate = Color("#ffffff") if not _overlay.visible else Color("#000000")
 	
