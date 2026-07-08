@@ -641,6 +641,7 @@ func _on_create_new_pressed():
 	snack_bar.show()
 	
 	dup_squad_data.description = "Custom Squad" if not dup_squad_data.is_hero else "Hero"
+	dup_squad_data.extra = {}
 	
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())
@@ -663,6 +664,7 @@ func _on_save_pressed():
 		dup_squad_data.member_melee_weapon_idx = shield_melee_weapons[member_melee_weapon_idx]
 		
 	dup_squad_data.description = "Custom Squad" if not dup_squad_data.is_hero else "Hero"
+	dup_squad_data.extra = {}
 	
 	var dup = SquadData.new()
 	dup.from_dictionary(dup_squad_data.to_dictionary())

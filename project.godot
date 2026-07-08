@@ -65,6 +65,11 @@ _global_script_classes=[ {
 "path": "res://addons/batch_spawner/batch_spawner.gd"
 }, {
 "base": "Node",
+"class": "BattleAi",
+"language": "GDScript",
+"path": "res://assets/battle_ai/battle_ai.gd"
+}, {
+"base": "Node",
 "class": "CampaignMapGeneration",
 "language": "GDScript",
 "path": "res://menus/campaign/scripts/campaign_map_generation.gd"
@@ -366,6 +371,7 @@ _global_script_class_icons={
 "BaseTileUnit": "",
 "BatchDespawner": "",
 "BatchSpawner": "",
+"BattleAi": "",
 "CampaignMapGeneration": "",
 "CavalryMember": "",
 "CavalrySquad": "",
