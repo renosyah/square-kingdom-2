@@ -16,7 +16,7 @@ func _ready():
 	yield(get_tree(), "idle_frame")
 	timeout.wait_time = duration
 	timeout.start()
-	timer.start()
+	_on_overtime_timeout()
 	
 func _on_overtime_timeout():
 	timer.start()

@@ -1,11 +1,15 @@
 extends SiegeEngine
 
 const bolt_projectile_scene = preload("res://scenes/projectiles/balista_bolt.tscn")
+const exploding_bolt_projectile_scene = preload("res://scenes/projectiles/balista_exploding_bolt.tscn")
+
 const arm_swing_audio = preload("res://assets/sounds/sfx/balista_firing.wav")
 
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var ammo = $pivot/Spatial/arm/ammo
 onready var arm = $pivot/Spatial/arm
+
+onready var current_bolt = bolt_projectile_scene
 
 func attack():
 	.attack()
@@ -23,7 +27,7 @@ func _on_bolt_shot():
 	_combat_sound.stream = arm_swing_audio
 	_combat_sound.play()
 	
-	var bolt :BaseProjectile = bolt_projectile_scene.instance()
+	var bolt :BaseProjectile = current_bolt.instance()
 	bolt.connect("on_reach", self ,"_on_projectile_reach", [bolt])
 	Global.current_root.add_child(bolt)
 	bolt.translation = ammo.global_position

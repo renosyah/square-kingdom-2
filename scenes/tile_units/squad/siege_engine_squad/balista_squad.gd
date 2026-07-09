@@ -2,6 +2,21 @@ extends SiegeEngineSquad
 
 const overtime_damage_scene = preload("res://assets/overtime_damage/overtime_damage.tscn")
 
+func special_ability_activated():
+	.special_ability_activated()
+	
+	_switch_exploding_bolt(_use_special_ability)
+	
+func _switch_exploding_bolt(v :bool):
+	if not is_instance_valid(_siege_engine):
+		return
+	
+	if not ("current_bolt" in _siege_engine):
+		return
+	
+	_siege_engine.current_bolt = _siege_engine.exploding_bolt_projectile_scene if v else _siege_engine.bolt_projectile_scene
+	
+	
 func _on_set_damage_to_tile(_engine :SiegeEngine, tile_id :Vector2, attack_damage :int):
 	if not unit_position.has(tile_id):
 		return
@@ -15,6 +30,7 @@ func _on_set_damage_to_tile(_engine :SiegeEngine, tile_id :Vector2, attack_damag
 	if _use_special_ability:
 		_bolt_explode_into_splinter(unit_positions, tile_id)
 		_use_special_ability = false
+		_switch_exploding_bolt(_use_special_ability)
 		
 func _normal_damage(unit_positions :Array, attack_damage :int):
 	if not _is_master:
