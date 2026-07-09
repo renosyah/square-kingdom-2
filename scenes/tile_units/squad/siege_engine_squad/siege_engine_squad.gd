@@ -19,16 +19,21 @@ const siege_breaks = [
 
 export var siege_engine_scene :PackedScene
 export var minimum_range :int = 2
+export var siege_engine_ability_idx :int
 
 var _minimum_range_tiles :Array = []
 var _siege_engine :SiegeEngine
 var _siege_engine_audio :AudioStreamPlayer3D
+
+var _use_special_ability :bool
 
 func _ready():
 	_siege_engine_audio = AudioStreamPlayer3D.new()
 	_siege_engine_audio.bus = Global.bus_sfx
 	_siege_engine_audio.unit_db = 5
 	add_child(_siege_engine_audio)
+	
+	squad_ability_idx = siege_engine_ability_idx
 	
 func _init_formations():
 	#._init_formations()
@@ -150,9 +155,11 @@ func on_dead():
 		
 	.on_dead()
 
+func use_special_ability():
+	rpc("_use_special_ability")
 
-
-
+remotesync func _use_special_ability():
+	_use_special_ability = true
 
 
 

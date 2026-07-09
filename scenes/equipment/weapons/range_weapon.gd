@@ -23,23 +23,24 @@ func _ready():
 func get_projectile_damage(target, enemy_squad_attribute :Array) -> int:
 	return attack_damage
 	
+func _create_projectile() -> BaseProjectile:
+	var arrow :BaseProjectile = projectile.instance()
+	arrow.connect("on_reach", self ,"_on_projectile_reach", [arrow])
+	Global.current_root.add_child(arrow)
+	return arrow
+	
 func _prepare_pool():
 	for i in 3:
-		var arrow :BaseProjectile = projectile.instance()
-		arrow.connect("on_reach", self ,"_on_projectile_reach", [arrow])
-		Global.current_root.add_child(arrow)
-		_pools.append(arrow)
+		_pools.append(_create_projectile())
 
 func _get_pool() -> BaseProjectile:
 	for i in _pools:
 		if i.is_ready():
 			return i
 			
-	var arrow :BaseProjectile = projectile.instance()
-	arrow.connect("on_reach", self ,"_on_projectile_reach", [arrow])
-	Global.current_root.add_child(arrow)
-	_pools.append(arrow)
-	return arrow
+	var p = _create_projectile()
+	_pools.append(p)
+	return p
 
 func _on_projectile_reach(arrow):
 	emit_signal("on_hit", arrow.global_position)

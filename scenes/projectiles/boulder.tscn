@@ -5,16 +5,10 @@
 [ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=3]
 [ext_resource path="res://addons/TrailRender/TrailRender.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/boulder_particle/boulder_particle.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/tiles/materials/white_trail_material.tres" type="Material" id=6]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0.418182 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="SpatialMaterial" id=2]
-flags_unshaded = true
-flags_vertex_lighting = true
-flags_do_not_receive_shadows = true
-flags_disable_ambient_light = true
-vertex_color_use_as_albedo = true
 
 [sub_resource type="SphereMesh" id=6]
 radial_segments = 8
@@ -111,7 +105,7 @@ speed = 9.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.140432 )
 width_curve = SubResource( 1 )
 max_points = 15
-material = SubResource( 2 )
+material = ExtResource( 6 )
 
 [node name="blood_particle" parent="." instance=ExtResource( 5 )]
 

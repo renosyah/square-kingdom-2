@@ -333,6 +333,36 @@ const squad_abilities = [
 		"cooldown" : 40.0,
 		"required_enemy": true,
 	},
+	{
+		# range siege 34
+		"name": "Hornet Nest",
+		"icon": preload("res://assets/user_interface/ability/hornet_nest_ability.png"),
+		"detail": "Launches a captured hornet nest into the battlefield. The impact causes no direct damage, but enraged hornets swarm every nearby squad, reducing all combat statistics by -25%. The affected area remains infested for 25 seconds, and any squad passing through will also be stung, suffering the same penalty.",
+		"type": "siege",
+		"weapon_idx": 0, # <- ignore this
+		"cooldown" : 60.0,
+		"required_enemy": false,
+	},
+	{
+		# range siege weapon 35
+		"name": "Splinter",
+		"icon": preload("res://assets/user_interface/ability/splinter_ability.png"),
+		"detail": "Fires a specially crafted ballista bolt designed to shatter on impact. Razor-sharp wooden splinters burst outward, striking every nearby squad and inflicting Bleeding, causing continuous damage over time.",
+		"type": "siege",
+		"weapon_idx": 0, # <- ignore this
+		"cooldown" : 60.0,
+		"required_enemy": false,
+	},
+	{
+		# range siege weapon 36
+		"name": "Flaming Pot",
+		"icon": preload("res://assets/user_interface/ability/flaming_pot_ability.png"),
+		"detail": "Launches a blazing pot of burning pitch that explodes on impact, dealing massive initial damage. The ground ignites for 15 seconds, creating a blazing hazard that sets passing squads ablaze, inflicting Fire damage every second until they escape the flames.",
+		"type": "siege",
+		"weapon_idx": 0, # <- ignore this
+		"cooldown" : 60.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -860,6 +890,11 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				elif squad_ability_idx == 32:
 					gameplay.call_deferred("force_command", 5, targets)
 					
+		34,35,36: # check
+			if squad is SiegeEngineSquad:
+				squad.use_special_ability()
+				squad.set_modifiers([[squad.modifier_move_speed, 0.10, 1, icon_fist_up]])
+			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
 	

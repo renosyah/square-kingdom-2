@@ -1,9 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/tile_units/squad/siege_engine_squad/siege_engine_squad.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tile_units/squad/siege_engine_squad/catapult_squad.gd" type="Script" id=1]
 [ext_resource path="res://scenes/tile_units/siege_engine/catapult/catapult.tscn" type="PackedScene" id=2]
 
 [node name="catapult_squad" type="Spatial"]
 script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": ""
+}
 align_threshold = 0.95
 siege_engine_scene = ExtResource( 2 )
+siege_engine_ability_idx = 34
