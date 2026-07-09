@@ -178,6 +178,37 @@ const personal_equipments = {
 	}],
 }
 
+const perks = {
+	0 :["(Not Set)", preload("res://assets/user_interface/icons/equipment/empty.png"),"Not set", {}], 
+	1 :["Bulwark", preload("res://assets/user_interface/icons/perks/bulwalk_perk.png"),"Stand your ground, no matter the cost", {
+		"hp_bonus_percentage": 0.25,
+		"speed_bonus_percentage" : -0.10,
+	}],
+	2 :["Berserker", preload("res://assets/user_interface/icons/perks/beserker_perk.png") ,"Strike first, think later.", {
+		"melee_speed_bonus_percentage" : 0.20,
+		"hp_bonus_percentage": -0.15,
+	}],
+	3 :["Marksman", preload("res://assets/user_interface/icons/perks/marksman_perk.png") ,"Every shot counts", {
+		"range_speed_bonus_percentage" : 0.20,
+		"speed_bonus_percentage" : -0.10,
+	}],
+	4 :["Pathfinder", preload("res://assets/user_interface/icons/perks/pathfinder_perk.png") ,"Speed is the greatest defense.",{
+		"speed_bonus_percentage" : 0.15,
+		"hp_bonus_percentage": -0.15,
+	}],
+	5 :["Field Medic", preload("res://assets/user_interface/icons/perks/medic_perk.png") ,"No one gets left behind.",{
+		"heal_bonus_percentage" :0.40,
+		"melee_speed_bonus_percentage" : -0.10,
+		"range_speed_bonus_percentage" : -0.10,
+	}],
+	6 :["Battle Frenzy", preload("res://assets/user_interface/icons/perks/frenzy_perk.png"),"Pain is temporary. Victory is forever.",{
+		"heal_bonus_percentage" : -0.25,
+		"melee_speed_bonus_percentage" : 0.10,
+		"range_speed_bonus_percentage" : 0.10,
+	}],
+}
+
+
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0
 	preload("res://assets/user_interface/icons/squad/spear.png"), #1

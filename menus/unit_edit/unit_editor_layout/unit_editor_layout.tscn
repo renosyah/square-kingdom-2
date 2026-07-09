@@ -669,7 +669,7 @@ __meta__ = {
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer"]
 margin_right = 288.0
-margin_bottom = 2847.0
+margin_bottom = 3145.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/margin_right = 12
@@ -678,7 +678,7 @@ custom_constants/margin_left = 12
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer"]
 margin_left = 12.0
 margin_right = 276.0
-margin_bottom = 2847.0
+margin_bottom = 3145.0
 mouse_filter = 2
 custom_constants/separation = 12
 
@@ -1047,7 +1047,7 @@ stretch_mode = 7
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
 margin_top = 1024.0
 margin_right = 264.0
-margin_bottom = 1930.0
+margin_bottom = 2228.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer"]
@@ -1213,7 +1213,7 @@ margin_right = 264.0
 margin_bottom = 658.0
 rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = ExtResource( 51 )
-text = "Improvement"
+text = "Extra"
 valign = 2
 
 [node name="MarginContainer6" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer"]
@@ -1269,10 +1269,72 @@ texture = ExtResource( 10 )
 expand = true
 stretch_mode = 7
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
-margin_top = 1942.0
+[node name="Label6" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer"]
+margin_top = 910.0
 margin_right = 264.0
-margin_bottom = 2369.0
+margin_bottom = 956.0
+rect_min_size = Vector2( 0, 46 )
+custom_fonts/font = ExtResource( 51 )
+text = "Perks"
+valign = 2
+
+[node name="MarginContainer7" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer"]
+margin_top = 960.0
+margin_right = 264.0
+margin_bottom = 1204.0
+rect_min_size = Vector2( 0, 12 )
+mouse_filter = 2
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+
+[node name="perks_holder" type="GridContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7"]
+margin_left = 8.0
+margin_right = 256.0
+margin_bottom = 244.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+
+[node name="no" type="TextureRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder"]
+margin_right = 80.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 80, 120 )
+texture = ExtResource( 35 )
+expand = true
+stretch_mode = 6
+
+[node name="TextureRect2" type="TextureRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder"]
+margin_left = 84.0
+margin_right = 164.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 80, 120 )
+texture = ExtResource( 38 )
+expand = true
+stretch_mode = 7
+
+[node name="TextureRect3" type="TextureRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder"]
+margin_left = 168.0
+margin_right = 248.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 80, 120 )
+texture = ExtResource( 39 )
+expand = true
+stretch_mode = 7
+
+[node name="TextureRect4" type="TextureRect" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder"]
+margin_top = 124.0
+margin_right = 80.0
+margin_bottom = 244.0
+rect_min_size = Vector2( 80, 120 )
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 7
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
+margin_top = 2240.0
+margin_right = 264.0
+margin_bottom = 2667.0
 mouse_filter = 2
 
 [node name="Label3" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3"]
@@ -1557,9 +1619,9 @@ rect_min_size = Vector2( 0, 12 )
 mouse_filter = 2
 
 [node name="VBoxContainer4" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2"]
-margin_top = 2381.0
+margin_top = 2679.0
 margin_right = 264.0
-margin_bottom = 2847.0
+margin_bottom = 3145.0
 rect_min_size = Vector2( 0, 400 )
 mouse_filter = 2
 

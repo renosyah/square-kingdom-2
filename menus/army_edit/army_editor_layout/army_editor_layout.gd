@@ -59,6 +59,7 @@ func display():
 	
 	dup.append_extra(Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra())
 	dup.append_extra(EntityIndex.personal_equipments[dup.personal_equipment_idx][3])
+	dup.append_extra(EntityIndex.perks[dup.perk_idx][3])
 	
 	info.display_info(dup)
 	

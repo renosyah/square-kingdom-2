@@ -68,6 +68,7 @@ export var extra :Dictionary # ArmyCardData {}
 export var biom :int # for modifier base by biom
 
 export var personal_equipment_idx :int
+export var perk_idx :int
 
 func append_extra(e :Dictionary):
 	if e.empty():
@@ -287,6 +288,7 @@ func from_dictionary(_data : Dictionary):
 	range_fire_mode = _data.get("v9", 0)
 	extra = _data.get("extra", {})
 	personal_equipment_idx = _data.get("v10", 0)
+	perk_idx = _data.get("v11", 0)
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -324,6 +326,7 @@ func to_dictionary() -> Dictionary :
 	_data["v9"] = range_fire_mode
 	_data["extra"] = extra
 	_data["v10"] = personal_equipment_idx
+	_data["v11"] = perk_idx
 	return _data
 	
 

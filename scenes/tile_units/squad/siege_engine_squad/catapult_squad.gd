@@ -43,5 +43,5 @@ func _on_target_affected(squad):
 		[modifier_melee_speed, -0.25, 10, 0],
 		[modifier_range_speed,  -0.25, 10, 0],
 		[modifier_move_speed,  -0.25, 10, 0],
-		[modifier_damage_receive, -0.25, 10, 2],
+		[modifier_damage_receive, 0.25, 10, 2],
 	])

@@ -74,6 +74,7 @@ const fire_modes = {
 	1 :["Rappid!", preload("res://assets/user_interface/ability/rappid_fire.png")], 
 }
 onready var personal_equipments :Dictionary = EntityIndex.personal_equipments
+onready var perks :Dictionary = EntityIndex.perks
 
 export var player_color_idx :int
 export var player_material :SpatialMaterial
@@ -107,6 +108,7 @@ onready var ability_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginC
 onready var fire_mode_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option
 onready var fire_mode_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option/MarginContainer7/fire_mode_holder
 onready var personal_equipment_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer6/personal_equipment_holder
+onready var perks_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -308,6 +310,20 @@ func display_personal_equipment(selected_index :int):
 		item.item_name = personal_equipments[key][0]
 		item.connect("selected", self, "_on_personal_equipment_selected", [key])
 		personal_equipment_holder.add_child(item)
+		item.set_selected(key == selected_index)
+		
+func display_perks(selected_index :int):
+	for i in perks_holder.get_children():
+		perks_holder.remove_child(i)
+		i.queue_free()
+		
+	for key in perks.keys():
+		var item = equipment_item_scene.instance()
+		item.index = key
+		item.icon = perks[key][1]
+		item.item_name = perks[key][0]
+		item.connect("selected", self, "_on_perk_selected", [key])
+		perks_holder.add_child(item)
 		item.set_selected(key == selected_index)
 		
 		
@@ -515,7 +531,21 @@ func _on_armors_selected(index :int):
 func _on_personal_equipment_selected(index :int):
 	dup_squad_data.personal_equipment_idx = index
 	display_personal_equipment(index)
-	dup_squad_data.extra = EntityIndex.personal_equipments[index][3]
+	
+	dup_squad_data.extra = {}
+	dup_squad_data.append_extra(personal_equipments[index][3])
+	dup_squad_data.append_extra(perks[dup_squad_data.perk_idx][3])
+	
+	squad_info.display_info(dup_squad_data)
+	
+func _on_perk_selected(index :int):
+	dup_squad_data.perk_idx = index
+	display_perks(index)
+	
+	dup_squad_data.extra = {}
+	dup_squad_data.append_extra(personal_equipments[dup_squad_data.personal_equipment_idx][3])
+	dup_squad_data.append_extra(perks[index][3])
+	
 	squad_info.display_info(dup_squad_data)
 	
 func _on_shield_selected(index :int):
@@ -550,8 +580,6 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())
 	dup_squad_data.squad_id = 1
-	
-	squad_info.display_info(dup_squad_data)
 	
 	# for shield scinanigan, 
 	# i regret made this shield and unshield varian 
@@ -589,6 +617,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_headgear(dup_squad_data.member_headgear_idx)
 	display_armor(dup_squad_data.member_armor_idx)
 	display_personal_equipment(dup_squad_data.personal_equipment_idx)
+	display_perks(dup_squad_data.perk_idx)
 	display_shield(dup_squad_data.member_shield_idx)
 	display_fire_mode(dup_squad_data.range_fire_mode)
 	display_role(dup_squad_data.squad_role)
@@ -599,6 +628,12 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	show_fire_mode_option()
 	
 	infantry_member.apply_equipment()
+	
+	dup_squad_data.extra = {}
+	dup_squad_data.append_extra(personal_equipments[dup_squad_data.personal_equipment_idx][3])
+	dup_squad_data.append_extra(perks[dup_squad_data.perk_idx][3])
+	
+	squad_info.display_info(dup_squad_data)
 	
 func _on_change_icon_pressed():
 	popup_choose_potrait.list = EntityIndex.squad_icon

@@ -36,12 +36,12 @@ func _affected_positions(unit_positions :Array):
 		if not is_instance_valid(enemy_squad):
 			continue
 			
+		if not (enemy_squad in _applied):
+			emit_signal("on_target_affected", enemy_squad)
+			
 		if apply_once:
 			_applied.append(enemy_squad)
 			
-		if not (enemy_squad in _applied):
-			emit_signal("on_target_affected", enemy_squad)
-		
 func _on_timeout_timeout():
 	timer.stop()
 	queue_free()
