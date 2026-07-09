@@ -355,7 +355,7 @@ const squad_abilities = [
 	},
 	{
 		# range siege weapon 36
-		"name": "Flaming Pot",
+		"name": "Inferno",
 		"icon": preload("res://assets/user_interface/ability/flaming_pot_ability.png"),
 		"detail": "Launches a blazing pot of burning pitch that explodes on impact, dealing massive initial damage. The ground ignites for 15 seconds, creating a blazing hazard that sets passing squads ablaze, inflicting Fire damage every second until they escape the flames.",
 		"type": "siege",

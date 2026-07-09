@@ -1,10 +1,14 @@
 extends SiegeEngine
 
 const boulder_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
+const fire_boulder_projectile_scene = preload("res://scenes/projectiles/fire_boulder.tscn")
+
 const arm_swing_audio = preload("res://assets/sounds/unit/swing/swing.wav")
 
 onready var animation_state = $AnimationTree.get("parameters/playback")
 onready var ammo = $pivot/Spatial/arm/basket/ammo
+
+onready var current_boulder = boulder_projectile_scene
 
 func attack():
 	.attack()
@@ -23,7 +27,7 @@ func _on_boulder_lob():
 	_combat_sound.stream = arm_swing_audio
 	_combat_sound.play()
 	
-	var boulder :BaseProjectile = boulder_projectile_scene.instance()
+	var boulder :BaseProjectile = current_boulder.instance()
 	boulder.connect("on_reach", self ,"_on_projectile_reach", [boulder])
 	Global.current_root.add_child(boulder)
 	boulder.translation = ammo.global_position

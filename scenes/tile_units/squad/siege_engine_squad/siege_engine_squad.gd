@@ -160,7 +160,10 @@ func use_special_ability():
 
 remotesync func _use_special_ability():
 	_use_special_ability = true
-
+	special_ability_activated()
+	
+func special_ability_activated():
+	pass
 
 
 

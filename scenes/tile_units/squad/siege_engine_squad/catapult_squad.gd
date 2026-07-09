@@ -12,24 +12,18 @@ func _on_set_damage_to_tile(_engine :SiegeEngine, center_tile_id :Vector2, attac
 	._on_set_damage_to_tile(_engine, center_tile_id, attack_damage)
 	
 func _release_the_bee(center_tile_id :Vector2):
-	
-	# spawn bee particle here
-	_spawn_bee_particle(nav.get_pos_v3(center_tile_id))
-	
-	if not _is_master:
-		return
-		
 	# catapult deal AOE damage
 	var tiles :Array = TileMapUtils.get_adjacent_tiles(
 		TileMapUtils.get_directions(), center_tile_id, 1
 	) + [center_tile_id]
 	
+	# spawn bee particle here
 	for tile_id in tiles:
-		if not Global.current_root:
-			return
-			
+		_spawn_bee_particle(nav.get_pos_v3(tile_id))
+		
+	if _is_master and Global.current_root:
 		var b = bee.instance()
-		b.tile_id = tile_id
+		b.tiles = tiles
 		b.unit_position = unit_position
 		b.duration = 25
 		b.apply_once = true
