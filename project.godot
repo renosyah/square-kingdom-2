@@ -354,6 +354,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/tile_position_manager/tile_position_manager.gd"
 }, {
+"base": "Spatial",
+"class": "TileTrap",
+"language": "GDScript",
+"path": "res://assets/tile_trap/tile_trap.gd"
+}, {
 "base": "Node",
 "class": "Utils",
 "language": "GDScript",
@@ -429,6 +434,7 @@ _global_script_class_icons={
 "TileMapFileManifest": "",
 "TileMapUtils": "",
 "TilePositionManager": "",
+"TileTrap": "",
 "Utils": ""
 }
 

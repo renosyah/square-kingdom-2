@@ -5,6 +5,7 @@ const squad_abilities = [
 	null,
 	{
 		# melee pike weapon 1
+		# affect : melee enemy (on hit)
 		"name": "Hold'em",
 		"icon": preload("res://assets/user_interface/ability/pike_up_ability.png"),
 		"detail": "Hold the line! Stop enemies in their tracks and reduce their movement speed by -50% for 15 seconds.",
@@ -15,6 +16,7 @@ const squad_abilities = [
 	},
 	{
 		# melee great sword weapon 2
+		# affect : melee enemy (instant)
 		"name": "Fear!",
 		"icon": preload("res://assets/user_interface/ability/intimidation_ability.png"),
 		"detail": "Strike fear into the enemy, reducing all attack speeds by -50% for 15 seconds.",
@@ -25,6 +27,7 @@ const squad_abilities = [
 	},
 	{
 		# melee axe weapon 3
+		# affect : melee self (instant)
 		"name": "Beserk!",
 		"icon": preload("res://assets/user_interface/ability/beserk_ability.png"),
 		"detail": "Unleash a furious assault, increasing melee attack speed by +50% and movement speed by +25%, but suffer -25% more incoming damage for 15 seconds.",
@@ -35,6 +38,8 @@ const squad_abilities = [
 	},
 	{
 		# range longbow weapon 4
+		# affect : range self (instant)
+		# affect : range enemy (on hit)
 		"name": "Rain Arrows!",
 		"icon": preload("res://assets/user_interface/ability/rain_arrow_ability.png"),
 		"detail": "Cover the battlefield with arrows, increasing ranged attack speed by +50% while slowing affected enemies by -15% for 15 seconds.",
@@ -45,6 +50,7 @@ const squad_abilities = [
 	},
 	{
 		# range javeline weapon 5
+		# affect : range self (instant)
 		"name": "Chase!",
 		"icon": preload("res://assets/user_interface/ability/chase_ability.png"),
 		"detail": "Don't let them escape! Increase movement speed by +50% for 10 seconds.",
@@ -55,6 +61,8 @@ const squad_abilities = [
 	},
 	{
 		# melee great axe weapon 6
+		# affect : melee self (instant)
+		# affect : area (instant)
 		"name": "Scare!",
 		"icon": preload("res://assets/user_interface/ability/scare_ability.png"),
 		"detail": "Break the enemy's courage, forcing them to flee from battle.",
@@ -65,6 +73,8 @@ const squad_abilities = [
 	},
 	{
 		# range crossbow weapon 7
+		# affect : range self (instant)
+		# affect : range enemy (on hit)
 		"name": "Pin'em!",
 		"icon": preload("res://assets/user_interface/ability/pinned_ability.png"),
 		"detail": "Pin the enemy down, cripple reducing their movement speed by -80% for 15 seconds.",
@@ -75,6 +85,7 @@ const squad_abilities = [
 	},
 	{
 		# all shield 8
+		# affect : self (instant)
 		"name": "Shield Up!",
 		"icon": preload("res://assets/user_interface/ability/shield_ability.png"),
 		"detail": "Raise your shields! Gain +50% damage resistance, but decrease attack speed by -50% and movement speed by -70% for 25 seconds.",
@@ -85,6 +96,8 @@ const squad_abilities = [
 	},
 	{
 		# range bow weapon 9
+		# affect : range self (instant)
+		# affect : range enemy (on hit)
 		"name": "Suppress!",
 		"icon": preload("res://assets/user_interface/ability/suppress_ability.png"),
 		"detail": "Keep enemy archers under pressure, reducing their ranged attack speed by -50% but doing -25% less damage for 10 seconds.",
@@ -95,6 +108,7 @@ const squad_abilities = [
 	},
 	{
 		# melee pitchfork weapon 10
+		# affect : melee enemy (instant)
 		"name": "Riot!",
 		"icon": preload("res://assets/user_interface/ability/riot_ability.png"),
 		"detail": "Overwhelm the enemy with chaos and confusion, reducing their defense by -25% and movement speed by -50% for 15 seconds.",
@@ -105,6 +119,8 @@ const squad_abilities = [
 	},
 	{
 		# range longbow weapon 11
+		# affect : range self (instant)
+		# affect : melee ally (instant)
 		"name": "Heavy Draw",
 		"icon": preload("res://assets/user_interface/ability/heavy_draw_ability.png"),
 		"detail": "Draw with maximum force, increasing ranged damage by +40% but reducing ranged attack speed by -50% for 15 seconds. Inspire by this, neaby friendly range unit also receive +10% range damage",
@@ -115,9 +131,11 @@ const squad_abilities = [
 	},
 	{
 		# range crossbow weapon 12
+		# affect : range self (instant)
+		# affect : range enemy (on hit)
 		"name": "AP Bolts",
 		"icon": preload("res://assets/user_interface/ability/bodkin_point_ability.png"),
-		"detail": "Fit hardened Armor-Piercing-Custom-Bodkin (APCB) bolts for maximum penetration. Increase ranged damage by +40% & inflict bleeding damage each second for 10 seconds.",
+		"detail": "Fit your bolt with Armor Piercing Custom Bodkin (APCB) bolts for maximum penetration. Increase ranged damage by +40% & inflict bleeding damage each second for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 45.0,
@@ -125,6 +143,7 @@ const squad_abilities = [
 	},
 	{
 		# range javeline  weapon 13
+		# affect : range self (instant)
 		"name": "Yeet!",
 		"icon": preload("res://assets/user_interface/ability/heavy_javeline_ability.png"),
 		"detail": "Stop aiming and start throwing. Javelins deal -25% less damage, but this squad hurls them +50% faster for 10 seconds.",
@@ -135,6 +154,8 @@ const squad_abilities = [
 	},
 	{
 		# melee great sword 14
+		# affect : melee self (instant)
+		# affect : melee enemy (on hit)
 		"name": "Death Blow!",
 		"icon": preload("res://assets/user_interface/ability/death_blow_ability.png"),
 		"detail": "Abandon haste and commit to a killing strike. Remove all speed modifiers affecting this squad, then gain +25% melee damage but attack -15% slower for 15 seconds. inflict bleeding damage each second for 10 second",
@@ -145,6 +166,8 @@ const squad_abilities = [
 	},
 	{
 		# melee great axe 15
+		# affect : melee self (instant)
+		# affect : area (instant)
 		"name": "Cleave!",
 		"icon": preload("res://assets/user_interface/ability/cleave_ability.png"),
 		"detail": "Swing with overwhelming force, +50% melee damage, -50% melee attack speed & All squads in the target tile suffer -25% damage resistance for 15 seconds",
@@ -155,6 +178,7 @@ const squad_abilities = [
 	},
 	{
 		# melee pitchfork weapon 16
+		# affect : melee ally (instant)
 		"name": "Offering!",
 		"icon": preload("res://assets/user_interface/ability/give_food_ability.png"),
 		"detail": "Carry food, water, and supplies to nearby allies, restoring +15% of their health even while in combat.",
@@ -165,6 +189,7 @@ const squad_abilities = [
 	},
 	{
 		# special for hero only 17
+		# affect : melee ally (instant)
 		"name": "On Me!",
 		"icon": preload("res://assets/user_interface/ability/rally_ability.png"),
 		"detail": "Lead by example and rally nearby allies, granting +25% attack speed, +15% movement speed, and +15% damage for 25 seconds.",
@@ -175,6 +200,7 @@ const squad_abilities = [
 	},
 	{
 		# special for commander only 18
+		# affect : melee ally (instant)
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
 		"detail": "(Commander Default Ability) Automatically equipped if no other ability is selected. Restore discipline and order, removing all active buffs and debuffs from nearby allies.",
@@ -185,6 +211,8 @@ const squad_abilities = [
 	},
 	{
 		# melee mace weapon 19
+		# affect : melee self (instant)
+		# affect : melee enemy (on hit)
 		"name": "Bonk!",
 		"icon": preload("res://assets/user_interface/ability/bonk.png"),
 		"detail": "Delivers blow to the enemy head. reducing their damage resistance and melee attack speed by -15%, while your melee attack speed increase by +15% for 10 seconds.",
@@ -195,6 +223,8 @@ const squad_abilities = [
 	},
 	{
 		# melee warhammer weapon 20
+		# affect : melee self (instant)
+		# affect : area (instant)
 		"name": "Pound!",
 		"icon": preload("res://assets/user_interface/ability/pound.png"),
 		"detail": "Smash the ground with tremendous force, shaking both earth and enemy. All squads in the target area suffer -20% melee attack speed, -20% damage resistance, and -30% movement speed for 15 seconds.",
@@ -205,6 +235,8 @@ const squad_abilities = [
 	},
 	{
 		# melee warhammer weapon 21
+		# affect : melee self (instant)
+		# affect : melee ally (instant)
 		"name": "Inspiring!",
 		"icon": preload("res://assets/user_interface/ability/bone_breaker.png"),
 		"detail": "Display unmatched strength and courage, inspiring nearby warriors to fight harder. Gain +30% melee attack speed, while nearby allies gain +10% attack speed for 15 seconds.",
@@ -215,6 +247,8 @@ const squad_abilities = [
 	},
 	{
 		# all shield 22
+		# affect : melee enemy (instant)
+		# affect : range enemy (instant)
 		"name": "Taunt!",
 		"icon": preload("res://assets/user_interface/ability/taunting.png"),
 		"detail": "Bash your shields and hurl insults, forcing the enemy to focus on you. The target’s active ability cooldown is reset back to full, as if it had just been used.",
@@ -224,7 +258,7 @@ const squad_abilities = [
 		"required_enemy": true,
 	},
 	{
-		# all shield 23
+		# just info
 		"name": "Drive By!",
 		"icon": preload("res://assets/user_interface/ability/fight_and_ride_ability.png"),
 		"detail": "(Cavalry Feature) This is my horse, my horse is amazing. Mounted units can attack and fire ranged weapons without stopping. Enable Attack Move mode to make full use of their mobility and hit-and-run tactics.",
@@ -235,6 +269,7 @@ const squad_abilities = [
 	},
 	{
 		# melee axe weapon 24
+		# affect : melee enemy (instant)
 		"name": "Shield Breaker!",
 		"icon": preload("res://assets/user_interface/ability/shield_breaker_ability.png"),
 		"detail": "Use your axe to carve through enemy's shield, make them vulnerable by -60% for 15 seconds.",
@@ -245,6 +280,7 @@ const squad_abilities = [
 	},
 	{
 		# melee excalibur weapon 25
+		# affect : melee ally (instant)
 		"name": "Encore!",
 		"icon":  preload("res://assets/user_interface/ability/encore_ability.png"),
 		"detail": "Instantly refresh the ability cooldown of every nearby squad, friend or foe. Heroes are unaffected.",
@@ -255,6 +291,7 @@ const squad_abilities = [
 	},
 	{
 		# melee excalibur weapon 26
+		# affect : melee ally (instant)
 		"name": "Resurrect!",
 		"icon": preload("res://assets/user_interface/ability/resurection_ability.png"),
 		"detail": "Resurrect fallen members in each squad, regardless of allegiance.",
@@ -265,6 +302,8 @@ const squad_abilities = [
 	},
 	{
 		# melee grimhart weapon 27
+		# affect : melee enemy (instant)
+		# affect : area (instant)
 		"name": "Death Mark!",
 		"icon": preload("res://assets/user_interface/ability/mark_of_dead_ability.png"),
 		"detail": "The curse demands blood before claiming another life. Target suffers -100% Damage Resistance and -80% move speed for 50 seconds. Nearby squads sacrifice a combined 500 HP, distributed evenly among them. The wielder suffers -40% Movement Speed for 15 second after invoking the curse.",
@@ -275,6 +314,7 @@ const squad_abilities = [
 	},
 	{
 		# melee grimhart weapon 28
+		# affect : area (instant)
 		"name": "Summon!",
 		"icon": preload("res://assets/user_interface/ability/summon_ability.png"),
 		"detail": "Summon one random squad from your squad pools. required sacrifice HP from nearby unit based on the summoned squad's total health. Summoned squad is Hostile but Not every lost soul returns with hatred (6% chance join your cause). wielder suffers -40% Movement Speed for 15 second after invoking the ritual.",
@@ -285,6 +325,7 @@ const squad_abilities = [
 	},
 	{
 		# range umbriel weapon 29
+		# affect : area (indirect)
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
 		"detail": "Signaling an emergency artillery barrage. Nearby trebuchet batteries bombarding random locations around. The bombardment is indiscriminate friend and foe alike.",
@@ -295,6 +336,7 @@ const squad_abilities = [
 	},
 	{
 		# range umbriel weapon 30
+		# affect : area (instant)
 		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
 		"detail": "Squads abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed but have 50% chance suffer +5 emotional damage for 10 seconds.",
@@ -305,6 +347,7 @@ const squad_abilities = [
 	},
 	{
 		# melee excalibur weapon 31
+		# affect : area (instant)
 		"name": "Blinding",
 		"icon": preload("res://assets/user_interface/ability/flashbang_ability.png"),
 		"detail": "Using divine light to blinds all units on the target tile. All affected squad get -70% Attack Speed & Move speed for 5 seconds",
@@ -315,6 +358,7 @@ const squad_abilities = [
 	},
 	{
 		# melee grimhart weapon 32
+		# affect : area (instant)
 		"name": "Hypnotic",
 		"icon": preload("res://assets/user_interface/ability/hypnotic_ability.png"),
 		"detail": "All squads in target tile immediately choose and attack random squad on the map",
@@ -325,6 +369,7 @@ const squad_abilities = [
 	},
 	{
 		# range umbriel weapon 33
+		# affect : area (indirect)
 		"name": "Rainbolt",
 		"icon": preload("res://assets/user_interface/ability/rainbolt_ability.png"),
 		"detail": "Calls a long-range ballista strike on the target tile. The bolt may deviate slightly from the intended location. Damages friend and foe alike.",
@@ -335,6 +380,7 @@ const squad_abilities = [
 	},
 	{
 		# range siege 34
+		# affect : area (on hit)
 		"name": "Hornet Nest",
 		"icon": preload("res://assets/user_interface/ability/hornet_nest_ability.png"),
 		"detail": "Launches a captured hornet nest into the battlefield. The impact causes no direct damage, but enraged hornets swarm every nearby squad, reducing all combat statistics by -25%. The affected area remains infested for 25 seconds, and any squad passing through will also be stung, suffering the same penalty.",
@@ -345,6 +391,7 @@ const squad_abilities = [
 	},
 	{
 		# range siege weapon 35
+		# affect : area (on hit)
 		"name": "Splinter",
 		"icon": preload("res://assets/user_interface/ability/splinter_ability.png"),
 		"detail": "Fires a specially crafted ballista bolt designed to shatter on impact. Razor-sharp wooden splinters burst outward, striking every nearby squad and inflicting Bleeding, causing continuous damage over time.",
@@ -355,6 +402,7 @@ const squad_abilities = [
 	},
 	{
 		# range siege weapon 36
+		# affect : area (on hit)
 		"name": "Inferno",
 		"icon": preload("res://assets/user_interface/ability/flaming_pot_ability.png"),
 		"detail": "Launches a blazing pot of burning pitch that explodes on impact, dealing massive initial damage. The ground ignites for 15 seconds, creating a blazing hazard that sets passing squads ablaze, inflicting Fire damage every second until they escape the flames.",
@@ -365,6 +413,8 @@ const squad_abilities = [
 	},
 	{
 		# melee spear weapon 37
+		# affect : area (instant)
+		# affect : enemy (indirect)
 		"name": "Tarpit",
 		"icon": preload("res://assets/user_interface/ability/tarpit_ability.png"),
 		"detail": "Unit pour sticky tar across the target tile. The trap is hidden until triggered. ANY squad entering the tile becomes bogged down, suffering -50% Movement Speed for 10 seconds.",
@@ -375,6 +425,8 @@ const squad_abilities = [
 	},
 	{
 		# range axe weapon 38
+		# affect : area (instant)
+		# affect : enemy (indirect)
 		"name": "Caltrops",
 		"icon": preload("res://assets/user_interface/ability/caltrops_ability.png"),
 		"detail": "Scatter caltrops onto the target tile. ANY squad entering the tile immediately suffers Bleeding for 10 seconds, and has Movement Speed reduced by -35%. ",
@@ -434,7 +486,7 @@ const sigil_color_cyan = Color(0, 0.882813, 1)
 const overtime_damage_scene = preload("res://assets/overtime_damage/overtime_damage.tscn")
 const pending_modifier = preload("res://assets/overtime_damage/pending_modifier.tscn")
 const pending_stop = preload("res://assets/overtime_damage/pending_stop.tscn")
-const area_overtime_damage_single_use = preload("res://assets/overtime_damage/area_overtime_damage_single_use.tscn")
+const tile_trap = preload("res://assets/tile_trap/tile_trap.tscn")
 
 static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -477,11 +529,12 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 		4:# +50% range attack speed for 15 sec
 			squad.set_modifiers([[squad.modifier_range_speed, (0.50 + extra_buff_value), (15 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
-			# -50% speed for enemy
+			# -50% speed for enemy on hit
 			var p_modif = pending_modifier.instance()
 			p_modif.datas = [[squad.modifier_move_speed, (-0.15 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]
 			squad.attach_range_targets = [p_modif]
-				
+			
+			
 		5:# +50% speed for 10 sec
 			squad.set_modifiers([[squad.modifier_move_speed, (0.50 + extra_buff_value), (10 + extra_buff_duration), icon_move_speed]]) # movement speed
 			
@@ -495,11 +548,11 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					]) # movement speed
 					enemy.retreat()
 					
-		7: # -80% move speed for 15 sec
+		7: # if enemy got hit -80% move speed for 15 sec
 			var p_modif = pending_modifier.instance()
 			p_modif.datas = [[squad.modifier_move_speed, (-0.80 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]
 			squad.attach_range_targets = [p_modif]
-				
+			
 		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
 			var dur = (15 + extra_buff_duration)
 			squad.set_modifiers([
@@ -509,17 +562,14 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[squad.modifier_move_speed, -0.25, dur, icon_null], # movement speed
 			])
 			
-		9: # -50% range attack speed for enemy
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				var squads :Array = _get_squad_in_range(position_manager.get_positions(), [enemy.current_tile])
-				squad.set_modifiers([
-					[squad.modifier_range_damage, -0.25, 10, icon_null], # less damage deal
-				])
-				
-				for s in squads:
-					s.set_modifiers([[s.modifier_range_speed, -0.50, (10 + extra_debuff_duration), icon_debuffed]]) # range attack speed
-				
+		9: # if enemy got hit -50% range attack speed for enemy
+			squad.set_modifiers([ [squad.modifier_range_damage, -0.25, 10, icon_null] ]) # less damage deal
+			
+			# but debuff enemy on hit
+			var p_modif = pending_modifier.instance()
+			p_modif.datas = [[squad.modifier_range_speed, -0.50, (10 + extra_debuff_duration), icon_debuffed]]
+			squad.attach_range_targets = [p_modif]
+			
 		10: # -25% damage resistance & 50% slower
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
@@ -640,13 +690,13 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 		19:# +15% melee speed & enemy 25% melee speed for 10 sec
 			squad.set_modifiers([[squad.modifier_melee_speed, 0.15, (10 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([
-					[enemy.modifier_damage_receive, (0.15 + extra_debuff_value), (10 + extra_debuff_duration), icon_null],
-					[enemy.modifier_melee_speed, (-0.15 + extra_debuff_value), (10 + extra_debuff_duration), icon_headhurt]
-				])
-				
+			var p_modif = pending_modifier.instance()
+			p_modif.datas = [
+				[squad.modifier_damage_receive, (0.15 + extra_debuff_value), (10 + extra_debuff_duration), icon_null],
+				[squad.modifier_melee_speed, (-0.15 + extra_debuff_value), (10 + extra_debuff_duration), icon_headhurt]
+			]
+			squad.attach_melee_targets = [p_modif]
+			
 		20: # get all squad in enemy tiles
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
@@ -912,18 +962,20 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				squad.set_modifiers([[squad.modifier_move_speed, 0.10, 1, icon_fist_up]])
 				
 		37,38: # check
+			var tile_front :Vector2 = squad.tile_front()
+			var on_melee :bool = squad.in_melee_engagement()
+			var valid_tile :bool = squad.nav.is_nav_enable(squad.nav_layer, tile_front)
+			
+			# cannot setup
+			if on_melee or not valid_tile:
+				squad.start_ability_cooldown(10)
+				return
+				
 			squad.set_modifiers([[squad.modifier_move_speed, 0.05, 1, icon_fist_up]]) # movement speed
 			
-			var tile = squad.tile_front()
-			var trap = area_overtime_damage_single_use.instance()
-			
-			var ind = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
-			ind.material = preload("res://scenes/tiles/materials/rock_material.tres")
-			ind.squad_icon = preload("res://assets/user_interface/icons/dead.png")
-			trap.add_child(ind)
-			ind.translation = squad.nav.get_pos_v3(tile)
-			
-			trap.tiles = [tile]
+			var trap = tile_trap.instance()
+			trap.duration = 60
+			trap.tile = tile_front
 			trap.unit_position = position_manager.get_positions()
 			
 			if squad_ability_idx == 37: # tar pit
@@ -942,6 +994,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				trap.attach_targets = [p_modif, bleed_damage, pending_stop.instance()]
 				
 			gameplay.add_child(trap)
+			trap.translation = squad.nav.get_pos_v3(tile_front)
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	

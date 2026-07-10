@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/tile_trap/tile_trap.gd" type="Script" id=1]
+[ext_resource path="res://assets/squad_path_indicator/squad_path_indicator_destination.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=3]
+[ext_resource path="res://assets/user_interface/icons/dead.png" type="Texture" id=4]
+
+[node name="tile_trap" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="expired" type="Timer" parent="."]
+
+[node name="squad_path_indicator" parent="." instance=ExtResource( 2 )]
+material = ExtResource( 3 )
+squad_icon = ExtResource( 4 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+unit_db = 5.0
+bus = "sfx"
+
+[connection signal="timeout" from="expired" to="." method="_on_expired_timeout"]

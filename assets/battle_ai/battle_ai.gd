@@ -48,9 +48,6 @@ func squad_take_damage(squad :BaseSquad):
 		squad.retreat()
 		
 func squad_member_dead(squad :BaseSquad, data :SquadData):
-	if _squads.empty():
-		return
-		
 	if not squad in _squads:
 		return
 		
@@ -108,13 +105,6 @@ func _think(squad :BaseSquad):
 			AbilityHandle.use_squad_ability(gameplay_scene, bot_player, squad, tile_position_manager,{})
 			return
 			
-	# retailiate
-	var from :BaseSquad = get_node_or_null(squad.attacked_by)
-	if is_instance_valid(from):
-		if from != squad.enemy:
-			_bot_attack_command(squad, from)
-			return
-	
 	# find target
 	var target :BaseSquad = _find_target(squad)
 	if not is_instance_valid(target):
@@ -126,7 +116,7 @@ func _think(squad :BaseSquad):
 		_bot_attack_command(squad, target)
 		return
 		
-	squad.attack_move = false
+	squad.attack_move = true
 	squad.move_to(target.current_tile)
 	
 func _bot_attack_command(squad :BaseSquad, enemy :BaseSquad):

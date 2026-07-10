@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 1 )
+size = Vector3( 0.2, 0.2, 0.8 )
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0.0886364 ), 0.0, 0.0, 0, 0, Vector2( 0.111888, 0.996591 ), -0.068421, -0.068421, 0, 0, Vector2( 1, 0.0340909 ), -3.562, 0.0, 0, 0 ]
+
+[node name="wood_particle" type="CPUParticles"]
+cast_shadow = 0
+emitting = false
+amount = 18
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.6
+local_coords = false
+draw_order = 1
+mesh = SubResource( 1 )
+emission_shape = 1
+emission_sphere_radius = 0.3
+flag_rotate_y = true
+direction = Vector3( 0, 1, 0 )
+gravity = Vector3( 0, -4.8, 0 )
+initial_velocity = 2.0
+initial_velocity_random = 1.0
+angular_velocity = 8.0
+angular_velocity_random = 1.0
+linear_accel = 4.0
+radial_accel = 7.0
+damping = 6.0
+damping_random = 0.2
+angle = 2.0
+scale_amount = 0.4
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 2 )

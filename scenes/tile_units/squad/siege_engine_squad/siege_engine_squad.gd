@@ -25,6 +25,8 @@ var _minimum_range_tiles :Array = []
 var _siege_engine :SiegeEngine
 var _siege_engine_audio :AudioStreamPlayer3D
 
+var _wood_particle :CPUParticles
+
 var _use_special_ability :bool
 
 func _ready():
@@ -32,6 +34,10 @@ func _ready():
 	_siege_engine_audio.bus = Global.bus_sfx
 	_siege_engine_audio.unit_db = 5
 	add_child(_siege_engine_audio)
+	
+	_wood_particle = preload("res://assets/wood_particle/wood_particle.tscn").instance()
+	_wood_particle.set_as_toplevel(true)
+	add_child(_wood_particle)
 	
 	squad_ability_idx = siege_engine_ability_idx
 	
@@ -147,9 +153,14 @@ func _is_still_in_ranges(target) -> bool:
 	return _is_still_in_melee_range(target)
 	
 func on_dead():
+	_siege_engine.visible = false
+	
 	if visible:
+		_wood_particle.translation = global_position
+		_wood_particle.emitting = true
 		_siege_engine_audio.stream = siege_breaks.pick_random()
 		_siege_engine_audio.play()
+		
 		yield(_siege_engine_audio,"finished")
 		yield(get_tree().create_timer(1),"timeout")
 		

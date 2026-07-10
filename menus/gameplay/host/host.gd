@@ -75,6 +75,7 @@ func _on_bot_squad_spawner_on_squads_ready(datas :Array):
 
 func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	._on_squad_spawned(squad, data)
+	
 	if squad is GuardTowerSquad:
 		return
 		

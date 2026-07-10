@@ -49,15 +49,15 @@ const melee_weapon_stats = {
 	5:{'attack_speed':0.57,'charge_bonus':0,'spawn_time':5},
 	6:{'attack_speed':0.68,'charge_bonus':0,'spawn_time':5},
 	7:{'attack_speed':0.87,'charge_bonus':0,'spawn_time':7},
-	8:{'attack_speed':1.85,'charge_bonus':0,'spawn_time':7},
-	9:{'attack_speed':1.98,'charge_bonus':8,'spawn_time':8},
-	10:{'attack_speed':1.78,'charge_bonus':7,'spawn_time':9},
+	8:{'attack_speed':0.89,'charge_bonus':0,'spawn_time':7},
+	9:{'attack_speed':1.68,'charge_bonus':8,'spawn_time':8},
+	10:{'attack_speed':1.58,'charge_bonus':7,'spawn_time':9},
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
 	12:{'attack_speed':0.65,'charge_bonus':0,'spawn_time':6},
 	13:{'attack_speed':0.64,'charge_bonus':0,'spawn_time':5},
 	14:{'attack_speed':1.38,'charge_bonus':0,'spawn_time':8},
 	15:{'attack_speed':0.88,'charge_bonus':6,'spawn_time':4},
-	16:{'attack_speed':0.997,'charge_bonus':8,'spawn_time':7},
+	16:{'attack_speed':0.666,'charge_bonus':6,'spawn_time':6},
 }
 
 const range_weapons = [
