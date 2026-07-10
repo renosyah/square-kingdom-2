@@ -11,7 +11,7 @@ const squad_abilities = [
 		"type": "melee",
 		"weapon_idx": 4,
 		"cooldown" : 15.0,
-		"required_enemy": true,
+		"required_enemy": false,
 	},
 	{
 		# melee great sword weapon 2
@@ -363,6 +363,26 @@ const squad_abilities = [
 		"cooldown" : 60.0,
 		"required_enemy": false,
 	},
+	{
+		# melee spear weapon 37
+		"name": "Tarpit",
+		"icon": preload("res://assets/user_interface/ability/tarpit_ability.png"),
+		"detail": "Unit pour sticky tar across the target tile. The trap is hidden until triggered. ANY squad entering the tile becomes bogged down, suffering -50% Movement Speed for 10 seconds.",
+		"type": "melee",
+		"weapon_idx": 2,
+		"cooldown" : 40.0,
+		"required_enemy": false,
+	},
+	{
+		# range axe weapon 38
+		"name": "Caltrops",
+		"icon": preload("res://assets/user_interface/ability/caltrops_ability.png"),
+		"detail": "Scatter caltrops onto the target tile. ANY squad entering the tile immediately suffers Bleeding for 10 seconds, and has Movement Speed reduced by -35%. ",
+		"type": "range",
+		"weapon_idx": 2,
+		"cooldown" : 50.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -412,6 +432,9 @@ const sigil_color_yellow = Color(0.992157, 1, 0)
 const sigil_color_cyan = Color(0, 0.882813, 1)
 
 const overtime_damage_scene = preload("res://assets/overtime_damage/overtime_damage.tscn")
+const pending_modifier = preload("res://assets/overtime_damage/pending_modifier.tscn")
+const pending_stop = preload("res://assets/overtime_damage/pending_stop.tscn")
+const area_overtime_damage_single_use = preload("res://assets/overtime_damage/area_overtime_damage_single_use.tscn")
 
 static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, position_manager :TilePositionManager, extra :Dictionary = {}):
 	var squad_ability_idx :int = squad.squad_ability_idx
@@ -429,13 +452,10 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 	
 	match squad_ability_idx:
 		1: # stop enemy and -50% speed for them
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				if squad.is_in_melee_range(enemy):
-					enemy.set_modifiers([[enemy.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]])
-					enemy.stop()
-					
-				
+			var p_modif = pending_modifier.instance()
+			p_modif.datas = [[squad.modifier_move_speed, (-0.50 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]
+			squad.attach_melee_targets = [p_modif, pending_stop.instance()]
+			
 		2: # enemy -50% attack speed for 25 sec
 			var enemy = squad.enemy
 			if is_instance_valid(enemy):
@@ -458,9 +478,9 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			squad.set_modifiers([[squad.modifier_range_speed, (0.50 + extra_buff_value), (15 + extra_buff_duration), icon_buffed]]) # range attack speed 
 			
 			# -50% speed for enemy
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([[enemy.modifier_move_speed, (-0.15 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]) # movement speed
+			var p_modif = pending_modifier.instance()
+			p_modif.datas = [[squad.modifier_move_speed, (-0.15 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]
+			squad.attach_range_targets = [p_modif]
 				
 		5:# +50% speed for 10 sec
 			squad.set_modifiers([[squad.modifier_move_speed, (0.50 + extra_buff_value), (10 + extra_buff_duration), icon_move_speed]]) # movement speed
@@ -476,9 +496,9 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					enemy.retreat()
 					
 		7: # -80% move speed for 15 sec
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				enemy.set_modifiers([[enemy.modifier_move_speed, (-0.80 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]) # movement speed
+			var p_modif = pending_modifier.instance()
+			p_modif.datas = [[squad.modifier_move_speed, (-0.80 + extra_debuff_value), (15 + extra_debuff_duration), icon_slowed]]
+			squad.attach_range_targets = [p_modif]
 				
 		8: # -50% damage receive, -50% attack speed, -75% move speed, for 25 sec
 			var dur = (15 + extra_buff_duration)
@@ -529,13 +549,11 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[squad.modifier_range_damage, 0.40, dur, icon_buffed], # damage deal
 			])
 			
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				var bleed_damage = overtime_damage_scene.instance()
-				bleed_damage.damage = int(rand_range(6,8))
-				bleed_damage.duration = dur
-				bleed_damage.by = squad.get_path()
-				squad.attach_target = bleed_damage
+			var bleed_damage = overtime_damage_scene.instance()
+			bleed_damage.damage = int(rand_range(6,8))
+			bleed_damage.duration = dur
+			bleed_damage.by = squad.get_path()
+			squad.attach_melee_targets = [bleed_damage]
 				
 		13: # -50% range damage, +50% rate of fire
 			var dur = (15 + extra_buff_duration)
@@ -552,13 +570,11 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				[squad.modifier_melee_speed, -0.15, dur, icon_null], # attack speed 
 			], _remove_mods)
 			
-			var enemy = squad.enemy
-			if is_instance_valid(enemy):
-				var bleed_damage = overtime_damage_scene.instance()
-				bleed_damage.damage = int(rand_range(4,7))
-				bleed_damage.duration = dur
-				bleed_damage.by = squad.get_path()
-				squad.attach_target = bleed_damage
+			var bleed_damage = overtime_damage_scene.instance()
+			bleed_damage.damage = int(rand_range(4,7))
+			bleed_damage.duration = dur
+			bleed_damage.by = squad.get_path()
+			squad.attach_range_targets = [bleed_damage]
 				
 		15: # 50% melee damage, 50% slowest rate of fire & weaken anyone in front of it
 			var dur = (15 + extra_buff_duration)
@@ -894,6 +910,38 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			if squad is SiegeEngineSquad:
 				squad.use_special_ability()
 				squad.set_modifiers([[squad.modifier_move_speed, 0.10, 1, icon_fist_up]])
+				
+		37,38: # check
+			squad.set_modifiers([[squad.modifier_move_speed, 0.05, 1, icon_fist_up]]) # movement speed
+			
+			var tile = squad.tile_front()
+			var trap = area_overtime_damage_single_use.instance()
+			
+			var ind = preload("res://assets/squad_path_indicator/squad_path_indicator_destination.tscn").instance()
+			ind.material = preload("res://scenes/tiles/materials/rock_material.tres")
+			ind.squad_icon = preload("res://assets/user_interface/icons/dead.png")
+			trap.add_child(ind)
+			ind.translation = squad.nav.get_pos_v3(tile)
+			
+			trap.tiles = [tile]
+			trap.unit_position = position_manager.get_positions()
+			
+			if squad_ability_idx == 37: # tar pit
+				var p_modif = pending_modifier.instance()
+				p_modif.datas = [[squad.modifier_move_speed, (-0.50 + extra_debuff_value), (10 + extra_debuff_duration), icon_slowed]]
+				trap.attach_targets = [p_modif]
+				
+			elif squad_ability_idx == 38: # Caltrops
+				var p_modif = pending_modifier.instance()
+				p_modif.datas = [[squad.modifier_move_speed, (-0.20 + extra_debuff_value), (10 + extra_debuff_duration), icon_bonebreak]]
+				
+				var bleed_damage = overtime_damage_scene.instance()
+				bleed_damage.damage = int(rand_range(8,12))
+				bleed_damage.duration = (10 + extra_debuff_duration)
+				bleed_damage.by = squad.get_path()
+				trap.attach_targets = [p_modif, bleed_damage, pending_stop.instance()]
+				
+			gameplay.add_child(trap)
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	

@@ -142,7 +142,8 @@ var _range_engagement :bool
 
 var _ability_cooldown :Timer
 
-var attach_target # any
+var attach_melee_targets :Array # any
+var attach_range_targets :Array # any
 
 func _ready():
 	if _is_network_master():
@@ -376,9 +377,9 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 	var idx :int = enemy_squad.get_member_index(members.pick_random())
 	enemy_squad.take_damage(_get_attack_damage(1, attack_damage), idx, get_path())
 	
-	if attach_target:
-		enemy_squad.add_child(attach_target)
-		attach_target = null
+	while not attach_range_targets.empty():
+		enemy_squad.add_child(attach_range_targets.front())
+		attach_range_targets.pop_front()
 	
 func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
 	if not _is_master:
@@ -396,9 +397,9 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 		
 	sq.take_damage(_get_attack_damage(0, dmg), target_member_idx, get_path())
 	
-	if attach_target:
-		sq.add_child(attach_target)
-		attach_target = null
+	while not attach_melee_targets.empty():
+		sq.add_child(attach_melee_targets.front())
+		attach_melee_targets.pop_front()
 		
 func _on_local_member_die(member :SquadMember, idx :int):
 	_member_deads_pending.append([idx, member.attacked_by])
