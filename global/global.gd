@@ -346,7 +346,7 @@ var biom :int
 
 # position:[
 #	enable fort, 
-#	spawn size: 2 & 3, 
+#	fort size: 2 & 3, 
 #	type: 0=camp,1=village,2=city,
 #	gate_stat: 0=none,1:closed,2:open,3:destroyed
 #]

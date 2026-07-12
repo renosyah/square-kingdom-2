@@ -27,7 +27,7 @@ func _ready():
 	_top_bar.visible = not simplified
 	_pic.visible = not simplified
 	_icons.visible = not simplified
-	_spawn.visible = not simplified
+	#_spawn.visible = not simplified
 	_name.visible = not simplified
 	_infos.alignment = BoxContainer.ALIGN_BEGIN if not simplified else BoxContainer.ALIGN_CENTER
 	
@@ -41,12 +41,13 @@ func display_info(data :SquadData):
 	_info_description.text = data.description
 	_info_icon_color.color = EntityIndex.player_colors[data.color_idx]
 	_info_icon.texture = EntityIndex.squad_icon[data.icon_idx]
-	_spawn_time.text = Utils.format_time(data.spawn_time())
+	_mounted.visible = data.is_mounted
+	_info_icon_color2.color = EntityIndex.player_colors[data.color_idx]
+	
 	_hp.text = "%s | %s" % [data.member_hp(),data.heal_amount()]
 	_attack.text = "%s | %s" % _get_attack_values(data)
 	_speed.text = "%.2f" % data.speed()
-	_mounted.visible = data.is_mounted
-	_info_icon_color2.color = EntityIndex.player_colors[data.color_idx]
+	_spawn_time.text = Utils.format_time(data.spawn_time())
 	
 func _get_attack_values(data :SquadData) -> Array:
 	var s = [0,0]

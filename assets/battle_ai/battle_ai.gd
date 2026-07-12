@@ -15,12 +15,14 @@ export(float, 0, 1) var intelligence := 0.5
 export(float, 1, 3) var reaction_time := 2.0
 export(float, 1, 3) var think_interval := 2.0
 
+
 var _squads := []
 var _enemy_squads := []
 
 onready var timer = $Timer
 
 func run():
+	yield(get_tree().create_timer(rand_range(5,10)),"timeout")
 	timer.wait_time = rand_range(reaction_time, reaction_time + think_interval)
 	timer.start()
 
@@ -41,10 +43,8 @@ func squad_take_damage(squad :BaseSquad):
 	if squad.is_moving() or not squad.is_hero:
 		return
 		
-	var hp = squad.get_members()[0].hp < 200
-	
-	# save the heroes
-	if hp and randf() < courage:
+	var hp_low = squad.get_members()[0].hp < 200
+	if hp_low:
 		squad.retreat()
 		
 func squad_member_dead(squad :BaseSquad, data :SquadData):
@@ -56,8 +56,8 @@ func squad_member_dead(squad :BaseSquad, data :SquadData):
 		
 	var conditions = [
 		data.is_commander,
-		randf() < courage, # coward tendencies
-		squad.member_alive < 2, # member only 2 left
+		randf() < 0.4,
+		squad.member_alive <= 4, # member only 4 left
 	]
 	
 	# retreaat!

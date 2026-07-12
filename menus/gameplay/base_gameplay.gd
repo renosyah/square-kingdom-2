@@ -392,7 +392,7 @@ func setup_players_spawn_point(p :PlayerData, spawn_point_fort :Array):
 	for id in tiles:
 		var current :TileMapData = tile_map.get_tile(id)
 		current.rotation_idx = 0
-		current.scene_idx = 2 #12 if fort_type == 2 else 2
+		current.scene_idx = 12 if (fort_type == 2) else 2
 		tile_map.update_spawned_tile(current)
 		nav.enable_nav_tile(0, id, true)
 		
@@ -872,7 +872,10 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	ui.minimap.add_object(squad, squad.color)
 	
 	if squad is GuardTowerSquad:
-		squad.nav_layer = 1 # diffrent path
+		var p :PlayerData = player_ids[squad.player_id]
+		if spawn_point_forts[p.spawn_position][2] != 2:
+			squad.nav_layer = 1 # diffrent path
+			
 		return
 		
 	ui.scoreboard.register_squad(player_ids[squad.player_id], data)

@@ -77,7 +77,7 @@ const squad_abilities = [
 		# affect : range enemy (on hit)
 		"name": "Pin'em!",
 		"icon": preload("res://assets/user_interface/ability/pinned_ability.png"),
-		"detail": "Pin the enemy down, cripple reducing their movement speed by -80% for 15 seconds.",
+		"detail": "Pin the enemy down by crippling them. reducing their movement speed by -80% for 15 seconds.",
 		"type": "range",
 		"weapon_idx": 5,
 		"cooldown" : 65.0,
@@ -192,7 +192,7 @@ const squad_abilities = [
 		# affect : melee ally (instant)
 		"name": "On Me!",
 		"icon": preload("res://assets/user_interface/ability/rally_ability.png"),
-		"detail": "Lead by example and rally nearby allies, granting +25% attack speed, +15% movement speed, and +15% damage for 25 seconds.",
+		"detail": "(Hero Ability) Lead by example and rally nearby allies, granting +25% attack speed, +15% movement speed, and +15% damage for 25 seconds.",
 		"type": "hero",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 80.0,
@@ -203,7 +203,7 @@ const squad_abilities = [
 		# affect : melee ally (instant)
 		"name": "Regroup!",
 		"icon": preload("res://assets/user_interface/ability/regroup_ability.png"),
-		"detail": "(Commander Default Ability) Automatically equipped if no other ability is selected. Restore discipline and order, removing all active buffs and debuffs from nearby allies.",
+		"detail": "(Commander Default Ability)\n\nAutomatically equipped if no other ability is selected. Restore discipline and order, removing all active buffs and debuffs from nearby allies.",
 		"type": "commander",
 		"weapon_idx": 0, # <- ignore
 		"cooldown" : 70.0,
@@ -261,7 +261,7 @@ const squad_abilities = [
 		# just info
 		"name": "Drive By!",
 		"icon": preload("res://assets/user_interface/ability/fight_and_ride_ability.png"),
-		"detail": "(Cavalry Feature) This is my horse, my horse is amazing. Mounted units can attack and fire ranged weapons without stopping. Enable Attack Move mode to make full use of their mobility and hit-and-run tactics.",
+		"detail": "(Cavalry Feature)\n\"This is my horse, my horse is amazing\"\n\nMounted units can attack and fire ranged weapons without stopping. Enable Attack Move mode to make full use of their mobility and hit-and-run tactics.",
 		"type": "cavalry",
 		"weapon_idx": 0, # <- ignore this
 		"cooldown" : -1.0,
@@ -328,7 +328,7 @@ const squad_abilities = [
 		# affect : area (indirect)
 		"name": "Broken Arrow!",
 		"icon": preload("res://assets/user_interface/ability/offmap_trebs_ability.png"),
-		"detail": "Signaling an emergency artillery barrage. Nearby trebuchet batteries bombarding random locations around. The bombardment is indiscriminate friend and foe alike.",
+		"detail": "Signal an emergency artillery barrage. Nearby trebuchet batteries bombarding random locations around. The bombardment is indiscriminate friend and foe alike.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -339,7 +339,7 @@ const squad_abilities = [
 		# affect : area (instant)
 		"name": "Bluff Call!",
 		"icon": preload("res://assets/user_interface/ability/abandon_ability.png"),
-		"detail": "Squads abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed but have 50% chance suffer +5 emotional damage for 10 seconds.",
+		"detail": "Squads abandon their positions, believing an trebuchet barrage is imminent. Driven by fear, routing squads gain +15% Movement Speed for 10 seconds.",
 		"type": "range",
 		"weapon_idx": 6,
 		"cooldown" : 75.0,
@@ -417,7 +417,7 @@ const squad_abilities = [
 		# affect : enemy (indirect)
 		"name": "Tarpit",
 		"icon": preload("res://assets/user_interface/ability/tarpit_ability.png"),
-		"detail": "Unit pour sticky tar across the target tile. The trap is hidden until triggered. ANY squad entering the tile becomes bogged down, suffering -50% Movement Speed for 10 seconds.",
+		"detail": "Unit pour sticky tar in front of them. ANY squad entering the tile becomes bogged down, suffering -50% Movement Speed for 10 seconds. (Cannot deploy on combat)",
 		"type": "melee",
 		"weapon_idx": 2,
 		"cooldown" : 40.0,
@@ -429,11 +429,23 @@ const squad_abilities = [
 		# affect : enemy (indirect)
 		"name": "Caltrops",
 		"icon": preload("res://assets/user_interface/ability/caltrops_ability.png"),
-		"detail": "Scatter caltrops onto the target tile. ANY squad entering the tile immediately suffers Bleeding for 10 seconds, and has Movement Speed reduced by -35%. ",
+		"detail": "Scatter caltrops in front of them. ANY squad entering the tile immediately suffers Bleeding for 10 seconds, and has Movement Speed reduced by -35%. (Cannot deploy on combat)",
 		"type": "range",
 		"weapon_idx": 2,
 		"cooldown" : 50.0,
 		"required_enemy": false,
+	},
+	{
+		# melee sword weapon 39
+		# affect : self (instant)
+		# affect : enemy (instant)
+		"name": "Godwills!",
+		"icon": preload("res://assets/user_interface/ability/godwill_ability.png"),
+		"detail": "\"God Wills It!\"\n\nGrants up to 3 random modifiers to the wielder while inflicting up to 3 different random modifiers upon the target squad.",
+		"type": "melee",
+		"weapon_idx": 5,
+		"cooldown" : 60.0,
+		"required_enemy": true,
 	},
 ]
 
@@ -996,8 +1008,50 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			gameplay.add_child(trap)
 			trap.translation = squad.nav.get_pos_v3(tile_front)
 			
+		39: # check
+			var enemy = squad.enemy
+			if not is_instance_valid(enemy):
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			# random ass modifier
+			squad.set_modifiers(_get_random_modifier(squad, int(rand_range(1, 3))))
+			enemy.set_modifiers(_get_random_modifier(squad, int(rand_range(1, 3))))
+			
+			# random ass curse
+			var t = [squad, enemy]
+			for _i in 3:
+				if randf() > 0.5:
+					continue
+					
+				var curse = overtime_damage_scene.instance()
+				curse.damage = int(rand_range(8,12))
+				curse.duration = rand_range(5, 10)
+				t.pick_random().add_child(curse)
+			
+			squad.set_modifiers([[squad.modifier_move_speed, 0.1, 1, icon_buffed]])
+			enemy.set_modifiers([[squad.modifier_move_speed, 0.1, 1, icon_buffed]])
+			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
+static func _get_random_modifier(squad :BaseSquad, count :int) -> Array:
+	var gifs = [
+		squad.modifier_melee_speed,
+		squad.modifier_range_speed,
+		squad.modifier_move_speed,
+		squad.modifier_damage_receive,
+		squad.modifier_melee_damage,
+		squad.modifier_range_damage,
+	]
+	gifs.shuffle()
+	
+	var modifiers = []
+	for i in count:
+		var v = rand_range(-1, 1)
+		var t = rand_range(10, 15)
+		modifiers.append([gifs[i], v, t, icon_null])
+		
+	return modifiers
 	
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
 	var squads = []

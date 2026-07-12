@@ -34,7 +34,7 @@ func _ready():
 		battle_ai.tile_position_manager = tile_position_manager
 		battle_ai.aggression = rand_range(0.3, 0.7)
 		battle_ai.courage = rand_range(0.3, 0.8)
-		battle_ai.intelligence = 0.5
+		battle_ai.intelligence = randf()
 		battle_ai.reaction_time = rand_range(1, 3)
 		battle_ai.think_interval = rand_range(1, 3)
 		add_child(battle_ai)

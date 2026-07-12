@@ -54,6 +54,12 @@ func _ready():
 	battle_time.text = Utils.format_time_full(Global.battle_time)
 	ui_update()
 	
+	if show_battle_time:
+		Global.connect("on_global_tick", self ,"_on_global_tick")
+	
+func _on_global_tick():
+	battle_time.text = Utils.format_time_full(Global.battle_time)
+	
 func _process(delta):
 	if not _pending_score_update.empty():
 		_update_score(_pending_score_update.front())

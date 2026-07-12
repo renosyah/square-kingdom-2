@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_22.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
@@ -22,22 +22,24 @@
 [ext_resource path="res://assets/user_interface/icons/attack.png" type="Texture" id=20]
 [ext_resource path="res://assets/user_interface/icons/squad/commander.png" type="Texture" id=21]
 [ext_resource path="res://assets/user_interface/icons/cooldown.png" type="Texture" id=22]
+[ext_resource path="res://assets/user_interface/icons/modifier_effect/fist_up.png" type="Texture" id=23]
+[ext_resource path="res://assets/user_interface/icons/squad/hero.png" type="Texture" id=24]
 
 [node name="info" type="MarginContainer"]
-margin_right = 412.0
-margin_bottom = 76.0
+margin_right = 498.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 script = ExtResource( 5 )
 
 [node name="ColorRect3" type="ColorRect" parent="."]
-margin_right = 412.0
-margin_bottom = 104.0
+margin_right = 498.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 0.745098 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 412.0
-margin_bottom = 104.0
+margin_right = 498.0
+margin_bottom = 88.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
@@ -65,18 +67,18 @@ icon = ExtResource( 10 )
 expand_icon = true
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_right = 412.0
+margin_right = 498.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 12.0
-margin_right = 412.0
-margin_bottom = 76.0
+margin_right = 498.0
+margin_bottom = 60.0
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 64.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
@@ -121,13 +123,13 @@ stretch_mode = 7
 [node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 12.0
 margin_right = 24.0
-margin_bottom = 64.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 28.0
-margin_right = 388.0
-margin_bottom = 64.0
+margin_right = 474.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -160,116 +162,116 @@ rect_min_size = Vector2( 12, 0 )
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 360.0
+margin_right = 446.0
 margin_bottom = 8.0
 rect_min_size = Vector2( 0, 8 )
 size_flags_vertical = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 12.0
-margin_right = 360.0
-margin_bottom = 52.0
+margin_right = 446.0
+margin_bottom = 36.0
 custom_constants/separation = 12
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_right = 116.0
-margin_bottom = 40.0
+margin_left = 32.0
+margin_right = 132.0
+margin_bottom = 24.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 4
 texture = ExtResource( 6 )
 expand = true
 
 [node name="hp" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
-margin_left = 44.0
-margin_top = 13.0
-margin_right = 116.0
-margin_bottom = 27.0
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 100.0
+margin_bottom = 19.0
 size_flags_horizontal = 5
 text = "HP | Regen"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 128.0
+margin_left = 144.0
 margin_right = 265.0
-margin_bottom = 40.0
+margin_bottom = 24.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 4
 texture = ExtResource( 7 )
 expand = true
 
 [node name="attack" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer2"]
-margin_left = 44.0
-margin_top = 13.0
-margin_right = 137.0
-margin_bottom = 27.0
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 121.0
+margin_bottom = 19.0
 size_flags_horizontal = 5
 text = "Melee | Range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 277.0
-margin_right = 360.0
-margin_bottom = 40.0
+margin_right = 344.0
+margin_bottom = 24.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 4
 texture = ExtResource( 3 )
 expand = true
 
 [node name="speed" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer3"]
-margin_left = 44.0
-margin_top = 13.0
-margin_right = 83.0
-margin_bottom = 27.0
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 67.0
+margin_bottom = 19.0
 size_flags_horizontal = 5
 text = "Speed"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
-visible = false
-margin_left = 372.0
-margin_right = 446.0
-margin_bottom = 40.0
+margin_left = 356.0
+margin_right = 414.0
+margin_bottom = 24.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer4"]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
 size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_vertical = 4
 texture = ExtResource( 22 )
 expand = true
 
 [node name="spawn_time" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer4"]
-margin_left = 44.0
-margin_top = 13.0
-margin_right = 74.0
-margin_bottom = 27.0
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 58.0
+margin_bottom = 19.0
 size_flags_horizontal = 5
 text = "time"
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 56.0
-margin_right = 360.0
-margin_bottom = 64.0
+margin_top = 40.0
+margin_right = 446.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 392.0
-margin_right = 400.0
-margin_bottom = 64.0
+margin_left = 478.0
+margin_right = 486.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -374,47 +376,47 @@ texture = ExtResource( 9 )
 expand = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 404.0
-margin_right = 412.0
-margin_bottom = 64.0
+margin_left = 490.0
+margin_right = 498.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 80.0
-margin_right = 412.0
-margin_bottom = 104.0
+margin_top = 64.0
+margin_right = 498.0
+margin_bottom = 88.0
 rect_min_size = Vector2( 0, 24 )
 
 [node name="info_layout" type="MarginContainer" parent="."]
 visible = false
-margin_right = 412.0
-margin_bottom = 104.0
+margin_right = 498.0
+margin_bottom = 88.0
 
 [node name="ColorRect4" type="ColorRect" parent="info_layout"]
-margin_right = 412.0
-margin_bottom = 104.0
+margin_right = 498.0
+margin_bottom = 88.0
 size_flags_horizontal = 3
 color = Color( 0.188235, 0.188235, 0.188235, 1 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="info_layout"]
-margin_right = 412.0
-margin_bottom = 104.0
+margin_right = 498.0
+margin_bottom = 88.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2"]
-margin_right = 589.0
+margin_right = 498.0
 margin_bottom = 40.0
 
 [node name="Label2" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer2"]
 margin_top = 6.0
-margin_right = 545.0
+margin_right = 454.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 1 )
 text = "  Info"
 
 [node name="close_info" type="Button" parent="info_layout/VBoxContainer2/HBoxContainer2"]
-margin_left = 549.0
-margin_right = 589.0
+margin_left = 458.0
+margin_right = 498.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 size_flags_horizontal = 0
@@ -424,37 +426,39 @@ expand_icon = true
 
 [node name="HBoxContainer4" type="ScrollContainer" parent="info_layout/VBoxContainer2"]
 margin_top = 44.0
-margin_right = 589.0
-margin_bottom = 220.0
+margin_right = 498.0
+margin_bottom = 538.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4"]
-margin_right = 589.0
-margin_bottom = 616.0
+margin_right = 498.0
+margin_bottom = 811.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
-margin_right = 577.0
-margin_bottom = 160.0
+margin_right = 486.0
+margin_bottom = 237.0
 mouse_filter = 2
+size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer"]
 margin_right = 8.0
-margin_bottom = 160.0
+margin_bottom = 237.0
 rect_min_size = Vector2( 8, 0 )
 mouse_filter = 2
 
 [node name="HBoxContainer2" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer"]
 margin_left = 12.0
-margin_right = 360.0
-margin_bottom = 160.0
+margin_right = 486.0
+margin_bottom = 237.0
 mouse_filter = 2
+size_flags_horizontal = 3
 custom_constants/separation = 12
 
 [node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
-margin_right = 348.0
+margin_right = 474.0
 margin_bottom = 48.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -479,7 +483,7 @@ and regen amount each 4 second out combat"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_top = 60.0
-margin_right = 348.0
+margin_right = 474.0
 margin_bottom = 108.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -505,7 +509,7 @@ and DPS range damage each volley"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_top = 120.0
-margin_right = 348.0
+margin_right = 474.0
 margin_bottom = 160.0
 mouse_filter = 2
 custom_constants/separation = 18
@@ -529,41 +533,71 @@ size_flags_horizontal = 5
 text = "Speed
 Squads move at a speed of X tiles per second"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2"]
 margin_top = 172.0
-margin_right = 577.0
-margin_bottom = 504.0
+margin_right = 474.0
+margin_bottom = 237.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer7"]
+margin_right = 40.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+texture = ExtResource( 22 )
+expand = true
+stretch_mode = 5
+
+[node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer7"]
+margin_left = 58.0
+margin_right = 474.0
+margin_bottom = 65.0
+size_flags_horizontal = 3
+text = "Spawn Time
+Units must assemble before entering the battlefield. Spawn time varies depending on their equipment and Army Card."
+autowrap = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 4 )
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
+margin_top = 249.0
+margin_right = 486.0
+margin_bottom = 623.0
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 margin_right = 8.0
-margin_bottom = 332.0
+margin_bottom = 374.0
 rect_min_size = Vector2( 8, 0 )
 mouse_filter = 2
 
 [node name="HBoxContainer2" type="VBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
 margin_left = 12.0
-margin_right = 565.0
-margin_bottom = 332.0
+margin_right = 474.0
+margin_bottom = 374.0
 mouse_filter = 2
 size_flags_horizontal = 3
 custom_constants/separation = 12
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_right = 553.0
-margin_bottom = 40.0
+margin_right = 462.0
+margin_bottom = 48.0
 mouse_filter = 2
 custom_constants/separation = 18
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2"]
 margin_right = 90.0
-margin_bottom = 40.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 90, 0 )
 custom_constants/separation = 8
 
 [node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2/HBoxContainer2"]
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = 48.0
 rect_min_size = Vector2( 40, 40 )
 mouse_filter = 2
 texture = ExtResource( 14 )
@@ -599,8 +633,8 @@ expand = true
 
 [node name="attack" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer2"]
 margin_left = 108.0
-margin_right = 553.0
-margin_bottom = 40.0
+margin_right = 462.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Spears are effective against cavalry. Cavalry armed with spears
@@ -608,9 +642,9 @@ are also strong against enemy cavalry."
 autowrap = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_top = 52.0
-margin_right = 553.0
-margin_bottom = 92.0
+margin_top = 60.0
+margin_right = 462.0
+margin_bottom = 100.0
 mouse_filter = 2
 custom_constants/separation = 18
 
@@ -643,23 +677,23 @@ expand = true
 
 [node name="hp" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer"]
 margin_left = 108.0
-margin_right = 553.0
+margin_right = 462.0
 margin_bottom = 31.0
 size_flags_horizontal = 11
 size_flags_vertical = 0
-text = "Swords and axes are effective against infantry. This also applies to cavalry armed with swords or axes."
+text = "Swords are effective against infantry. This also applies to cavalry armed with swords. while axes have bonus damage for enemy carry shield."
 autowrap = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_top = 104.0
-margin_right = 553.0
-margin_bottom = 152.0
+margin_top = 112.0
+margin_right = 462.0
+margin_bottom = 177.0
 mouse_filter = 2
 custom_constants/separation = 18
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3"]
 margin_right = 90.0
-margin_bottom = 48.0
+margin_bottom = 65.0
 rect_min_size = Vector2( 90, 0 )
 custom_constants/separation = 8
 
@@ -686,23 +720,23 @@ expand = true
 
 [node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer3"]
 margin_left = 108.0
-margin_right = 553.0
-margin_bottom = 48.0
+margin_right = 462.0
+margin_bottom = 65.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Special squads are often hybrid units that excel in both melee and ranged combat. Some are considered the best all-round units. you can also make your own custom squad"
 autowrap = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_top = 164.0
-margin_right = 553.0
-margin_bottom = 212.0
+margin_top = 189.0
+margin_right = 462.0
+margin_bottom = 254.0
 mouse_filter = 2
 custom_constants/separation = 18
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4"]
 margin_right = 90.0
-margin_bottom = 48.0
+margin_bottom = 65.0
 rect_min_size = Vector2( 90, 0 )
 custom_constants/separation = 8
 
@@ -729,17 +763,17 @@ expand = true
 
 [node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer4"]
 margin_left = 108.0
-margin_right = 553.0
-margin_bottom = 48.0
+margin_right = 462.0
+margin_bottom = 65.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Cavalry units greatest strength were their speed and ability to charge. using fire on the move mode it allow their rider to fire their range weapon on the move. their weakness is spear & low number"
 autowrap = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_top = 224.0
-margin_right = 553.0
-margin_bottom = 272.0
+margin_top = 266.0
+margin_right = 462.0
+margin_bottom = 314.0
 mouse_filter = 2
 custom_constants/separation = 18
 
@@ -772,7 +806,7 @@ expand = true
 
 [node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer5"]
 margin_left = 108.0
-margin_right = 553.0
+margin_right = 462.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -780,9 +814,9 @@ text = "Siege engine offer tactical advantage for both offence and defence, they
 autowrap = true
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
-margin_top = 284.0
-margin_right = 553.0
-margin_bottom = 332.0
+margin_top = 326.0
+margin_right = 462.0
+margin_bottom = 374.0
 mouse_filter = 2
 custom_constants/separation = 18
 
@@ -831,25 +865,68 @@ expand = true
 
 [node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer6"]
 margin_left = 108.0
-margin_right = 553.0
+margin_right = 462.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Keep your commander alive, if your commander dead, remaining squad will suffer moral pinalty
+text = "The 1st squad in the army will appoint as commander, Keep your commander alive, if your commander dead, remaining squad will suffer moral pinalty
  (-50% combat effectiveness)"
 autowrap = true
 
+[node name="HBoxContainer7" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2"]
+margin_top = 326.0
+margin_right = 462.0
+margin_bottom = 374.0
+mouse_filter = 2
+custom_constants/separation = 18
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer7"]
+margin_right = 90.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 90, 0 )
+custom_constants/separation = 8
+
+[node name="TextureRect2" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer7/HBoxContainer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 24 )
+expand = true
+
+[node name="TextureRect3" type="TextureRect" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer7/HBoxContainer2"]
+margin_left = 48.0
+margin_right = 88.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+mouse_filter = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 23 )
+expand = true
+
+[node name="speed" type="Label" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3/HBoxContainer2/HBoxContainer7"]
+margin_left = 108.0
+margin_right = 462.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Master your Heroes and Squad Abilities. Some can change the course of battle, while others may change it in ways you never expected. Goodluck"
+autowrap = true
+
 [node name="MarginContainer2" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer/HBoxContainer3"]
-margin_left = 569.0
-margin_right = 577.0
-margin_bottom = 332.0
+margin_left = 478.0
+margin_right = 486.0
+margin_bottom = 374.0
 rect_min_size = Vector2( 8, 0 )
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="info_layout/VBoxContainer2/HBoxContainer4/VBoxContainer"]
-margin_top = 516.0
-margin_right = 577.0
-margin_bottom = 616.0
+margin_top = 635.0
+margin_right = 486.0
+margin_bottom = 735.0
 rect_min_size = Vector2( 0, 100 )
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/info" to="." method="_on_info_pressed"]

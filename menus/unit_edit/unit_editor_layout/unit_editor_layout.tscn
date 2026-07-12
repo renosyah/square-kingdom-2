@@ -1,7 +1,7 @@
 [gd_scene load_steps=65 format=2]
 
 [ext_resource path="res://menus/unit_edit/unit_editor_layout/unit_editor_layout.gd" type="Script" id=1]
-[ext_resource path="res://assets/user_interface/icons/squad/commander.png" type="Texture" id=2]
+[ext_resource path="res://assets/user_interface/icons/squad/hero.png" type="Texture" id=2]
 [ext_resource path="res://assets/user_interface/icons/unit.png" type="Texture" id=3]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_16.tres" type="DynamicFont" id=4]
 [ext_resource path="res://assets/user_interface/fonts/montserrat_eb_14.tres" type="DynamicFont" id=5]
@@ -164,23 +164,23 @@ anchor_bottom = 1.0
 mouse_filter = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/Control"]
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2"]
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
 
 [node name="ColorRect2" type="ColorRect" parent="Control/Control/VBoxContainer2/MarginContainer"]
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 color = Color( 0.207843, 0.207843, 0.207843, 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/Control/VBoxContainer2/MarginContainer"]
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 60 )
 
@@ -201,22 +201,22 @@ rect_min_size = Vector2( 24, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
 margin_left = 152.0
-margin_right = 520.0
+margin_right = 498.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 24, 0 )
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer/MarginContainer"]
 margin_top = 12.0
-margin_right = 368.0
+margin_right = 346.0
 margin_bottom = 48.0
 custom_fonts/font = ExtResource( 51 )
 text = "Unit Editor"
 
 [node name="delete" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
 modulate = Color( 1, 0, 0, 1 )
-margin_left = 524.0
-margin_right = 584.0
+margin_left = 502.0
+margin_right = 562.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 60, 0 )
 icon = ExtResource( 28 )
@@ -225,15 +225,15 @@ icon_align = 1
 expand_icon = true
 
 [node name="MarginContainer4" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 588.0
-margin_right = 600.0
+margin_left = 566.0
+margin_right = 578.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="save" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 604.0
+margin_left = 582.0
 margin_top = 7.0
-margin_right = 794.0
+margin_right = 772.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 190, 45 )
 size_flags_vertical = 4
@@ -248,15 +248,15 @@ icon = ExtResource( 12 )
 expand_icon = true
 
 [node name="MarginContainer5" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 798.0
-margin_right = 810.0
+margin_left = 776.0
+margin_right = 788.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 12, 0 )
 
 [node name="create_new" type="Button" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 814.0
+margin_left = 792.0
 margin_top = 7.0
-margin_right = 1034.0
+margin_right = 1012.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 220, 45 )
 size_flags_vertical = 4
@@ -270,20 +270,20 @@ text = "Save As New "
 expand_icon = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/Control/VBoxContainer2/MarginContainer/HBoxContainer"]
-margin_left = 1038.0
-margin_right = 1046.0
+margin_left = 1016.0
+margin_right = 1024.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/Control/VBoxContainer2"]
 margin_top = 64.0
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 72.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/Control/VBoxContainer2"]
 margin_top = 76.0
-margin_right = 1046.0
+margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
 size_flags_vertical = 3
@@ -398,20 +398,20 @@ mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer"]
 margin_left = 306.0
-margin_right = 718.0
+margin_right = 696.0
 margin_bottom = 524.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="ViewportContainer" type="ViewportContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer"]
-margin_right = 412.0
+margin_right = 390.0
 margin_bottom = 524.0
 mouse_filter = 2
 size_flags_vertical = 3
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer"]
-size = Vector2( 412, 524 )
+size = Vector2( 390, 524 )
 transparent_bg = true
 handle_input_locally = false
 usage = 3
@@ -547,12 +547,12 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.04
 is_dead = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer"]
-margin_right = 412.0
+margin_right = 390.0
 margin_bottom = 524.0
 mouse_filter = 2
 
 [node name="squad_name" type="Label" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_right = 412.0
+margin_right = 390.0
 margin_bottom = 36.0
 size_flags_horizontal = 5
 size_flags_vertical = 1
@@ -563,16 +563,16 @@ autowrap = true
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer"]
 margin_top = 40.0
-margin_right = 412.0
-margin_bottom = 323.0
+margin_right = 390.0
+margin_bottom = 431.0
 mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="template_squad_warning" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_left = 47.0
-margin_top = 327.0
-margin_right = 364.0
-margin_bottom = 404.0
+margin_left = 36.0
+margin_top = 435.0
+margin_right = 353.0
+margin_bottom = 512.0
 mouse_filter = 2
 size_flags_horizontal = 4
 
@@ -619,20 +619,21 @@ align = 1
 valign = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer"]
-margin_top = 408.0
-margin_right = 412.0
-margin_bottom = 416.0
+margin_top = 516.0
+margin_right = 390.0
+margin_bottom = 524.0
 rect_min_size = Vector2( 0, 8 )
 mouse_filter = 2
 
 [node name="info" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource( 29 )]
+visible = false
 margin_top = 420.0
 margin_bottom = 524.0
 simplified = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer"]
-margin_left = 722.0
-margin_right = 1034.0
+margin_left = 700.0
+margin_right = 1012.0
 margin_bottom = 524.0
 rect_min_size = Vector2( 290, 0 )
 mouse_filter = 2
@@ -1705,13 +1706,13 @@ rect_min_size = Vector2( 0, 250 )
 mouse_filter = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="Control/Control/VBoxContainer2/HBoxContainer"]
-margin_left = 1038.0
-margin_right = 1046.0
+margin_left = 1016.0
+margin_right = 1024.0
 margin_bottom = 524.0
 rect_min_size = Vector2( 8, 0 )
 
 [node name="snack_bar" parent="Control/Control" instance=ExtResource( 9 )]
-margin_right = 1046.0
+margin_right = 1024.0
 size_flags_vertical = 0
 
 [node name="confirm_popup" parent="." instance=ExtResource( 8 )]

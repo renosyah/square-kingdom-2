@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/tiles/models/tile_ground.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://addons/custom_tile_map/scripts/base_tile.gd" type="Script" id=2]
 [ext_resource path="res://scenes/tiles/materials/city_road_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/tiles/materials/ground_material.tres" type="Material" id=4]
+[ext_resource path="res://scenes/tiles/texture/stone_texture.png" type="Texture" id=5]
 
 [node name="sand" type="Spatial"]
 script = ExtResource( 2 )
@@ -15,3 +16,11 @@ mesh = ExtResource( 1 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 3.2, 0, 0, 0, -1.39876e-07, 3.2, 0, -3.2, -1.39876e-07, 0, 0, 0 )
+cast_shadow = 0
+modulate = Color( 0.352941, 0.352941, 0.352941, 1 )
+transparent = false
+double_sided = false
+texture = ExtResource( 5 )

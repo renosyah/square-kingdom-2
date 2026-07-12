@@ -606,6 +606,7 @@ visible = false
 
 [node name="scoreboard" parent="CanvasLayer/Control" instance=ExtResource( 27 )]
 visible = false
+show_battle_time = true
 
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/MarginContainer2/HBoxContainer/VBoxContainer/HBoxContainer/cam_rot_reset" to="." method="_on_cam_rot_reset_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/VBoxContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/cinematic" to="." method="_on_cinematic_pressed"]
