@@ -107,7 +107,7 @@ func _perform_range_attack():
 		_range_engagement = true
 		_melee_engagement = false
 		
-		var iddles :Array = get_iddle_members()
+		var iddles :Array = get_iddle_members(true)
 		if iddles.empty():
 			return
 			

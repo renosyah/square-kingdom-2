@@ -22,7 +22,6 @@ var _enemy_squads := []
 onready var timer = $Timer
 
 func run():
-	yield(get_tree().create_timer(rand_range(5,10)),"timeout")
 	timer.wait_time = rand_range(reaction_time, reaction_time + think_interval)
 	timer.start()
 

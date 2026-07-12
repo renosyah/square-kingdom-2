@@ -104,13 +104,20 @@ func apply_equipment():
 		_armor = w
 		
 	if melee_weapon:
-		var w = melee_weapon.instance()
-		weapon_holder.add_child(w)
-		
-		if w.show_on_stored:
-			melee_storage_holder.add_child(w.duplicate())
+		if is_bannerman:
+			var w = preload("res://scenes/equipment/banner/banner.tscn").instance()
+			w.material = material
+			weapon_holder.add_child(w)
+			_melee_weapon = w
 			
-		_melee_weapon = w
+		else:
+			var w = melee_weapon.instance()
+			weapon_holder.add_child(w)
+			
+			if w.show_on_stored:
+				melee_storage_holder.add_child(w.duplicate())
+				
+			_melee_weapon = w
 		
 	if shield:
 		var w = shield.instance()
@@ -337,6 +344,10 @@ func set_dead():
 	
 	_squad_current_tile = squad.current_tile
 	
+	if is_bannerman and Global.current_root:
+		weapon_holder.visible = false
+		Global.current_root.stash_corpses(_melee_weapon, _squad_current_tile)
+		
 func _on_died_anim():
 	if not Global.current_root:
 		return

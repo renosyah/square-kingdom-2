@@ -67,6 +67,8 @@ func _spawn_members():
 		member.max_hp = member_max_hp
 		member.use_heavy_armor = use_heavy_armor
 		
+		member.is_bannerman = total_member > 1 and (idx == _formation_offsets.size() - 1)
+		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
 		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
@@ -300,7 +302,7 @@ func _perform_range_attack():
 		_range_engagement = true
 		_melee_engagement = false
 		
-		var iddles :Array = get_iddle_members()
+		var iddles :Array = get_iddle_members(true)
 		if iddles.empty():
 			return
 			

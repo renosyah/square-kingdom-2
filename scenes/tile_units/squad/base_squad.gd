@@ -338,6 +338,8 @@ func _spawn_members():
 		member.hp = member_hp
 		member.max_hp = member_max_hp
 		
+		member.is_bannerman = total_member > 1 and idx == 0
+		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
 		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
@@ -672,10 +674,10 @@ func pick_closes(pos :Vector3, iddle_one :bool = true) -> SquadMember:
 			
 	return current
 	
-func get_iddle_members() -> Array:
+func get_iddle_members(all :bool = false) -> Array:
 	var iddles = []
 	for i in get_members():
-		if i.iddle:
+		if i.iddle and (all or not i.is_bannerman):
 			iddles.append(i)
 			
 	return iddles

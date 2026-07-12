@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=2]
+[gd_scene load_steps=106 format=2]
 
 [ext_resource path="res://scenes/tile_units/squad_member/infantry_member/body.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/tile_units/squad_member/infantry_member/hand.obj" type="ArrayMesh" id=2]
@@ -458,6 +458,154 @@ tracks/10/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0.221525, -0.0041241, 0.00404906 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("pivot/body/hand_r/range_weapon_holder:rotation_degrees")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -12.9531, -91.264, 89.9084 ) ]
+}
+
+[sub_resource type="Animation" id=103]
+resource_name = "iddle_banner_hold"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/body:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/body:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/body/head:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.18, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/body/head:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/body/hand_r:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.08, 0.1, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/body/hand_r:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 89.2851, -143.527, 120 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("pivot/body/hand_l:translation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.08, 0.1, 0 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("pivot/body/hand_l:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 60 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("pivot/body/hand_r/weapon_holder:translation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.22709, -0.00570082, -0.000203043 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot/body/hand_r/weapon_holder:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -7.57576, 89.6746, -90.6824 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("pivot/body/hand_r/range_weapon_holder:translation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.196861, 0.00170654, 0.00404906 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("pivot/body/hand_r/range_weapon_holder:rotation_degrees")
@@ -3216,6 +3364,9 @@ animation = "die"
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "iddle"
 
+[sub_resource type="AnimationNodeAnimation" id=104]
+animation = "iddle_banner_hold"
+
 [sub_resource type="AnimationNodeAnimation" id=24]
 animation = "iddle_weapon_hold"
 
@@ -3362,11 +3513,17 @@ auto_advance = true
 switch_mode = 2
 auto_advance = true
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=105]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=106]
+
 [sub_resource type="AnimationNodeStateMachine" id=12]
 states/die/node = SubResource( 52 )
 states/die/position = Vector2( 235, -17.3508 )
 states/iddle/node = SubResource( 15 )
 states/iddle/position = Vector2( 235, 109 )
+states/iddle_banner_hold/node = SubResource( 104 )
+states/iddle_banner_hold/position = Vector2( 91.788, -92.461 )
 states/iddle_weapon_hold/node = SubResource( 24 )
 states/iddle_weapon_hold/position = Vector2( 235, 197 )
 states/range_weapon_hold/node = SubResource( 77 )
@@ -3399,7 +3556,7 @@ states/weapon_slash_attack/node = SubResource( 41 )
 states/weapon_slash_attack/position = Vector2( -275.988, -17.3508 )
 states/weapon_trust_attack/node = SubResource( 37 )
 states/weapon_trust_attack/position = Vector2( -46, -17.3508 )
-transitions = [ "iddle", "walk", SubResource( 17 ), "walk", "iddle", SubResource( 18 ), "iddle", "walk_weapon_hold", SubResource( 21 ), "walk_weapon_hold", "iddle", SubResource( 22 ), "iddle", "iddle_weapon_hold", SubResource( 25 ), "iddle_weapon_hold", "iddle", SubResource( 26 ), "iddle_weapon_hold", "walk_weapon_hold", SubResource( 27 ), "walk_weapon_hold", "iddle_weapon_hold", SubResource( 28 ), "iddle", "weapon_ready", SubResource( 31 ), "weapon_ready", "iddle", SubResource( 32 ), "weapon_ready", "weapon_trust_attack", SubResource( 38 ), "weapon_trust_attack", "weapon_ready", SubResource( 39 ), "weapon_slash_attack", "weapon_ready", SubResource( 42 ), "weapon_ready", "weapon_slash_attack", SubResource( 43 ), "iddle", "shot_range_weapon", SubResource( 46 ), "shot_range_weapon", "iddle", SubResource( 47 ), "iddle", "die", SubResource( 53 ), "iddle", "throw_range_weapon", SubResource( 59 ), "throw_range_weapon", "iddle", SubResource( 60 ), "range_weapon_ready", "shot_range_weapon_2", SubResource( 67 ), "shot_range_weapon_2", "range_weapon_ready", SubResource( 68 ), "iddle", "throw_range_weapon_2", SubResource( 74 ), "throw_range_weapon_2", "iddle", SubResource( 75 ), "range_weapon_hold", "range_weapon_ready", SubResource( 78 ), "range_weapon_ready", "range_weapon_hold", SubResource( 79 ), "iddle", "range_weapon_hold", SubResource( 80 ), "range_weapon_hold", "iddle", SubResource( 81 ), "iddle", "weapon_2_ready", SubResource( 89 ), "weapon_2_ready", "iddle", SubResource( 90 ), "weapon_2_ready", "weapon_2_slash_left", SubResource( 91 ), "weapon_2_slash_left", "weapon_2_ready", SubResource( 92 ), "weapon_2_ready", "weapon_2_slash_right", SubResource( 93 ), "weapon_2_slash_right", "weapon_2_ready", SubResource( 94 ), "iddle", "weapon_2_hold", SubResource( 97 ), "weapon_2_hold", "iddle", SubResource( 98 ), "weapon_2_hold", "weapon_2_slash_right", SubResource( 99 ), "weapon_2_slash_right", "weapon_2_hold", SubResource( 100 ), "weapon_2_hold", "weapon_2_slash_left", SubResource( 101 ), "weapon_2_slash_left", "weapon_2_hold", SubResource( 102 ) ]
+transitions = [ "iddle", "walk", SubResource( 17 ), "walk", "iddle", SubResource( 18 ), "iddle", "walk_weapon_hold", SubResource( 21 ), "walk_weapon_hold", "iddle", SubResource( 22 ), "iddle", "iddle_weapon_hold", SubResource( 25 ), "iddle_weapon_hold", "iddle", SubResource( 26 ), "iddle_weapon_hold", "walk_weapon_hold", SubResource( 27 ), "walk_weapon_hold", "iddle_weapon_hold", SubResource( 28 ), "iddle", "weapon_ready", SubResource( 31 ), "weapon_ready", "iddle", SubResource( 32 ), "weapon_ready", "weapon_trust_attack", SubResource( 38 ), "weapon_trust_attack", "weapon_ready", SubResource( 39 ), "weapon_slash_attack", "weapon_ready", SubResource( 42 ), "weapon_ready", "weapon_slash_attack", SubResource( 43 ), "iddle", "shot_range_weapon", SubResource( 46 ), "shot_range_weapon", "iddle", SubResource( 47 ), "iddle", "die", SubResource( 53 ), "iddle", "throw_range_weapon", SubResource( 59 ), "throw_range_weapon", "iddle", SubResource( 60 ), "range_weapon_ready", "shot_range_weapon_2", SubResource( 67 ), "shot_range_weapon_2", "range_weapon_ready", SubResource( 68 ), "iddle", "throw_range_weapon_2", SubResource( 74 ), "throw_range_weapon_2", "iddle", SubResource( 75 ), "range_weapon_hold", "range_weapon_ready", SubResource( 78 ), "range_weapon_ready", "range_weapon_hold", SubResource( 79 ), "iddle", "range_weapon_hold", SubResource( 80 ), "range_weapon_hold", "iddle", SubResource( 81 ), "iddle", "weapon_2_ready", SubResource( 89 ), "weapon_2_ready", "iddle", SubResource( 90 ), "weapon_2_ready", "weapon_2_slash_left", SubResource( 91 ), "weapon_2_slash_left", "weapon_2_ready", SubResource( 92 ), "weapon_2_ready", "weapon_2_slash_right", SubResource( 93 ), "weapon_2_slash_right", "weapon_2_ready", SubResource( 94 ), "iddle", "weapon_2_hold", SubResource( 97 ), "weapon_2_hold", "iddle", SubResource( 98 ), "weapon_2_hold", "weapon_2_slash_right", SubResource( 99 ), "weapon_2_slash_right", "weapon_2_hold", SubResource( 100 ), "weapon_2_hold", "weapon_2_slash_left", SubResource( 101 ), "weapon_2_slash_left", "weapon_2_hold", SubResource( 102 ), "iddle", "iddle_banner_hold", SubResource( 105 ), "iddle_banner_hold", "iddle", SubResource( 106 ) ]
 start_node = "iddle"
 graph_offset = Vector2( -445.212, -189.461 )
 
@@ -3484,7 +3641,7 @@ __meta__ = {
 }
 
 [node name="weapon_holder" type="Spatial" parent="pivot/body/hand_r"]
-transform = Transform( -0.551769, 0.684154, 0.476956, -0.828606, -0.514638, -0.220369, 0.0946935, -0.5168, 0.850854, 0.22709, -0.00570086, -0.000203043 )
+transform = Transform( -0.551769, 0.684153, 0.476956, -0.828606, -0.514638, -0.220369, 0.0946934, -0.5168, 0.850854, 0.22709, -0.00570086, -0.000203043 )
 
 [node name="hand_l" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0.1, 0 )
@@ -3537,6 +3694,7 @@ autoplay = "iddle"
 anims/RESET = SubResource( 2 )
 anims/die = SubResource( 50 )
 anims/iddle = SubResource( 1 )
+anims/iddle_banner_hold = SubResource( 103 )
 anims/iddle_weapon_hold = SubResource( 23 )
 anims/range_weapon_hold = SubResource( 76 )
 anims/range_weapon_ready = SubResource( 61 )

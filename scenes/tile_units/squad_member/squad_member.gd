@@ -12,6 +12,7 @@ export var melee_weapon :PackedScene
 export var range_weapon :PackedScene
 export var material :SpatialMaterial
 export var on_horse :bool = false
+export var is_bannerman :bool = false
 
 export var hp :int = 100
 export var max_hp :int = 100
