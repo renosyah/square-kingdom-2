@@ -69,12 +69,14 @@ func resurect():
 	if _armor:
 		_armor.visible = true
 		
-		
 	_current_anim_body = "iddle"
 	_current_anim_walk = "on_sadle" if on_horse else "iddle"
 	
 	body_animation_state.start(_current_anim_body)
 	leg_animation_state.start(_current_anim_walk)
+	
+	if is_bannerman:
+		weapon_holder.visible = true
 	
 func apply_equipment():
 	head.visible = true
@@ -106,6 +108,7 @@ func apply_equipment():
 	if melee_weapon:
 		if is_bannerman:
 			var w = preload("res://scenes/equipment/banner/banner.tscn").instance()
+			w.banner_icon = banner_icon
 			w.material = material
 			weapon_holder.add_child(w)
 			_melee_weapon = w

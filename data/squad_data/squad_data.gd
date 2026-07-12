@@ -56,6 +56,9 @@ export var total_member :int = 9
 export var squad_ability_idx :int = 0
 export var range_fire_mode :int = 0 # 0:volley 1:rappid
 
+# banner icon
+export var banner_icon_idx :int
+
 # this is for siege engine
 # because i cant get the stats of the engines
 # this is just simple holder and not do anything outside data
@@ -289,6 +292,7 @@ func from_dictionary(_data : Dictionary):
 	extra = _data.get("extra", {})
 	personal_equipment_idx = _data.get("v10", 0)
 	perk_idx = _data.get("v11", 0)
+	banner_icon_idx = _data.get("v12", 0)
 	
 func to_dictionary() -> Dictionary :
 	var _data :Dictionary = .to_dictionary()
@@ -327,6 +331,7 @@ func to_dictionary() -> Dictionary :
 	_data["extra"] = extra
 	_data["v10"] = personal_equipment_idx
 	_data["v11"] = perk_idx
+	_data["v12"] = banner_icon_idx
 	return _data
 	
 

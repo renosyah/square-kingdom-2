@@ -3641,7 +3641,7 @@ __meta__ = {
 }
 
 [node name="weapon_holder" type="Spatial" parent="pivot/body/hand_r"]
-transform = Transform( -0.551769, 0.684153, 0.476956, -0.828606, -0.514638, -0.220369, 0.0946934, -0.5168, 0.850854, 0.22709, -0.00570086, -0.000203043 )
+transform = Transform( -0.551769, 0.684153, 0.476956, -0.828606, -0.514638, -0.220369, 0.0946935, -0.5168, 0.850854, 0.22709, -0.00570086, -0.000203043 )
 
 [node name="hand_l" type="Spatial" parent="pivot/body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 0.1, 0 )

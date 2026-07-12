@@ -214,6 +214,47 @@ const perks = {
 	}],
 }
 
+const banner_icons = [
+	null,
+	preload("res://assets/user_interface/icons/banner/lion_icon.png"),
+	preload("res://assets/user_interface/icons/banner/eagle_icon.png"),
+	preload("res://assets/user_interface/icons/banner/rhino_icon.png")
+]
+
+const banner_bonus = {
+	0:{},
+	1:{
+		"melee_speed_bonus_percentage" : 0.10,
+		"range_speed_bonus_percentage" : 0.10,
+	},
+	2:{
+		"speed_bonus_percentage" : 0.15,
+	},
+	3:{
+		"hp_bonus_percentage": 0.10,
+		"heal_bonus_percentage": 0.10,
+	},
+}
+
+# squad.modifier_melee_speed = 0
+# squad.modifier_range_speed = 1
+# squad.modifier_move_speed = 2
+# squad.modifier_damage_receive = 3
+# squad.modifier_melee_damage = 4
+# squad.modifier_range_damage = 5
+const banner_debuf = {
+	0:[],
+	1:[
+		[0, -0.10, 25, 0],
+		[1, -0.10, 25, 4]
+	],
+	2:[
+		[2, -0.15, 25, 4]
+	],
+	3:[
+		[3, 0.10, 25, 4]
+	],
+}
 
 const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/pitch_fork.png"), #0

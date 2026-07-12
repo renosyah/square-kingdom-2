@@ -33,6 +33,7 @@ member_range_weapon_idx = 0
 total_member = 2
 squad_ability_idx = 0
 range_fire_mode = 0
+banner_icon_idx = 0
 siege_engine_attack_damage = 36
 siege_engine_attack_speed = 7.0
 siege_engine_attack_range = 8

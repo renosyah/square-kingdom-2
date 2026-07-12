@@ -35,6 +35,8 @@ func _ready():
 	_rider.range_weapon = range_weapon
 	_rider.material = material
 	_rider.on_horse = true
+	
+	_rider.banner_icon = banner_icon
 	_rider.is_bannerman = is_bannerman
 	
 	_rider.hp = hp

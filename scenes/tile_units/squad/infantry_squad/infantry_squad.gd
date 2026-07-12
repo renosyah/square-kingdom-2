@@ -154,3 +154,22 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	if is_align:
 		translation += -transform.basis.z * _get_speed() * delta
 		translation.y = to.y
+	
+remotesync func _resurect(member_idxs :Array):
+	for member_idx in member_idxs:
+		if member_idx > _members.size() - 1 or member_idx == -1:
+			continue
+			
+		var m :SquadMember = _members[member_idx]
+		m.resurect()
+		
+		if not _alive_members.has(m):
+			if m.is_bannerman:
+				_alive_members.insert(0, m) # always first
+				
+			else:
+				_alive_members.append(m)
+			
+		member_alive = _alive_members.size()
+		
+		emit_signal("on_squad_member_resurect", self, m)

@@ -420,11 +420,10 @@ mouse_filter = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 254.0
 margin_right = 696.0
-margin_bottom = 358.0
+margin_bottom = 342.0
 
 [node name="info" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 14 )]
 margin_right = 696.0
-margin_bottom = 104.0
 
 [node name="trash_area" type="MarginContainer" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 visible = false

@@ -57,9 +57,11 @@ func display():
 	var dup = SquadData.new()
 	dup.from_dictionary(squads[0].to_dictionary())
 	
+	dup.extra = {}
 	dup.append_extra(Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra())
 	dup.append_extra(EntityIndex.personal_equipments[dup.personal_equipment_idx][3])
 	dup.append_extra(EntityIndex.perks[dup.perk_idx][3])
+	dup.append_extra(EntityIndex.banner_bonus[dup.banner_icon_idx])
 	
 	info.display_info(dup)
 	
@@ -136,7 +138,12 @@ func _on_card_on_grab(card, pos, container, data):
 	
 	var dup = SquadData.new()
 	dup.from_dictionary(data.to_dictionary())
-	dup.extra = Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra()
+	
+	dup.extra = {}
+	dup.append_extra(Global.get_total_cards_extra_bonuses(Global.current_army_cards).get_extra())
+	dup.append_extra(EntityIndex.personal_equipments[dup.personal_equipment_idx][3])
+	dup.append_extra(EntityIndex.perks[dup.perk_idx][3])
+	dup.append_extra(EntityIndex.banner_bonus[dup.banner_icon_idx])
 	
 	info.display_info(dup)
 	

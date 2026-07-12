@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/tiles/materials/wood_material.tres" type="Material" id=3]
 [ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
 [ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=5]
-[ext_resource path="res://scenes/equipment/material/white.tres" type="Material" id=6]
+[ext_resource path="res://scenes/tiles/materials/rock_material.tres" type="Material" id=6]
 [ext_resource path="res://assets/user_interface/icons/squad/hero.png" type="Texture" id=7]
 
 [node name="banner" type="Spatial"]
@@ -26,7 +26,7 @@ software_skinning_transform_normals = false
 material/0 = ExtResource( 4 )
 material/1 = ExtResource( 3 )
 material/2 = ExtResource( 5 )
-material/3 = ExtResource( 6 )
+material/4 = ExtResource( 6 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.489204, 0.0451573 )

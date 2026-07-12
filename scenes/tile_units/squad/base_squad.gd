@@ -76,6 +76,8 @@ export var squad_role :int
 export var squad_icon :StreamTexture
 export var squad_attribute :Array
 export var squad_ability_idx :int = 0
+export var banner_icon_idx :int
+export var banner_icon :StreamTexture
 export var rapid_fire_mode :bool = false
 export var is_hero :bool
 
@@ -338,7 +340,9 @@ func _spawn_members():
 		member.hp = member_hp
 		member.max_hp = member_max_hp
 		
-		member.is_bannerman = total_member > 1 and idx == 0
+		if banner_icon_idx != 0:
+			member.is_bannerman = total_member > 1 and idx == 0
+			member.banner_icon = banner_icon
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")

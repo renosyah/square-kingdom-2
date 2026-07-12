@@ -67,7 +67,9 @@ func _spawn_members():
 		member.max_hp = member_max_hp
 		member.use_heavy_armor = use_heavy_armor
 		
-		member.is_bannerman = total_member > 1 and (idx == _formation_offsets.size() - 1)
+		if banner_icon_idx != 0:
+			member.is_bannerman = total_member > 1 and (idx == _formation_offsets.size() - 1)
+			member.banner_icon = banner_icon
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
@@ -346,3 +348,4 @@ func _move_to_next_path(delta :float, pos :Vector3, to :Vector3):
 	var _speed = (_get_speed() * 0.5) if attack_move else _get_speed()
 	translation += pos.direction_to(to) * _speed * delta
 	translation.y = to.y
+	

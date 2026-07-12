@@ -815,6 +815,9 @@ remotesync func _spawn_squad(bytes :PoolByteArray):
 	squad.rapid_fire_mode = (data.range_fire_mode == 1) and (not data.is_hero)
 	squad.is_hero = data.is_hero
 	
+	squad.banner_icon_idx = data.banner_icon_idx
+	squad.banner_icon = EntityIndex.banner_icons[data.banner_icon_idx]
+
 	# extra ui
 	squad.enable_blood = setting.extra_effect
 	squad.enable_squad_tile_indicator = setting.show_unit_tile
@@ -967,6 +970,10 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 	
 	if from.team == squad.team:
 		ui.scoreboard.add_friendly_fire(from_player, from_squad, 1)
+		
+	# get debuf if member is bannerman die
+	if squad.player_id == current_player.player_id and member.is_bannerman:
+		squad.set_modifiers(EntityIndex.banner_debuf[squad.banner_icon_idx])
 	
 const modifier_indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 

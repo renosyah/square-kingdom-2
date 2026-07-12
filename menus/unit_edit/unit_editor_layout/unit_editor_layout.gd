@@ -73,8 +73,17 @@ const fire_modes = {
 	0 :["Volley!", preload("res://assets/user_interface/ability/volley_ability.png")], 
 	1 :["Rappid!", preload("res://assets/user_interface/ability/rappid_fire.png")], 
 }
+
+const banners = {
+	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
+	1 :["Lion", preload("res://assets/user_interface/icons/banner/lion_icon.png"), "+Bonus All attack speed"], 
+	2 :["Eagle", preload("res://assets/user_interface/icons/banner/eagle_icon.png"), "+Bonus movement speed"], 
+	3 :["Rhino", preload("res://assets/user_interface/icons/banner/rhino_icon.png"), "+Bonus HP & Heal"], 
+}
+
 onready var personal_equipments :Dictionary = EntityIndex.personal_equipments
 onready var perks :Dictionary = EntityIndex.perks
+onready var banner_bonus = EntityIndex.banner_bonus
 
 export var player_color_idx :int
 export var player_material :SpatialMaterial
@@ -109,6 +118,8 @@ onready var fire_mode_option = $Control/Control/VBoxContainer2/HBoxContainer/Mar
 onready var fire_mode_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/fire_mode_option/MarginContainer7/fire_mode_holder
 onready var personal_equipment_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer6/personal_equipment_holder
 onready var perks_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/MarginContainer7/perks_holder
+onready var banners_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/banner_option/MarginContainer8/banners_holder
+onready var banner_option = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer/banner_option
 
 onready var player_color_display = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/MarginContainer4/player_color_display
 onready var icon_color_display =  $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3/HBoxContainer/VBoxContainer/MarginContainer5/icon_color_display
@@ -195,8 +206,12 @@ func _on_set_as_hero(v :bool):
 			infantry_member.apply_equipment()
 			
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
+	display_range_weapons(dup_squad_data.member_range_weapon_idx)
 	display_hero(dup_squad_data.is_hero)
-	squad_info.display_info(dup_squad_data)
+	
+	dup_squad_data.banner_icon_idx = 0
+	show_banner_option()
+	display_info()
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -227,7 +242,7 @@ func _on_unit_role_button(key):
 		
 	dup_squad_data.squad_role = key
 	display_role(dup_squad_data.squad_role)
-	squad_info.display_info(dup_squad_data)
+	display_info()
 	
 func display_melee_weapons(selected_index :int):
 	for i in weapon_holder.get_children():
@@ -327,6 +342,19 @@ func display_perks(selected_index :int):
 		perks_holder.add_child(item)
 		item.set_selected(key == selected_index)
 		
+func display_banners(selected_index :int):
+	for i in banners_holder.get_children():
+		banners_holder.remove_child(i)
+		i.queue_free()
+		
+	for key in banners.keys():
+		var item = equipment_item_scene.instance()
+		item.index = key
+		item.icon = banners[key][1]
+		item.item_name = banners[key][0]
+		item.connect("selected", self, "_on_banner_selected", [key])
+		banners_holder.add_child(item)
+		item.set_selected(key == selected_index)
 		
 func display_shield(selected_index :int):
 	for i in shield_holder.get_children():
@@ -449,11 +477,22 @@ func show_shield_option():
 func show_fire_mode_option():
 	fire_mode_option.visible = dup_squad_data.member_range_weapon_idx != 0 and not dup_squad_data.is_hero
 	
+func show_banner_option():
+	banner_option.visible = not dup_squad_data.is_hero
+	
 func display_attribute():
 	squad_name.text = dup_squad_data.squad_name
 	potrait_display.texture = EntityIndex.squad_potraits[dup_squad_data.potrait_idx]
 	icon_display.texture = EntityIndex.squad_icon[dup_squad_data.icon_idx]
 	popup_choose_potrait.selected(dup_squad_data.potrait_idx)
+	
+func display_info():
+	dup_squad_data.extra = {}
+	dup_squad_data.append_extra(personal_equipments[dup_squad_data.personal_equipment_idx][3])
+	dup_squad_data.append_extra(perks[dup_squad_data.perk_idx][3])
+	dup_squad_data.append_extra(banner_bonus[dup_squad_data.banner_icon_idx])
+	
+	squad_info.display_info(dup_squad_data)
 	
 func _on_back_pressed():
 	emit_signal("close")
@@ -490,7 +529,8 @@ func _on_melee_weapon_selected(index :int):
 	infantry_member.melee_weapon = EntityIndex.melee_weapons[index]
 	infantry_member.shield = EntityIndex.shields[dup_squad_data.member_shield_idx]
 	infantry_member.apply_equipment()
-	squad_info.display_info(dup_squad_data)
+	
+	display_info()
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -503,7 +543,8 @@ func _on_range_weapon_selected(index :int):
 	
 	infantry_member.range_weapon = EntityIndex.range_weapons[index]
 	infantry_member.apply_equipment()
-	squad_info.display_info(dup_squad_data)
+	
+	display_info()
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -514,7 +555,8 @@ func _on_headgear_selected(index :int):
 	display_headgear(index)
 	infantry_member.headgear = EntityIndex.head_armors[index]
 	infantry_member.apply_equipment()
-	squad_info.display_info(dup_squad_data)
+	
+	display_info()
 	
 func _on_armors_selected(index :int):
 	dup_squad_data.member_armor_idx = index
@@ -527,34 +569,31 @@ func _on_armors_selected(index :int):
 	
 	infantry_member.armor = EntityIndex.armors[index]
 	infantry_member.apply_equipment()
-	squad_info.display_info(dup_squad_data)
+	
+	display_info()
 	
 func _on_personal_equipment_selected(index :int):
 	dup_squad_data.personal_equipment_idx = index
 	display_personal_equipment(index)
-	
-	dup_squad_data.extra = {}
-	dup_squad_data.append_extra(personal_equipments[index][3])
-	dup_squad_data.append_extra(perks[dup_squad_data.perk_idx][3])
-	
-	squad_info.display_info(dup_squad_data)
+	display_info()
 	
 func _on_perk_selected(index :int):
 	dup_squad_data.perk_idx = index
 	display_perks(index)
+	display_info()
 	
-	dup_squad_data.extra = {}
-	dup_squad_data.append_extra(personal_equipments[dup_squad_data.personal_equipment_idx][3])
-	dup_squad_data.append_extra(perks[index][3])
-	
-	squad_info.display_info(dup_squad_data)
+func _on_banner_selected(index :int):
+	dup_squad_data.banner_icon_idx = index
+	display_banners(index)
+	display_info()
 	
 func _on_shield_selected(index :int):
 	dup_squad_data.member_shield_idx = index
 	display_shield(index)
 	infantry_member.shield = EntityIndex.shields[index]
 	infantry_member.apply_equipment()
-	squad_info.display_info(dup_squad_data)
+	
+	display_info()
 	
 	# nah just set it to none if changes
 	dup_squad_data.squad_ability_idx = 0
@@ -619,6 +658,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_armor(dup_squad_data.member_armor_idx)
 	display_personal_equipment(dup_squad_data.personal_equipment_idx)
 	display_perks(dup_squad_data.perk_idx)
+	display_banners(dup_squad_data.banner_icon_idx)
 	display_shield(dup_squad_data.member_shield_idx)
 	display_fire_mode(dup_squad_data.range_fire_mode)
 	display_role(dup_squad_data.squad_role)
@@ -627,14 +667,11 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	display_attribute()
 	show_shield_option()
 	show_fire_mode_option()
+	show_banner_option()
 	
 	infantry_member.apply_equipment()
 	
-	dup_squad_data.extra = {}
-	dup_squad_data.append_extra(personal_equipments[dup_squad_data.personal_equipment_idx][3])
-	dup_squad_data.append_extra(perks[dup_squad_data.perk_idx][3])
-	
-	squad_info.display_info(dup_squad_data)
+	display_info()
 	
 func _on_change_icon_pressed():
 	popup_choose_potrait.list = EntityIndex.squad_icon

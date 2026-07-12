@@ -12,6 +12,8 @@ export var melee_weapon :PackedScene
 export var range_weapon :PackedScene
 export var material :SpatialMaterial
 export var on_horse :bool = false
+
+export var banner_icon :StreamTexture
 export var is_bannerman :bool = false
 
 export var hp :int = 100
