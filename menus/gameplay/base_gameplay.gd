@@ -973,9 +973,12 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		ui.scoreboard.add_kill(from_player, from_squad, 1)
 		
 	# all squad get debuf if member is banerman die
-	if member.is_bannerman and squad.player_id == current_player.player_id:
-		for s in player_squads:
-			s.set_modifiers(EntityIndex.banner_debuf[squad.banner_icon_idx])
+	# handled and debuff invoked to all squad by server
+	if member.is_bannerman and is_server:
+		var player_id :String = squad.player_id
+		for s in squads:
+			if s.player_id == player_id:
+				s.set_modifiers(EntityIndex.banner_debuf[squad.banner_icon_idx])
 	
 const modifier_indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 
