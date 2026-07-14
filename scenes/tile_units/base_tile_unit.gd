@@ -57,6 +57,15 @@ var spotting_area :Array
 puppet var _puppet_current_tile :Vector2
 puppet var _puppet_translation :Vector3
 
+var _debounce_rpc_timer :Timer
+
+func _ready():
+	_debounce_rpc_timer = Timer.new()
+	_debounce_rpc_timer.one_shot = true
+	_debounce_rpc_timer.autostart = false
+	_debounce_rpc_timer.wait_time = 0.2
+	add_child(_debounce_rpc_timer)
+
 func move_to(tile_id :Vector2):
 	_move_to(tile_id, true)
 	
@@ -105,6 +114,11 @@ func stop(use_rpc :bool = true):
 		_stop()
 		return
 		
+	if not _debounce_rpc_timer.is_stopped():
+		return
+		
+	_debounce_rpc_timer.start()
+	
 	# call stop, tell master to stop from other peer
 	rpc_id(get_network_master(), "_stop")
 	

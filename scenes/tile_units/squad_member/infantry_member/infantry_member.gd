@@ -75,8 +75,6 @@ func resurect():
 	body_animation_state.start(_current_anim_body)
 	leg_animation_state.start(_current_anim_walk)
 	
-	if is_bannerman:
-		weapon_holder.visible = true
 	
 func apply_equipment():
 	head.visible = true
@@ -154,10 +152,7 @@ func apply_equipment():
 		
 func prepare_melee_weapon():
 	.prepare_melee_weapon()
-	
-	if melee_mode:
-		return
-		
+
 	melee_mode = true
 	range_mode = false
 	
@@ -172,9 +167,6 @@ func prepare_melee_weapon():
 func prepare_range_weapon():
 	.prepare_range_weapon()
 	
-	if range_mode:
-		return
-		
 	melee_mode = false
 	range_mode = true
 	
@@ -348,7 +340,6 @@ func set_dead():
 	_squad_current_tile = squad.current_tile
 	
 	if is_bannerman and Global.current_root:
-		weapon_holder.visible = false
 		Global.current_root.stash_corpses(_melee_weapon, _squad_current_tile)
 		
 func _on_died_anim():

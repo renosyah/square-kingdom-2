@@ -475,6 +475,12 @@ func retreat(use_rpc :bool = true):
 		_retreat()
 		return
 		
+	# prevent rpc spam
+	if not _debounce_rpc_timer.is_stopped():
+		return
+		
+	_debounce_rpc_timer.start()
+	
 	# call stop, tell master to stop from other peer
 	rpc_id(get_network_master(), "_retreat")
 	
