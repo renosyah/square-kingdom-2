@@ -966,14 +966,16 @@ func _on_squad_member_dead(squad :BaseSquad, member :SquadMember, data :SquadDat
 		
 	var from_player :PlayerData = player_ids[from.player_id]
 	var from_squad :SquadData = squad_datas[from]
-	ui.scoreboard.add_kill(from_player, from_squad, 1)
-	
 	if from.team == squad.team:
 		ui.scoreboard.add_friendly_fire(from_player, from_squad, 1)
 		
-	# get debuf if member is bannerman die
-	if squad.player_id == current_player.player_id and member.is_bannerman:
-		squad.set_modifiers(EntityIndex.banner_debuf[squad.banner_icon_idx])
+	else:
+		ui.scoreboard.add_kill(from_player, from_squad, 1)
+		
+	# all squad get debuf if member is banerman die
+	if member.is_bannerman and squad.player_id == current_player.player_id:
+		for s in player_squads:
+			s.set_modifiers(EntityIndex.banner_debuf[squad.banner_icon_idx])
 	
 const modifier_indicator = preload("res://assets/squad_buff_debuff_indicator/squad_buff_debuff_indicator.tscn")
 

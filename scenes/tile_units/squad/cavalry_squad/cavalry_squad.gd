@@ -68,7 +68,7 @@ func _spawn_members():
 		member.use_heavy_armor = use_heavy_armor
 		
 		if banner_icon_idx != 0:
-			member.is_bannerman = total_member > 1 and (idx == _formation_offsets.size() - 1)
+			member.is_bannerman = total_member > 1 and idx == 0
 			member.banner_icon = banner_icon
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
@@ -98,9 +98,9 @@ func _init_formations():
 		
 	else:
 		_formation_offsets = [
-			Vector3.FORWARD, 
+			Vector3.BACK,
 			Vector3.LEFT, Vector3.RIGHT, 
-			Vector3.BACK
+			Vector3.FORWARD,
 		]
 		
 	_formation_positions = _formation_offsets.duplicate()
@@ -230,10 +230,11 @@ func _get_reflected_damage(attack_damage, by):
 
 func _ajust_formation(pos :Vector3, delta :float):
 	var members = get_members()
-	
+	var temp_form_offset = [ Vector3.ZERO ] if members.size() == 1 else _formation_offsets
 	var basis :Basis = global_transform.basis
-	for i in _formation_offsets.size():
-		var offset :Vector3 = _formation_offsets[i] * formation_density
+	
+	for i in temp_form_offset.size():
+		var offset :Vector3 = temp_form_offset[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
 	for idx in members.size():

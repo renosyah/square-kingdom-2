@@ -157,6 +157,7 @@ func on_dead():
 	
 	if visible:
 		_wood_particle.translation = global_position
+		_wood_particle.translation.y += 0.15
 		_wood_particle.emitting = true
 		_siege_engine_audio.stream = siege_breaks.pick_random()
 		_siege_engine_audio.play()

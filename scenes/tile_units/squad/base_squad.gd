@@ -553,10 +553,11 @@ func _on_walking(_delta :float):
 	
 func _ajust_formation(pos :Vector3, delta :float):
 	var members = get_members()
-	
+	var temp_form_offset = [ Vector3.ZERO ] if members.size() == 1 else _formation_offsets
 	var basis :Basis = global_transform.basis
-	for i in _formation_offsets.size():
-		var offset :Vector3 = _formation_offsets[i] * formation_density
+	
+	for i in temp_form_offset.size():
+		var offset :Vector3 = temp_form_offset[i] * formation_density
 		_formation_positions[i] = (pos + basis.xform(offset))
 		
 	for idx in members.size():
@@ -801,7 +802,11 @@ remotesync func _resurect(member_idxs :Array):
 		m.resurect()
 		
 		if not _alive_members.has(m):
-			_alive_members.append(m)
+			if m.is_bannerman:
+				_alive_members.insert(0, m) # always first
+				
+			else:
+				_alive_members.append(m)
 			
 		member_alive = _alive_members.size()
 		
