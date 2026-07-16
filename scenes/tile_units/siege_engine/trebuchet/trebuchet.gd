@@ -43,6 +43,9 @@ func _on_projectile_reach(boulder):
 func moving(delta :float):
 	.moving(delta)
 	
+	if not squad:
+		return
+	
 	if iddle and squad.visible:
 		var _is_moving = squad.is_moving() and (not is_instance_valid(squad.enemy))
 		var anim = "walk" if _is_moving else "iddle"

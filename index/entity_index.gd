@@ -74,9 +74,9 @@ const range_weapon_stats = {
 	1:{'range':3,'attack_speed':1.8,'spawn_time':2},
 	2:{'range':2,'attack_speed':1.55,'spawn_time':3},
 	3:{'range':4,'attack_speed':1.8,'spawn_time':4},
-	4:{'range':6,'attack_speed':2.86,'spawn_time':6},
+	4:{'range':6,'attack_speed':3.46,'spawn_time':6},
 	5:{'range':4,'attack_speed':4.85,'spawn_time':5},
-	6:{'range':6,'attack_speed':0.45,'spawn_time':2},
+	6:{'range':6,'attack_speed':1.45,'spawn_time':2},
 }
 
 const head_armors = [

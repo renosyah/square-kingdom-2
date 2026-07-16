@@ -10,6 +10,7 @@ description = "Spear unit"
 scene_idx = 0
 node_name = ""
 current_tile = Vector2( 0, 0 )
+move_tile = Vector2( 0, 0 )
 network_id = 1
 player_id = ""
 team = 1

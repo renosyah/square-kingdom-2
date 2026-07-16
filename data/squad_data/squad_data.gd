@@ -10,6 +10,7 @@ export var description :String
 export var scene_idx :int
 export var node_name :String
 export var current_tile :Vector2
+export var move_tile :Vector2
 
 # tile unit data
 export var network_id :int
@@ -260,6 +261,7 @@ func from_dictionary(_data : Dictionary):
 	scene_idx = _data.get("a", 0)
 	node_name = _data.get("a2", "")
 	current_tile = _data.get("a3", Vector2())
+	move_tile = _data.get("a4", Vector2())
 	squad_id = _data.get("a5", 0)
 	squad_name = _data.get("a6", "")
 	description = _data.get("a7", "")
@@ -299,6 +301,7 @@ func to_dictionary() -> Dictionary :
 	_data["a"] = scene_idx
 	_data["a2"] = node_name
 	_data["a3"] = current_tile
+	_data["a4"] = move_tile
 	_data["a5"] = squad_id
 	_data["a6"] = squad_name
 	_data["a7"] = description

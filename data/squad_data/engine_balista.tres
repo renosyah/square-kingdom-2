@@ -10,6 +10,7 @@ description = "Range siege engine"
 scene_idx = 3
 node_name = ""
 current_tile = Vector2( 0, 0 )
+move_tile = Vector2( 0, 0 )
 network_id = 1
 player_id = ""
 team = 1

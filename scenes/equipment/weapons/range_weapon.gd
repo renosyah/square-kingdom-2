@@ -3,6 +3,11 @@ class_name RangeWeapon
 
 signal on_hit(projectile_pos)
 
+const bow_sounds = [
+	preload("res://assets/sounds/weapons/bow_release_1.wav"),
+	preload("res://assets/sounds/weapons/bow_release_2.wav")
+]
+
 export var projectile :PackedScene
 export var attack_damage :int
 export var show_on_stored :bool = true
@@ -11,6 +16,8 @@ export var bonus_damage :float = 0.15
 export var walk_animation :String = "walk"
 export var ready_animation :String = "iddle"
 export var attack_animation :String = "shot_range_weapon"
+
+export var is_indirect :bool = true
 
 var _pools :Array = []
 
@@ -48,6 +55,9 @@ func _on_projectile_reach(arrow):
 func _on_tree_exiting():
 	for i in _pools:
 		i.queue_free()
+	
+func get_sound() -> AudioStream:
+	return bow_sounds.pick_random()
 	
 func pull():
 	pass

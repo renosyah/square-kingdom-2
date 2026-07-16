@@ -146,6 +146,12 @@ onready var melee_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/Marg
 onready var range_weap_desc = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2/MarginContainer2/MarginContainer/range_weap_desc
 onready var squad_info = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/VBoxContainer/info
 
+onready var weapon_selection = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer2
+onready var armor_selection = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer
+onready var attribute_selection = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer2/MarginContainer2/ScrollContainer/MarginContainer/VBoxContainer2/VBoxContainer3
+
+onready var siege_engine_holder = $Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport/siege_engine_holder
+
 var selected_index :int
 var dup_squad_data :SquadData
 
@@ -409,14 +415,16 @@ func display_abilities(s :SquadData, selected_index :int):
 		var is_range = abilities[idx]["type"] == "range"
 		var is_shield = abilities[idx]["type"] == "shield"
 		var is_hero = abilities[idx]["type"] == "hero"
+		var is_siege = abilities[idx]["type"] == "siege"
 		var weapon_idx = abilities[idx]["weapon_idx"]
 		
 		var for_melee = is_melee and weapon_idx == s.member_melee_weapon_idx
 		var for_range = is_range and weapon_idx == s.member_range_weapon_idx
 		var for_shield = is_shield and s.member_shield_idx != 0
 		var for_hero = is_hero and s.is_hero
+		var for_siege = is_siege and s.scene_idx in [2,3,4]
 		
-		if not for_melee and not for_range and not for_shield and not for_hero:
+		if not for_melee and not for_range and not for_shield and not for_hero and not for_siege:
 			continue
 		
 		var is_selected = (idx == selected_index)
@@ -505,10 +513,6 @@ func display_current_squad():
 	for idx in current_squads.size():
 		var data = current_squads[idx]
 		
-		# only accept infantry & cav
-		if not data.scene_idx in [0,1]: 
-			continue
-			
 		var card = preload("res://assets/user_interface/squad_card/squad_card.tscn").instance()
 		data.color_idx = player_color_idx
 		card.data = data
@@ -613,13 +617,43 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	selected_index = idx
 	edit_name.text = squad.squad_name
 	
+	var can_modif = squad.scene_idx in [0,1]
+	create_new.visible = can_modif
+	
 	 # 0 mean this is squad template and cannot be modified
-	save.visible = (squad.squad_id != 0)
-	delete.visible = (squad.squad_id != 0)
-	template_squad_warning.visible = (squad.squad_id == 0)
+	save.visible = can_modif and (squad.squad_id != 0) 
+	delete.visible = can_modif and (squad.squad_id != 0)
+	template_squad_warning.visible = can_modif and (squad.squad_id == 0)
+	
+	weapon_selection.visible = can_modif
+	armor_selection.visible = can_modif
+	attribute_selection.visible = can_modif
+	
+	infantry_member.visible = can_modif
+	
 	dup_squad_data = SquadData.new()
 	dup_squad_data.from_dictionary(squad.to_dictionary())
 	dup_squad_data.squad_id = 1
+	
+	if siege_engine_holder.get_child_count() > 0:
+		var c = siege_engine_holder.get_child(0)
+		siege_engine_holder.remove_child(c)
+		c.queue_free()
+			
+	if not can_modif:
+		var s
+		match (squad.scene_idx):
+			2:
+				s = preload("res://scenes/tile_units/siege_engine/catapult/catapult.tscn").instance()
+				dup_squad_data.squad_ability_idx = 34
+			3:
+				dup_squad_data.squad_ability_idx = 35
+				s = preload("res://scenes/tile_units/siege_engine/balista/balista.tscn").instance()
+			4:
+				dup_squad_data.squad_ability_idx = 36
+				s = preload("res://scenes/tile_units/siege_engine/trebuchet/trebuchet.tscn").instance()
+				
+		siege_engine_holder.add_child(s)
 	
 	# for shield scinanigan, 
 	# i regret made this shield and unshield varian 
@@ -651,6 +685,7 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 		horse.visible = false
 		
 	horse_armored_body.set_surface_material(3, player_material)
+	infantry_member.apply_equipment()
 	
 	display_melee_weapons(dup_squad_data.member_melee_weapon_idx)
 	display_range_weapons(dup_squad_data.member_range_weapon_idx)
@@ -668,9 +703,6 @@ func _on_squad_card_pressed(idx:int, squad :SquadData):
 	show_shield_option()
 	show_fire_mode_option()
 	show_banner_option()
-	
-	infantry_member.apply_equipment()
-	
 	display_info()
 	
 func _on_change_icon_pressed():

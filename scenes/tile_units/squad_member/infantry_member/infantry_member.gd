@@ -1,19 +1,6 @@
 extends SquadMember
 class_name InfantryMember
 
-const sword_sounds = [
-	preload("res://assets/sounds/weapons/sword_1.wav"),
-	preload("res://assets/sounds/weapons/sword_2.wav"),
-	preload("res://assets/sounds/weapons/sword_3.wav"),
-	preload("res://assets/sounds/weapons/sword_4.wav"),
-	preload("res://assets/sounds/weapons/sword_5.wav"),
-	preload("res://assets/sounds/weapons/sword_6.wav")
-]
-const bow_sounds = [
-	preload("res://assets/sounds/weapons/bow_release_1.wav"),
-	preload("res://assets/sounds/weapons/bow_release_2.wav")
-]
-
 onready var leg_animation_state = $leg_animation_tree.get("parameters/playback")
 onready var body_animation_state = $body_animation_tree.get("parameters/playback")
 onready var tween = $Tween
@@ -207,12 +194,15 @@ func melee_attack():
 	body_animation_state.travel(_current_anim_body)
 	auto_iddle_timer.start()
 	
+func melee_has_splash() -> bool:
+	return _melee_weapon.has_splash_damage
+	
 func _on_melee_attack_performed():
 	if not squad:
 		return
 		
 	if squad.visible:
-		_combat_sound.stream = sword_sounds.pick_random()
+		_combat_sound.stream = _melee_weapon.get_sound()
 		_combat_sound.play()
 	
 	if not on_horse:
@@ -224,10 +214,6 @@ func _on_melee_attack_performed():
 	if is_instance_valid(enemy):
 		var melee_dmg = _melee_weapon.get_attack_damage(enemy, enemy.squad.squad_attribute)
 		emit_signal("on_set_damage_to_target", self, enemy, target_idx, melee_dmg)
-		
-		if _melee_weapon.has_splash_damage:
-			var target_tile = enemy.squad.current_tile
-			emit_signal("on_set_damage_to_tile", self, target_tile, melee_dmg * 0.5)
 	
 	iddle = true
 	enemy = null
@@ -257,7 +243,7 @@ func _on_release_bow():
 	_range_weapon.release()
 	
 	if squad.visible:
-		_combat_sound.stream = bow_sounds.pick_random()
+		_combat_sound.stream = _range_weapon.get_sound()
 		_combat_sound.play()
 		
 	if not is_instance_valid(enemy):

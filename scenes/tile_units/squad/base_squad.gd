@@ -386,6 +386,7 @@ func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attac
 	while not attach_range_targets.empty():
 		enemy_squad.add_child(attach_range_targets.front())
 		attach_range_targets.pop_front()
+		
 	
 func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, target_member_idx :int, attack_damage :int):
 	if not _is_master:
@@ -407,6 +408,32 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 		sq.add_child(attach_melee_targets.front())
 		attach_melee_targets.pop_front()
 		
+	if _member.melee_has_splash():
+		_apply_melee_splash_damage(sq.current_tile, dmg * 0.5)
+		
+func _apply_melee_splash_damage(tile_id :Vector2, damage :int):
+	if not unit_position.has(tile_id):
+		return
+		
+	var unit_positions :Array = unit_position[tile_id]
+	if unit_positions.empty():
+		return
+		
+	var count :int = int(randi() % unit_positions.size())
+	for _i in count:
+		var enemy_squad = unit_positions.pick_random()
+		if not is_instance_valid(enemy_squad):
+			continue
+			
+		var members :Array = enemy_squad.get_members()
+		if members.empty():
+			continue
+			
+		var count_member :int = int(randi() % members.size())
+		for _o in count_member:
+			var idx :int = enemy_squad.get_member_index(members.pick_random())
+			enemy_squad.take_damage(_get_attack_damage(0, damage), idx, get_path())
+	
 func _on_local_member_die(member :SquadMember, idx :int):
 	_member_deads_pending.append([idx, member.attacked_by])
 	

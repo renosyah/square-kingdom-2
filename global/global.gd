@@ -411,6 +411,7 @@ func prepare_squad(i :int, squad_idx :int, player :PlayerData, tile_id :Vector2,
 	data.player_id = player.player_id
 	data.node_name = "squad_%s_%s" % [player.player_id, Utils.create_unique_id()]
 	data.current_tile = tile_id
+	data.move_tile = tile_id
 	data.color_idx = player.color_idx
 	data.team = player.team
 	

@@ -844,7 +844,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			pawn.color_idx = 10
 			
 			# chance will be friend
-			if randf() < 0.06:
+			if gameplay.call("has_squad_space") and randf() < 0.06:
 				pawn.network_id = player.player_network_id
 				pawn.player_id = squad.player_id
 				pawn.team = squad.team

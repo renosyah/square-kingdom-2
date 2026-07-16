@@ -892,13 +892,19 @@ func _on_squad_spawned(squad :BaseSquad, data :SquadData):
 	if player_reinfoce_tiles.has(squad.player_id):
 		squad.reinfoce_tiles = player_reinfoce_tiles[squad.player_id]
 	
+	# add as card
 	if squad.player_id == current_player.player_id:
 		player_squads.append(squad)
 		ui.add_squad_card(squad, data)
 		play_squad_spawn(data.is_commander,data.is_hero)
 		
+	# start cooldown
 	if squad.squad_ability_idx != 0:
 		squad.start_ability_cooldown(AbilityHandle.squad_abilities[squad.squad_ability_idx]["cooldown"])
+		
+	# auto move after spawn
+	if data.current_tile != data.move_tile:
+		squad.move_to(data.move_tile)
 	
 func _move_squad_to(tile :TileMapData, lock_command :bool):
 	if selected_squads.empty():
@@ -1154,6 +1160,9 @@ func stash_corpses(pivot :Spatial, current_tile :Vector2):
 		f.queue_free()
 		
 	corpses.append(corpse)
+	
+func has_squad_space() -> bool:
+	return player_squads.size() < Global.max_army_size
 	
 # broadcast command by any peer
 func force_command(_type_command :int, _squads :Array):

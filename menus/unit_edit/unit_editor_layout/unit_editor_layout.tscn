@@ -546,6 +546,9 @@ material/0 = ExtResource( 44 )
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0437853, 0 )
 is_dead = true
 
+[node name="siege_engine_holder" type="Spatial" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer/ViewportContainer/Viewport"]
+transform = Transform( -0.7, 0, 6.11959e-08, 0, 0.7, 0, -6.11959e-08, 0, -0.7, 0, 0.1, 0 )
+
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Control/VBoxContainer2/HBoxContainer/MarginContainer"]
 margin_right = 390.0
 margin_bottom = 524.0

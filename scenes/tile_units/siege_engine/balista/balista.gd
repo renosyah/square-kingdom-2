@@ -43,6 +43,9 @@ func _on_projectile_reach(boulder):
 func moving(delta :float):
 	.moving(delta)
 	
+	if not squad:
+		return
+	
 	#arm.rotation.y = lerp_angle(arm.rotation.y, rotation.y - squad.rotation.y, 25 * delta)
 	
 	if iddle and squad.visible:
