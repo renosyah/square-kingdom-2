@@ -73,6 +73,7 @@ func _spawn_members():
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
+		member.connect("on_play_shot_audio", self, "_on_member_play_shot_audio")
 		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
 		
 		add_child(member)

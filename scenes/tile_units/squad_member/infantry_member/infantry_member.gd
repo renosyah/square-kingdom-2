@@ -24,7 +24,6 @@ var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
 onready var head = $pivot/body/head/head
-onready var random_timer = $random_timer
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -230,10 +229,6 @@ func range_attack():
 	enemy_assign = true
 	iddle = false
 	
-	random_timer.wait_time = rand_range(0.02, 0.04) + 0.02
-	random_timer.start()
-	yield(random_timer,"timeout")
-	
 	prepare_range_weapon()
 	_look_at(enemy.global_position)
 	
@@ -248,8 +243,14 @@ func _on_release_bow():
 	_range_weapon.release()
 	
 	if squad.visible:
-		_combat_sound.stream = _range_weapon.get_sound()
-		_combat_sound.play()
+		# because all member fire at same time
+		# audio became louder
+		if squad.rapid_fire_mode:
+			_combat_sound.stream = _range_weapon.get_sound()
+			_combat_sound.play()
+			
+		else:
+			emit_signal("on_play_shot_audio", _range_weapon.get_sound())
 		
 	if not is_instance_valid(enemy):
 		return

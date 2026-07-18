@@ -346,6 +346,7 @@ func _spawn_members():
 		
 		member.connect("on_set_damage_to_tile", self, "_on_member_set_damage_to_tile")
 		member.connect("on_set_damage_to_target", self, "_on_member_set_damage_to_target")
+		member.connect("on_play_shot_audio", self, "_on_member_play_shot_audio")
 		member.connect("on_member_dead", self, "_on_local_member_die", [idx])
 		
 		add_child(member)
@@ -433,6 +434,11 @@ func _apply_melee_splash_damage(tile_id :Vector2, damage :int):
 		for _o in count_member:
 			var idx :int = enemy_squad.get_member_index(members.pick_random())
 			enemy_squad.take_damage(_get_attack_damage(0, damage), idx, get_path())
+	
+func _on_member_play_shot_audio(stream :AudioStream):
+	if visible and not _unit_audio.playing:
+		_unit_audio.stream = stream
+		_unit_audio.play()
 	
 func _on_local_member_die(member :SquadMember, idx :int):
 	_member_deads_pending.append([idx, member.attacked_by])

@@ -3737,8 +3737,4 @@ parameters/playback = SubResource( 11 )
 wait_time = 3.0
 one_shot = true
 
-[node name="random_timer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-
 [connection signal="timeout" from="auto_iddle_timer" to="." method="_on_auto_iddle_timer_timeout"]

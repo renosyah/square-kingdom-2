@@ -127,11 +127,11 @@ func squad_attribute() -> Array:
 	elif member_melee_weapon_idx in [9, 10]:
 		type_melee_weapon = 2
 		
-	# 2 range_weapon :0:null, 1:all trowable, 2:bow/crossbow
+	# 2 range_weapon :0:null, 1:all trowable, 2:bow/crossbow/cannon
 	var type_range_weapon = 0
 	if member_range_weapon_idx in [1, 2]:
 		type_range_weapon = 1
-	elif member_range_weapon_idx in [3, 4, 5]:
+	elif member_range_weapon_idx in [3, 4, 5, 7]:
 		type_range_weapon = 2
 	
 	# 3 armor_type : 0:none, 1:light, 2:medium, 3:heavy

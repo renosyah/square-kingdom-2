@@ -4,6 +4,7 @@ class_name SquadMember
 signal on_member_dead(member)
 signal on_set_damage_to_target(member, target, target_idx, amount)
 signal on_set_damage_to_tile(member, tile, amount)
+signal on_play_shot_audio(stream)
 
 export var headgear :PackedScene
 export var armor :PackedScene

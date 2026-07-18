@@ -44,6 +44,7 @@ func _ready():
 	
 	_rider.connect("on_set_damage_to_tile", squad, "_on_member_set_damage_to_tile")
 	_rider.connect("on_set_damage_to_target", squad, "_on_member_set_damage_to_target")
+	_rider.connect("on_play_shot_audio", squad, "_on_member_play_shot_audio")
 	
 	rider_holder.add_child(_rider)
 	

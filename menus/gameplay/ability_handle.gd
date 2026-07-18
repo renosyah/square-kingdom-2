@@ -459,6 +459,18 @@ const squad_abilities = [
 		"cooldown" : 60.0,
 		"required_enemy": true,
 	},
+	{
+		# range hand cannon weapon 41
+		# affect : area (instant & random)
+		# affect : self (instant)
+		"name": "More Powder",
+		"icon": preload("res://assets/user_interface/ability/overcharge_ability.png"),
+		"detail": "Stuff the barrel with excessive gunpowder, increasing damage by +65% for 20 seconds. has a random chance to catastrophically explode, damaging the squad and all adjacent units. and squad get -50% range attack speed for 20 second and cooldown pinalty of 45 second",
+		"type": "range",
+		"weapon_idx": 7,
+		"cooldown" : 15.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -1063,6 +1075,26 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 					[i.modifier_damage_receive, -bonus, dur, icon_buffed],
 				])
 				
+		41: # check
+			var c = [0.25, 0.30, 0.40, 0.50, 0.60, 0.75]
+			if randf() < c.pick_random():
+				var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), squad.current_tile, 1) + [squad.current_tile]
+				var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+				
+				for s in squads:
+					var dmg :int = int(rand_range(20, 60))
+					var members :Array = squad.get_members(true)
+					for idx in members.size():
+						s.take_damage(dmg, idx, squad.get_path())
+				
+				squad.set_modifiers([[squad.modifier_range_speed, -0.50, 20, icon_scared]]) # range power
+				squad.start_ability_cooldown(45)
+				gameplay.call_deferred("spawn_explosion",[[0, squad.current_tile]])
+				return
+				
+			squad.set_modifiers([[squad.modifier_range_damage, (0.65 + extra_buff_value), (20 + extra_buff_duration), icon_aim_better]]) # range power
+			
+			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
 static func _get_allied_count(current_tile :Vector2, team :int, position_manager) -> int:

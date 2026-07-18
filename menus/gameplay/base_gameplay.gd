@@ -1221,6 +1221,19 @@ remotesync func _spawn_sigils(datas :Array):
 		add_child(sigil)
 		sigil.translation = nav.get_pos_v3(at_tile)
 		
+func spawn_explosion(datas :Array):
+	rpc("_spawn_explosion", datas)
+	
+remotesync func _spawn_explosion(datas :Array):
+	for data in datas:
+		var type_exp :Color = data[0] # 0
+		var at_tile :Vector2 = data[1]
+		
+		var explode = preload("res://assets/explosion/explosion.tscn").instance()
+		add_child(explode)
+		explode.translation = nav.get_pos_v3(at_tile)
+		
+		
 # special order, off map artilery
 func drop_projectiles(type_projectile :int, targets :Array, by :NodePath):
 	rpc("_drop_projectiles", NetworkLobbyManager.get_id(), type_projectile, targets, by)
