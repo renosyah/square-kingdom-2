@@ -48,8 +48,8 @@ const melee_weapon_stats = {
 	4:{'attack_speed':0.75,'charge_bonus':12,'spawn_time':6},
 	5:{'attack_speed':0.57,'charge_bonus':0,'spawn_time':5},
 	6:{'attack_speed':0.68,'charge_bonus':0,'spawn_time':5},
-	7:{'attack_speed':0.87,'charge_bonus':0,'spawn_time':7},
-	8:{'attack_speed':0.89,'charge_bonus':0,'spawn_time':7},
+	7:{'attack_speed':0.47,'charge_bonus':0,'spawn_time':7},
+	8:{'attack_speed':0.59,'charge_bonus':0,'spawn_time':7},
 	9:{'attack_speed':1.68,'charge_bonus':8,'spawn_time':8},
 	10:{'attack_speed':1.58,'charge_bonus':7,'spawn_time':9},
 	11:{'attack_speed':0.78,'charge_bonus':0,'spawn_time':6},
@@ -68,6 +68,7 @@ const range_weapons = [
 	preload("res://scenes/equipment/weapons/longbow/longbow.tscn"), #4
 	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #5
 	preload("res://scenes/equipment/weapons/bow/flare.tscn"), #6
+	preload("res://scenes/equipment/weapons/hand_cannon/hand_cannon.tscn"), #7
 ]
 const range_weapon_stats = {
 	0:{'range':1,'attack_speed':0.1,'spawn_time':1}, # 1 default
@@ -77,6 +78,7 @@ const range_weapon_stats = {
 	4:{'range':6,'attack_speed':3.46,'spawn_time':6},
 	5:{'range':4,'attack_speed':4.85,'spawn_time':5},
 	6:{'range':6,'attack_speed':1.45,'spawn_time':2},
+	7:{'range':3,'attack_speed':7.85,'spawn_time':9},
 }
 
 const head_armors = [
@@ -276,6 +278,7 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/axe_2.png"),
 	preload("res://assets/user_interface/icons/squad/hammer_2.png"),
 	preload("res://assets/user_interface/icons/squad/mace.png"),
+	preload("res://assets/user_interface/icons/squad/hand_cannon.png")
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0

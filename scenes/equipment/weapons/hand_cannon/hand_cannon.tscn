@@ -1,0 +1,139 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/weapons/hand_cannon/hand_cannon.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://scenes/equipment/weapons/hand_cannon/hand_cannon.gd" type="Script" id=4]
+[ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=5]
+[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=7]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.2
+height = 0.3
+radial_segments = 12
+rings = 18
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+flags_unshaded = true
+flags_vertex_lighting = true
+flags_do_not_receive_shadows = true
+flags_disable_ambient_light = true
+vertex_color_use_as_albedo = true
+albedo_color = Color( 1, 0.360784, 0, 0.898039 )
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Spatial/bam:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Spatial/bam:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.3, 0.3, 0.3 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Spatial/bam:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -0.3 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "bam"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Spatial/bam:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Spatial/bam:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.3, 0.3, 0.3 ), Vector3( 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Spatial/bam:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -0.3 ), Vector3( 0, 0, -0.3 ), Vector3( 0, 0, -0.45 ) ]
+}
+
+[node name="hand_cannon" type="Spatial"]
+script = ExtResource( 4 )
+__meta__ = {
+"_editor_description_": ""
+}
+attack_damage = 28
+bonus_damage = 0.5
+walk_animation = "range_weapon_hold"
+ready_animation = "range_weapon_ready"
+attack_animation = "shot_range_weapon_2"
+is_indirect = false
+
+[node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0273069, -0.0215787, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( -2, 0, -1.50996e-07, 0, 2, 0, 3.01992e-07, 0, -1, 0, 0.0278958, 0 )
+cast_shadow = 0
+mesh = ExtResource( 3 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 5 )
+material/2 = ExtResource( 7 )
+
+[node name="bam" type="MeshInstance" parent="Spatial"]
+transform = Transform( 0.3, 0, -1.31134e-08, 0, 0.3, 0, 1.31134e-08, 0, 0.3, 0, 0, -0.3 )
+visible = false
+cast_shadow = 0
+mesh = SubResource( 1 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/bam = SubResource( 4 )

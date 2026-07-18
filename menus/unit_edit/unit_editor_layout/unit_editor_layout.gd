@@ -10,11 +10,11 @@ const ability_item_scene = preload("res://menus/unit_edit/equipment_item/ability
 const melee_weapons = {
 	0 :["Dagger",preload("res://assets/user_interface/icons/equipment/dagger.png"),"Small, quick, and always within reach.\n\nNo bonus"], 
 	1 :["Pitchfork",preload("res://assets/user_interface/icons/equipment/pitchfork.png"),"A humble farming tool turned desperate weapon.\n\nNo bonus"],
-	2 :["Spear",preload("res://assets/user_interface/icons/equipment/spear.png"),"The classic answer to a cavalry charge.\n\n+bonus vs Cavalry"],
-	4 :["Pike",preload("res://assets/user_interface/icons/equipment/pike.png"),"A wall of steel no horse dares to cross.\n\n++bonus vs Cavalry"],
-	5 :["Sword",preload("res://assets/user_interface/icons/equipment/sword.png"),"Balanced and reliable on any battlefield.\n\n+bonus vs Infantry"],
-	11 :["Arabian Sword",preload("res://assets/user_interface/icons/equipment/sword_curve.png"),"Swift curved steel favored by eastern warriors.\n\n+bonus vs Infantry"],
-	7 :["Axe",preload("res://assets/user_interface/icons/equipment/axe.png"),"Built to split shields and crush heavy swings.\n\n+bonus vs Shields\n+bonus vs Two-Handed"],
+	2 :["Spear",preload("res://assets/user_interface/icons/equipment/spear.png"),"The classic answer to a cavalry charge.\n\n+bonus vs Cavalry\n+bonus vs Two-Handed"],
+	4 :["Pike",preload("res://assets/user_interface/icons/equipment/pike.png"),"A wall of steel no horse dares to cross.\n\n++bonus vs Cavalry\n++bonus vs Two-Handed"],
+	5 :["Sword",preload("res://assets/user_interface/icons/equipment/sword.png"),"Balanced and reliable on any battlefield.\n\n+bonus vs Infantry\n+bonus vs Spear\n- No bonus vs Cavalry"],
+	11 :["Arabian Sword",preload("res://assets/user_interface/icons/equipment/sword_curve.png"),"Swift curved steel favored by eastern warriors.\n\n+bonus vs Infantry\n+bonus vs Spear\n- No bonus vs Cavalry"],
+	7 :["Axe",preload("res://assets/user_interface/icons/equipment/axe.png"),"Built to split shields and crush heavy swings.\n\n+bonus vs Shields\n- No bonus vs Cavalry"],
 	13 :["Mace", preload("res://assets/user_interface/icons/equipment/mace.png"),"Crushes armor instead of cutting through it.\n\n+bonus vs Heavy Armor\n- No bonus vs Cavalry"],
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png"),"One devastating swing can break an entire battle line.\n\n+bonus vs Cavalry\n++bonus vs Shields\nSplash Damage"],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png"),"A massive blade made for carving through formations.\n\n++bonus vs Infantry\nSplash Damage"],
@@ -32,6 +32,7 @@ const range_weapons = {
 	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png"),"Simple, dependable, and deadly at range.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png"),"Its immense draw turns disciplined volleys into devastation.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png"),"Armor means little against a steel bolt.\n\n+bonus vs Heavy Armor\n(Includes Cavalry)"],
+	7 :["Hand Cannon", preload("res://assets/user_interface/icons/equipment/hand_cannon.png"),"gunpowder weapons with devastating armor penetration.\n\n++bonus vs Heavy Armor\n(Includes Cavalry)"],
 	6 :["Flare", preload("res://assets/user_interface/icons/equipment/flare.png"),"\"The legendary bo...\"\n\n...oops! Wrong note.\nAn item you can buy for $5 at the camping store.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)\nQuestionable Ability"],
 }
 const hero_range_weapons = [6]

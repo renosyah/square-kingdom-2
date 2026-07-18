@@ -1232,6 +1232,7 @@ func _get_range_attack_speed() -> float:
 	if rapid_fire_mode:
 		var count = max(member_alive, 1)
 		spd = clamp(range_attack_speed / count * 1.1, MIN_RANGE_SPEED, MAX_RANGE_SPEED)
+		spd += rand_range(-0.03, 0.03)
 		
 	return clamp(spd / _v, MIN_RANGE_SPEED, MAX_RANGE_SPEED)
 	

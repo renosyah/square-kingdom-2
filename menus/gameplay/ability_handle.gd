@@ -381,7 +381,7 @@ const squad_abilities = [
 	{
 		# range siege 34
 		# affect : area (on hit)
-		"name": "Hornet Nest",
+		"name": "Swarms",
 		"icon": preload("res://assets/user_interface/ability/hornet_nest_ability.png"),
 		"detail": "Launches a captured hornet nest into the battlefield. The impact causes no direct damage, but enraged hornets swarm every nearby squad, reducing all combat statistics by -25%. The affected area remains infested for 25 seconds, and any squad passing through will also be stung, suffering the same penalty.",
 		"type": "siege",
@@ -439,11 +439,23 @@ const squad_abilities = [
 		# melee sword weapon 39
 		# affect : self (instant)
 		# affect : enemy (instant)
-		"name": "Godwills!",
+		"name": "Godwills",
 		"icon": preload("res://assets/user_interface/ability/godwill_ability.png"),
-		"detail": "\"God Wills It!\"\n\nGrants up to 3 random modifiers to the wielder while inflicting up to 3 different random modifiers upon the target squad.",
+		"detail": "Grants up to 3 random modifiers to the wielder while inflicting up to 3 different random modifiers upon the target squad.",
 		"type": "melee",
 		"weapon_idx": 5,
+		"cooldown" : 60.0,
+		"required_enemy": true,
+	},
+	{
+		# melee sword weapon 40
+		# affect : self (instant)
+		# affect : enemy (instant)
+		"name": "Faith!",
+		"icon": preload("res://assets/user_interface/ability/new_dawn.png"),
+		"detail": "Every adjacent allied provide your squad with +10% bonus to all stats, but beware enemy also receive the same thing",
+		"type": "melee",
+		"weapon_idx": 11,
 		"cooldown" : 60.0,
 		"required_enemy": true,
 	},
@@ -841,6 +853,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			pawn.squad_name = "Summoned %s" % pawn.squad_name
 			pawn.node_name = Utils.create_unique_id()
 			pawn.current_tile = target_tile
+			pawn.move_tile = target_tile
 			pawn.color_idx = 10
 			
 			# chance will be friend
@@ -1032,8 +1045,37 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			squad.set_modifiers([[squad.modifier_move_speed, 0.1, 1, icon_buffed]])
 			enemy.set_modifiers([[squad.modifier_move_speed, 0.1, 1, icon_buffed]])
 			
+		40: # check
+			var enemy = squad.enemy
+			if not is_instance_valid(enemy):
+				squad.start_ability_cooldown(10.0)
+				return
+				
+			var dur = (25 + extra_buff_duration)
+			for i in [squad, enemy]:
+				var bonus = 0.10 * _get_allied_count(i.current_tile, i.team, position_manager)
+				i.set_modifiers([
+					[i.modifier_melee_damage, bonus, dur, icon_null],
+					[i.modifier_range_damage, bonus, dur, icon_null],
+					[i.modifier_melee_speed, bonus, dur, icon_null],
+					[i.modifier_range_speed,  bonus, dur, icon_null],
+					[i.modifier_move_speed,  bonus, dur, icon_null],
+					[i.modifier_damage_receive, -bonus, dur, icon_buffed],
+				])
+				
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	
+static func _get_allied_count(current_tile :Vector2, team :int, position_manager) -> int:
+	var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), current_tile, 1) + [current_tile]
+	var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
+	var count :int = 0
+	for i in squads:
+		var s :BaseSquad = i
+		if s.team == team:
+			count += 1
+			
+	return count
+		
 static func _get_random_modifier(squad :BaseSquad, count :int) -> Array:
 	var gifs = [
 		squad.modifier_melee_speed,

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/hand_cannon.obj-6ef5514c43c0fbd38e1f72608be40d0b.mesh"
+
+[deps]
+
+files=[ "res://.import/hand_cannon.obj-6ef5514c43c0fbd38e1f72608be40d0b.mesh" ]
+
+source_file="res://scenes/equipment/weapons/hand_cannon/hand_cannon.obj"
+dest_files=[ "res://.import/hand_cannon.obj-6ef5514c43c0fbd38e1f72608be40d0b.mesh", "res://.import/hand_cannon.obj-6ef5514c43c0fbd38e1f72608be40d0b.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

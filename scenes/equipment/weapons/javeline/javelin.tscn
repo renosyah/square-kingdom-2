@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/white_unshaded.tres" type="Material" id=1]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=2]
 [ext_resource path="res://scenes/equipment/weapons/javeline/javeline.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://scenes/equipment/weapons/javeline/javelin.gd" type="Script" id=4]
 [ext_resource path="res://scenes/projectiles/javeline_projectile.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/equipment/material/sorban.tres" type="Material" id=6]
 
 [node name="javelin" type="Spatial"]
 script = ExtResource( 4 )
@@ -23,3 +24,4 @@ mesh = ExtResource( 3 )
 software_skinning_transform_normals = false
 material/0 = ExtResource( 1 )
 material/1 = ExtResource( 2 )
+material/2 = ExtResource( 6 )

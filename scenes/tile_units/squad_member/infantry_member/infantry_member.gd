@@ -24,6 +24,7 @@ var _range_weapon :RangeWeapon
 
 onready var auto_iddle_timer = $auto_iddle_timer
 onready var head = $pivot/body/head/head
+onready var random_timer = $random_timer
 
 onready var uniforms = [
 	$pivot/body/body,
@@ -228,6 +229,10 @@ func range_attack():
 		
 	enemy_assign = true
 	iddle = false
+	
+	random_timer.wait_time = rand_range(0.02, 0.04) + 0.02
+	random_timer.start()
+	yield(random_timer,"timeout")
 	
 	prepare_range_weapon()
 	_look_at(enemy.global_position)
