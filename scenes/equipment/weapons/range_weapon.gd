@@ -16,6 +16,7 @@ export var bonus_damage :float = 0.15
 export var walk_animation :String = "walk"
 export var ready_animation :String = "iddle"
 export var attack_animation :String = "shot_range_weapon"
+export var accuration :float = 0.25
 
 export var is_indirect :bool = true
 

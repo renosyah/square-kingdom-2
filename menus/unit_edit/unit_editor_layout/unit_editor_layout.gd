@@ -32,7 +32,7 @@ const range_weapons = {
 	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png"),"Simple, dependable, and deadly at range.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png"),"Its immense draw turns disciplined volleys into devastation.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png"),"Armor means little against a steel bolt.\n\n+bonus vs Heavy Armor\n(Includes Cavalry)"],
-	7 :["Hand Cannon", preload("res://assets/user_interface/icons/equipment/hand_cannon.png"),"gunpowder weapons with devastating armor penetration.\n\n++bonus vs Heavy Armor\n(Includes Cavalry)"],
+	7 :["Hand Cannon", preload("res://assets/user_interface/icons/equipment/hand_cannon.png"),"Gunpowder weapons with devastating armor penetration.\n\n+bonus vs Moving Target\n++bonus vs Heavy Armor\n(Includes Cavalry)"],
 	6 :["Flare", preload("res://assets/user_interface/icons/equipment/flare.png"),"\"The legendary bo...\"\n\n...oops! Wrong note.\nAn item you can buy for $5 at the camping store.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)\nQuestionable Ability"],
 }
 const hero_range_weapons = [6]

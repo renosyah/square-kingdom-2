@@ -197,6 +197,11 @@ func melee_attack():
 func melee_has_splash() -> bool:
 	return _melee_weapon.has_splash_damage
 	
+func range_accuration() -> float:
+	if _range_weapon:
+		return _range_weapon.accuration
+	return 0.25
+	
 func _on_melee_attack_performed():
 	if not squad:
 		return

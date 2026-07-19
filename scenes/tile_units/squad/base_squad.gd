@@ -357,12 +357,12 @@ func _spawn_members():
 	_alive_members.append_array(_members)
 	emit_signal("on_squad_member_ready", self, _members)
 
-func _on_member_set_damage_to_tile(_member :SquadMember, tile_id :Vector2, attack_damage :int):
+func _on_member_set_damage_to_tile(member :SquadMember, tile_id :Vector2, attack_damage :int):
 	if not _is_master:
 		return
 		
-	# 25 % chance of doing no damage
-	if randf() < 0.25:
+	# chance of doing no damage
+	if randf() > member.range_accuration():
 		return
 		
 	if not unit_position.has(tile_id):

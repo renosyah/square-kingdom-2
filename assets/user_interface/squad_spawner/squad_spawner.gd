@@ -17,7 +17,7 @@ func add_spawn_queue(armies :Array):
 	
 func _add_queue(s :SquadData):
 	var timer = Timer.new()
-	timer.wait_time = 5 #s.spawn_time()
+	timer.wait_time = s.spawn_time()
 	timer.autostart = false
 	timer.one_shot = true
 	timer.connect("timeout", self, "_on_timer_timeout", [s])

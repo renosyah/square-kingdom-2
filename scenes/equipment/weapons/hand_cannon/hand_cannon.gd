@@ -9,10 +9,11 @@ func release():
 	
 	animation_player.play("bam")
 	
-func get_projectile_damage(_target, enemy_squad_attribute :Array) -> int:
+func get_projectile_damage(target, enemy_squad_attribute :Array) -> int:
+	var dmg :int = (attack_damage * 2) if target.squad.is_moving() else attack_damage
 	if enemy_squad_attribute[3] in [2, 3]: # medium or heavy armor
-		return attack_damage + int(attack_damage * bonus_damage)
-	return attack_damage
+		return dmg + int(attack_damage * bonus_damage)
+	return dmg
 	
 func get_sound() -> AudioStream:
 	return shot_sound

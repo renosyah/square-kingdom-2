@@ -67,6 +67,9 @@ func range_attack():
 func melee_has_splash() -> bool:
 	return false
 	
+func range_accuration() -> float:
+	return 0.25
+	
 func _look_at(pos :Vector3):
 	var _pos = pos
 	_pos.y = global_position.y

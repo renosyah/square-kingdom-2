@@ -465,7 +465,7 @@ const squad_abilities = [
 		# affect : self (instant)
 		"name": "More Powder",
 		"icon": preload("res://assets/user_interface/ability/overcharge_ability.png"),
-		"detail": "Stuff the barrel with excessive gunpowder, increasing damage by +65% for 20 seconds. has a random chance to catastrophically explode, damaging the squad and all adjacent units. and squad get -50% range attack speed for 20 second and cooldown pinalty of 45 second",
+		"detail": "Overload the hand cannon with extra gunpowder. While it may increase damage by +65% for 20 seconds... sometimes it just explodes",
 		"type": "range",
 		"weapon_idx": 7,
 		"cooldown" : 15.0,
