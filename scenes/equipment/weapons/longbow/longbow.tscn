@@ -17,7 +17,7 @@ script = ExtResource( 2 )
 projectile = ExtResource( 1 )
 attack_damage = 10
 bonus_damage = 0.25
-accuration = 0.75
+accuration = 0.85
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.000426233, 0 )

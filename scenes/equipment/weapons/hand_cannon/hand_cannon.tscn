@@ -110,7 +110,7 @@ bonus_damage = 0.5
 walk_animation = "range_weapon_hold"
 ready_animation = "range_weapon_ready"
 attack_animation = "shot_range_weapon_2"
-accuration = 0.15
+accuration = 0.65
 is_indirect = false
 
 [node name="Spatial" type="Spatial" parent="."]

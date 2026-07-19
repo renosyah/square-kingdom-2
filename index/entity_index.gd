@@ -179,10 +179,12 @@ const personal_equipments = {
 		"heal_bonus_percentage" :0.25,
 		"spawn_time_decrease_percentage": 0.25
 	}],
-	6 :["Better Bedroll", preload("res://assets/user_interface/icons/personal_equipment/improve_bedroll.png"),"Sleep tonight and ready for tomorrow",{
-		"heal_bonus_value" :15,
-		"heal_bonus_percentage" :0.10,
-		"spawn_time_decrease_percentage": -0.20
+	6 :["Quality Bedroll", preload("res://assets/user_interface/icons/personal_equipment/improve_bedroll.png"),"Sleep tonight and ready for tomorrow",{
+		"melee_speed_bonus_percentage" : 0.15,
+		"range_speed_bonus_percentage" : 0.15,
+		"hp_bonus_percentage" :0.25,
+		"heal_bonus_percentage" :0.15,
+		"spawn_time_decrease_percentage": -0.40
 	}],
 }
 
