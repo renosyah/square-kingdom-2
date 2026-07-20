@@ -471,6 +471,17 @@ const squad_abilities = [
 		"cooldown" : 15.0,
 		"required_enemy": false,
 	},
+	{
+		# melee dagger weapon 42
+		# affect : area (instant)
+		"name": "Reinforce",
+		"icon": preload("res://assets/user_interface/ability/reinforce_ability.png"),
+		"detail": "Transfer members from this squad to reinforce a nearby allied squad, restoring its fighting strength at the cost of your own. Can only be used while this squad has more than 3 members.",
+		"type": "melee",
+		"weapon_idx": 0,
+		"cooldown" : 25.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -1093,7 +1104,43 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				return
 				
 			squad.set_modifiers([[squad.modifier_range_damage, (0.65 + extra_buff_value), (20 + extra_buff_duration), icon_aim_better]]) # range power
+		
+		42: # check
+			if squad.member_alive <= 3:
+				squad.start_ability_cooldown(10)
+				return
+				
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
+			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
 			
+			var member_leave_idx :Array = []
+			var members :Array = squad.get_members().duplicate()
+			
+			var to_reinfoce :Array = []
+			for i in squads:
+				var s :BaseSquad = i
+				if s == squad or s.team != squad.team or s.squad_ability_idx == squad_ability_idx:
+					continue
+					
+				var total_dead :int = s.total_member - s.member_alive
+				var has_dead :bool = total_dead > 0
+				if not has_dead:
+					continue
+					
+				var amount_suffice :int = members.size() - total_dead
+				if amount_suffice < 3: # must left 3
+					continue
+					
+				for _i in total_dead:
+					member_leave_idx.append(squad.get_member_index(members.front()))
+					members.pop_front()
+					
+				s.resurecting(true)
+				s.set_modifiers([
+					[i.modifier_damage_receive, -0.10, 10, icon_heal],
+				])
+				
+			squad.kill_members(member_leave_idx, true)
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	

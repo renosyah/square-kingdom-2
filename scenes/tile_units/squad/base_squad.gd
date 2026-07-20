@@ -805,6 +805,34 @@ remote func _resurecting(all :bool):
 				
 	rpc("_resurect", list)
 	
+func kill_members(indexs :Array, use_hide :bool = false):
+	rpc("_kill_members", indexs, use_hide)
+	
+remotesync func _kill_members(indexs :Array, use_hide :bool = false):
+	attacked_by = NodePath()
+	
+	for member_idx in indexs:
+		if member_idx > _members.size() - 1 or member_idx == -1:
+			continue
+			
+		var m :SquadMember = _members[member_idx]
+		m.attacked_by = NodePath()
+		m.hp = 0
+		m.is_dead = true
+		
+		if use_hide:
+			m.visible = false
+			m.set_process(false)
+			
+			_alive_members.erase(m)
+			member_alive = _alive_members.size()
+			
+			emit_signal("on_squad_member_dead", self, m)
+		else:
+			
+			# just call it
+			_on_members_dead([member_idx, m.attacked_by])
+	
 func _is_on_flank_of(target) -> bool:
 	var dir = target.current_tile.direction_to(current_tile)
 	var forward = Vector2(-target.transform.basis.z.x,-target.transform.basis.z.z).normalized()
