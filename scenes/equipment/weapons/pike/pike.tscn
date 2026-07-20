@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=1]
 [ext_resource path="res://scenes/equipment/weapons/spear/spear.gd" type="Script" id=2]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
 [ext_resource path="res://scenes/equipment/weapons/pike/pike.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://scenes/equipment/material/white_unshaded.tres" type="Material" id=5]
 
 [node name="pike" type="Spatial"]
 script = ExtResource( 2 )
@@ -20,5 +21,6 @@ attack_animations = [ "weapon_2_slash_left", "weapon_trust_attack", "weapon_2_sl
 cast_shadow = 0
 mesh = ExtResource( 4 )
 software_skinning_transform_normals = false
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 5 )
 material/1 = ExtResource( 3 )
+material/2 = ExtResource( 1 )

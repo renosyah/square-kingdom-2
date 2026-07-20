@@ -5,4 +5,4 @@ flags_unshaded = true
 flags_vertex_lighting = true
 flags_do_not_receive_shadows = true
 vertex_color_use_as_albedo = true
-albedo_color = Color( 0.670588, 0.670588, 0.670588, 1 )
+albedo_color = Color( 0.890196, 0.890196, 0.890196, 1 )

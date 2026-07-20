@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/equipment/material/black.tres" type="Material" id=1]
+[ext_resource path="res://scenes/equipment/material/white.tres" type="Material" id=2]
 [ext_resource path="res://scenes/equipment/weapons/hand_cannon/hand_cannon.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://scenes/equipment/weapons/hand_cannon/hand_cannon.gd" type="Script" id=4]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=5]
-[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=7]
 
 [sub_resource type="SphereMesh" id=1]
 radius = 0.2
@@ -124,7 +124,7 @@ skeleton = NodePath("../..")
 software_skinning_transform_normals = false
 material/0 = ExtResource( 1 )
 material/1 = ExtResource( 5 )
-material/2 = ExtResource( 7 )
+material/2 = ExtResource( 2 )
 
 [node name="bam" type="MeshInstance" parent="Spatial"]
 transform = Transform( 0.3, 0, -1.31134e-08, 0, 0.3, 0, 1.31134e-08, 0, 0.3, 0, 0, -0.3 )

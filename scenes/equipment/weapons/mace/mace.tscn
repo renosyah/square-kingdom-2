@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/equipment/weapons/mace/mace.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/equipment/weapons/mace/mace.gd" type="Script" id=2]
 [ext_resource path="res://scenes/equipment/material/leather.tres" type="Material" id=3]
-[ext_resource path="res://scenes/equipment/material/iron.tres" type="Material" id=4]
+[ext_resource path="res://scenes/equipment/material/white.tres" type="Material" id=4]
 
 [node name="mace" type="Spatial"]
 script = ExtResource( 2 )
