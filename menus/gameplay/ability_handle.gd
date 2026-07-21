@@ -482,6 +482,17 @@ const squad_abilities = [
 		"cooldown" : 25.0,
 		"required_enemy": false,
 	},
+	{
+		# range hand grenade weapon 43
+		# affect : area (instant & random)
+		"name": "Drop Grenade",
+		"icon":  preload("res://assets/user_interface/ability/drop_grenade_ability.png"),
+		"detail": "Place a grenade on the ground and set its fuse for 5 second before automatically retreating to safety. The explosion damages any squad caught in the blast.",
+		"type": "range",
+		"weapon_idx": 8,
+		"cooldown" : 45.0,
+		"required_enemy": false,
+	},
 ]
 
 const commander_only_ability = 18
@@ -1094,7 +1105,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				
 				for s in squads:
 					var dmg :int = int(rand_range(20, 60))
-					var members :Array = squad.get_members(true)
+					var members :Array = s.get_members(true)
 					for idx in members.size():
 						s.take_damage(dmg, idx, squad.get_path())
 				
@@ -1111,9 +1122,14 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			if not ok:
 				squad.start_ability_cooldown(10)
 				return
+				
+		43: # check
+			squad.set_modifiers([[squad.modifier_move_speed, 0.10, 5, icon_scared]]) 
+			squad.retreat()
+			
+			gameplay.call_deferred("_drop_grenade", squad.current_tile, squad.get_path())
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
-	
 	
 static func _reinforce(squad :BaseSquad, squads :Array) -> bool:
 	var targets: Array = []
@@ -1197,6 +1213,9 @@ static func _get_random_modifier(squad :BaseSquad, count :int) -> Array:
 		modifiers.append([gifs[i], v, t, icon_null])
 		
 	return modifiers
+	
+static func get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
+	return _get_squad_in_range(unit_position, ranges)
 	
 static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Array:
 	var squads = []

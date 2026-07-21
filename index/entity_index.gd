@@ -69,6 +69,7 @@ const range_weapons = [
 	preload("res://scenes/equipment/weapons/crossbow/crossbow.tscn"), #5
 	preload("res://scenes/equipment/weapons/bow/flare.tscn"), #6
 	preload("res://scenes/equipment/weapons/hand_cannon/hand_cannon.tscn"), #7
+	preload("res://scenes/equipment/weapons/grenade/grenade.tscn"), #8
 ]
 const range_weapon_stats = {
 	0:{'range':1,'attack_speed':0.1,'spawn_time':1}, # 1 default
@@ -79,6 +80,7 @@ const range_weapon_stats = {
 	5:{'range':4,'attack_speed':4.85,'spawn_time':5},
 	6:{'range':6,'attack_speed':1.45,'spawn_time':2},
 	7:{'range':3,'attack_speed':7.85,'spawn_time':9},
+	8:{'range':3,'attack_speed':9.85,'spawn_time':8},
 }
 
 const head_armors = [
@@ -280,7 +282,8 @@ const squad_icon = [
 	preload("res://assets/user_interface/icons/squad/axe_2.png"),
 	preload("res://assets/user_interface/icons/squad/hammer_2.png"),
 	preload("res://assets/user_interface/icons/squad/mace.png"),
-	preload("res://assets/user_interface/icons/squad/hand_cannon.png")
+	preload("res://assets/user_interface/icons/squad/hand_cannon.png"),
+	preload("res://assets/user_interface/icons/squad/grenade.png")
 ]
 const squad_potraits = [
 	preload("res://assets/user_interface/squad_potrait/infantry/peasant.png"), #0

@@ -15,6 +15,7 @@ func _ready():
 	load_army()
 	set_default_squad_army()
 	setup_music()
+	setup_audio_pools()
 	load_Setting()
 	
 ##########################################  tick  ############################################
@@ -175,6 +176,8 @@ const bus_music = "music"
 const bus_sfx = "sfx"
 const bus_voice = "voice"
 
+var audio_pools :Array = []
+
 func setup_music():
 	music = AudioStreamPlayer.new()
 	music.bus = bus_music
@@ -193,6 +196,20 @@ func set_bus_volume(bus_name :String, volume :float, mute :bool = false):
 func set_bus_mute(bus_name :String, v :bool):
 	var bus_index = AudioServer.get_bus_index(bus_name)
 	AudioServer.set_bus_mute(bus_index, v)
+	
+func setup_audio_pools():
+	for i in 4:
+		var a = AudioStreamPlayer3D.new()
+		a.bus = bus_sfx
+		add_child(a)
+		audio_pools.append(a)
+	
+func get_audio_player() -> AudioStreamPlayer3D:
+	for p in audio_pools:
+		if not p.playing:
+			return p
+			
+	return null
 	
 ##########################################  setting  ############################################
 signal on_setting_updated(data)

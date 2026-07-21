@@ -33,6 +33,7 @@ const range_weapons = {
 	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png"),"Its immense draw turns disciplined volleys into devastation.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png"),"Armor means little against a steel bolt.\n\n+bonus vs Heavy Armor\n(Includes Cavalry)"],
 	7 :["Hand Cannon", preload("res://assets/user_interface/icons/equipment/hand_cannon.png"),"Gunpowder weapons with devastating armor penetration.\n\n+bonus vs Moving Target\n++bonus vs Heavy Armor\n(Includes Cavalry)"],
+	8 :["hand Grenade", preload("res://assets/user_interface/icons/equipment/grenade.png"),"Grenades are devastating against tightly packed formations"],
 	6 :["Flare", preload("res://assets/user_interface/icons/equipment/flare.png"),"\"The legendary bo...\"\n\n...oops! Wrong note.\nAn item you can buy for $5 at the camping store.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)\nQuestionable Ability"],
 }
 const hero_range_weapons = [6]
@@ -795,14 +796,9 @@ func _on_delete_pressed():
 	
 	current_squads.remove(selected_index)
 	
-	# remove from army
-	var _temps = current_army.duplicate()
-	current_army.clear()
+	# reset army
+	current_army = [3,3,4,4,5,5,11,15]
 	
-	for v in _temps:
-		if v != selected_index:
-			current_army.append(v)
-			
 	emit_signal("save_current_squads", current_squads, current_army)
 	
 	selected_index = 0

@@ -1232,9 +1232,14 @@ remotesync func _spawn_explosion(datas :Array):
 		var at_tile :Vector2 = data[1]
 		
 		var explode = preload("res://assets/explosion/explosion.tscn").instance()
+		explode.connect("explode", self, "_on_explode", [explode])
 		add_child(explode)
 		explode.translation = nav.get_pos_v3(at_tile)
-		
+		explode.explode()
+	
+func _on_explode(e):
+	e.queue_free()
+	
 		
 # special order, off map artilery
 func drop_projectiles(type_projectile :int, targets :Array, by :NodePath):
@@ -1248,7 +1253,7 @@ remotesync func _drop_projectiles(from_id :int, type_projectile :int, targets :A
 			_projectile_scene = preload("res://scenes/projectiles/boulder.tscn")
 		1:
 			_projectile_scene = preload("res://scenes/projectiles/balista_bolt.tscn")
-	
+			
 	var is_master = (from_id == NetworkLobbyManager.get_id())
 	for tile in targets:
 		_on_projectile_droping(_projectile_scene, type_projectile, tile, by, is_master)
@@ -1313,10 +1318,20 @@ func _on_projectile_impact_damage(unit_positions:Array, dmg :int, by :NodePath):
 		for _i in t:
 			var idx :int = enemy_squad.get_member_index(members.pick_random())
 			enemy_squad.take_damage(dmg, idx, by)
-
-
-
-
+	
+func _drop_grenade(at_tile :Vector2, by :NodePath):
+	yield(get_tree().create_timer(5), "timeout")
+	
+	var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), at_tile, 1) + [at_tile]
+	var target_squads :Array = AbilityHandle.get_squad_in_range(tile_position_manager.get_positions(), ranges)
+	
+	for s in target_squads:
+		var dmg :int = int(rand_range(40, 60))
+		var members :Array = s.get_members(true)
+		for idx in members.size():
+			s.take_damage(dmg, idx, by)
+		
+	spawn_explosion([[0, at_tile]])
 
 
 
