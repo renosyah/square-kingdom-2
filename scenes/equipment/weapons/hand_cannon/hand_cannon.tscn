@@ -112,6 +112,7 @@ ready_animation = "range_weapon_ready"
 attack_animation = "shot_range_weapon_2"
 accuration = 0.65
 is_indirect = false
+has_splash_damage = true
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0273069, -0.0215787, 0 )

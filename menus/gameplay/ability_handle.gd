@@ -833,7 +833,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				return
 				
 			var sigils :Array = [ [sigil_color_red, enemy.current_tile, 5.0] ]
-			var curse :Dictionary = calculate_hp_sacrifice(500, squads)
+			var curse :Dictionary = _calculate_hp_sacrifice(500, squads)
 			
 			for squad_data in curse.sacrifice:
 				var sac_squad :BaseSquad = squad_data["squad"]
@@ -895,7 +895,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				squads.erase(squad)
 			
 			var hp_cost :int = pawn.member_hp() * pawn.total_member
-			var payment :Dictionary = calculate_hp_sacrifice(hp_cost, squads)
+			var payment :Dictionary = _calculate_hp_sacrifice(hp_cost, squads)
 			if payment["curse_effectiveness"] < 0.10:
 				squad.start_ability_cooldown(10.0)
 				return
@@ -1106,43 +1106,67 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			squad.set_modifiers([[squad.modifier_range_damage, (0.65 + extra_buff_value), (20 + extra_buff_duration), icon_aim_better]]) # range power
 		
 		42: # check
-			if squad.member_alive <= 3:
+			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
+			var ok :bool = _reinforce(squad, _get_squad_in_range(position_manager.get_positions(), ranges))
+			if not ok:
 				squad.start_ability_cooldown(10)
 				return
-				
-			var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.ARROW_DIRECTIONS, squad.current_tile, 1) + [squad.current_tile]
-			var squads :Array = _get_squad_in_range(position_manager.get_positions(), ranges)
-			
-			var member_leave_idx :Array = []
-			var members :Array = squad.get_members().duplicate()
-			
-			var to_reinfoce :Array = []
-			for i in squads:
-				var s :BaseSquad = i
-				if s == squad or s.team != squad.team or s.squad_ability_idx == squad_ability_idx:
-					continue
-					
-				var total_dead :int = s.total_member - s.member_alive
-				var has_dead :bool = total_dead > 0
-				if not has_dead:
-					continue
-					
-				var amount_suffice :int = members.size() - total_dead
-				if amount_suffice < 3: # must left 3
-					continue
-					
-				for _i in total_dead:
-					member_leave_idx.append(squad.get_member_index(members.front()))
-					members.pop_front()
-					
-				s.resurecting(true)
-				s.set_modifiers([
-					[i.modifier_damage_receive, -0.10, 10, icon_heal],
-				])
-				
-			squad.kill_members(member_leave_idx, true)
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
+	
+	
+static func _reinforce(squad :BaseSquad, squads :Array) -> bool:
+	var targets: Array = []
+
+	for candidate in squads:
+		var target: BaseSquad = candidate
+		if target == squad:
+			continue
+
+		if target.team != squad.team:
+			continue
+
+		if target.squad_ability_idx == squad.squad_ability_idx:
+			continue
+
+		var missing: int = target.total_member - target.member_alive
+		if missing > 0:
+			targets.append({ "squad": target, "missing": missing })
+
+	if targets.empty():
+		return false
+
+	var members: Array = squad.get_members().duplicate()
+	var available: int = members.size() - 3
+	if available <= 0:
+		return false
+
+	var member_leave_idx: Array = []
+	while available > 0 and not targets.empty():
+		var reinforced_this_round: bool = false
+		for target_data in targets:
+			if available <= 0:
+				break
+
+			if target_data.missing <= 0:
+				continue
+
+			var member = members.pop_front()
+			member_leave_idx.append(squad.get_member_index(member))
+
+			target_data.squad.resurecting(1)
+			target_data.missing -= 1
+			available -= 1
+
+			target_data.squad.set_modifiers([ [ target_data.squad.modifier_damage_receive, -0.10, 10, icon_heal ] ])
+			reinforced_this_round = true
+			
+		if not reinforced_this_round:
+			break
+	
+	# Remove transferred members from the source squad
+	squad.kill_members(member_leave_idx, true)
+	return true
 	
 static func _get_allied_count(current_tile :Vector2, team :int, position_manager) -> int:
 	var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), current_tile, 1) + [current_tile]
@@ -1192,7 +1216,7 @@ static func _get_squad_in_range(unit_position :Dictionary, ranges :Array) -> Arr
 	return squads
 	
 	
-static func calculate_hp_sacrifice(required_hp :int, squads:Array) -> Dictionary:
+static func _calculate_hp_sacrifice(required_hp :int, squads:Array) -> Dictionary:
 	var living_members := []
 
 	# Collect all living members

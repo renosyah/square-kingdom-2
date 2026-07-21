@@ -1189,7 +1189,9 @@ remotesync func _force_command(_type_command :int, _squads :Array):
 				squad.retreat()
 				
 			2: # revive all dead member 
-				squad.resurecting(true)
+				# total member all - total alive 
+				var total_dead :int = squad.total_member - squad.member_alive
+				squad.resurecting(total_dead)
 				
 			3: # instant cooldown
 				squad.start_ability_cooldown(1.0)

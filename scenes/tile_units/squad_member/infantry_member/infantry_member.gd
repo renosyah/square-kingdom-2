@@ -197,6 +197,12 @@ func melee_attack():
 func melee_has_splash() -> bool:
 	return _melee_weapon.has_splash_damage
 	
+func range_has_splash() -> bool:
+	if not _range_weapon:
+		return false
+		
+	return _range_weapon.has_splash_damage
+	
 func range_accuration() -> float:
 	if _range_weapon:
 		return _range_weapon.accuration

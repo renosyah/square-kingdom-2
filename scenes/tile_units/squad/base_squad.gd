@@ -361,6 +361,9 @@ func _on_member_set_damage_to_tile(member :SquadMember, tile_id :Vector2, attack
 	if not _is_master:
 		return
 		
+	if member.range_has_splash():
+		_apply_splash_damage(tile_id, attack_damage * 0.5)
+		
 	# chance of doing no damage
 	if randf() > member.range_accuration():
 		return
@@ -410,9 +413,9 @@ func _on_member_set_damage_to_target(_member :SquadMember, target :SquadMember, 
 		attach_melee_targets.pop_front()
 		
 	if _member.melee_has_splash():
-		_apply_melee_splash_damage(sq.current_tile, dmg * 0.5)
+		_apply_splash_damage(sq.current_tile, dmg * 0.5)
 		
-func _apply_melee_splash_damage(tile_id :Vector2, damage :int):
+func _apply_splash_damage(tile_id :Vector2, damage :int):
 	if not unit_position.has(tile_id):
 		return
 		
@@ -746,7 +749,7 @@ func _on_heal_timer():
 		return
 		
 	if (current_tile in reinfoce_tiles):
-		resurecting(false, false) # set false, no need to use RPC
+		resurecting(1, false) # set false, no need to use RPC
 		
 	healing(false) # set false, no need to use RPC
 	
@@ -778,15 +781,15 @@ remote func _healing():
 	if not datas.empty():
 		rpc_unreliable("_taking_heal", datas)
 		
-func resurecting(all :bool = false, use_rpc :bool = true):
+func resurecting(amount :int = 1, use_rpc :bool = true):
 	if _is_master or not use_rpc:
-		_resurecting(all)
+		_resurecting(amount)
 		return
 		
 	# call stop, tell master to stop from other peer
-	rpc_id(get_network_master(), "_resurecting", all)
+	rpc_id(get_network_master(), "_resurecting", amount)
 	
-remote func _resurecting(all :bool):
+remote func _resurecting(amount :int = 1):
 	if is_dead:
 		return
 		
@@ -794,16 +797,15 @@ remote func _resurecting(all :bool):
 	
 	# resurect the dead
 	for idx in _members.size():
+		if list.size() >= amount:
+			break
+			
 		var m = _members[idx]
 		if m.is_dead:
-			if all:
-				list.append(idx)
-				
-			else:
-				rpc("_resurect", [idx])
-				return
-				
-	rpc("_resurect", list)
+			list.append(idx)
+			
+	if not list.empty():
+		rpc("_resurect", list)
 	
 func kill_members(indexs :Array, use_hide :bool = false):
 	rpc("_kill_members", indexs, use_hide)

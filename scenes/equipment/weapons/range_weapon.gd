@@ -19,6 +19,7 @@ export var attack_animation :String = "shot_range_weapon"
 export var accuration :float = 0.75
 
 export var is_indirect :bool = true
+export var has_splash_damage :bool = false
 
 var _pools :Array = []
 

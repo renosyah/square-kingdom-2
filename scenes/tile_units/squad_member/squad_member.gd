@@ -67,6 +67,9 @@ func range_attack():
 func melee_has_splash() -> bool:
 	return false
 	
+func range_has_splash() -> bool:
+	return false
+	
 func range_accuration() -> float:
 	return 0.25
 	
