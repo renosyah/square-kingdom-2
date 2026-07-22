@@ -1111,7 +1111,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 				
 				squad.set_modifiers([[squad.modifier_range_speed, -0.50, 20, icon_scared]]) # range power
 				squad.start_ability_cooldown(45)
-				gameplay.call_deferred("spawn_explosion",[[0, squad.current_tile]])
+				gameplay.call_deferred("spawn_explosions",[[0, squad.current_tile]])
 				return
 				
 			squad.set_modifiers([[squad.modifier_range_damage, (0.65 + extra_buff_value), (20 + extra_buff_duration), icon_aim_better]]) # range power
@@ -1127,7 +1127,7 @@ static func use_squad_ability(gameplay, player:PlayerData, squad :BaseSquad, pos
 			squad.set_modifiers([[squad.modifier_move_speed, 0.10, 5, icon_scared]]) 
 			squad.retreat()
 			
-			gameplay.call_deferred("_drop_grenade", squad.current_tile, squad.get_path())
+			gameplay.call_deferred("drop_grenade", squad.current_tile, squad.get_path())
 			
 	squad.start_ability_cooldown(squad_abilities[squad_ability_idx]["cooldown"])
 	

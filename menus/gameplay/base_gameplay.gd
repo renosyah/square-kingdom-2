@@ -1223,15 +1223,20 @@ remotesync func _spawn_sigils(datas :Array):
 		add_child(sigil)
 		sigil.translation = nav.get_pos_v3(at_tile)
 		
-func spawn_explosion(datas :Array):
-	rpc("_spawn_explosion", datas)
+func spawn_explosions(datas :Array):
+	rpc("_spawn_explosions", datas)
 	
-remotesync func _spawn_explosion(datas :Array):
+remotesync func _spawn_explosions(datas :Array):
 	for data in datas:
-		var type_exp :Color = data[0] # 0
+		var explode_scene :PackedScene
+		var type_exp :int = data[0] # 0
 		var at_tile :Vector2 = data[1]
 		
-		var explode = preload("res://assets/explosion/explosion.tscn").instance()
+		match type_exp:
+			0:
+				explode_scene = preload("res://assets/explosion/explosion.tscn")
+				
+		var explode = explode_scene.instance()
 		explode.connect("explode", self, "_on_explode", [explode])
 		add_child(explode)
 		explode.translation = nav.get_pos_v3(at_tile)
@@ -1319,7 +1324,9 @@ func _on_projectile_impact_damage(unit_positions:Array, dmg :int, by :NodePath):
 			var idx :int = enemy_squad.get_member_index(members.pick_random())
 			enemy_squad.take_damage(dmg, idx, by)
 	
-func _drop_grenade(at_tile :Vector2, by :NodePath):
+func drop_grenade(at_tile :Vector2, by :NodePath):
+	rpc("_drop_grenade", at_tile, 5)
+	
 	yield(get_tree().create_timer(5), "timeout")
 	
 	var ranges :Array = TileMapUtils.get_adjacent_tiles(TileMapUtils.get_directions(), at_tile, 1) + [at_tile]
@@ -1331,9 +1338,29 @@ func _drop_grenade(at_tile :Vector2, by :NodePath):
 		for idx in members.size():
 			s.take_damage(dmg, idx, by)
 		
-	spawn_explosion([[0, at_tile]])
-
-
+remotesync func _drop_grenade(at_tile :Vector2, time :float):
+	var _grenades :Array = []
+	var _tile :BaseTile = tile_map.get_tile_instance(at_tile)
+	var _offsets = [
+		Vector3.ZERO, Vector3.ZERO + Vector3.LEFT,  Vector3.ZERO + Vector3.RIGHT,
+		Vector3.FORWARD + Vector3.LEFT, Vector3.FORWARD, Vector3.FORWARD + Vector3.RIGHT,
+		Vector3.BACK + Vector3.LEFT, Vector3.BACK,Vector3.BACK + Vector3.RIGHT,
+	]
+	
+	for i in _offsets:
+		var g = preload("res://scenes/equipment/weapons/grenade/grenade.tscn").instance()
+		_tile.add_child(g)
+		g.translation += i * 0.35
+		_grenades.append(g)
+	
+	yield(get_tree().create_timer(time), "timeout")
+	
+	_spawn_explosions([[0, at_tile]]) # just call
+	
+	for i in _grenades:
+		i.queue_free()
+		
+	_grenades.clear()
 
 
 

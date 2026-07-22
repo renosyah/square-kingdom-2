@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/repeater_pull.obj-4cb23ded0f1cb2db76ec1ddfd7a6df33.mesh"
+
+[deps]
+
+files=[ "res://.import/repeater_pull.obj-4cb23ded0f1cb2db76ec1ddfd7a6df33.mesh" ]
+
+source_file="res://scenes/equipment/weapons/crossbow/repeater_pull.obj"
+dest_files=[ "res://.import/repeater_pull.obj-4cb23ded0f1cb2db76ec1ddfd7a6df33.mesh", "res://.import/repeater_pull.obj-4cb23ded0f1cb2db76ec1ddfd7a6df33.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

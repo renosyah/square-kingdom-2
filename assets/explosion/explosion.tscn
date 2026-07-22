@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/explosion/explosion.gd" type="Script" id=1]
+[ext_resource path="res://scenes/tiles/materials/fire_trail_material.tres" type="Material" id=2]
 
 [sub_resource type="SphereMesh" id=6]
 radial_segments = 8
@@ -10,6 +11,21 @@ rings = 16
 flags_transparent = true
 flags_unshaded = true
 albedo_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="Animation" id=10]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("mesh_explode/mesh_explode:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "bam"
@@ -49,6 +65,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0.454902 ), Color( 1, 1, 1, 0 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("mesh_explode/mesh_explode:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
 
 [node name="explosion" type="Spatial"]
 script = ExtResource( 1 )
@@ -61,8 +89,18 @@ mesh = SubResource( 6 )
 software_skinning_transform_normals = false
 material/0 = SubResource( 7 )
 
+[node name="mesh_explode" type="MeshInstance" parent="mesh_explode"]
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0 )
+visible = false
+cast_shadow = 0
+mesh = SubResource( 6 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = ExtResource( 2 )
+
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 bus = "sfx"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 10 )
 anims/bam = SubResource( 9 )

@@ -4,7 +4,7 @@ onready var mesh_instance = $MeshInstance
 onready var mesh_instance_2 = $MeshInstance2
 
 func _ready():
-	release()
+	pull()
 	
 func pull():
 	.pull()
