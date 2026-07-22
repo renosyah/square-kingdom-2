@@ -122,6 +122,10 @@ func apply_equipment():
 			
 		_range_weapon = w
 		
+		if squad:
+			_range_weapon.is_master = squad.is_master
+			_range_weapon.connect("on_hit", self, "_on_projectile_on_hit")
+		
 	for i in uniforms:
 		var m :MeshInstance = i
 		m.set_surface_material(0, material)
@@ -266,17 +270,18 @@ func _on_release_bow():
 	if not is_instance_valid(enemy):
 		return
 		
-	if not is_instance_valid(enemy.squad):
+	var enemy_pos :Vector3 = enemy.global_position
+	var enemy_squad = enemy.squad
+	if not is_instance_valid(enemy_squad):
 		return
-		
-	var target_tile = enemy.squad.current_tile
-	var attack_damage = _range_weapon.attack_damage
+
+	var target_tile :Vector2 = enemy_squad.current_tile
+	var attack_damage = _range_weapon.get_projectile_damage(enemy, enemy_squad.squad_attribute)
+	var visible_projectile :bool =  enemy_squad.visible or squad.visible
 	
-	if is_instance_valid(enemy):
-		attack_damage = _range_weapon.get_projectile_damage(enemy, enemy.squad.squad_attribute)
-		_range_weapon.shot_projectile(enemy.global_position, enemy.visible or squad.visible)
-		yield(_range_weapon,"on_hit")
-		
+	_range_weapon.shot_projectile(target_tile, attack_damage, enemy_pos, visible_projectile)
+	
+func _on_projectile_on_hit(target_tile :Vector2, attack_damage :int):
 	emit_signal("on_set_damage_to_tile", self, target_tile, attack_damage)
 	
 func _on_range_attack_performed():

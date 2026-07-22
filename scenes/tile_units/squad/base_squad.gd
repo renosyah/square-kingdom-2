@@ -101,6 +101,7 @@ var camera :Camera
 var floating_info :FloatingSquadInfo
 var unit_indexing :Dictionary
 
+var is_master :bool
 puppet var _puppet_rotation_y :float
 puppet var _puppet_enemy :NodePath
 puppet var _puppet_is_moving :bool
@@ -148,7 +149,9 @@ var attach_melee_targets :Array # any
 var attach_range_targets :Array # any
 
 func _ready():
-	if _is_network_master():
+	is_master = _is_network_master()
+	
+	if is_master:
 		Global.connect("on_global_tick", self, "_on_global_tick")
 		
 	Global.connect("on_setting_updated", self, "_on_setting_updated")

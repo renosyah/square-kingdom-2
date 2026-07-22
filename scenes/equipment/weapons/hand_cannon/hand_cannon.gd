@@ -22,10 +22,7 @@ func get_sound() -> AudioStream:
 func _prepare_pool():
 	pass
 	
-func _on_projectile_reach(arrow):
-	pass
-	
 # override
-func shot_projectile(to :Vector3, v :bool):
+func shot_projectile(target_tile :Vector2, dmg :int, to :Vector3, v :bool):
 	yield(get_tree(), "idle_frame")
-	emit_signal("on_hit", to)
+	emit_signal("on_hit", target_tile, dmg)

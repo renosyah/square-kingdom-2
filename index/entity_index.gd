@@ -70,6 +70,7 @@ const range_weapons = [
 	preload("res://scenes/equipment/weapons/bow/flare.tscn"), #6
 	preload("res://scenes/equipment/weapons/hand_cannon/hand_cannon.tscn"), #7
 	preload("res://scenes/equipment/weapons/grenade/grenade.tscn"), #8
+	preload("res://scenes/equipment/weapons/crossbow/repeater_crossbow.tscn"), #9
 ]
 const range_weapon_stats = {
 	0:{'range':1,'attack_speed':0.1,'spawn_time':1}, # 1 default
@@ -81,6 +82,7 @@ const range_weapon_stats = {
 	6:{'range':6,'attack_speed':1.45,'spawn_time':2},
 	7:{'range':3,'attack_speed':7.85,'spawn_time':9},
 	8:{'range':3,'attack_speed':9.85,'spawn_time':8},
+	9:{'range':4,'attack_speed':4.85,'spawn_time':5},
 }
 
 const head_armors = [

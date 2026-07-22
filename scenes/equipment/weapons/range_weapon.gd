@@ -1,7 +1,7 @@
 extends Equipment
 class_name RangeWeapon
 
-signal on_hit(projectile_pos)
+signal on_hit(target_tile, dmg)
 
 const bow_sounds = [
 	preload("res://assets/sounds/weapons/bow_release_1.wav"),
@@ -21,6 +21,8 @@ export var accuration :float = 0.75
 export var is_indirect :bool = true
 export var has_splash_damage :bool = false
 
+var is_master :bool
+
 var _pools :Array = []
 
 func _ready():
@@ -34,7 +36,6 @@ func get_projectile_damage(target, enemy_squad_attribute :Array) -> int:
 	
 func _create_projectile() -> BaseProjectile:
 	var arrow :BaseProjectile = projectile.instance()
-	arrow.connect("on_reach", self ,"_on_projectile_reach", [arrow])
 	Global.current_root.add_child(arrow)
 	return arrow
 	
@@ -51,9 +52,6 @@ func _get_pool() -> BaseProjectile:
 	_pools.append(p)
 	return p
 
-func _on_projectile_reach(arrow):
-	emit_signal("on_hit", arrow.global_position)
-	
 func _on_tree_exiting():
 	for i in _pools:
 		i.queue_free()
@@ -67,10 +65,14 @@ func pull():
 func release():
 	pass
 	
-func shot_projectile(to :Vector3, v :bool):
+func shot_projectile(target_tile :Vector2, dmg :int, to :Vector3, v :bool):
 	var arrow = _get_pool()
 	arrow.visible = v
 	arrow.translation = global_position
 	arrow.to = to + Vector3.ONE * rand_range(-0.25,0.25)
 	arrow.launch()
+	
+	if is_master:
+		yield(arrow, "on_reach")
+		emit_signal("on_hit", target_tile, dmg)
 	
