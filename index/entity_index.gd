@@ -37,7 +37,7 @@ const melee_weapons = [
 	preload("res://scenes/equipment/weapons/warhammer/warhammer.tscn"), #14
 	preload("res://scenes/equipment/weapons/great_sword/excalibur.tscn"), #15
 	preload("res://scenes/equipment/weapons/pike/grimhart.tscn"), #16
-	
+	preload("res://scenes/equipment/weapons/great_sword/odachi.tscn"), #17
 ]
 # weapon attack speed
 const melee_weapon_stats = {
@@ -58,6 +58,7 @@ const melee_weapon_stats = {
 	14:{'attack_speed':1.38,'charge_bonus':0,'spawn_time':8},
 	15:{'attack_speed':0.88,'charge_bonus':6,'spawn_time':4},
 	16:{'attack_speed':0.666,'charge_bonus':6,'spawn_time':6},
+	17:{'attack_speed':0.68,'charge_bonus':8,'spawn_time':1},
 }
 
 const range_weapons = [
@@ -226,22 +227,30 @@ const banner_icons = [
 	null,
 	preload("res://assets/user_interface/icons/banner/lion_icon.png"),
 	preload("res://assets/user_interface/icons/banner/eagle_icon.png"),
-	preload("res://assets/user_interface/icons/banner/rhino_icon.png")
+	preload("res://assets/user_interface/icons/banner/rhino_icon.png"),
+	preload("res://assets/user_interface/icons/banner/dragon_icon.png")
 ]
 
 const banner_bonus = {
 	0:{},
 	1:{
-		"melee_speed_bonus_percentage" : 0.10,
-		"range_speed_bonus_percentage" : 0.10,
+		"melee_speed_bonus_percentage" : 0.15,
+		"range_speed_bonus_percentage" : 0.15,
 	},
 	2:{
 		"speed_bonus_percentage" : 0.15,
+		"spawn_time_decrease_percentage":0.25,
 	},
 	3:{
-		"hp_bonus_percentage": 0.10,
-		"heal_bonus_percentage": 0.10,
+		"hp_bonus_percentage": 0.20,
+		"heal_bonus_percentage": 0.20,
 	},
+	4:{
+		"spawn_time_decrease_percentage":0.80,
+		"melee_speed_bonus_percentage":0.80,
+		"range_speed_bonus_percentage":0.80,
+		"hp_bonus_percentage":0.80,
+	}
 }
 
 # squad.modifier_melee_speed = 0
@@ -262,6 +271,7 @@ const banner_debuf = {
 	3:[
 		[3, 0.10, 25, 4]
 	],
+	4:[],
 }
 
 const squad_icon = [

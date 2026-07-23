@@ -115,7 +115,7 @@ func spawn_time() -> float:
 
 func squad_attribute() -> Array:
 	# base by index
-	# 0 type : 0=infantry, 1=cavalry, 2=siege
+	# 0 type : 0=infantry, 1=cavalry, 2=siege or else
 	var type_squad = 2 if not scene_idx in [0,1] else scene_idx
 	
 	# 1 melee_weapon : 0:sword/dagger/axe,1:all spear,2:all two handded

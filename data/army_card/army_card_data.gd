@@ -371,7 +371,7 @@ func sum(extra :Dictionary):
 	melee_speed_bonus_value += extra.get("melee_speed_bonus_value", 0.0)
 	range_speed_bonus_percentage += extra.get("range_speed_bonus_percentage", 0.0)
 	range_speed_bonus_value += extra.get("range_speed_bonus_value", 0.0)
-	hp_bonus_percentage += extra.get("jhp_bonus_percentage", 0.0)
+	hp_bonus_percentage += extra.get("hp_bonus_percentage", 0.0)
 	hp_bonus_value += extra.get("hp_bonus_value", 0)
 	heal_bonus_percentage += extra.get("heal_bonus_percentage", 0.0)
 	heal_bonus_value += extra.get("heal_bonus_value", 0)

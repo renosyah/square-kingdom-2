@@ -11,7 +11,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": ""
 }
-attack_damage = 14
+attack_damage = 28
 bonus_damage = 0.25
 walk_animation = "weapon_2_ready"
 ready_animation = "weapon_2_ready"

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/odachi.obj-956708024da19e5cef97dd0a45312235.mesh"
+
+[deps]
+
+files=[ "res://.import/odachi.obj-956708024da19e5cef97dd0a45312235.mesh" ]
+
+source_file="res://scenes/equipment/weapons/great_sword/odachi.obj"
+dest_files=[ "res://.import/odachi.obj-956708024da19e5cef97dd0a45312235.mesh", "res://.import/odachi.obj-956708024da19e5cef97dd0a45312235.mesh" ]
+
+[params]
+
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh_flags=4286
+generate_tangents=true
+vertex_cache_optimization=true
+octahedral_compression=true

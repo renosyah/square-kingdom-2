@@ -17,7 +17,3 @@ func release():
 	
 	mesh_instance.visible = true
 	mesh_instance_2.visible = false
-	
-
-func get_projectile_damage(_target, enemy_squad_attribute :Array) -> int:
-	return attack_damage + int(attack_damage * bonus_damage)

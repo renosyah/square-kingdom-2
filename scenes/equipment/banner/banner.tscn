@@ -28,4 +28,6 @@ material/2 = ExtResource( 5 )
 material/4 = ExtResource( 6 )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.489204, 0.0451573 )
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.489204, 0.0451573 )
+cast_shadow = 0
+double_sided = false

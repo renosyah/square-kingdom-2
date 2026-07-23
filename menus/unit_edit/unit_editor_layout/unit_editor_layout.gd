@@ -19,6 +19,7 @@ const melee_weapons = {
 	9 :["Great Axe",preload("res://assets/user_interface/icons/equipment/great_axe.png"),"One devastating swing can break an entire battle line.\n\n+bonus vs Cavalry\n++bonus vs Shields\nSplash Damage"],
 	10 :["Great Sword",preload("res://assets/user_interface/icons/equipment/great_sword.png"),"A massive blade made for carving through formations.\n\n++bonus vs Infantry\nSplash Damage"],
 	14 :["War Hammer", preload("res://assets/user_interface/icons/equipment/warhammer.png"),"Forged to shatter even the strongest armor.\n\n++bonus vs Heavy Armor\n- No bonus vs Cavalry\nSplash Damage"],
+	17 :["Odachi", preload("res://assets/user_interface/icons/equipment/odachi.png"),"A massive blade to cut anything.\n\n[UNBALANCE]\n[FOR FUN ONLY]"],
 	15 :["Excalibur", preload("res://assets/user_interface/icons/equipment/excalibur.png"),"The legendary blade of hope and divine light.\n\n+bonus vs Infantry\nUnique Ability"],
 	16 :["Grimhart", preload("res://assets/user_interface/icons/equipment/grimhart.png"),"A cursed scythe that harvests both souls and wars.\n\n+bonus vs Cavalry\nUnique Ability"],
 }
@@ -32,9 +33,9 @@ const range_weapons = {
 	3 :["Bow",preload("res://assets/user_interface/icons/equipment/bow.png"),"Simple, dependable, and deadly at range.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	4 :["Longbow",preload("res://assets/user_interface/icons/equipment/longbow.png"),"Its immense draw turns disciplined volleys into devastation.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)"],
 	5 :["Crossbow",preload("res://assets/user_interface/icons/equipment/crossbow.png"),"Armor means little against a steel bolt.\n\n+bonus vs Heavy Armor\n(Includes Cavalry)"],
-	9 :["Repeater Crossbow",preload("res://assets/user_interface/icons/equipment/repater_crossbow.png") ,"Same as crossbow but shot multiple bolt in salvo.\n\n[UNBALANCE]"],
 	7 :["Hand Cannon", preload("res://assets/user_interface/icons/equipment/hand_cannon.png"),"Gunpowder weapons with devastating armor penetration.\n\n+bonus vs Moving Target\n++bonus vs Heavy Armor\n(Includes Cavalry)"],
 	8 :["Hand Grenade", preload("res://assets/user_interface/icons/equipment/grenade.png"),"Grenades are devastating against tightly packed formations\n\nSplash Damage"],
+	9 :["Repeater",preload("res://assets/user_interface/icons/equipment/repater_crossbow.png") ,"Same as crossbow but faster.\n\n[UNBALANCE]\n[FOR FUN ONLY]"],
 	6 :["Flare", preload("res://assets/user_interface/icons/equipment/flare.png"),"\"The legendary bo...\"\n\n...oops! Wrong note.\nAn item you can buy for $5 at the camping store.\n\n+bonus vs Spear\n+bonus vs Two-Handed\n(Includes Cavalry)\nQuestionable Ability"],
 }
 const hero_range_weapons = [6]
@@ -79,9 +80,10 @@ const fire_modes = {
 
 const banners = {
 	0 :["(Not Set)",preload("res://assets/user_interface/icons/equipment/empty.png")], 
-	1 :["Lion", preload("res://assets/user_interface/icons/banner/lion_icon.png"), "+Bonus All attack speed"], 
-	2 :["Eagle", preload("res://assets/user_interface/icons/banner/eagle_icon.png"), "+Bonus movement speed"], 
-	3 :["Rhino", preload("res://assets/user_interface/icons/banner/rhino_icon.png"), "+Bonus HP & Heal"], 
+	1 :["Lion", preload("res://assets/user_interface/icons/banner/lion_icon.png")], 
+	2 :["Eagle", preload("res://assets/user_interface/icons/banner/eagle_icon.png")], 
+	3 :["Rhino", preload("res://assets/user_interface/icons/banner/rhino_icon.png")], 
+	4 :["Dragon", preload("res://assets/user_interface/icons/banner/dragon_icon.png")], 
 }
 
 onready var personal_equipments :Dictionary = EntityIndex.personal_equipments
@@ -785,7 +787,7 @@ func _on_save_pressed():
 	
 func _on_delete_pressed():
 	confirm_popup.visible = true
-	confirm_popup.show_popup("Delete", "Delete squad\nThis also remove from army\nContinue?")
+	confirm_popup.show_popup("Delete", "Delete squad\nYour army will be reset\nContinue?")
 	var yes = yield(confirm_popup,"confirmed")
 	confirm_popup.visible = false
 	
@@ -798,7 +800,7 @@ func _on_delete_pressed():
 	current_squads.remove(selected_index)
 	
 	# reset army
-	current_army = [3,3,4,4,5,5,11,15]
+	current_army = [0,0,0,0]
 	
 	emit_signal("save_current_squads", current_squads, current_army)
 	

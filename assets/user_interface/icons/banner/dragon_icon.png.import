@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/lion_icon.png-c880ed80ace6f325f63d67cbf35fe112.s3tc.stex"
-path.etc="res://.import/lion_icon.png-c880ed80ace6f325f63d67cbf35fe112.etc.stex"
+path.s3tc="res://.import/dragon_icon.png-ef65a83c354c96674a6d6ed93c2c7279.s3tc.stex"
+path.etc="res://.import/dragon_icon.png-ef65a83c354c96674a6d6ed93c2c7279.etc.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/user_interface/icons/banner/lion_icon.png"
-dest_files=[ "res://.import/lion_icon.png-c880ed80ace6f325f63d67cbf35fe112.s3tc.stex", "res://.import/lion_icon.png-c880ed80ace6f325f63d67cbf35fe112.etc.stex" ]
+source_file="res://assets/user_interface/icons/banner/dragon_icon.png"
+dest_files=[ "res://.import/dragon_icon.png-ef65a83c354c96674a6d6ed93c2c7279.s3tc.stex", "res://.import/dragon_icon.png-ef65a83c354c96674a6d6ed93c2c7279.etc.stex" ]
 
 [params]
 
